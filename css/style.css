@@ -129,10 +129,19 @@ h1, h2, h3 {
     color: transparent;
 }
 
-.feature h3 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    font-weight: 600;
+.feature h3 .first-letter {
+    font-size: 1.5em; /* Makes the letter bigger */
+    font-weight: 700; /* Makes the letter bold */
+    background: linear-gradient(to right, #2ecc71, #f1c40f); /* Green to yellow gradient */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.feature:hover h3 .first-letter {
+    transform: scale(1.1);
 }
 
 .feature p {

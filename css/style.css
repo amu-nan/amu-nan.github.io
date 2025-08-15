@@ -76,19 +76,23 @@ h1, h2, h3 {
     margin: 0 auto;
 }
 
+.features-section-wrapper {
+    overflow-x: auto;
+    padding-bottom: 20px;
+}
+
 .features-section {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: nowrap; /* Forces a single row */
-    overflow-x: auto;
     gap: 30px;
-    margin-top: 40px;
-    padding-bottom: 20px;
+    min-width: 900px; /* Ensures space for all 5 items */
 }
 
 .feature {
-    flex: 0 0 180px; /* Ensures a fixed width for each box */
+    flex-shrink: 0; /* Prevents shrinking on smaller screens */
+    width: 180px; 
     padding: 30px;
     background: var(--secondary-bg-color);
     border-radius: 12px;
@@ -134,7 +138,7 @@ h1, h2, h3 {
 }
 
 .diagram-container, .outcomes-container {
-    flex: 1;
+    flex-basis: 45%;
     min-width: 350px;
     background: var(--secondary-bg-color);
     padding: 40px;
@@ -229,13 +233,13 @@ footer {
 /* Expanded Diagram Styles */
 #expanded-diagram-container {
     display: none;
-    position: fixed;
+    position: fixed; /* Positions the element relative to the viewport */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
+    z-index: 1000; /* Ensures it is on top of all other content */
     justify-content: center;
     align-items: center;
 }
@@ -258,11 +262,11 @@ footer {
 }
 
 /* Scrollbar for features row on small screens */
-.features-section::-webkit-scrollbar {
+.features-section-wrapper::-webkit-scrollbar {
     height: 8px;
 }
 
-.features-section::-webkit-scrollbar-thumb {
+.features-section-wrapper::-webkit-scrollbar-thumb {
     background-color: var(--accent-color);
     border-radius: 10px;
 }

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Organize - Xforia</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/organize.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -43,90 +44,80 @@
 
     <main class="organize-page">
         <section class="organize-content">
-            <h2 class="page-title">Organize - Tell us about your organization</h2>
-            <p class="page-description">Provide some basic information to help us structure your data.</p>
-            
-            <div class="organize-form-container">
-                <div class="input-group">
-                    <label for="org-name">Name of Organization:</label>
-                    <input type="text" id="org-name" placeholder="e.g., General Hospital">
+            <h2 class="page-title">Organize - Tell us about your organization.</h2>
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="org-name">Name of organization:</label>
+                    <input type="text" id="org-name" placeholder="Enter organization name">
                 </div>
-                
-                <div class="input-group">
-                    <label for="org-type">Choose Type of Organization:</label>
+
+                <div class="form-group">
+                    <label for="org-type">Choose type of organization:</label>
                     <select id="org-type">
-                        <option value="healthcare" selected>Healthcare</option>
+                        <option value="healthcare">Healthcare</option>
                         <option value="retail" disabled>Retail (Coming Soon)</option>
                         <option value="academic" disabled>Academic (Coming Soon)</option>
                     </select>
                 </div>
-                
-                <div class="entities-container">
-                    <p>Display all possible entities to choose from:</p>
-                    <div class="entity-list">
-                        <div class="entity-item mandatory" data-entity="owner">Owner</div>
-                        <div class="entity-item mandatory" data-entity="nurse">Nurse</div>
-                        <div class="entity-item mandatory" data-entity="patient">Patient</div>
-                        <div class="entity-item mandatory" data-entity="relative">Relative</div>
-                        <div class="entity-item optional" data-entity="casemanager">Case Manager</div>
-                        <div class="entity-item optional" data-entity="socialworker">Social Worker</div>
-                        <div class="entity-item optional" data-entity="specialist">Specialist</div>
-                    </div>
+            </div>
+
+            <div class="entities-section">
+                <h3 class="section-title">Display all possible entities to choose from:</h3>
+                <div class="entity-bubbles">
+                    <div class="bubble active" data-entity="owner">Owner</div>
+                    <div class="bubble active" data-entity="nurse">Nurse</div>
+                    <div class="bubble active" data-entity="patient">Patient</div>
+                    <div class="bubble active" data-entity="relative">Relative</div>
+                    <div class="bubble disabled" data-entity="casemanager">Case Manager</div>
+                    <div class="bubble disabled" data-entity="socialworkers">Social Workers</div>
+                    <div class="bubble disabled" data-entity="specialists">Specialists</div>
                 </div>
+                <p class="select-note">Please select the entities you want to continue with.</p>
             </div>
 
             <button id="continue-btn" class="continue-button">Continue</button>
         </section>
     </main>
-    
+
     <script src="../js/scripts.js"></script>
     <script>
         const continueBtn = document.getElementById('continue-btn');
         const orgNameInput = document.getElementById('org-name');
-        const entityItems = document.querySelectorAll('.entity-item');
-        let selectedEntities = [];
+        const entityBubbles = document.querySelectorAll('.entity-bubbles .bubble:not(.disabled)');
 
-        // Toggle selected entities
-        entityItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const entity = item.getAttribute('data-entity');
-                if (item.classList.contains('active')) {
-                    item.classList.remove('active');
-                    selectedEntities = selectedEntities.filter(e => e !== entity);
+        const selectedEntities = new Set();
+        
+        // Initial state
+        entityBubbles.forEach(bubble => {
+            selectedEntities.add(bubble.dataset.entity);
+            bubble.classList.add('selected');
+        });
+
+        // Toggle selection
+        entityBubbles.forEach(bubble => {
+            bubble.addEventListener('click', () => {
+                const entity = bubble.dataset.entity;
+                if (bubble.classList.contains('selected')) {
+                    selectedEntities.delete(entity);
+                    bubble.classList.remove('selected');
                 } else {
-                    item.classList.add('active');
-                    selectedEntities.push(entity);
+                    selectedEntities.add(entity);
+                    bubble.classList.add('selected');
                 }
             });
         });
-        
-        // Initial selection of mandatory entities
-        const mandatoryEntities = document.querySelectorAll('.entity-item.mandatory');
-        mandatoryEntities.forEach(item => {
-            item.classList.add('active');
-            selectedEntities.push(item.getAttribute('data-entity'));
-        });
 
-        // Handle navigation and data storage
         continueBtn.addEventListener('click', () => {
             const orgName = orgNameInput.value;
-            const orgType = document.getElementById('org-type').value;
+            const entitiesArray = Array.from(selectedEntities);
 
-            if (orgName.trim() === '') {
-                alert('Please enter a name for your organization.');
-                return;
-            }
+            // Save data to sessionStorage
+            sessionStorage.setItem('orgName', orgName);
+            sessionStorage.setItem('selectedEntities', JSON.stringify(entitiesArray));
 
-            const pageData = {
-                organizationName: orgName,
-                organizationType: orgType,
-                selectedEntities: selectedEntities
-            };
-
-            sessionStorage.setItem('organizeData', JSON.stringify(pageData));
+            // Navigate to the next page
             window.location.href = 'rbac.html';
         });
     </script>
-
 </body>
 </html>

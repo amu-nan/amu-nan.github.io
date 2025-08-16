@@ -50,9 +50,12 @@
             
             <div class="entity-selection">
                 <p>Organization setup complete. Please choose which entity you want to continue as.</p>
-                <div id="entity-dropdowns" class="dropdown-container">
+                <div id="entity-bubbles" class="entity-bubbles">
                     </div>
             </div>
+
+            <div id="dropdowns-container" class="dropdowns-container">
+                </div>
 
             <div class="continue-options">
                 <p>Continue to:</p>
@@ -76,7 +79,8 @@
     <script src="../js/scripts.js"></script>
     <script>
         const orgNameHeader = document.getElementById('org-name-header');
-        const entityDropdowns = document.getElementById('entity-dropdowns');
+        const entityBubblesContainer = document.getElementById('entity-bubbles');
+        const dropdownsContainer = document.getElementById('dropdowns-container');
         const navOptions = document.querySelectorAll('.nav-option');
         const dynamicContent = document.getElementById('dynamic-content');
 
@@ -89,7 +93,20 @@
         // Retrieve uploaded Excel data and selected entities
         const excelData = JSON.parse(sessionStorage.getItem('excelData')) || [];
         const selectedEntities = JSON.parse(sessionStorage.getItem('selectedEntities')) || [];
+        
+        // --- Logic for Entity Bubbles and Dropdowns ---
+        
+        // Dynamically create the entity bubbles based on session storage
+        selectedEntities.forEach(entity => {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            bubble.textContent = entity.charAt(0).toUpperCase() + entity.slice(1);
+            bubble.dataset.entity = entity;
+            entityBubblesContainer.appendChild(bubble);
+        });
 
+        const entityBubbles = document.querySelectorAll('#entity-bubbles .bubble');
+        
         // Function to create a dropdown
         function createDropdown(label, data, id) {
             const container = document.createElement('div');
@@ -109,34 +126,45 @@
                 selectEl.appendChild(option);
             });
             container.appendChild(selectEl);
-            entityDropdowns.appendChild(container);
+            dropdownsContainer.appendChild(container);
         }
 
-        // Dynamically create dropdowns based on selected entities
-        function renderDropdowns() {
-            entityDropdowns.innerHTML = '';
-            selectedEntities.forEach(entity => {
-                if (entity === 'owner') {
-                    createDropdown('Owner', excelData.map(row => row.Owner_name), 'owner-select');
+        // Handle entity bubble clicks
+        entityBubbles.forEach(bubble => {
+            bubble.addEventListener('click', () => {
+                // Remove 'selected' class from all bubbles
+                entityBubbles.forEach(b => b.classList.remove('selected'));
+                // Add 'selected' class to the clicked bubble
+                bubble.classList.add('selected');
+                
+                dropdownsContainer.innerHTML = ''; // Clear previous dropdowns
+                const entity = bubble.dataset.entity;
+                
+                if (entity === 'patient' || entity === 'relative') {
+                    // Patient or Relative: show only Patient names
+                    createDropdown('Patient Names', excelData.map(row => row.Patient_name), 'patient-select');
+                } else if (entity === 'owner') {
+                    // Owner: show Owner, unique Nurse, and Patient names
+                    createDropdown('Owner Names', excelData.map(row => row.Owner_name), 'owner-select');
+                    createDropdown('Nurse Names', excelData.map(row => row.Nurse_name), 'nurse-select');
+                    createDropdown('Patient Names', excelData.map(row => row.Patient_name), 'patient-select');
                 } else if (entity === 'nurse') {
-                    createDropdown('Nurse', excelData.map(row => row.Nurse_name), 'nurse-select');
-                } else if (entity === 'patient' || entity === 'relative') {
-                    createDropdown('Patient', excelData.map(row => row.Patient_name), 'patient-select');
+                    // Nurse: show unique Nurse and Patient names
+                    createDropdown('Nurse Names', excelData.map(row => row.Nurse_name), 'nurse-select');
+                    createDropdown('Patient Names', excelData.map(row => row.Patient_name), 'patient-select');
                 }
             });
-        }
+        });
         
-        // This is a placeholder. The user should have the option to pick an entity first
-        // and then the second dropdown shows based on the first selection.
-        // We will make this more advanced if needed. For now, this is a good MVP.
-        renderDropdowns();
-
-        // Handle navigation options (Upload, Chatbot, Report)
+        // --- Logic for Navigating Dynamic Content ---
         navOptions.forEach(button => {
             button.addEventListener('click', (e) => {
+                navOptions.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                
                 const option = e.target.dataset.option;
-                dynamicContent.innerHTML = ''; // Clear previous content
-
+                dynamicContent.innerHTML = '';
+                
                 if (option === 'upload') {
                     dynamicContent.innerHTML = `
                         <div class="upload-section">
@@ -166,7 +194,7 @@
                         const patientId = document.getElementById('patient-id').value;
 
                         const payload = {
-                            file: file, // This won't work directly, need FormData
+                            file: file,
                             metadata: {
                                 patient_name: patientName,
                                 patient_id: patientId,
@@ -181,15 +209,12 @@
                             <div id="chatbot-widget"></div>
                         </div>
                     `;
-                    // Initialize the DHTMLX Chatbot
                     const chatbot = new dhx.Chatbot("chatbot-widget");
-                    
-                    // This is the core logic. It sends a request to your backend.
                     chatbot.ask = async (text) => {
                         const payload = {
                             conversation_id: "your-session-id", 
                             query: text,
-                            user_type: "Patient" // This should be dynamic based on selection
+                            user_type: "Patient"
                         };
                         try {
                             const response = await fetch('https://your-backend-api.com/query', {
@@ -200,7 +225,7 @@
                                 body: JSON.stringify(payload)
                             });
                             const result = await response.json();
-                            return result.answer; // DHTMLX expects the answer text
+                            return result.answer;
                         } catch (error) {
                             console.error("Chatbot API Error:", error);
                             return "Sorry, I'm having trouble connecting right now.";
@@ -217,7 +242,7 @@
                 }
             });
         });
-        
+
         // Show the Upload section by default
         document.querySelector('.nav-option[data-option="upload"]').click();
 

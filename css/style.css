@@ -85,14 +85,14 @@ h1, h2, h3 {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* Forces a single row */
     gap: 30px;
-    padding: 0 10px; /* Provides padding for the scrollable content */
+    min-width: 900px; /* Ensures space for all 5 items */
 }
 
 .feature {
-    flex-shrink: 0;
-    width: 180px;
+    flex-shrink: 0; /* Prevents shrinking on smaller screens */
+    width: 180px; 
     padding: 30px;
     background: var(--secondary-bg-color);
     border-radius: 12px;
@@ -117,31 +117,10 @@ h1, h2, h3 {
     transform: scale(1.1);
 }
 
-.coast-letter {
-    font-size: 2.5em;
-    font-weight: 700;
-    display: block; /* To apply the gradient */
+.feature h3 {
+    font-size: 1.2em;
     margin-bottom: 10px;
-    background-image: linear-gradient(90deg, #38e121, #e1d321);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-}
-
-.feature h3 .first-letter {
-    font-size: 1.5em; /* Makes the letter bigger */
-    font-weight: 700; /* Makes the letter bold */
-    background: linear-gradient(to right, #2ecc71, #f1c40f); /* Green to yellow gradient */
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    display: inline-block;
-    transition: transform 0.3s ease;
-}
-
-.feature:hover h3 .first-letter {
-    transform: scale(1.1);
+    font-weight: 600;
 }
 
 .feature p {
@@ -254,13 +233,13 @@ footer {
 /* Expanded Diagram Styles */
 #expanded-diagram-container {
     display: none;
-    position: fixed;
+    position: fixed; /* Positions the element relative to the viewport */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
+    z-index: 1000; /* Ensures it is on top of all other content */
     justify-content: center;
     align-items: center;
 }

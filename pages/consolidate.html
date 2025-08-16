@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidate - Xforia</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <span class="tagline">Your tagline goes here.</span>
+        </div>
+        <div class="coast-flow-header">
+            <div class="coast-step-container">
+                <span class="coast-letter active">C</span>
+                <span class="coast-step-name active">Consolidate</span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">O</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">A</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">S</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">T</span>
+                <span class="coast-step-name"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="consolidate-page">
+        <section class="consolidate-content">
+            <h2 class="page-title">Consolidate - Connect your existing data</h2>
+            <p class="page-description">Choose from one of the options below to get started. You can add a URL to connect to your application, connect a database, upload a file, or enter data manually. For now, only the file upload option is functional.</p>
+
+            <div class="data-options-container">
+                <div class="option-card">
+                    <h3 class="option-title">Connect your URL</h3>
+                    <p class="option-subtitle">Add your URL to connect your application</p>
+                    <input type="text" placeholder="e.g., https://your-app.com" class="option-input">
+                    <button class="option-button">Connect</button>
+                </div>
+
+                <div class="option-card">
+                    <h3 class="option-title">Connect your Database</h3>
+                    <p class="option-subtitle">Add your database details to connect</p>
+                    <button class="option-button">Connect Database</button>
+                </div>
+
+                <div class="option-card active-card" id="excel-upload-card">
+                    <h3 class="option-title">Upload your Excel file</h3>
+                    <p class="option-subtitle">Securely upload your data for processing</p>
+                    <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
+                        <label for="excel-file" class="file-label">
+                            <i class="fas fa-file-upload"></i> Choose File
+                        </label>
+                        <input type="file" id="excel-file" name="excel_file" accept=".xls,.xlsx" required>
+                        <span id="file-name-display">No file chosen</span>
+                        <button type="submit" class="option-button upload-button">Upload</button>
+                    </form>
+                    <div id="upload-status"></div>
+                </div>
+
+                <div class="option-card">
+                    <h3 class="option-title">Manual Entry</h3>
+                    <p class="option-subtitle">Enter your information manually</p>
+                    <button class="option-button">Start Manual Entry</button>
+                </div>
+            </div>
+
+            <button id="continue-btn" class="continue-button">Continue</button>
+        </section>
+    </main>
+
+    <script src="../js/scripts.js"></script>
+    <script>
+        const uploadForm = document.getElementById('upload-form');
+        const fileInput = document.getElementById('excel-file');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const uploadStatus = document.getElementById('upload-status');
+        const continueBtn = document.getElementById('continue-btn');
+
+        // Display selected file name
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.textContent = fileInput.files[0].name;
+            } else {
+                fileNameDisplay.textContent = 'No file chosen';
+            }
+        });
+
+        // Handle form submission and backend call
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const file = fileInput.files[0];
+            if (!file) {
+                uploadStatus.textContent = 'Please select a file to upload.';
+                uploadStatus.style.color = 'red';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            uploadStatus.textContent = 'Uploading...';
+            uploadStatus.style.color = '#3498db';
+
+            try {
+                // Replace with your actual backend API URL
+                const response = await fetch('https://your-backend-api.com/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    uploadStatus.textContent = 'Upload successful!';
+                    uploadStatus.style.color = '#2ecc71';
+                    sessionStorage.setItem('excelData', JSON.stringify(result.data));
+                    continueBtn.style.display = 'block'; // Show the continue button on success
+                } else {
+                    uploadStatus.textContent = `Error: ${result.message}`;
+                    uploadStatus.style.color = 'red';
+                }
+            } catch (error) {
+                uploadStatus.textContent = 'An error occurred. Please try again.';
+                uploadStatus.style.color = 'red';
+                console.error('Error:', error);
+            }
+        });
+
+        continueBtn.addEventListener('click', () => {
+            window.location.href = 'organize.html';
+        });
+
+    </script>
+</body>
+</html>

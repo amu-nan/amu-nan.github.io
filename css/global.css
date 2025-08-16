@@ -1,0 +1,106 @@
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #3498db;
+    --text-color: #34495e;
+    --light-bg-color: #ffffff;
+    --secondary-bg-color: #f8f9fa;
+    --icon-color: #3498db;
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
+    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-bg-color);
+}
+
+header {
+    background-color: var(--light-bg-color);
+    padding: 20px 5%;
+    border-bottom: 1px solid var(--secondary-bg-color);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 60px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.tagline {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--primary-color);
+    letter-spacing: 0.5px;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+section {
+    padding: 40px 0;
+}
+
+h1, h2, h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* New COAST Flow Header Styles */
+.coast-flow-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.coast-step-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.coast-letter {
+    font-size: 3em;
+    font-weight: 700;
+    color: #ccc;
+    line-height: 1;
+    transition: color 0.3s ease;
+}
+
+.coast-letter.active {
+    color: #1c9e82;
+}
+
+.coast-step-name {
+    font-size: 0.8em;
+    color: #999;
+    margin-top: 5px;
+    min-height: 20px;
+}
+
+.coast-step-name.active {
+    color: #216954;
+    font-weight: 500;
+}

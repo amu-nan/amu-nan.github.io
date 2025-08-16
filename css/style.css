@@ -382,3 +382,146 @@ footer {
     color: #216954; /* The color for the active step name */
     font-weight: 500;
 }
+
+/* --- Consolidate Page Styles --- */
+.consolidate-page {
+    padding: 60px 20px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.page-description {
+    text-align: center;
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 50px;
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+}
+
+.data-options-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.option-card {
+    flex-basis: 250px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.option-card.active-card {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.option-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.option-subtitle {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 20px;
+    min-height: 40px;
+}
+
+.option-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+
+.option-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #3498db;
+    color: #fff;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.option-button:hover {
+    background-color: #2b84c8;
+}
+
+/* File Upload Specific Styles */
+#excel-upload-card .file-label {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #f1f1f1;
+    color: #34495e;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+#excel-upload-card .file-label:hover {
+    background-color: #e9ecef;
+}
+
+#excel-file {
+    display: none;
+}
+
+#file-name-display {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+#upload-status {
+    margin-top: 15px;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.continue-button {
+    display: none; /* Hidden by default */
+    float: right;
+    margin-top: 40px;
+    padding: 15px 30px;
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.continue-button:hover {
+    background-color: #27ae60;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+}

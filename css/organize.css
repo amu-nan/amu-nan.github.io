@@ -1,0 +1,114 @@
+/* --- Organize Page Styles --- */
+.organize-page {
+    padding: 60px 20px;
+}
+
+.page-title {
+    margin-bottom: 50px;
+}
+
+.form-section {
+    max-width: 600px;
+    margin: 0 auto 50px auto;
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.entities-section {
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
+
+.entity-bubbles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.bubble {
+    background-color: #ecf0f1;
+    color: #34495e;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.bubble.active {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+.bubble.disabled {
+    background-color: #ccc;
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.bubble.selected {
+    background-color: var(--accent-color);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bubble.selected.disabled {
+    background-color: #95a5a6;
+    color: #fff;
+}
+
+.select-note {
+    font-size: 0.9em;
+    color: #888;
+    margin-top: 15px;
+}
+
+.continue-button {
+    float: right;
+    padding: 15px 30px;
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.continue-button:hover {
+    background-color: #27ae60;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+}

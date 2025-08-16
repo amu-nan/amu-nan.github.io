@@ -342,39 +342,43 @@ footer {
     font-weight: 500;
 }
 
-/* --- COAST Flow Styles (for the header) --- */
-.coast-flow {
+/* --- COAST Flow Header Styles --- */
+.coast-flow-header {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    gap: 30px;
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
-.flow-letter {
-    font-size: 2em;
+.coast-step-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.coast-letter {
+    font-size: 3em;
     font-weight: 700;
     color: #ccc;
-    position: relative;
-    z-index: 1;
-    background-color: #fff;
-    padding: 0 5px;
+    line-height: 1;
+    transition: color 0.3s ease;
 }
 
-.flow-letter.active {
-    color: var(--accent-color);
+.coast-letter.active {
+    color: #1c9e82; /* The color for the active letter */
 }
 
-.flow-line {
-    width: 50px;
-    height: 3px;
-    background-color: #ccc;
-    margin: 0 -5px;
+.coast-step-name {
+    font-size: 0.8em;
+    color: #999;
+    margin-top: 5px;
+    min-height: 20px; /* Ensures consistent spacing */
 }
 
-.coast-step {
-    text-align: center;
-    font-size: 1.1em;
+.coast-step-name.active {
+    color: #216954; /* The color for the active step name */
     font-weight: 500;
-    color: var(--text-color);
-    margin-top: 10px;
 }

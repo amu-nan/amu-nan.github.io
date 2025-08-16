@@ -44,8 +44,8 @@
     <main class="consolidate-page">
         <section class="consolidate-content">
             <h2 class="page-title">Consolidate - Connect your existing data</h2>
-            <p class="page-description">Choose from one of the options below to get started. You can add a URL to connect to your application, connect a database, upload a file, or enter data manually.</p>
-
+            <p class="page-description">Choose from one of the options below to get started. You can add a URL to connect to your application, connect a database, upload a file, or enter data manually. For now, only the file upload option will have a backend connection.</p>
+        
             <div class="data-options-container">
                 <div class="option-card">
                     <h3 class="option-title">Connect your URL</h3>
@@ -53,13 +53,13 @@
                     <input type="text" placeholder="e.g., https://your-app.com" class="option-input">
                     <button class="option-button">Connect</button>
                 </div>
-
+        
                 <div class="option-card">
                     <h3 class="option-title">Connect your Database</h3>
                     <p class="option-subtitle">Add your database details to connect</p>
                     <button class="option-button">Connect Database</button>
                 </div>
-
+        
                 <div class="option-card active-card" id="excel-upload-card">
                     <h3 class="option-title">Upload your Excel file</h3>
                     <p class="option-subtitle">Securely upload your data for processing</p>
@@ -73,15 +73,15 @@
                     </form>
                     <div id="upload-status"></div>
                 </div>
-
+        
                 <div class="option-card">
                     <h3 class="option-title">Manual Entry</h3>
                     <p class="option-subtitle">Enter your information manually</p>
                     <button class="option-button">Start Manual Entry</button>
                 </div>
             </div>
-
-            <button id="continue-btn" class="continue-button">Continue</button>
+            
+            <button id="continue-btn" class="continue-button" style="display: block;">Continue</button>
         </section>
     </main>
 

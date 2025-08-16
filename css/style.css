@@ -270,3 +270,111 @@ footer {
     background-color: var(--accent-color);
     border-radius: 10px;
 }
+
+/* --- Login Page Styles --- */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 150px); /* Adjust height to fit header and footer */
+}
+
+.login-form-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+}
+
+.login-form-container h2 {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.login-form-container p {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+#login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#login-btn:hover {
+    background-color: #2b84c8;
+}
+
+#error-message {
+    color: #e74c3c;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+/* --- COAST Flow Styles (for the header) --- */
+.coast-flow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.flow-letter {
+    font-size: 2em;
+    font-weight: 700;
+    color: #ccc;
+    position: relative;
+    z-index: 1;
+    background-color: #fff;
+    padding: 0 5px;
+}
+
+.flow-letter.active {
+    color: var(--accent-color);
+}
+
+.flow-line {
+    width: 50px;
+    height: 3px;
+    background-color: #ccc;
+    margin: 0 -5px;
+}
+
+.coast-step {
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-top: 10px;
+}

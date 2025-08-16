@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - Xforia</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.dhtmlx.com/chatbot/latest/chatbot.css">
+    <script src="https://cdn.dhtmlx.com/chatbot/latest/chatbot.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <span class="tagline">Your tagline goes here.</span>
+        </div>
+        <div class="coast-flow-header">
+            <div class="coast-step-container">
+                <span class="coast-letter">C</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">O</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">A</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter active">S</span>
+                <span class="coast-step-name active">Search</span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">T</span>
+                <span class="coast-step-name"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="search-page">
+        <section class="search-content">
+            <h2 id="org-name-header"></h2>
+            
+            <div class="entity-selection">
+                <p>Organization setup complete. Please choose which entity you want to continue as.</p>
+                <div id="entity-dropdowns" class="dropdown-container">
+                    </div>
+            </div>
+
+            <div class="continue-options">
+                <p>Continue to:</p>
+                <div class="option-buttons">
+                    <button class="nav-option" data-option="upload">Upload</button>
+                    <button class="nav-option" data-option="chatbot">Chatbot</button>
+                    <button class="nav-option" data-option="report">Generate Report</button>
+                </div>
+            </div>
+
+            <div id="dynamic-content">
+                </div>
+
+            <div class="navigation-buttons">
+                <button class="back-button" onclick="window.location.href='rbac.html'">Back</button>
+                <button id="continue-btn" class="continue-button">Continue</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/scripts.js"></script>
+    <script>
+        const orgNameHeader = document.getElementById('org-name-header');
+        const entityDropdowns = document.getElementById('entity-dropdowns');
+        const navOptions = document.querySelectorAll('.nav-option');
+        const dynamicContent = document.getElementById('dynamic-content');
+
+        // Retrieve and display organization name
+        const orgName = sessionStorage.getItem('orgName');
+        if (orgName) {
+            orgNameHeader.textContent = orgName;
+        }
+
+        // Retrieve uploaded Excel data and selected entities
+        const excelData = JSON.parse(sessionStorage.getItem('excelData')) || [];
+        const selectedEntities = JSON.parse(sessionStorage.getItem('selectedEntities')) || [];
+
+        // Function to create a dropdown
+        function createDropdown(label, data, id) {
+            const container = document.createElement('div');
+            container.classList.add('dropdown-group');
+
+            const labelEl = document.createElement('label');
+            labelEl.textContent = label;
+            container.appendChild(labelEl);
+
+            const selectEl = document.createElement('select');
+            selectEl.id = id;
+            
+            const uniqueData = [...new Set(data)];
+            uniqueData.forEach(item => {
+                const option = document.createElement('option');
+                option.textContent = item;
+                selectEl.appendChild(option);
+            });
+            container.appendChild(selectEl);
+            entityDropdowns.appendChild(container);
+        }
+
+        // Dynamically create dropdowns based on selected entities
+        function renderDropdowns() {
+            entityDropdowns.innerHTML = '';
+            selectedEntities.forEach(entity => {
+                if (entity === 'owner') {
+                    createDropdown('Owner', excelData.map(row => row.Owner_name), 'owner-select');
+                } else if (entity === 'nurse') {
+                    createDropdown('Nurse', excelData.map(row => row.Nurse_name), 'nurse-select');
+                } else if (entity === 'patient' || entity === 'relative') {
+                    createDropdown('Patient', excelData.map(row => row.Patient_name), 'patient-select');
+                }
+            });
+        }
+        
+        // This is a placeholder. The user should have the option to pick an entity first
+        // and then the second dropdown shows based on the first selection.
+        // We will make this more advanced if needed. For now, this is a good MVP.
+        renderDropdowns();
+
+        // Handle navigation options (Upload, Chatbot, Report)
+        navOptions.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const option = e.target.dataset.option;
+                dynamicContent.innerHTML = ''; // Clear previous content
+
+                if (option === 'upload') {
+                    dynamicContent.innerHTML = `
+                        <div class="upload-section">
+                            <h3>Upload More Documents</h3>
+                            <p>Here you can upload additional files. Please ensure you also add the metadata.</p>
+                            <form id="metadata-upload-form">
+                                <div class="metadata-group">
+                                    <label for="file-upload-2">Choose a file to upload:</label>
+                                    <input type="file" id="file-upload-2">
+                                </div>
+                                <div class="metadata-group">
+                                    <label for="patient-name">Patient Name:</label>
+                                    <input type="text" id="patient-name">
+                                </div>
+                                <div class="metadata-group">
+                                    <label for="patient-id">Patient ID:</label>
+                                    <input type="text" id="patient-id">
+                                </div>
+                                <button type="submit">Upload Document</button>
+                            </form>
+                        </div>
+                    `;
+                    document.getElementById('metadata-upload-form').addEventListener('submit', (event) => {
+                        event.preventDefault();
+                        const file = document.getElementById('file-upload-2').files[0];
+                        const patientName = document.getElementById('patient-name').value;
+                        const patientId = document.getElementById('patient-id').value;
+
+                        const payload = {
+                            file: file, // This won't work directly, need FormData
+                            metadata: {
+                                patient_name: patientName,
+                                patient_id: patientId,
+                            }
+                        };
+                        console.log('Upload Payload:', payload);
+                        alert('Payload prepared! This would be sent to the backend.');
+                    });
+                } else if (option === 'chatbot') {
+                    dynamicContent.innerHTML = `
+                        <div class="chatbot-container">
+                            <div id="chatbot-widget"></div>
+                        </div>
+                    `;
+                    // Initialize the DHTMLX Chatbot
+                    const chatbot = new dhx.Chatbot("chatbot-widget");
+                    
+                    // This is the core logic. It sends a request to your backend.
+                    chatbot.ask = async (text) => {
+                        const payload = {
+                            conversation_id: "your-session-id", 
+                            query: text,
+                            user_type: "Patient" // This should be dynamic based on selection
+                        };
+                        try {
+                            const response = await fetch('https://your-backend-api.com/query', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(payload)
+                            });
+                            const result = await response.json();
+                            return result.answer; // DHTMLX expects the answer text
+                        } catch (error) {
+                            console.error("Chatbot API Error:", error);
+                            return "Sorry, I'm having trouble connecting right now.";
+                        }
+                    };
+                } else if (option === 'report') {
+                    dynamicContent.innerHTML = `
+                        <div class="report-section">
+                            <h3>Generate Report</h3>
+                            <p>A comprehensive report of the selected data will be generated here.</p>
+                            <button>Generate Report</button>
+                        </div>
+                    `;
+                }
+            });
+        });
+        
+        // Show the Upload section by default
+        document.querySelector('.nav-option[data-option="upload"]').click();
+
+        // Handle continue button navigation
+        const continueBtn = document.getElementById('continue-btn');
+        continueBtn.addEventListener('click', () => {
+            window.location.href = 'track.html';
+        });
+    </script>
+</body>
+</html>

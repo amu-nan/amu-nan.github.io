@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RBAC - Xforia</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/rbac.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <span class="tagline">Your tagline goes here.</span>
+        </div>
+        <div class="coast-flow-header">
+            <div class="coast-step-container">
+                <span class="coast-letter">C</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">O</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter active">A</span>
+                <span class="coast-step-name active">Access</span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">S</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">T</span>
+                <span class="coast-step-name"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="rbac-page">
+        <section class="rbac-content">
+            <h2 class="page-title">RBAC - Setting up secure access controls</h2>
+            <p class="intro-text">
+                Your organization's access hierarchy is being established based on your selections. 
+                This will ensure that all users have secure, role-based access to the data they need.
+            </p>
+
+            <div class="hierarchy-image-container">
+                <h3>Access Hierarchy for <span id="org-name-display">Your Organization</span></h3>
+                <img src="../images/healthcare-hierarchy.png" alt="Healthcare Organization Hierarchy" class="hierarchy-image">
+            </div>
+
+            <button id="continue-btn" class="continue-button">Continue</button>
+        </section>
+    </main>
+
+    <script src="../js/scripts.js"></script>
+    <script>
+        const continueBtn = document.getElementById('continue-btn');
+        const orgNameDisplay = document.getElementById('org-name-display');
+
+        // Retrieve organization name from session storage
+        const orgName = sessionStorage.getItem('orgName');
+        if (orgName) {
+            orgNameDisplay.textContent = orgName;
+        }
+
+        continueBtn.addEventListener('click', () => {
+            window.location.href = 'search.html';
+        });
+    </script>
+</body>
+</html>

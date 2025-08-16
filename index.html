@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
+    </head>
 <body>
 
     <header>
@@ -29,27 +29,27 @@
             <div class="features-section">
                 <div class="feature">
                     <i class="fa-solid fa-layer-group"></i>
-                    <h3><span class="first-letter">C</span>onsolidate</h3>
+                    <h3>Consolidate</h3>
                     <p>Bring all your data from different sources and formats into a single, unified repository.</p>
                 </div>
                 <div class="feature">
                     <i class="fa-solid fa-sitemap"></i>
-                    <h3><span class="first-letter">O</span>rganize</h3>
+                    <h3>Organize</h3>
                     <p>Structure and categorize your data with intelligent tagging and a customizable hierarchy.</p>
                 </div>
                 <div class="feature">
                     <i class="fa-solid fa-lock"></i>
-                    <h3><span class="first-letter">A</span>ccess</h3>
+                    <h3>Access</h3>
                     <p>Control who sees what with role-based access control (RBAC) to ensure data security.</p>
                 </div>
                 <div class="feature">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <h3><span class="first-letter">S</span>earch</h3>
+                    <h3>Search</h3>
                     <p>Find what you need instantly with our "Ask" feature, a powerful and intuitive search engine.</p>
                 </div>
                 <div class="feature">
                     <i class="fa-solid fa-chart-line"></i>
-                    <h3><span class="first-letter">T</span>rack</h3>
+                    <h3>Track</h3>
                     <p>Monitor your progress and gain insights with a robust reporting and tracking system.</p>
                 </div>
             </div>
@@ -105,15 +105,18 @@
         diagramImage.addEventListener('dblclick', () => {
             expandedImage.src = diagramImage.src; // Use the same image
             expandedContainer.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevents scrolling while pop-up is active
         });
 
         closeBtn.addEventListener('click', () => {
             expandedContainer.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restores scrolling
         });
 
         expandedContainer.addEventListener('click', (e) => {
             if (e.target === expandedContainer) {
                 expandedContainer.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
         });
     </script>

@@ -20,12 +20,12 @@
         </div>
         <div class="coast-flow-header">
             <div class="coast-step-container">
-                <span class="coast-letter">C</span>
-                <span class="coast-step-name"></span>
+                <span class="coast-letter active">C</span>
+                <span class="coast-step-name active">Consolidate</span>
             </div>
             <div class="coast-step-container">
-                <span class="coast-letter active">O</span>
-                <span class="coast-step-name active">Organize</span>
+                <span class="coast-letter">O</span>
+                <span class="coast-step-name">Organize</span>
             </div>
             <div class="coast-step-container">
                 <span class="coast-letter">A</span>
@@ -43,48 +43,39 @@
     </header>
 
     <main class="organize-page">
-        <section class="organize-content">
-            <h2 class="page-title">Organize - Tell us about your organization.</h2>
-            <div class="form-section">
-                <div class="form-group">
-                    <label for="org-name">Name of organization:</label>
-                    <input type="text" id="org-name" placeholder="Enter organization name">
+        <section class="organize-container">
+            <h2>Organize Data</h2>
+            <div class="organize-form">
+                <div class="input-group">
+                    <label for="org-name">Company/Organization Name:</label>
+                    <input type="text" id="org-name" placeholder="Enter company name">
                 </div>
-
-                <div class="form-group">
-                    <label for="org-type">Choose type of organization:</label>
-                    <select id="org-type">
-                        <option value="healthcare">Healthcare</option>
-                        <option value="retail" disabled>Retail (Coming Soon)</option>
-                        <option value="academic" disabled>Academic (Coming Soon)</option>
-                    </select>
+                <div class="input-group">
+                    <label>Display all possible entities to choose from:</label>
+                    <p>Select the entities you wish to see in the application.</p>
+                    <div class="entity-bubbles">
+                        <div class="bubble" data-entity="owner">Owner <span class="mandatory-star">&#9733;</span></div>
+                        <div class="bubble" data-entity="nurse">Nurse <span class="mandatory-star">&#9733;</span></div>
+                        <div class="bubble" data-entity="patient">Patient <span class="mandatory-star">&#9733;</span></div>
+                        <div class="bubble" data-entity="relative">Relative</div>
+                        <div class="bubble disabled" data-entity="supplier">Supplier</div>
+                        <div class="bubble disabled" data-entity="admin">Admin</div>
+                        <div class="bubble disabled" data-entity="lab">Lab</div>
+                        <div class="bubble disabled" data-entity="doctor">Doctor</div>
+                    </div>
                 </div>
+                <button id="continue-btn" class="continue-button">Continue</button>
             </div>
-
-            <div class="entities-section">
-                <h3 class="section-title">Display all possible entities to choose from:</h3>
-                <div class="entity-bubbles">
-                    <div class="bubble" data-entity="owner">Owner <span class="mandatory-star">&#9733;</span></div>
-                    <div class="bubble" data-entity="nurse">Nurse <span class="mandatory-star">&#9733;</span></div>
-                    <div class="bubble" data-entity="patient">Patient <span class="mandatory-star">&#9733;</span></div>
-                    <div class="bubble" data-entity="relative">Relative</div>
-                    <div class="bubble" data-entity="supplier">Supplier</div>
-                    <div class="bubble" data-entity="admin">Admin</div>
-                    <div class="bubble" data-entity="lab">Lab</div>
-                    <div class="bubble" data-entity="doctor">Doctor</div>
-                </div>
-                <p class="select-note">Please select the entities you want to continue with.</p>
-            </div>
-
-            <button id="continue-btn" class="continue-button">Continue</button>
         </section>
     </main>
+
     <script src="../js/scripts.js"></script>
     <script>
         const continueBtn = document.getElementById('continue-btn');
         const orgNameInput = document.getElementById('org-name');
         const entityBubbles = document.querySelectorAll('.entity-bubbles .bubble:not(.disabled)');
-    
+        const disabledBubbles = document.querySelectorAll('.entity-bubbles .bubble.disabled');
+
         const selectedEntities = new Set();
         
         // Toggle selection
@@ -100,14 +91,21 @@
                 }
             });
         });
-    
+
+        // Prevent clicking on disabled entities
+        disabledBubbles.forEach(bubble => {
+            bubble.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+
         continueBtn.addEventListener('click', () => {
             const orgName = orgNameInput.value;
             const entitiesArray = Array.from(selectedEntities);
-    
+
             sessionStorage.setItem('orgName', orgName);
             sessionStorage.setItem('selectedEntities', JSON.stringify(entitiesArray));
-    
+
             window.location.href = 'rbac.html';
         });
     </script>

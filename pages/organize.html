@@ -84,17 +84,18 @@
         const continueBtn = document.getElementById('continue-btn');
         const orgNameInput = document.getElementById('org-name');
         const entityBubbles = document.querySelectorAll('.entity-bubbles .bubble:not(.disabled)');
-
+    
         const selectedEntities = new Set();
         
-        // Initial state
-        entityBubbles.forEach(bubble => {
-            selectedEntities.add(bubble.dataset.entity);
-            bubble.classList.add('selected');
-        });
-
         // Toggle selection
         entityBubbles.forEach(bubble => {
+            // Set initial selection for required entities
+            const requiredEntities = ['owner', 'nurse', 'patient', 'relative'];
+            if (requiredEntities.includes(bubble.dataset.entity)) {
+                bubble.classList.add('selected');
+                selectedEntities.add(bubble.dataset.entity);
+            }
+    
             bubble.addEventListener('click', () => {
                 const entity = bubble.dataset.entity;
                 if (bubble.classList.contains('selected')) {
@@ -106,16 +107,14 @@
                 }
             });
         });
-
+    
         continueBtn.addEventListener('click', () => {
             const orgName = orgNameInput.value;
             const entitiesArray = Array.from(selectedEntities);
-
-            // Save data to sessionStorage
+    
             sessionStorage.setItem('orgName', orgName);
             sessionStorage.setItem('selectedEntities', JSON.stringify(entitiesArray));
-
-            // Navigate to the next page
+    
             window.location.href = 'rbac.html';
         });
     </script>

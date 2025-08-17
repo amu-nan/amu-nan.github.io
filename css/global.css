@@ -47,7 +47,7 @@ header {
 }
 
 .tagline {
-    font-size: 1.0em;
+    font-size: 0.9em;
     font-weight: 600;
     color: var(--primary-color);
     letter-spacing: 0.5px;

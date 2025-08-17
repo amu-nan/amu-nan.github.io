@@ -49,7 +49,7 @@
             <h2 id="org-name-header" class="org-name-display"></h2>
             
             <div class="entity-selection-info">
-                <p>Welcome <span id="selected-entity-display"></span>. Please make your selections to proceed.</p>
+                <p>Welcome, <span id="selected-entity-display"></span>. Please make your selections to proceed.</p>
                 <div id="entity-dropdowns" class="dropdown-container">
                     </div>
             </div>
@@ -247,43 +247,48 @@
                             }
                         };
                         console.log('Upload Payload:', payload);
-                        alert('Upload Successful!');
+                        alert('Payload prepared! This would be sent to the backend.');
                     });
                 } else if (option === 'chatbot') {
+                    // Corrected chatbot initialization
                     dynamicContent.innerHTML = `
                         <div class="chatbot-container">
                             <div id="chatbot-widget"></div>
                         </div>
                     `;
-                    const chatbot = new dhx.Chatbot("chatbot-widget");
-                    
-                    chatbot.ask = async (text) => {
-                        const patientName = document.getElementById('patient-select-input')?.value;
-                        const selectedPatientData = workingData.find(p => p.Patient_name === patientName);
+
+                    // The setTimeout ensures the DOM element is rendered before we try to initialize the chatbot.
+                    setTimeout(() => {
+                        const chatbot = new dhx.Chatbot("chatbot-widget");
                         
-                        const payload = {
-                            conversation_id: "your-session-id", 
-                            query: text,
-                            user_type: selectedEntity,
-                            patient_name: patientName || null,
-                            patient_id: selectedPatientData ? selectedPatientData.Patient_ID : null
+                        chatbot.ask = async (text) => {
+                            const patientName = document.getElementById('patient-select-input')?.value;
+                            const selectedPatientData = workingData.find(p => p.Patient_name === patientName);
+                            
+                            const payload = {
+                                conversation_id: "your-session-id", 
+                                query: text,
+                                user_type: selectedEntity,
+                                patient_name: patientName || null,
+                                patient_id: selectedPatientData ? selectedPatientData.Patient_ID : null
+                            };
+                            console.log("Chatbot Payload:", payload);
+                            try {
+                                const response = await fetch('https://your-backend-api.com/query', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(payload)
+                                });
+                                const result = await response.json();
+                                return result.answer;
+                            } catch (error) {
+                                console.error("Chatbot API Error:", error);
+                                return "Sorry, I'm having trouble connecting right now.";
+                            }
                         };
-                        console.log("Chatbot Payload:", payload);
-                        try {
-                            const response = await fetch('https://your-backend-api.com/query', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(payload)
-                            });
-                            const result = await response.json();
-                            return result.answer;
-                        } catch (error) {
-                            console.error("Chatbot API Error:", error);
-                            return "Sorry, I'm having trouble connecting right now.";
-                        }
-                    };
+                    }, 0); // setTimeout with 0ms delay moves the initialization to the end of the event queue
                 }
             });
         });

@@ -1,0 +1,43 @@
+/* --- Track Page Styles --- */
+.track-page {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.report-section {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.report-container {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
+}
+
+.report-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.end-demo-button {
+    padding: 15px 30px;
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.end-demo-button:hover {
+    background-color: #c0392b;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+}

@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="../images/Subject.png">
 </head>
 <body>
 
@@ -30,7 +29,7 @@
             </div>
             <div class="coast-step-container">
                 <span class="coast-letter active">A</span>
-                <span class="coast-step-name active">Access Control</span>
+                <span class="coast-step-name active">Access</span>
             </div>
             <div class="coast-step-container">
                 <span class="coast-letter">S</span>
@@ -44,53 +43,35 @@
     </header>
 
     <main class="rbac-page">
-        <section class="rbac-container">
-            <h2>Role-Based Access Control</h2>
-            <div class="rbac-form">
-                <div class="input-group">
-                    <label>Please select the role you will be acting as:</label>
-                    <div class="entity-bubbles" id="entity-bubbles">
-                        </div>
-                </div>
-                <button id="continue-btn" class="continue-button">Continue</button>
+        <section class="rbac-content">
+            <h2 class="page-title">RBAC - Setting up secure access controls</h2>
+            <p class="intro-text">
+                Your organization's access hierarchy is being established based on your selections. 
+                This will ensure that all users have secure, role-based access to the data they need.
+            </p>
+
+            <div class="hierarchy-image-container">
+                <h3>Access Hierarchy for <span id="org-name-display">Your Organization</span></h3>
+                <img src="../images/healthcare-hierarchy.png" alt="Healthcare Organization Hierarchy" class="hierarchy-image">
             </div>
+
+            <button id="continue-btn" class="continue-button">Continue</button>
         </section>
     </main>
 
     <script src="../js/scripts.js"></script>
     <script>
-        const entityBubblesContainer = document.getElementById('entity-bubbles');
         const continueBtn = document.getElementById('continue-btn');
-        let selectedFinalEntity = null;
+        const orgNameDisplay = document.getElementById('org-name-display');
 
-        const selectedEntities = JSON.parse(sessionStorage.getItem('selectedEntities')) || [];
-
-        // Dynamic creation of entity bubbles
-        selectedEntities.forEach(entity => {
-            const bubble = document.createElement('div');
-            bubble.classList.add('bubble');
-            bubble.textContent = entity.charAt(0).toUpperCase() + entity.slice(1);
-            bubble.dataset.entity = entity;
-            
-            bubble.addEventListener('click', () => {
-                // Remove 'selected' class from all bubbles
-                document.querySelectorAll('.bubble').forEach(b => b.classList.remove('selected'));
-                
-                // Add 'selected' class to the clicked bubble
-                bubble.classList.add('selected');
-                selectedFinalEntity = entity;
-            });
-            
-            entityBubblesContainer.appendChild(bubble);
-        });
+        // Retrieve organization name from session storage
+        const orgName = sessionStorage.getItem('orgName');
+        if (orgName) {
+            orgNameDisplay.textContent = orgName;
+        }
 
         continueBtn.addEventListener('click', () => {
-            if (selectedFinalEntity) {
-                sessionStorage.setItem('selectedFinalEntity', selectedFinalEntity);
-                window.location.href = 'search.html';
-            } else {
-                alert('Please select a role to continue.');
-            }
+            window.location.href = 'search.html';
         });
     </script>
 </body>

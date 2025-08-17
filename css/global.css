@@ -40,7 +40,7 @@ header {
 }
 
 .logo {
-    width: 60px;
+    width: 120px;
     height: auto;
     margin-right: 0; /* Remove right margin since we're stacking vertically */
     margin-bottom: 10px; /* Add bottom margin for spacing */

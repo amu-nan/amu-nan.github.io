@@ -7,6 +7,7 @@
     --icon-color: #3498db;
     --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
     --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
+    --new-icon-color: #169880; /* New color for the icons */
 }
 
 * {
@@ -27,17 +28,21 @@ header {
     padding: 20px 5%;
     border-bottom: 1px solid var(--secondary-bg-color);
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex; /* Add flexbox to the header */
+    justify-content: space-between; /* Space out the logo and COAST sections */
+    align-items: center;
 }
 
 .logo-container {
     display: flex;
-    align-items: center;
+    flex-direction: column; /* Stack logo and tagline vertically */
+    align-items: flex-start; /* Align them to the left */
 }
 
 .logo {
     width: 60px;
     height: auto;
-    margin-right: 15px;
+    margin-right: 0; /* Remove the margin */
 }
 
 .tagline {
@@ -45,6 +50,7 @@ header {
     font-weight: 600;
     color: var(--primary-color);
     letter-spacing: 0.5px;
+    margin-top: 5px; /* Add a small gap between logo and tagline */
 }
 
 main {
@@ -68,7 +74,7 @@ h1, h2, h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px; /* Increased gap for better spacing */
+    gap: 15px;
 }
 
 .coast-step-container {
@@ -78,7 +84,7 @@ h1, h2, h3 {
 }
 
 .coast-letter {
-    font-size: 2.5em; /* Increased size */
+    font-size: 2.5em;
     font-weight: 700;
     color: #bdc3c7;
     transition: color 0.3s;
@@ -89,7 +95,7 @@ h1, h2, h3 {
 }
 
 .coast-step-name {
-    font-size: 0.9em; /* Increased size for readability */
+    font-size: 0.9em;
     color: #95a5a6;
     text-transform: uppercase;
     transition: color 0.3s;
@@ -98,4 +104,9 @@ h1, h2, h3 {
 .coast-step-name.active {
     color: var(--primary-color);
     font-weight: 600;
+}
+
+/* This new rule targets the icons and changes their color */
+.features-section .feature i {
+    color: var(--new-icon-color);
 }

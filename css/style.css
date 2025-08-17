@@ -32,6 +32,7 @@ header {
 .logo-container {
     display: flex;
     align-items: center;
+    flex-direction: column;
     width: 200px;
     height: auto;
 }
@@ -44,7 +45,7 @@ header {
 
 .tagline {
     font-size: 1.2em;
-    font-weight: 600;
+    font-weight: 400;
     color: var(--primary-color);
     letter-spacing: 0.5px;
 }
@@ -90,6 +91,12 @@ h1, h2, h3 {
     flex-wrap: nowrap; /* Forces a single row */
     gap: 30px;
     min-width: 900px; /* Ensures space for all 5 items */
+}
+
+.features-section .feature i {
+    color: #169880; /* Your requested green color */
+    font-size: 2.5em; /* Make icons prominent */
+    margin-bottom: 15px;
 }
 
 .feature {

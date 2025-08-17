@@ -172,3 +172,43 @@
     66% { content: '...'; }
     100% { content: '.'; }
 }
+
+/* Navigation buttons bubble style */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.back-button, .continue-button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.back-button {
+    background-color: #ecf0f1;
+    color: #34495e;
+}
+
+.back-button:hover {
+    background-color: #dbe4e8;
+}
+
+.continue-button {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+.continue-button:hover {
+    background-color: #27ae60;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+}

@@ -16,6 +16,12 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
+.mandatory-star {
+    color: #ffee8c;
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+
 .form-group {
     margin-bottom: 25px;
 }

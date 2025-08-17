@@ -10,8 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.dhtmlx.com/chatbot/latest/chatbot.css">
-    <script src="https://cdn.dhtmlx.com/chatbot/latest/chatbot.js"></script>
 </head>
 <body>
 
@@ -47,7 +45,13 @@
     <main class="chatbot-page">
         <section class="chatbot-content">
             <h2 class="page-title">Chatbot for <span id="patient-name-display"></span></h2>
-            <div id="chatbot-widget"></div>
+            <div class="chat-window" id="chat-window">
+                <div class="message bot-message">Hello! How can I help you today?</div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Type your message...">
+                <button id="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
         </section>
         
         <div class="navigation-buttons">
@@ -60,6 +64,9 @@
     <script>
         const patientNameDisplay = document.getElementById('patient-name-display');
         const continueToReportBtn = document.getElementById('continue-to-report-btn');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatWindow = document.getElementById('chat-window');
 
         // Retrieve data from sessionStorage
         const patientName = sessionStorage.getItem('selectedPatientName');
@@ -70,38 +77,44 @@
             patientNameDisplay.textContent = patientName;
         }
 
-        // Initialize the DHTMLX Chatbot
-        const chatbot = new dhx.Chatbot("chatbot-widget");
-        
-        // This is where you connect to your backend API
-        chatbot.ask = async (text) => {
+        const sendMessage = async () => {
+            const userText = chatInput.value.trim();
+            if (userText === '') return;
+
+            // Display user message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.classList.add('message', 'user-message');
+            userMessageDiv.textContent = userText;
+            chatWindow.appendChild(userMessageDiv);
+            chatInput.value = '';
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            // Simulate sending a request to the backend
             const payload = {
-                conversation_id: "your-session-id", 
-                query: text,
+                conversation_id: "your-session-id",
+                query: userText,
                 user_type: selectedEntity,
                 patient_name: patientName,
                 patient_id: patientId
             };
             console.log("Chatbot Payload:", payload);
 
-            // Fetch request to your backend
-            try {
-                const response = await fetch('https://your-backend-api.com/query', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
-                return result.answer;
-            } catch (error) {
-                console.error("Chatbot API Error:", error);
-                return "Sorry, I'm having trouble connecting right now.";
-            }
+            // Simulate a response from the backend
+            // In a real scenario, this is where you would make a fetch() call
+            const botResponseDiv = document.createElement('div');
+            botResponseDiv.classList.add('message', 'bot-message');
+            botResponseDiv.textContent = `Thank you for your question. A response to "${userText}" would be generated here by the backend.`;
+            chatWindow.appendChild(botResponseDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
         };
 
-        // Navigation to the next page
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
         continueToReportBtn.addEventListener('click', () => {
             window.location.href = 'track.html';
         });

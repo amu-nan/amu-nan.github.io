@@ -81,27 +81,47 @@
         const dynamicContent = document.getElementById('dynamic-content');
         const continueToReportBtn = document.getElementById('continue-to-report-btn');
 
-        // Retrieve data from sessionStorage
         const orgName = sessionStorage.getItem('orgName');
         const selectedEntity = sessionStorage.getItem('selectedFinalEntity');
-        const excelData = JSON.parse(sessionStorage.getItem('excelData')) || [];
         
-        // Use the provided Excel data for a functional MVP
-        const hardcodedExcelData = [
+        // Hardcoded data to simulate the excel upload
+        const excelData = [
             { Owner_ID: '101', Owner_name: 'Alexandra Singh', Nurse_ID: '200', Nurse_name: 'Samuel Kim', Patient_name: 'Emily Johnson', Patient_ID: '300' },
             { Owner_ID: '101', Owner_name: 'Alexandra Singh', Nurse_ID: '200', Nurse_name: 'Samuel Kim', Patient_name: 'Liam Chen', Patient_ID: '301' },
             { Owner_ID: '101', Owner_name: 'Alexandra Singh', Nurse_ID: '201', Nurse_name: 'Olivia Garcia', Patient_name: 'Noah Smith', Patient_ID: '302' },
         ];
         
-        // Choose between hardcoded data or uploaded data
-        const workingData = excelData.length > 0 ? excelData : hardcodedExcelData;
+        const workingData = excelData; // Use hardcoded data for now
 
-        // Display organization name and selected entity
         if (orgName) orgNameHeader.textContent = orgName;
         if (selectedEntity) selectedEntityDisplay.textContent = selectedEntity;
 
-        // Function to create a searchable dropdown
-        function createSearchableDropdown(label, data, id) {
+        let selectedPatient = null;
+        let selectedNurse = null;
+        let selectedOwner = null;
+
+        function updatePatientDropdown(nurseName = null) {
+            const patientInput = document.getElementById('patient-select-input');
+            if (!patientInput) return;
+
+            let patients = [];
+            if (nurseName) {
+                patients = workingData
+                    .filter(row => row.Nurse_name === nurseName)
+                    .map(row => row.Patient_name);
+            } else {
+                patients = workingData.map(row => row.Patient_name);
+            }
+            
+            const uniquePatients = [...new Set(patients)];
+            sessionStorage.setItem('availablePatients', JSON.stringify(uniquePatients));
+            
+            // Clear current input and reset value
+            patientInput.value = '';
+            selectedPatient = null;
+        }
+
+        function createSearchableDropdown(label, data, id, isPrimary = false) {
             const container = document.createElement('div');
             container.classList.add('dropdown-group');
 
@@ -113,30 +133,76 @@
             inputEl.type = 'text';
             inputEl.placeholder = `Search for ${label.toLowerCase()}`;
             inputEl.id = `${id}-input`;
+            inputEl.autocomplete = 'off';
             container.appendChild(inputEl);
 
             const resultsEl = document.createElement('ul');
             resultsEl.classList.add('autocomplete-results');
             container.appendChild(resultsEl);
 
+            let allData = [...new Set(data)];
+            if (label === 'Patient Names' && selectedNurse) {
+                allData = workingData
+                    .filter(row => row.Nurse_name === selectedNurse)
+                    .map(row => row.Patient_name);
+            }
+
+            inputEl.addEventListener('focus', () => {
+                resultsEl.innerHTML = '';
+                allData.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    li.addEventListener('click', () => {
+                        inputEl.value = item;
+                        resultsEl.innerHTML = '';
+                        if (isPrimary) {
+                            if (label === 'Nurse Names') {
+                                selectedNurse = item;
+                                sessionStorage.setItem('selectedNurse', item);
+                                updatePatientDropdown(selectedNurse);
+                            } else if (label === 'Owner Names') {
+                                selectedOwner = item;
+                                sessionStorage.setItem('selectedOwner', item);
+                            }
+                            if (label === 'Patient Names') {
+                                selectedPatient = item;
+                                sessionStorage.setItem('selectedPatient', item);
+                            }
+                        }
+                    });
+                    resultsEl.appendChild(li);
+                });
+            });
+
             inputEl.addEventListener('input', () => {
                 const query = inputEl.value.toLowerCase();
                 resultsEl.innerHTML = '';
-                if (query.length > 0) {
-                    const filteredData = data.filter(item => item.toLowerCase().includes(query));
-                    filteredData.forEach(item => {
-                        const li = document.createElement('li');
-                        li.textContent = item;
-                        li.addEventListener('click', () => {
-                            inputEl.value = item;
-                            resultsEl.innerHTML = '';
-                        });
-                        resultsEl.appendChild(li);
+                const filteredData = allData.filter(item => item.toLowerCase().includes(query));
+                filteredData.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    li.addEventListener('click', () => {
+                        inputEl.value = item;
+                        resultsEl.innerHTML = '';
+                        if (isPrimary) {
+                            if (label === 'Nurse Names') {
+                                selectedNurse = item;
+                                sessionStorage.setItem('selectedNurse', item);
+                                updatePatientDropdown(selectedNurse);
+                            } else if (label === 'Owner Names') {
+                                selectedOwner = item;
+                                sessionStorage.setItem('selectedOwner', item);
+                            }
+                            if (label === 'Patient Names') {
+                                selectedPatient = item;
+                                sessionStorage.setItem('selectedPatient', item);
+                            }
+                        }
                     });
-                }
+                    resultsEl.appendChild(li);
+                });
             });
-            
-            // Handle clicks outside the dropdown to close it
+
             document.addEventListener('click', (e) => {
                 if (!container.contains(e.target)) {
                     resultsEl.innerHTML = '';
@@ -146,121 +212,66 @@
             entityDropdowns.appendChild(container);
         }
 
-        // Dynamically create dropdowns based on the selected entity
         function renderDropdowns() {
             entityDropdowns.innerHTML = '';
-            
             if (selectedEntity === 'patient' || selectedEntity === 'relative') {
                 const patientNames = [...new Set(workingData.map(row => row.Patient_name))];
-                createSearchableDropdown('Patient Names', patientNames, 'patient-select');
+                createSearchableDropdown('Patient Names', patientNames, 'patient-select', true);
             } else if (selectedEntity === 'nurse') {
                 const nurseNames = [...new Set(workingData.map(row => row.Nurse_name))];
-                createSearchableDropdown('Nurse Names', nurseNames, 'nurse-select');
+                createSearchableDropdown('Nurse Names', nurseNames, 'nurse-select', true);
                 const patientNames = [...new Set(workingData.map(row => row.Patient_name))];
-                createSearchableDropdown('Patient Names', patientNames, 'patient-select');
+                createSearchableDropdown('Patient Names', patientNames, 'patient-select', true);
             } else if (selectedEntity === 'owner') {
                 const ownerNames = [...new Set(workingData.map(row => row.Owner_name))];
-                createSearchableDropdown('Owner Names', ownerNames, 'owner-select');
+                createSearchableDropdown('Owner Names', ownerNames, 'owner-select', true);
                 const nurseNames = [...new Set(workingData.map(row => row.Nurse_name))];
-                createSearchableDropdown('Nurse Names', nurseNames, 'nurse-select');
+                createSearchableDropdown('Nurse Names', nurseNames, 'nurse-select', true);
                 const patientNames = [...new Set(workingData.map(row => row.Patient_name))];
-                createSearchableDropdown('Patient Names', patientNames, 'patient-select');
+                createSearchableDropdown('Patient Names', patientNames, 'patient-select', true);
             }
         }
         
         renderDropdowns();
 
-        // Handle navigation options (Upload, Chatbot)
         navOptions.forEach(button => {
             button.addEventListener('click', (e) => {
                 navOptions.forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
 
                 const option = e.target.dataset.option;
-                dynamicContent.innerHTML = ''; // Clear previous content
+                dynamicContent.innerHTML = '';
 
                 if (option === 'upload') {
                     dynamicContent.innerHTML = `
                         <div class="upload-section">
                             <h3>Upload More Documents</h3>
-                            <p>Here you can upload additional files. Please ensure you also add the metadata.</p>
+                            <p>Select a file and click upload. The patient information will be linked automatically based on your selection.</p>
                             <form id="metadata-upload-form">
                                 <div class="metadata-group">
                                     <label for="file-upload-2">Choose a file to upload:</label>
-                                    <input type="file" id="file-upload-2">
+                                    <input type="file" id="file-upload-2" required>
                                 </div>
-                                <div class="metadata-group">
-                                    <label for="patient-name">Patient Name:</label>
-                                    <input type="text" id="patient-name" placeholder="Enter patient name">
-                                </div>
-                                <button type="submit">Upload Document</button>
+                                <button type="submit" class="option-button">Upload Document</button>
                             </form>
                         </div>
                     `;
                     document.getElementById('metadata-upload-form').addEventListener('submit', (event) => {
                         event.preventDefault();
                         const file = document.getElementById('file-upload-2').files[0];
-                        const patientName = document.getElementById('patient-name').value;
                         
-                        const selectedPatient = workingData.find(p => p.Patient_name === patientName);
-                        if (!selectedPatient) {
-                            alert("Please select a valid patient name.");
+                        const patientName = document.getElementById('patient-select-input')?.value;
+                        const selectedPatientData = workingData.find(p => p.Patient_name === patientName);
+
+                        if (!selectedPatientData) {
+                            alert("Please select a patient from the dropdown.");
                             return;
                         }
 
                         const payload = {
                             metadata: {
-                                patient_name: selectedPatient.Patient_name,
-                                patient_id: selectedPatient.Patient_ID,
-                                nurse_name: selectedPatient.Nurse_name,
-                                nurse_id: selectedPatient.Nurse_ID,
-                                owner_name: selectedPatient.Owner_name,
-                                owner_id: selectedPatient.Owner_ID,
-                            }
-                        };
-                        console.log('Upload Payload:', payload);
-                        alert('Payload prepared! This would be sent to the backend.');
-                    });
-                } else if (option === 'chatbot') {
-                    dynamicContent.innerHTML = `
-                        <div class="chatbot-container">
-                            <div id="chatbot-widget"></div>
-                        </div>
-                    `;
-                    const chatbot = new dhx.Chatbot("chatbot-widget");
-                    
-                    chatbot.ask = async (text) => {
-                        const payload = {
-                            conversation_id: "your-session-id", 
-                            query: text,
-                            user_type: selectedEntity,
-                            patient_name: document.getElementById('patient-select-input')?.value || null, // Example of getting dropdown value
-                        };
-                        console.log("Chatbot Payload:", payload);
-                        try {
-                            const response = await fetch('https://your-backend-api.com/query', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(payload)
-                            });
-                            const result = await response.json();
-                            return result.answer;
-                        } catch (error) {
-                            console.error("Chatbot API Error:", error);
-                            return "Sorry, I'm having trouble connecting right now.";
-                        }
-                    };
-                }
-            });
-        });
-        
-        document.querySelector('.nav-option[data-option="upload"]').click();
-
-        continueToReportBtn.addEventListener('click', () => {
-            window.location.href = 'track.html';
-        });
-    </script>
-</body>
-</html>
+                                patient_name: selectedPatientData.Patient_name,
+                                patient_id: selectedPatientData.Patient_ID,
+                                nurse_name: selectedPatientData.Nurse_name,
+                                nurse_id: selectedPatientData.Nurse_ID,
+                                owner_name: selectedPatient

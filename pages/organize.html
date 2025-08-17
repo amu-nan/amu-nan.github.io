@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="../Subject.png">
 </head>
 <body>
 
@@ -44,41 +43,49 @@
     </header>
 
     <main class="organize-page">
-        <section class="organize-container">
-            <h2>Organize Data</h2>
-            <div class="organize-form">
-                <div class="input-group">
-                    <label for="org-name">Company/Organization Name:</label>
-                    <input type="text" id="org-name" placeholder="Enter company name">
+        <section class="organize-content">
+            <h2 class="page-title">Organize - Tell us about your organization.</h2>
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="org-name">Name of organization:</label>
+                    <input type="text" id="org-name" placeholder="Enter organization name">
                 </div>
-                <div class="input-group">
-                    <label>Display all possible entities to choose from:</label>
-                    <p>Select the entities you wish to see in the application.</p>
-                    <div class="entity-bubbles">
-                        <div class="bubble" data-entity="owner">Owner <span class="mandatory-star">&#9733;</span></div>
-                        <div class="bubble" data-entity="nurse">Nurse <span class="mandatory-star">&#9733;</span></div>
-                        <div class="bubble" data-entity="patient">Patient <span class="mandatory-star">&#9733;</span></div>
-                        <div class="bubble" data-entity="relative">Relative</div>
-                        <div class="bubble disabled" data-entity="supplier">Supplier</div>
-                        <div class="bubble disabled" data-entity="admin">Admin</div>
-                        <div class="bubble disabled" data-entity="lab">Lab</div>
-                        <div class="bubble disabled" data-entity="doctor">Doctor</div>
-                    </div>
+
+                <div class="form-group">
+                    <label for="org-type">Choose type of organization:</label>
+                    <select id="org-type">
+                        <option value="healthcare">Healthcare</option>
+                        <option value="retail" disabled>Retail (Coming Soon)</option>
+                        <option value="academic" disabled>Academic (Coming Soon)</option>
+                    </select>
                 </div>
-                <button id="continue-btn" class="continue-button">Continue</button>
             </div>
+
+            <div class="entities-section">
+                <h3 class="section-title">Display all possible entities to choose from:</h3>
+                <div class="entity-bubbles">
+                    <div class="bubble active" data-entity="owner">Owner</div>
+                    <div class="bubble active" data-entity="nurse">Nurse</div>
+                    <div class="bubble active" data-entity="patient">Patient</div>
+                    <div class="bubble active" data-entity="relative">Relative</div>
+                    <div class="bubble disabled" data-entity="casemanager">Case Manager</div>
+                    <div class="bubble disabled" data-entity="socialworkers">Social Workers</div>
+                    <div class="bubble disabled" data-entity="specialists">Specialists</div>
+                </div>
+                <p class="select-note">Please select the entities you want to continue with.</p>
+            </div>
+
+            <button id="continue-btn" class="continue-button">Continue</button>
         </section>
     </main>
-
     <script src="../js/scripts.js"></script>
     <script>
         const continueBtn = document.getElementById('continue-btn');
         const orgNameInput = document.getElementById('org-name');
         const entityBubbles = document.querySelectorAll('.entity-bubbles .bubble:not(.disabled)');
-        const disabledBubbles = document.querySelectorAll('.entity-bubbles .bubble.disabled');
-
+    
         const selectedEntities = new Set();
-
+        
         // Toggle selection
         entityBubbles.forEach(bubble => {
             bubble.addEventListener('click', () => {
@@ -92,21 +99,14 @@
                 }
             });
         });
-
-        // Prevent clicking on disabled entities
-        disabledBubbles.forEach(bubble => {
-            bubble.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-        });
-
+    
         continueBtn.addEventListener('click', () => {
             const orgName = orgNameInput.value;
             const entitiesArray = Array.from(selectedEntities);
-
+    
             sessionStorage.setItem('orgName', orgName);
             sessionStorage.setItem('selectedEntities', JSON.stringify(entitiesArray));
-
+    
             window.location.href = 'rbac.html';
         });
     </script>

@@ -35,8 +35,8 @@ header {
 
 .logo-container {
     display: flex;
-    flex-direction: column; /* Stack logo and tagline vertically */
-    align-items: flex-start; /* Align them to the left */
+    flex-direction: column;
+    align-items: center; /* This centers the items horizontally within the column */
 }
 
 .logo {
@@ -106,7 +106,7 @@ h1, h2, h3 {
     font-weight: 600;
 }
 
-/* This new rule targets the icons and changes their color */
-.features-section .feature i {
-    color: var(--new-icon-color);
+/* Add this new rule to the bottom of your global.css file */
+.feature i {
+    color: #169880;
 }

@@ -32,12 +32,12 @@ header {
 .logo-container {
     display: flex;
     align-items: center;
-    width: 400px;
+    width: 200px;
     height: auto;
 }
 
 .logo {
-    width: 400px;
+    width: 200px;
     height: auto;
     margin-right: 15px;
 }

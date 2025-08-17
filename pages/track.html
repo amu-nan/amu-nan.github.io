@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track - Xforia</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/track.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <span class="tagline">Your tagline goes here.</span>
+        </div>
+        <div class="coast-flow-header">
+            <div class="coast-step-container">
+                <span class="coast-letter">C</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">O</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">A</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">S</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter active">T</span>
+                <span class="coast-step-name active">Track</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="track-page">
+        <section class="report-section">
+            <h2 class="page-title">Generating Your Report...</h2>
+            <div class="report-container">
+                <img src="../images/generated-report.png" alt="Generated Report Dashboard" class="report-image">
+            </div>
+            <button id="end-demo-btn" class="end-demo-button">End Demo</button>
+        </section>
+    </main>
+
+    <script src="../js/scripts.js"></script>
+    <script>
+        const endDemoBtn = document.getElementById('end-demo-btn');
+        endDemoBtn.addEventListener('click', () => {
+            sessionStorage.clear();
+            window.location.href = '../index.html';
+        });
+    </script>
+</body>
+</html>

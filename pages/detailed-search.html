@@ -80,7 +80,7 @@
         const navOptions = document.querySelectorAll('.nav-option');
         const dynamicContent = document.getElementById('dynamic-content');
         const continueToReportBtn = document.getElementById('continue-to-report-btn');
-    
+
         // Retrieve data from sessionStorage
         const orgName = sessionStorage.getItem('orgName');
         const selectedEntity = sessionStorage.getItem('selectedFinalEntity');
@@ -97,42 +97,41 @@
         
         const workingData = excelData.length > 0 ? excelData : hardcodedExcelData;
         let selectedPatientId = null;
-    
+
         if (orgName) orgNameHeader.textContent = orgName;
         if (selectedEntity) selectedEntityDisplay.textContent = selectedEntity;
-    
+
         // Function to create a searchable dropdown
         function createSearchableDropdown(label, data, id, linkedId = null) {
             const container = document.createElement('div');
             container.classList.add('dropdown-group');
-    
+
             const labelEl = document.createElement('label');
             labelEl.textContent = label;
             container.appendChild(labelEl);
-    
+
             const inputEl = document.createElement('input');
             inputEl.type = 'text';
             inputEl.placeholder = `Search for ${label.toLowerCase()}`;
             inputEl.id = `${id}-input`;
             container.appendChild(inputEl);
-    
+
             const resultsEl = document.createElement('ul');
             resultsEl.classList.add('autocomplete-results');
             container.appendChild(resultsEl);
             
-            // This holds the actual data to filter from
             let currentData = data;
-    
+
             inputEl.addEventListener('focus', () => {
                 renderResults(currentData);
             });
-    
+
             inputEl.addEventListener('input', () => {
                 const query = inputEl.value.toLowerCase();
                 const filteredData = currentData.filter(item => item.toLowerCase().includes(query));
                 renderResults(filteredData);
             });
-    
+
             const renderResults = (list) => {
                 resultsEl.innerHTML = '';
                 list.forEach(item => {
@@ -153,7 +152,6 @@
                 });
             };
             
-            // If this dropdown is linked, listen for changes on the linked one
             if (linkedId) {
                 document.getElementById(`${linkedId}-input`).addEventListener('input', (e) => {
                     const selectedNurseName = e.target.value;
@@ -161,7 +159,7 @@
                         .filter(row => row.Nurse_name === selectedNurseName)
                         .map(row => row.Patient_name);
                     currentData = [...new Set(filteredPatients)];
-                    inputEl.value = ''; // Clear patient dropdown on nurse change
+                    inputEl.value = '';
                     selectedPatientId = null;
                 });
             }
@@ -171,11 +169,10 @@
                     resultsEl.innerHTML = '';
                 }
             });
-    
+
             entityDropdowns.appendChild(container);
         }
-    
-        // Dynamically create dropdowns based on the selected entity
+
         function renderDropdowns() {
             entityDropdowns.innerHTML = '';
             
@@ -198,25 +195,23 @@
         }
         
         renderDropdowns();
-    
-        // Handle navigation options (Upload, Chatbot)
+
         navOptions.forEach(button => {
             button.addEventListener('click', (e) => {
                 navOptions.forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
-    
+
                 const option = e.target.dataset.option;
                 dynamicContent.innerHTML = '';
-    
+
                 if (option === 'upload') {
                     const patientName = document.getElementById('patient-select-input')?.value;
                     
-                    // Show an error if no patient is selected
                     if (!patientName) {
                         dynamicContent.innerHTML = `<div class="error-message">Please select a patient first.</div>`;
                         return;
                     }
-    
+
                     dynamicContent.innerHTML = `
                         <div class="upload-section">
                             <h3>Upload More Documents for ${patientName}</h3>
@@ -239,9 +234,9 @@
                             alert("An error occurred. Patient data not found.");
                             return;
                         }
-    
+
                         const payload = {
-                            file: file, // This needs to be a FormData object for a real backend
+                            file: file,
                             metadata: {
                                 patient_name: selectedPatientData.Patient_name,
                                 patient_id: selectedPatientData.Patient_ID,
@@ -291,12 +286,13 @@
                     };
                 }
             });
-            
-            document.querySelector('.nav-option[data-option="upload"]').click();
-    
-            continueToReportBtn.addEventListener('click', () => {
-                window.location.href = 'track.html';
-            });
-        </script>
+        });
+        
+        document.querySelector('.nav-option[data-option="upload"]').click();
+
+        continueToReportBtn.addEventListener('click', () => {
+            window.location.href = 'track.html';
+        });
+    </script>
 </body>
 </html>

@@ -3,68 +3,61 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 150px);
+    min-height: 100vh;
 }
 
-.login-form-container {
+.login-container {
     background-color: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 400px;
-}
-
-.login-form-container h2 {
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.login-form-container p {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 25px;
-}
-
-.input-group {
-    text-align: left;
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 5px;
-    color: var(--text-color);
-}
-
-.input-group input {
+    padding: 50px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
+    max-width: 450px;
+    text-align: center;
+    transform: translateY(-50px);
+}
+
+.login-container h2 {
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    color: #34495e;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #bdc3c7;
     border-radius: 8px;
     font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
 }
 
 #login-btn {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--accent-color);
-    color: #fff;
+    padding: 15px;
     border: none;
     border-radius: 8px;
+    background-color: var(--primary-color);
+    color: #fff;
     font-size: 1.1em;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s;
+    opacity: 1; /* Button is always visible */
 }
 
 #login-btn:hover {
-    background-color: #2b84c8;
-}
-
-#error-message {
-    color: #e74c3c;
-    margin-top: 15px;
-    font-weight: 500;
+    background-color: #27ae60;
 }

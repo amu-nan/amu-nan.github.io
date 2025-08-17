@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xforia COAST</title>
-    <link rel="icon" type="image/png" href="../images/Subject.png">
-    <link rel="stylesheet" href="css/style.css">
+    <title>Xforia - Home</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/splash.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    </head>
+    <link rel="icon" type="image/png" href="images/Subject.png">
+</head>
 <body>
 
     <header>
@@ -18,108 +19,49 @@
             <img src="images/logo.png" alt="Xforia COAST Logo" class="logo">
             <span class="tagline">Your tagline goes here.</span>
         </div>
+        <div class="coast-flow-header">
+            <div class="coast-step-container">
+                <span class="coast-letter">C</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">O</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">A</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">S</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">T</span>
+                <span class="coast-step-name"></span>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <section class="what-is-coast-section">
-            <h1>What is Xforia COAST</h1>
-            <p>Xforia COAST is a powerful platform designed to simplify and optimize your digital workflow by providing a comprehensive solution to manage your data efficiently. It is built on five core principles to empower you and your team.</p>
-        </section>
-
-        <section class="features-section-wrapper">
-            <div class="features-section">
-                <div class="feature">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <h3>Consolidate</h3>
-                    <p>Bring all your data from different sources and formats into a single, unified repository.</p>
-                </div>
-                <div class="feature">
-                    <i class="fa-solid fa-sitemap"></i>
-                    <h3>Organize</h3>
-                    <p>Structure and categorize your data with intelligent tagging and a customizable hierarchy.</p>
-                </div>
-                <div class="feature">
-                    <i class="fa-solid fa-lock"></i>
-                    <h3>Access</h3>
-                    <p>Control who sees what with role-based access control (RBAC) to ensure data security.</p>
-                </div>
-                <div class="feature">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <h3>Search</h3>
-                    <p>Find what you need instantly with our "Ask" feature, a powerful and intuitive search engine.</p>
-                </div>
-                <div class="feature">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <h3>Track</h3>
-                    <p>Monitor your progress and gain insights with a robust reporting and tracking system.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="bottom-section">
-            <div class="diagram-container">
-                <h2 class="section-title">Technical Architecture</h2>
-                <img id="diagram-image" src="images/flow-diagram.png" alt="Xforia COAST Flow Diagram" class="diagram-image">
-                <p class="click-to-enlarge">Double-click to view detailed diagram</p>
-            </div>
-
-            <div class="outcomes-container">
-                <h2 class="section-title">Business Outcomes</h2>
-                <div class="outcome-list">
-                    <div class="outcome-item">
-                        <i class="fa-solid fa-sack-dollar"></i>
-                        <p>Increased Revenue</p>
+    <main class="splash-page">
+        <section class="splash-container">
+            <div class="splash-content">
+                <h2>Welcome to Xforia COAST</h2>
+                <div class="splash-icons">
+                    <div class="splash-icon-container">
+                        <i class="fa-solid fa-chart-line"></i>
                     </div>
-                    <div class="outcome-item">
-                        <i class="fa-solid fa-hourglass-half"></i>
-                        <p>Reduced Time-to-Market</p>
+                    <div class="splash-icon-container">
+                        <i class="fa-solid fa-robot"></i>
                     </div>
-                    <div class="outcome-item">
-                        <i class="fa-solid fa-clipboard-check"></i>
-                        <p>Enhanced Compliance</p>
+                    <div class="splash-icon-container">
+                        <i class="fa-solid fa-file-invoice"></i>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section class="demo-section">
-            <a href="pages/login.html" class="demo-button">Click here for Demo</a>
+            <a href="pages/login.html" class="cta-button">Get Started</a>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
-        <p>9300 Wade Blvd, Suite 220, Frisco, Texas, 75035.</p>
-    </footer>
-
-    <div id="expanded-diagram-container">
-        <span class="close-btn">&times;</span>
-        <img id="expanded-diagram-image" src="" alt="Expanded technical architecture">
-    </div>
-
-    <script>
-        const diagramImage = document.getElementById('diagram-image');
-        const expandedContainer = document.getElementById('expanded-diagram-container');
-        const expandedImage = document.getElementById('expanded-diagram-image');
-        const closeBtn = document.querySelector('.close-btn');
-
-        diagramImage.addEventListener('dblclick', () => {
-            expandedImage.src = diagramImage.src; // Use the same image
-            expandedContainer.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevents scrolling while pop-up is active
-        });
-
-        closeBtn.addEventListener('click', () => {
-            expandedContainer.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Restores scrolling
-        });
-
-        expandedContainer.addEventListener('click', (e) => {
-            if (e.target === expandedContainer) {
-                expandedContainer.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
-    </script>
 </body>
 </html>

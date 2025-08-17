@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot - Xforia</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/chatbot.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.dhtmlx.com/chatbot/latest/chatbot.css">
+    <script src="https://cdn.dhtmlx.com/chatbot/latest/chatbot.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <span class="tagline">Your tagline goes here.</span>
+        </div>
+        <div class="coast-flow-header">
+            <div class="coast-step-container">
+                <span class="coast-letter">C</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">O</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">A</span>
+                <span class="coast-step-name"></span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter active">S</span>
+                <span class="coast-step-name active">Search</span>
+            </div>
+            <div class="coast-step-container">
+                <span class="coast-letter">T</span>
+                <span class="coast-step-name"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="chatbot-page">
+        <section class="chatbot-content">
+            <h2 class="page-title">Chatbot for <span id="patient-name-display"></span></h2>
+            <div id="chatbot-widget"></div>
+        </section>
+        
+        <div class="navigation-buttons">
+            <button class="back-button" onclick="window.location.href='detailed-search.html'">Back</button>
+            <button id="continue-to-report-btn" class="continue-button">Continue to Generate Report</button>
+        </div>
+    </main>
+
+    <script src="../js/scripts.js"></script>
+    <script>
+        const patientNameDisplay = document.getElementById('patient-name-display');
+        const continueToReportBtn = document.getElementById('continue-to-report-btn');
+
+        // Retrieve data from sessionStorage
+        const patientName = sessionStorage.getItem('selectedPatientName');
+        const patientId = sessionStorage.getItem('selectedPatientId');
+        const selectedEntity = sessionStorage.getItem('selectedFinalEntity');
+
+        if (patientName) {
+            patientNameDisplay.textContent = patientName;
+        }
+
+        // Initialize the DHTMLX Chatbot
+        const chatbot = new dhx.Chatbot("chatbot-widget");
+        
+        // This is where you connect to your backend API
+        chatbot.ask = async (text) => {
+            const payload = {
+                conversation_id: "your-session-id", 
+                query: text,
+                user_type: selectedEntity,
+                patient_name: patientName,
+                patient_id: patientId
+            };
+            console.log("Chatbot Payload:", payload);
+
+            // Fetch request to your backend
+            try {
+                const response = await fetch('https://your-backend-api.com/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                return result.answer;
+            } catch (error) {
+                console.error("Chatbot API Error:", error);
+                return "Sorry, I'm having trouble connecting right now.";
+            }
+        };
+
+        // Navigation to the next page
+        continueToReportBtn.addEventListener('click', () => {
+            window.location.href = 'track.html';
+        });
+    </script>
+</body>
+</html>

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search - Xforia</title>
-    <link rel="icon" type="image/png" href="../images/Subject.png">
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/search.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="../images/Subject.png">
 </head>
 <body>
 
@@ -44,59 +44,58 @@
     </header>
 
     <main class="search-page">
-        <section class="search-content">
-            <h2 class="page-title">Organization setup complete.</h2>
-            <p class="select-text">Please choose which entity you want to continue as.</p>
-            
-            <div class="entities-selection-bubbles">
+        <section class="search-container">
+            <h2 id="org-name-header"></h2>
+            <div class="search-form">
+                <p>Welcome, <span id="selected-entity-display"></span>. Please search for an entity or proceed with a detailed search.</p>
+                <div class="entity-selection">
+                    <label for="entity-search">Search for an entity:</label>
+                    <input type="text" id="entity-search" placeholder="Type here to search">
                 </div>
-
-            <button id="continue-btn" class="continue-button" disabled>Continue</button>
+                <div class="quick-links">
+                    <p>Or select from quick links:</p>
+                    <div class="entity-bubbles" id="entity-bubbles">
+                        </div>
+                </div>
+                <a href="detailed-search.html" class="continue-button">Continue to Detailed Search</a>
+            </div>
         </section>
     </main>
 
     <script src="../js/scripts.js"></script>
     <script>
-        const entitiesContainer = document.querySelector('.entities-selection-bubbles');
-        const continueBtn = document.getElementById('continue-btn');
-
-        // Retrieve selected entities from sessionStorage (from the Organize page)
-        const selectedEntities = JSON.parse(sessionStorage.getItem('selectedEntities')) || [];
-        let selectedEntity = null;
-
-        function renderEntities() {
-            entitiesContainer.innerHTML = ''; // Clear previous bubbles
-            selectedEntities.forEach(entity => {
-                const bubble = document.createElement('div');
-                bubble.className = 'bubble entity-bubble';
-                bubble.textContent = entity.charAt(0).toUpperCase() + entity.slice(1);
-                bubble.dataset.entity = entity;
-                
-                bubble.addEventListener('click', () => {
-                    // Remove 'selected' class from all bubbles
-                    document.querySelectorAll('.entity-bubble').forEach(b => b.classList.remove('selected'));
-                    
-                    // Add 'selected' class to the clicked bubble
-                    bubble.classList.add('selected');
-                    selectedEntity = entity;
-                    continueBtn.disabled = false;
-                });
-                entitiesContainer.appendChild(bubble);
-            });
-        }
+        const orgNameHeader = document.getElementById('org-name-header');
+        const selectedEntityDisplay = document.getElementById('selected-entity-display');
+        const entityBubblesContainer = document.getElementById('entity-bubbles');
         
-        // Render the bubbles when the page loads
-        renderEntities();
+        const orgName = sessionStorage.getItem('orgName');
+        const selectedEntity = sessionStorage.getItem('selectedFinalEntity');
+        const selectedEntities = JSON.parse(sessionStorage.getItem('selectedEntities')) || [];
 
-        continueBtn.addEventListener('click', () => {
-            if (selectedEntity) {
-                // Save the single selected entity
-                sessionStorage.setItem('selectedFinalEntity', selectedEntity);
-                // Navigate to the next detailed search page
-                window.location.href = 'detailed-search.html';
-            }
+        if (orgName) {
+            orgNameHeader.textContent = orgName;
+        }
+        if (selectedEntity) {
+            selectedEntityDisplay.textContent = selectedEntity;
+        }
+
+        // Dynamic creation of entity bubbles
+        selectedEntities.forEach(entity => {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            bubble.textContent = entity.charAt(0).toUpperCase() + entity.slice(1);
+            bubble.dataset.entity = entity;
+            
+            bubble.addEventListener('click', () => {
+                // Remove 'selected' class from all bubbles
+                document.querySelectorAll('.bubble').forEach(b => b.classList.remove('selected'));
+                
+                // Add 'selected' class to the clicked bubble
+                bubble.classList.add('selected');
+            });
+            
+            entityBubblesContainer.appendChild(bubble);
         });
-
     </script>
 </body>
 </html>

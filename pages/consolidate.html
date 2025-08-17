@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consolidate - Xforia</title>
-    <link rel="icon" type="image/png" href="../images/Subject.png">
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/consolidate.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="../images/Subject.png">
 </head>
 <body>
 
@@ -44,112 +44,99 @@
     </header>
 
     <main class="consolidate-page">
-        <section class="consolidate-content">
-            <h2 class="page-title">Consolidate - Connect your existing data</h2>
-            <p class="page-description">Choose from one of the options below to get started. You can add a URL to connect to your application, connect a database, upload a file, or enter data manually. For now, only the file upload option will have a backend connection.</p>
-        
-            <div class="data-options-container">
-                <div class="option-card">
-                    <h3 class="option-title">Connect your URL</h3>
-                    <p class="option-subtitle">Add your URL to connect your application</p>
-                    <input type="text" placeholder="e.g., https://your-app.com" class="option-input">
-                    <button class="option-button">Connect</button>
+        <section class="consolidate-container">
+            <h2>Consolidate Data</h2>
+            <div class="upload-section">
+                <div class="upload-info">
+                    <h3>Drag & Drop or Select Excel/CSV File</h3>
+                    <p>Supported file types: .xlsx, .xls, .csv</p>
                 </div>
-        
-                <div class="option-card">
-                    <h3 class="option-title">Connect your Database</h3>
-                    <p class="option-subtitle">Add your database details to connect</p>
-                    <button class="option-button">Connect Database</button>
-                </div>
-        
-                <div class="option-card active-card" id="excel-upload-card">
-                    <h3 class="option-title">Upload your Excel file</h3>
-                    <p class="option-subtitle">Securely upload your data for processing</p>
-                    <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
-                        <label for="excel-file" class="file-label">
-                            <i class="fas fa-file-upload"></i> Choose File
-                        </label>
-                        <input type="file" id="excel-file" name="excel_file" accept=".xls,.xlsx" required>
-                        <span id="file-name-display">No file chosen</span>
-                        <button type="submit" class="option-button upload-button">Upload</button>
-                    </form>
-                    <div id="upload-status"></div>
-                </div>
-        
-                <div class="option-card">
-                    <h3 class="option-title">Manual Entry</h3>
-                    <p class="option-subtitle">Enter your information manually</p>
-                    <button class="option-button">Start Manual Entry</button>
+                <div class="upload-box" id="upload-box">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p>Drop file here or <span class="browse-link">browse</span></p>
+                    <input type="file" id="file-upload" accept=".xlsx, .xls, .csv" hidden>
                 </div>
             </div>
-            
-            <button id="continue-btn" class="continue-button" style="display: block;">Continue</button>
+            <div class="upload-status" id="upload-status" style="display: none;">
+                <p id="file-name-display"></p>
+                <div class="status-bar">
+                    <div class="status-progress" id="status-progress"></div>
+                </div>
+                <p class="status-text" id="status-text">Processing...</p>
+            </div>
+            <button id="continue-btn" class="continue-button" style="display: none;">Continue</button>
         </section>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="../js/scripts.js"></script>
     <script>
-        const uploadForm = document.getElementById('upload-form');
-        const fileInput = document.getElementById('excel-file');
-        const fileNameDisplay = document.getElementById('file-name-display');
+        const uploadBox = document.getElementById('upload-box');
+        const fileUpload = document.getElementById('file-upload');
+        const browseLink = document.querySelector('.browse-link');
         const uploadStatus = document.getElementById('upload-status');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const statusProgress = document.getElementById('status-progress');
+        const statusText = document.getElementById('status-text');
         const continueBtn = document.getElementById('continue-btn');
 
-        // Display selected file name
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                fileNameDisplay.textContent = fileInput.files[0].name;
-            } else {
-                fileNameDisplay.textContent = 'No file chosen';
+        browseLink.addEventListener('click', () => fileUpload.click());
+
+        fileUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
             }
         });
 
-        // Handle form submission and backend call
-        uploadForm.addEventListener('submit', async (e) => {
+        uploadBox.addEventListener('dragover', (e) => {
             e.preventDefault();
-            
-            const file = fileInput.files[0];
-            if (!file) {
-                uploadStatus.textContent = 'Please select a file to upload.';
-                uploadStatus.style.color = 'red';
-                return;
-            }
+            uploadBox.classList.add('dragover');
+        });
 
-            const formData = new FormData();
-            formData.append('file', file);
+        uploadBox.addEventListener('dragleave', () => {
+            uploadBox.classList.remove('dragover');
+        });
 
-            uploadStatus.textContent = 'Uploading...';
-            uploadStatus.style.color = '#3498db';
-
-            try {
-                // Replace with your actual backend API URL
-                const response = await fetch('https://your-backend-api.com/upload', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    uploadStatus.textContent = 'Upload successful!';
-                    uploadStatus.style.color = '#2ecc71';
-                    sessionStorage.setItem('excelData', JSON.stringify(result.data));
-                    continueBtn.style.display = 'block'; // Show the continue button on success
-                } else {
-                    uploadStatus.textContent = `Error: ${result.message}`;
-                    uploadStatus.style.color = 'red';
-                }
-            } catch (error) {
-                uploadStatus.textContent = 'An error occurred. Please try again.';
-                uploadStatus.style.color = 'red';
-                console.error('Error:', error);
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                handleFile(file);
             }
         });
+
+        function handleFile(file) {
+            fileNameDisplay.textContent = file.name;
+            uploadStatus.style.display = 'block';
+            statusText.textContent = 'Processing...';
+            statusProgress.style.width = '0%';
+            continueBtn.style.display = 'none';
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                sessionStorage.setItem('excelData', JSON.stringify(jsonData));
+                
+                statusProgress.style.width = '100%';
+                statusText.textContent = 'Upload Complete!';
+                
+                setTimeout(() => {
+                    continueBtn.style.display = 'block';
+                }, 500);
+            };
+            reader.readAsArrayBuffer(file);
+        }
 
         continueBtn.addEventListener('click', () => {
             window.location.href = 'organize.html';
         });
-
     </script>
 </body>
 </html>

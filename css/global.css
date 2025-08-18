@@ -25,7 +25,7 @@ body {
 
 header {
     background-color: var(--light-bg-color);
-    padding: 20px 5%;
+    padding: 10px 5%;
     border-bottom: 1px solid var(--secondary-bg-color);
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     display: flex; /* Add flexbox to the header */
@@ -40,14 +40,14 @@ header {
 }
 
 .logo {
-    width: 120px;
+    width: 80px;
     height: auto;
     margin-right: 0; /* Remove right margin since we're stacking vertically */
-    margin-bottom: 10px; /* Add bottom margin for spacing */
+    margin-bottom: 5px; /* Add bottom margin for spacing */
 }
 
 .tagline {
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-weight: 600;
     color: var(--primary-color);
     letter-spacing: 0.5px;
@@ -56,7 +56,7 @@ header {
 main {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 20px 20px 40px 20px;
 }
 
 section {
@@ -86,7 +86,7 @@ h1, h2, h3 {
 .coast-letter {
     font-size: 2.5em;
     font-weight: 700;
-    color: #bdc3c7;
+    color: #b8e6d9;
     transition: color 0.3s;
 }
 
@@ -96,7 +96,7 @@ h1, h2, h3 {
 
 .coast-step-name {
     font-size: 0.9em;
-    color: #95a5a6;
+    color: #13957c;
     text-transform: uppercase;
     transition: color 0.3s;
 }

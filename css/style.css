@@ -685,3 +685,54 @@ footer {
     line-height: 1.5;
     color: var(--text-color);
 }
+
+/* Business Outcomes Section */
+.outcomes-container {
+    padding: 60px 20px;
+    background-color: var(--light-bg-color);
+}
+
+.outcome-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.outcome-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 25px;
+    background-color: var(--secondary-bg-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.outcome-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+}
+
+.outcome-icon span {
+    font-size: 2.5em;
+    line-height: 1;
+}
+
+.outcome-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.outcome-content h3 {
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.outcome-content p {
+    font-size: 0.9em;
+    color: #555;
+}

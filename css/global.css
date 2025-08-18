@@ -26,8 +26,8 @@ body {
 header {
     background-color: var(--light-bg-color);
     padding: 10px 5%;
-    border-bottom: 1px solid var(--secondary-bg-color);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    #border-bottom: 1px solid var(--secondary-bg-color);
+    #box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     display: flex; /* Add flexbox to the header */
     justify-content: space-between; /* Space out the logo and COAST sections */
     align-items: center;
@@ -40,7 +40,7 @@ header {
 }
 
 .logo {
-    width: 80px;
+    width: 120px;
     height: auto;
     margin-right: 0; /* Remove right margin since we're stacking vertically */
     margin-bottom: 5px; /* Add bottom margin for spacing */
@@ -91,7 +91,7 @@ h1, h2, h3 {
 }
 
 .coast-letter.active {
-    color: var(--primary-color);
+    color: #b8e6d9;
 }
 
 .coast-step-name {
@@ -102,7 +102,7 @@ h1, h2, h3 {
 }
 
 .coast-step-name.active {
-    color: var(--primary-color);
+    color: #13957c;
     font-weight: 600;
 }
 

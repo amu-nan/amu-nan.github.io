@@ -1,13 +1,13 @@
 :root {
     --primary-color: #2c3e50;
     --accent-color: #3498db;
-    --text-color: #EA2264;
+    --text-color: #0D1164;
     --light-bg-color: #ffffff;
     --secondary-bg-color: #f8f9fa;
-    --icon-color: #3498db;
+    --icon-color: #169880;
     --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
     --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
-    --new-icon-color: #169880; /* New color for the icons */
+    --new-icon-color: #169880; 
 }
 
 * {

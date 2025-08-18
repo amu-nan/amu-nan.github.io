@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xforia COAST</title>
+    <link rel="icon" type="image/png" href="./images/Subject.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+    </header>
+
+    <main>
+        <section class="what-is-coast-section">
+            <h1>What is Xforia COAST</h1>
+            <p>Xforia COAST is a comprehensive AI-powered platform designed to streamline the way organizations handle their data. Each component of COAST is built to maximize efficiency, enhance decision-making, and make data work for you.</p>
+        </section>
+
+        <section class="features-section-wrapper">
+            <div class="features-section">
+                <div class="feature">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <h3>Consolidate</h3>
+                    <p>Bring together data from multiple sources into a single, unified system for complete visibility and control.</p>
+                </div>
+                <div class="feature">
+                    <i class="fa-solid fa-sitemap"></i>
+                    <h3>Organize</h3>
+                    <p>Structure and categorize information intelligently, enabling faster retrieval, better reporting, and clarity across your organization.</p>
+                </div>
+                <div class="feature">
+                    <i class="fa-solid fa-lock"></i>
+                    <h3>Access</h3>
+                    <p>Secure, role-based access ensures the right information reaches the right people, anytime, anywhere.</p>
+                </div>
+                <div class="feature">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h3>Search</h3>
+                    <p>AI-powered search retrieves the exact data you need, even from complex or unstructured sources.</p>
+                </div>
+                <div class="feature">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h3>Track</h3>
+                    <p>Monitor key metrics, track changes, and maintain audit-ready records for compliance and informed decision-making.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="highlights-section">
+            <h2>Highlights / Key Features</h2>
+            <div class="highlights-container">
+                <div class="highlight-item">
+                    <h3>End-to-end Automation</h3>
+                    <p>Automate your entire data workflows from ingestion to analysis, ensuring consistency and efficiency.</p>
+                </div>
+                <div class="highlight-item">
+                    <h3>Intelligent Insights</h3>
+                    <p>Retrieve context-aware insights from your data using our powerful, intuitive search and analysis tools.</p>
+                </div>
+                <div class="highlight-item">
+                    <h3>Centralized Control</h3>
+                    <p>Manage who sees what with a centralized, role-based access control (RBAC) system for enhanced security.</p>
+                </div>
+                <div class="highlight-item">
+                    <h3>Scalable Architecture</h3>
+                    <p>Our platform is built on a scalable architecture, making it adaptable to any industry and a growing business.</p>
+                </div>
+                <div class="highlight-item">
+                    <h3>Seamless Integration</h3>
+                    <p>Easily connect and integrate with your existing systems and third-party applications without disruption.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bottom-section">
+            <div class="diagram-container">
+                <h2 class="section-title">Technical Architecture</h2>
+                <img id="diagram-image" src="images/flow-diagram1.png" alt="Xforia COAST Flow Diagram" class="diagram-image">
+                <p class="click-to-enlarge">Double-click to view detailed diagram</p>
+            </div>
+
+            <div class="outcomes-container">
+                <h2 class="section-title">Business Outcomes</h2>
+                <div class="outcome-list">
+                    <div class="outcome-item">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                        <p>Increased Revenue</p>
+                    </div>
+                    <div class="outcome-item">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        <p>Reduced Time-to-Market</p>
+                    </div>
+                    <div class="outcome-item">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                        <p>Enhanced Compliance</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <h2 class="sub-headline">Transform your organization with AI-driven data management, seamless automation, and actionable insights.</h2>
+
+        <section class="demo-section">
+            <a href="pages/login.html" class="demo-button">Click here for Demo</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+        <p>9300 Wade Blvd, Suite 220, Frisco, Texas, 75035.</p>
+    </footer>
+
+    <div id="expanded-diagram-container">
+        <span class="close-btn">&times;</span>
+        <img id="expanded-diagram-image" src="" alt="Expanded technical architecture">
+    </div>
+
+    <script>
+        const diagramImage = document.getElementById('diagram-image');
+        const expandedContainer = document.getElementById('expanded-diagram-container');
+        const expandedImage = document.getElementById('expanded-diagram-image');
+        const closeBtn = document.querySelector('.close-btn');
+
+        diagramImage.addEventListener('dblclick', () => {
+            expandedImage.src = diagramImage.src; // Use the same image
+            expandedContainer.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevents scrolling while pop-up is active
+        });
+
+        closeBtn.addEventListener('click', () => {
+            expandedContainer.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restores scrolling
+        });
+
+        expandedContainer.addEventListener('click', (e) => {
+            if (e.target === expandedContainer) {
+                expandedContainer.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>

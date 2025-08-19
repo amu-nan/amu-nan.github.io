@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Ria</title>
+    <link rel="icon" type="image/png" href="../images/Subject.png">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/demo_chatbot.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="chatbot-container">
+            <div class="chatbot-header">
+                <img src="../images/ria-avatar.png" alt="Ria" class="ria-avatar">
+                <div class="header-text">
+                    <h2>Chat with Ria</h2>
+                    <p>Your AI Co-pilot for patient data.</p>
+                </div>
+            </div>
+            <div class="chat-history" id="chat-history">
+                <div class="chat-message ria-message">
+                    <p>Hello! I'm Ria. I'm ready to answer your questions about the patient data. How can I help?</p>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="user-query" placeholder="Type your query...">
+                <button id="send-btn" class="send-button"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <a href="dashboard.html" class="continue-button">Continue to Generate Report</a>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+        <p>9300 Wade Blvd, Suite 220, Frisco, Texas, 75035.</p>
+    </footer>
+
+    <script src="../js/chatbot.js"></script>
+
+</body>
+</html>

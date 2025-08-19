@@ -1,0 +1,156 @@
+.upload-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    text-align: center;
+}
+
+.welcome-message {
+    font-size: 2.2em;
+    font-weight: 600;
+    color: #0e563b;
+    margin-bottom: 5px;
+}
+
+.org-message {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.upload-section {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.upload-section h4 {
+    font-size: 1.4em;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.upload-area {
+    border: 2px dashed #ddd;
+    padding: 40px;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+#file-input {
+    display: none;
+}
+
+.file-label {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #eee;
+    color: #333;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.file-label:hover {
+    background-color: #e0e0e0;
+}
+
+#file-list {
+    list-style: none;
+    margin-top: 20px;
+    padding: 0;
+}
+
+#file-list li {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.submit-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.submit-button:not(:disabled):hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+}
+
+.action-buttons-container {
+    margin-top: 40px;
+}
+
+.action-prompt {
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.action-button {
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    flex-grow: 1;
+    max-width: 200px;
+    display: inline-block;
+}
+
+.chatbot-btn {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.chatbot-btn:hover {
+    background-color: #2b84c8;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+}
+
+.dashboard-btn {
+    background-color: #169880;
+    color: #fff;
+}
+
+.dashboard-btn:hover {
+    background-color: #137a6b;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(22, 152, 128, 0.3);
+}

@@ -20,6 +20,37 @@
             font-size: 1.2em;
             color: #666;
         }
+        .demo-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .nav-button {
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .back-btn {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        .back-btn:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        .end-demo-btn {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+        .end-demo-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -36,12 +67,18 @@
             <h1>Report Dashboard</h1>
             <p>Your AI-generated report would appear here.</p>
         </div>
+        <div class="demo-navigation">
+            <button class="nav-button back-btn">Go Back</button>
+            <button class="nav-button end-demo-btn">End Demo</button>
+        </div>
     </main>
 
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
         <p>9300 Wade Blvd, Suite 220, Frisco, Texas, 75035.</p>
     </footer>
+
+    <script src="../js/common.js"></script>
 
 </body>
 </html>

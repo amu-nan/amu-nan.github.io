@@ -37,29 +37,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle upload submission
     uploadSubmitBtn.addEventListener('click', () => {
-        const files = fileInput.files;
-
-        // Prepare payload for backend (simulated)
-        const payload = new FormData();
-        payload.append('organizationName', orgName);
-        payload.append('ownerName', ownerName);
+        const file = fileInput.files[0];
         
-        for (const file of files) {
-            payload.append('file', file);
+        if (!file) {
+            alert('Please select a file to upload.');
+            return;
         }
 
-        // You would typically use fetch() here to send the payload to your backend.
-        // For now, let's just log the payload details
-        console.log('Simulating backend payload:', {
-            organizationName: orgName,
-            ownerName: ownerName,
-            files: Array.from(files).map(f => ({ name: f.name, size: f.size, type: f.type }))
+        // Create a FormData object to send the file and other data to the backend
+        const formData = new FormData();
+        formData.append('data_file', file);
+        formData.append('organization_name', orgName);
+        formData.append('owner_name', ownerName);
+
+        // Replace this URL with your actual backend file upload endpoint
+        const uploadUrl = 'YOUR_BACKEND_FILE_UPLOAD_ENDPOINT';
+
+        fetch(uploadUrl, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('File uploaded successfully!', data);
+            alert('File uploaded successfully! You can now navigate to the Chatbot or Dashboard.');
+            
+            // Show the action buttons after a successful upload
+            actionButtonsContainer.style.display = 'block';
+            uploadSubmitBtn.style.display = 'none';
+        })
+        .catch(error => {
+            console.error('There was an error uploading the file:', error);
+            alert('File upload failed. Please check the console for details.');
         });
-
-        alert('File uploaded successfully! Check the console for the payload.');
-
-        // Show the action buttons after successful upload
-        actionButtonsContainer.style.display = 'block';
-        uploadSubmitBtn.style.display = 'none'; // Hide the upload button
     });
 });

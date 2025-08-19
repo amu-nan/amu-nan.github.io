@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Create a FormData object to send the file and other data to the backend
         const formData = new FormData();
-        formData.append('data_file', file);
+        formData.append('file', file);
         formData.append('organization_name', orgName);
         formData.append('owner_name', ownerName);
 
         // Replace this URL with your actual backend file upload endpoint
-        const uploadUrl = 'YOUR_BACKEND_FILE_UPLOAD_ENDPOINT';
+        const uploadUrl = 'http://localhost:8000/upload_excel/';
 
         fetch(uploadUrl, {
             method: 'POST',

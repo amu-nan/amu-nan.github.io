@@ -51,7 +51,8 @@ header {
     font-weight: 600;
     color: #063828;
     letter-spacing: 0.5px;
-    white-space: nowarp;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 main {

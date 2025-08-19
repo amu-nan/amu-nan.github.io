@@ -51,6 +51,7 @@ header {
     font-weight: 600;
     color: var(--primary-color);
     letter-spacing: 0.5px;
+    white-space: nowarp;
 }
 
 main {

@@ -49,7 +49,7 @@ header {
 .tagline {
     font-size: 0.8em;
     font-weight: 600;
-    color: var(--primary-color);
+    color: #063828;
     letter-spacing: 0.5px;
     white-space: nowarp;
 }

@@ -1,3 +1,28 @@
+.intro-block {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    text-align: center;
+    background-color: var(--secondary-bg-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+}
+
+.intro-block h1 {
+    font-size: 2em;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.intro-block p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+/* Existing styles below */
+
 .owner-form-container {
     max-width: 600px;
     margin: 80px auto;
@@ -42,8 +67,8 @@
     border-radius: 8px;
     font-size: 1em;
     transition: border-color 0.3s;
-    background-color: #fff; /* Ensure a white background */
-    -webkit-appearance: none; /* Removes default dropdown arrow */
+    background-color: #fff;
+    -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="gray" d="M7 10l5 5 5-5z"/></svg>');
@@ -52,7 +77,6 @@
     background-size: 12px;
 }
 
-/* Style for disabled option in the select dropdown */
 .input-group select option:disabled {
     color: #b0b0b0;
     background-color: #f1f1f1;

@@ -27,6 +27,15 @@
             <p class="page-subtitle">Please provide your organization and owner name to continue.</p>
             
             <div class="input-group">
+                <label for="organization-type">Organization Type</label>
+                <select id="organization-type" required>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="retail" disabled>Retail (Coming Soon)</option>
+                    <option value="academic" disabled>Academic (Coming Soon)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
                 <label for="organization-name">Organization Name</label>
                 <input type="text" id="organization-name" placeholder="E.g., Coastal Medical Inc." required>
             </div>

@@ -6,11 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileList = document.getElementById('file-list');
     const uploadSubmitBtn = document.getElementById('upload-submit-btn');
     const actionButtonsContainer = document.querySelector('.action-buttons-container');
-    const sendButton = document.getElementById('sendButton');
-    const userQueryInput = document.getElementById('userQueryInput');
-    const chatHistory = document.getElementById('chatHistory');
-    const backButton = document.getElementById('backButton');
-    const endDemoButton = document.getElementById('endDemoButton');
+    
+    const userQueryInput = document.getElementById('user-query');
+    const sendButton = document.getElementById('send-btn');
+    const chatHistory = document.getElementById('chat-history');
+    const backButton = document.querySelector('.back-btn');
+    const endDemoButton = document.querySelector('.end-demo-btn');
 
     // Conversation array in backend format
     const chatHistoryArray = [];

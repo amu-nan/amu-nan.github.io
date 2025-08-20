@@ -48,9 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('organization_name', orgName);
         formData.append('owner_name', ownerName);
 
-        // This is your backend endpoint that will handle the file upload
-        // and return the processed JSON data.
-        const backendUploadUrl = 'http://127.0.0.1:8000/upload_excel';
+        // Replace this URL with your actual backend file upload endpoint
+        const backendUploadUrl = 'http://127.0.0.1:8000/api/upload-file';
 
         fetch(backendUploadUrl, {
             method: 'POST',
@@ -59,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    throw new Error(errorData.error || 'Server error');
+                    throw new Error(errorData.detail || 'Server error');
                 });
             }
             return response.json();
@@ -79,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Handle navigation to the dashboard
+    // Handle navigation to the dashboard and chatbot pages
     const handleNavigation = (event) => {
         if (!localStorage.getItem('patientData')) {
             alert('Please upload a file and wait for processing before proceeding.');

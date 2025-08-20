@@ -14,11 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ownerDisplay.textContent = ownerName;
         orgDisplay.textContent = orgName;
     } else {
-        // Redirect back to owner page if names aren't set
         window.location.href = 'owner.html';
     }
 
-    // Handle file upload
+    // Handle file upload and parsing
     fileInput.addEventListener('change', (event) => {
         fileList.innerHTML = '';
         const files = event.target.files;
@@ -44,36 +43,42 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Create a FormData object to send the file and other data to the backend
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('organization_name', orgName);
-        formData.append('owner_name', ownerName);
-
-        // Replace this URL with your actual backend file upload endpoint
-        const uploadUrl = 'http://localhost:8000/upload_excel/';
-
-        fetch(uploadUrl, {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('File uploaded successfully!', data);
-            alert('File uploaded successfully! You can now navigate to the Chatbot or Dashboard.');
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
             
-            // Show the action buttons after a successful upload
-            actionButtonsContainer.style.display = 'block';
-            uploadSubmitBtn.style.display = 'none';
-        })
-        .catch(error => {
-            console.error('There was an error uploading the file:', error);
-            alert('File upload failed. Please check the console for details.');
-        });
+            // Convert worksheet to JSON, skipping the header
+            const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            
+            if (json.length > 1) {
+                // Get headers from the first row and data from the rest
+                const headers = json[0];
+                const rawData = json.slice(1);
+                
+                // Convert raw data to an array of objects for easier processing
+                const formattedData = rawData.map(row => {
+                    const obj = {};
+                    headers.forEach((header, index) => {
+                        obj[header] = row[index];
+                    });
+                    return obj;
+                });
+
+                // Store the formatted data in localStorage
+                localStorage.setItem('patientData', JSON.stringify(formattedData));
+                
+                alert('File uploaded and data processed successfully! You can now navigate to the Dashboard or Chatbot.');
+                
+                // Show the action buttons and hide the upload button
+                actionButtonsContainer.style.display = 'block';
+                uploadSubmitBtn.style.display = 'none';
+            } else {
+                alert('The Excel file is empty or formatted incorrectly.');
+            }
+        };
+        reader.readAsArrayBuffer(file);
     });
 });

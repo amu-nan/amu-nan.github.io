@@ -1,93 +1,105 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const chatHistory = document.getElementById('chat-history');
-    const userQueryInput = document.getElementById('user-query');
-    const sendButton = document.getElementById('send-btn');
-    const backButton = document.querySelector('.back-btn');
-    const endDemoButton = document.querySelector('.end-demo-btn');
+    const ownerDisplay = document.getElementById('owner-display');
+    const orgDisplay = document.getElementById('org-display');
+    const fileInput = document.getElementById('file-input');
+    const fileList = document.getElementById('file-list');
+    const uploadSubmitBtn = document.getElementById('upload-submit-btn');
+    const actionButtonsContainer = document.querySelector('.action-buttons-container');
+    const sendButton = document.getElementById('sendButton');
+    const userQueryInput = document.getElementById('userQueryInput');
+    const chatHistory = document.getElementById('chatHistory');
+    const backButton = document.getElementById('backButton');
+    const endDemoButton = document.getElementById('endDemoButton');
 
-    // This array will store the conversation history
-    let chatHistoryArray = [];
+    // Conversation array in the format backend expects
+    const chatHistoryArray = [];
 
-    // This is a placeholder function for sending the query to the backend
+    // Display owner/org from local storage
+    const ownerName = localStorage.getItem('ownerName');
+    const orgName = localStorage.getItem('orgName');
+
+    if (ownerName && orgName) {
+        ownerDisplay.textContent = ownerName;
+        orgDisplay.textContent = orgName;
+    } else {
+        window.location.href = 'owner.html';
+    }
+
+    // --- Chatbot function ---
     async function sendQueryToBackend(query) {
-        const backendUrl = "http://127.0.0.1:8000/chat"; // <-- adjust to your chatbot endpoint
+        const backendUrl = "http://127.0.0.1:8000/chat";
 
         try {
             const response = await fetch(backendUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                query: query,
-                chat_history: chatHistoryArray
-            }),
-        });
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    query: query,
+                    conversation_history: chatHistoryArray
+                }),
+            });
 
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
+            console.log("Response status:", response.status, response.statusText);
+
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(`HTTP ${response.status}: ${text}`);
+            }
+
+            const data = await response.json();
+            return data.response;
+        } catch (error) {
+            console.error("Error sending query:", error);
+            return "Sorry, I'm having trouble connecting right now. Please try again later.";
         }
-
-        const data = await response.json();
-        return data.response; // backend must return { "response": "..." }
-    } catch (error) {
-        console.error("Error sending query:", error);
-        return "Sorry, I'm having trouble connecting right now. Please try again later.";
     }
-}
 
-    // Function to add a message to the chat history and update the array
+    // --- Function to add a message to the chat ---
     function addMessage(sender, text) {
-        // Add message to the visual chat history
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('chat-message');
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
-        
+
         const paragraph = document.createElement('p');
         paragraph.textContent = text;
-        
         messageDiv.appendChild(paragraph);
         chatHistory.appendChild(messageDiv);
-        chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to the bottom
+        chatHistory.scrollTop = chatHistory.scrollHeight;
 
-        // Add message to the conversation history array for the payload
-        chatHistoryArray.push({ sender, text });
+        // Push to conversation array in backend format
+        chatHistoryArray.push({
+            role: sender === 'user' ? 'user' : 'assistant',
+            content: text
+        });
     }
 
-    // Handle user input
+    // --- Handle user input ---
     sendButton.addEventListener('click', async () => {
         const userQuery = userQueryInput.value.trim();
         if (userQuery) {
             addMessage('user', userQuery);
             userQueryInput.value = '';
 
-            // Simulate AI response
             const aiResponse = await sendQueryToBackend(userQuery);
             addMessage('ria', aiResponse);
         }
     });
 
     userQueryInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            sendButton.click();
-        }
+        if (event.key === 'Enter') sendButton.click();
     });
 
-    // Handle the "Go Back" button
-    if (backButton) {
-        backButton.addEventListener('click', () => {
-            history.back();
-        });
-    }
+    // --- Go Back & End Demo buttons ---
+    if (backButton) backButton.addEventListener('click', () => history.back());
+    if (endDemoButton) endDemoButton.addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = '../index.html';
+    });
 
-    // Handle the "End Demo" button
-    if (endDemoButton) {
-        endDemoButton.addEventListener('click', () => {
-            localStorage.clear(); // Clears any stored data
-            window.location.href = '../index.html'; // Redirect to the splash page
-        });
-    }
-
-    // Add the initial message to the chat history array
+    // --- Initial greeting ---
     addMessage('ria', "Hello! I'm Ria. I'm ready to answer your questions about the patient data. How can I help?");
+
 });
+

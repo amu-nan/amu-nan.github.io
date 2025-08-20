@@ -1,3 +1,4 @@
+console.log("demo_chatbot.js loaded");
 document.addEventListener('DOMContentLoaded', () => {
     // --- Element references ---
     const ownerDisplay = document.getElementById('owner-display');
@@ -12,6 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatHistory = document.getElementById('chat-history');
     const backButton = document.querySelector('.back-btn');
     const endDemoButton = document.querySelector('.end-demo-btn');
+    console.log("sendButton:", sendButton);
+    console.log("userQueryInput:", userQueryInput);
+    console.log("chatHistory:", chatHistory);
+    console.log("backButton:", backButton);
+    console.log("endDemoButton:", endDemoButton);
 
     // Conversation array in backend format
     const chatHistoryArray = [];

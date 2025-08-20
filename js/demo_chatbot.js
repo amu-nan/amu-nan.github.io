@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // This is a placeholder function for sending the query to the backend
     async function sendQueryToBackend(query) {
-        const backendUrl = "http://127.0.0.1:8000/chatbot_query/"; // <-- adjust to your chatbot endpoint
+        const backendUrl = "http://127.0.0.1:8000/chat/"; // <-- adjust to your chatbot endpoint
 
         try {
             const response = await fetch(backendUrl, {

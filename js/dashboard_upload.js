@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileList = document.getElementById('file-list');
     const uploadSubmitBtn = document.getElementById('upload-submit-btn');
     const actionButtonsContainer = document.querySelector('.action-buttons-container');
+    const generateReportBtn = document.querySelector('.generate-report-btn'); // New button variable
 
     // Retrieve names from local storage and display them
     const ownerName = localStorage.getItem('ownerName');
@@ -50,15 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
             
-            // Convert worksheet to JSON, skipping the header
             const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
             
             if (json.length > 1) {
-                // Get headers from the first row and data from the rest
                 const headers = json[0];
                 const rawData = json.slice(1);
                 
-                // Convert raw data to an array of objects for easier processing
                 const formattedData = rawData.map(row => {
                     const obj = {};
                     headers.forEach((header, index) => {
@@ -67,10 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     return obj;
                 });
 
-                // Store the formatted data in localStorage
                 localStorage.setItem('patientData', JSON.stringify(formattedData));
                 
-                alert('File uploaded and data processed successfully! You can now navigate to the Dashboard or Chatbot.');
+                alert('File uploaded and data processed successfully! You can now generate the dashboard report.');
                 
                 // Show the action buttons and hide the upload button
                 actionButtonsContainer.style.display = 'block';
@@ -81,4 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         reader.readAsArrayBuffer(file);
     });
+
+    // Handle navigation to the dashboard
+    if (generateReportBtn) {
+        generateReportBtn.addEventListener('click', () => {
+            if (localStorage.getItem('patientData')) {
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Please upload a file first.');
+            }
+        });
+    }
 });

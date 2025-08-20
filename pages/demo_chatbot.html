@@ -17,6 +17,8 @@
     <header>
         <div class="logo-container">
             <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <!-- Added IDs for JS -->
+            <span id="owner-display"></span> | <span id="org-display"></span>
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
     </header>
@@ -36,14 +38,15 @@
                 </div>
             </div>
             <div class="chat-input-area">
-                <input type="text" id="user-query" placeholder="Type your query...">
-                <button id="send-btn" class="send-button"><i class="fa-solid fa-paper-plane"></i></button>
+                <!-- Updated IDs to match JS -->
+                <input type="text" id="userQueryInput" placeholder="Type your query...">
+                <button id="sendButton" class="send-button"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
         <div class="demo-navigation">
-            <button class="nav-button back-btn">Go Back</button>
+            <button id="backButton" class="nav-button back-btn">Go Back</button>
             <a href="dashboard.html" class="continue-button nav-button">Continue to Generate Report</a>
-            <button class="nav-button end-demo-btn">End Demo</button>
+            <button id="endDemoButton" class="nav-button end-demo-btn">End Demo</button>
         </div>
     </main>
 

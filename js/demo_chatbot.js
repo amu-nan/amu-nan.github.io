@@ -88,8 +88,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     userQueryInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') sendButton.click();
-    });
+    if (event.key === 'Enter') {
+        event.preventDefault();   // ❌ Prevents default form submission or new line
+        sendButton.click();
+    }
+});
 
     // --- Go Back & End Demo buttons ---
     if (backButton) backButton.addEventListener('click', () => history.back());

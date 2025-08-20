@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const backButton = document.querySelector('.back-btn');
     const endDemoButton = document.querySelector('.end-demo-btn');
 
+    // This array will store the conversation history
+    let chatHistoryArray = [];
+
     // This is a placeholder function for sending the query to the backend
     async function sendQueryToBackend(query) {
         // Replace this URL with your actual chatbot backend endpoint
@@ -16,7 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ query }),
+                body: JSON.stringify({ 
+                    query: query,
+                    chat_history: chatHistoryArray 
+                }),
             });
 
             if (!response.ok) {
@@ -31,8 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to add a message to the chat history
+    // Function to add a message to the chat history and update the array
     function addMessage(sender, text) {
+        // Add message to the visual chat history
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('chat-message');
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
@@ -43,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
         messageDiv.appendChild(paragraph);
         chatHistory.appendChild(messageDiv);
         chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to the bottom
+
+        // Add message to the conversation history array for the payload
+        chatHistoryArray.push({ sender, text });
     }
 
     // Handle user input
@@ -78,4 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = '../index.html'; // Redirect to the splash page
         });
     }
+
+    // Add the initial message to the chat history array
+    addMessage('ria', "Hello! I'm Ria. I'm ready to answer your questions about the patient data. How can I help?");
 });

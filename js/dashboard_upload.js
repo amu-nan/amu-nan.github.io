@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formData = new FormData();
-        formData.append('data_file', file);
+        formData.append('file', file);
         formData.append('organization_name', orgName);
         formData.append('owner_name', ownerName);
 

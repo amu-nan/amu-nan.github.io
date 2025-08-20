@@ -1,12 +1,15 @@
 console.log("demo_chatbot.js loaded");
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Element references ---
-    const userQueryInput = document.getElementById('user-query');
-    const sendButton = document.getElementById('send-btn');
+    const userQueryInput = document.getElementById('userQueryInput');
+    const sendButton = document.getElementById('sendButton');
     const chatHistory = document.getElementById('chat-history');
-    const backButton = document.querySelector('.back-btn');
-    const endDemoButton = document.querySelector('.end-demo-btn');
-    
+    const backButton = document.getElementById('backButton');
+    const endDemoButton = document.getElementById('endDemoButton');
+    const ownerDisplay = document.getElementById('owner-display');
+    const orgDisplay = document.getElementById('org-display');
+
     // Conversation array in backend format
     const chatHistoryArray = [];
 
@@ -15,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const orgName = localStorage.getItem('orgName');
 
     if (ownerName && orgName) {
-        document.getElementById('owner-display').textContent = ownerName;
-        document.getElementById('org-display').textContent = orgName;
+        ownerDisplay.textContent = ownerName;
+        orgDisplay.textContent = orgName;
     } else {
         window.location.href = 'owner.html';
     }
@@ -35,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Auto-scroll
         chatHistory.scrollTop = chatHistory.scrollHeight;
 
+        // Add to conversation array for backend
         chatHistoryArray.push({
             role: sender === 'user' ? 'user' : 'assistant',
             content: text
@@ -42,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function sendQueryToBackend(query) {
-        // This URL should point to your FastAPI chatbot endpoint
         const backendUrl = "http://127.0.0.1:8000/chat";
 
         try {
@@ -80,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage('ria', aiResponse);
     }
 
+    // --- Event listeners ---
     sendButton.addEventListener('click', sendQuery);
 
     userQueryInput.addEventListener('keydown', (event) => {
@@ -89,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Go Back & End Demo Buttons ---
     if (backButton) backButton.addEventListener('click', () => history.back());
     if (endDemoButton) endDemoButton.addEventListener('click', () => {
         localStorage.clear();

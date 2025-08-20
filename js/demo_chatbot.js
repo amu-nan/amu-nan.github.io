@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Element references ---
     const ownerDisplay = document.getElementById('owner-display');
     const orgDisplay = document.getElementById('org-display');
     const fileInput = document.getElementById('file-input');
@@ -11,10 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const backButton = document.getElementById('backButton');
     const endDemoButton = document.getElementById('endDemoButton');
 
-    // Conversation array in the format backend expects
+    // Conversation array in backend format
     const chatHistoryArray = [];
 
-    // Display owner/org from local storage
+    // --- Display owner/org from local storage ---
     const ownerName = localStorage.getItem('ownerName');
     const orgName = localStorage.getItem('orgName');
 
@@ -25,27 +26,94 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'owner.html';
     }
 
-    // --- Chatbot function ---
+    // --- Excel Upload Handling ---
+    fileInput.addEventListener('change', (event) => {
+        fileList.innerHTML = '';
+        const files = event.target.files;
+
+        if (files.length > 0) {
+            uploadSubmitBtn.disabled = false;
+            for (const file of files) {
+                const listItem = document.createElement('li');
+                listItem.textContent = file.name;
+                fileList.appendChild(listItem);
+            }
+        } else {
+            uploadSubmitBtn.disabled = true;
+        }
+    });
+
+    uploadSubmitBtn.addEventListener('click', () => {
+        const file = fileInput.files[0];
+        if (!file) {
+            alert('Please select a file to upload.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('organization_name', orgName);
+        formData.append('owner_name', ownerName);
+
+        const uploadUrl = "http://127.0.0.1:8000/upload_excel/";
+
+        fetch(uploadUrl, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('File uploaded successfully!', data);
+            alert('File uploaded successfully! You can now navigate to the Chatbot or Dashboard.');
+            actionButtonsContainer.style.display = 'block';
+            uploadSubmitBtn.style.display = 'none';
+        })
+        .catch(error => {
+            console.error('File upload failed:', error);
+            alert('File upload failed. Please check the console for details.');
+        });
+    });
+
+    // --- Chatbot Functions ---
+    function addMessage(sender, text) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('chat-message');
+        messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
+
+        const paragraph = document.createElement('p');
+        paragraph.textContent = text;
+        messageDiv.appendChild(paragraph);
+        chatHistory.appendChild(messageDiv);
+
+        // Auto-scroll
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+
+        chatHistoryArray.push({
+            role: sender === 'user' ? 'user' : 'assistant',
+            content: text
+        });
+    }
+
     async function sendQueryToBackend(query) {
         const backendUrl = "http://127.0.0.1:8000/chat";
 
         try {
             const response = await fetch(backendUrl, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     query: query,
                     conversation_history: chatHistoryArray
                 }),
             });
 
-            console.log("Response status:", response.status, response.statusText);
-
             if (!response.ok) {
                 const text = await response.text();
-                throw new Error(`HTTP ${response.status}: ${text}`);
+                console.error("Backend error response:", text);
+                throw new Error(`HTTP ${response.status}`);
             }
 
             const data = await response.json();
@@ -56,45 +124,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Function to add a message to the chat ---
-    function addMessage(sender, text) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('chat-message');
-        messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
+    async function sendQuery() {
+        const userQuery = userQueryInput.value.trim();
+        if (!userQuery) return;
 
-        const paragraph = document.createElement('p');
-        paragraph.textContent = text;
-        messageDiv.appendChild(paragraph);
-        chatHistory.appendChild(messageDiv);
-        chatHistory.scrollTop = chatHistory.scrollHeight;
+        addMessage('user', userQuery);
+        userQueryInput.value = '';
 
-        // Push to conversation array in backend format
-        chatHistoryArray.push({
-            role: sender === 'user' ? 'user' : 'assistant',
-            content: text
-        });
+        const aiResponse = await sendQueryToBackend(userQuery);
+        addMessage('ria', aiResponse);
     }
 
-    // --- Handle user input ---
-    sendButton.addEventListener('click', async () => {
-        const userQuery = userQueryInput.value.trim();
-        if (userQuery) {
-            addMessage('user', userQuery);
-            userQueryInput.value = '';
+    sendButton.addEventListener('click', sendQuery);
 
-            const aiResponse = await sendQueryToBackend(userQuery);
-            addMessage('ria', aiResponse);
+    userQueryInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            sendQuery();
         }
     });
 
-    userQueryInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-        event.preventDefault();   // ❌ Prevents default form submission or new line
-        sendButton.click();
-    }
-});
-
-    // --- Go Back & End Demo buttons ---
+    // --- Go Back & End Demo Buttons ---
     if (backButton) backButton.addEventListener('click', () => history.back());
     if (endDemoButton) endDemoButton.addEventListener('click', () => {
         localStorage.clear();
@@ -103,6 +153,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initial greeting ---
     addMessage('ria', "Hello! I'm Ria. I'm ready to answer your questions about the patient data. How can I help?");
-
 });
-

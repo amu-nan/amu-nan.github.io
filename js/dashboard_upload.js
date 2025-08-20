@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('owner_name', ownerName);
 
         // Replace this URL with your actual backend file upload endpoint
-        const uploadUrl = 'http://localhost:8000/upload_excel/';
+        const uploadUrl = "http://127.0.0.1:8000/upload_excel/";
 
         fetch(uploadUrl, {
             method: 'POST',

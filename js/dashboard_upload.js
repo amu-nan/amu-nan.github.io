@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // This is your backend endpoint that will handle the file upload
         // and return the processed JSON data.
-        const backendUploadUrl = 'YOUR_BACKEND_FILE_UPLOAD_ENDPOINT';
+        const backendUploadUrl = 'http://127.0.0.1:8000/upload_excel';
 
         fetch(backendUploadUrl, {
             method: 'POST',

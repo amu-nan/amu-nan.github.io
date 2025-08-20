@@ -10,32 +10,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // This is a placeholder function for sending the query to the backend
     async function sendQueryToBackend(query) {
-        // Replace this URL with your actual chatbot backend endpoint
-        const backendUrl = 'YOUR_BACKEND_CHATBOT_ENDPOINT'; 
+        const backendUrl = "http://127.0.0.1:8000/chatbot_query/"; // <-- adjust to your chatbot endpoint
 
         try {
             const response = await fetch(backendUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    query: query,
-                    chat_history: chatHistoryArray 
-                }),
-            });
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: query,
+                chat_history: chatHistoryArray
+            }),
+        });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            return data.response; // Assuming the backend returns a JSON object with a 'response' key
-        } catch (error) {
-            console.error('Error sending query:', error);
-            return "Sorry, I'm having trouble connecting right now. Please try again later.";
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
         }
+
+        const data = await response.json();
+        return data.response; // backend must return { "response": "..." }
+    } catch (error) {
+        console.error("Error sending query:", error);
+        return "Sorry, I'm having trouble connecting right now. Please try again later.";
     }
+}
 
     // Function to add a message to the chat history and update the array
     function addMessage(sender, text) {

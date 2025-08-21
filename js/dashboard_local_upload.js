@@ -1,10 +1,10 @@
-// dashboard_local_upload.js
+// This file handles file processing and dashboard redirection.
 document.addEventListener('DOMContentLoaded', () => {
     const ownerDisplay = document.getElementById('owner-display');
     const orgDisplay = document.getElementById('org-display');
     const fileInput = document.getElementById('file-input');
-    const fileList = document.getElementById('file-list');
     const processBtn = document.getElementById('process-for-dashboard-btn');
+    const fileList = document.getElementById('file-list');
 
     const ownerName = localStorage.getItem('ownerName');
     const orgName = localStorage.getItem('orgName');
@@ -60,8 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         return obj;
                     });
 
+                    // Save data to localStorage
                     localStorage.setItem('patientData', JSON.stringify(formattedData));
                     
+                    // The redirect happens ONLY after the file is processed and saved.
                     alert('File processed! Redirecting to dashboard...');
                     window.location.href = 'dashboard.html';
                     

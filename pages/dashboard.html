@@ -46,34 +46,25 @@
     </footer>
     
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                // Fetch the chart data from the backend
-                // The URL is your backend's endpoint for getting chart data
-                const response = await fetch('http://127.0.0.1:8000/dashboard/');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                // Parse the JSON response, which contains the HTML for each chart
-                const charts = await response.json();
-
-                // Insert each chart's HTML into its corresponding div
-                for (const chartId in charts) {
-                    const container = document.getElementById(chartId);
-                    if (container) {
-                        container.innerHTML = charts[chartId];
-                    }
-                }
-            } catch (error) {
-                console.error("Failed to load dashboard charts:", error);
-                // Optionally, display a user-friendly error message
-                const dashboardGrid = document.querySelector('.dashboard-grid');
-                if (dashboardGrid) {
-                    dashboardGrid.innerHTML = '<p style="text-align: center; color: red;">Failed to load dashboard. Please try again later.</p>';
-                }
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/dashboard/');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        });
+            const chartsData = await response.json();
+    
+            const containers = document.querySelectorAll('.chart-container');
+            containers.forEach((container, index) => {
+                if (chartsData[index]) {
+                    const chartJson = JSON.parse(chartsData[index]);
+                    Plotly.newPlot(container, chartJson.data, chartJson.layout);
+                }
+            });
+        } catch (error) {
+            console.error("Failed to load dashboard charts:", error);
+        }
+    });
     </script>
 
 </body>

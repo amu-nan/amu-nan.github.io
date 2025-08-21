@@ -25,24 +25,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Chatbot Functions ---
-    function addMessage(sender, text) {
+    function addMessage(sender, text, isTyping = false) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('chat-message');
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
+        
+        // Check if the message is a typing indicator
+        if (isTyping) {
+            // Add a unique ID for easy removal
+            messageDiv.id = 'typing-indicator'; 
+            messageDiv.innerHTML = `<p class="loading-dots"><span></span><span></span><span></span></p>`;
+        } else {
+            const paragraph = document.createElement('p');
+            paragraph.textContent = text;
+            messageDiv.appendChild(paragraph);
+        }
 
-        const paragraph = document.createElement('p');
-        paragraph.textContent = text;
-        messageDiv.appendChild(paragraph);
         chatHistory.appendChild(messageDiv);
-
-        // Auto-scroll
         chatHistory.scrollTop = chatHistory.scrollHeight;
 
-        // Add to conversation array for backend
-        chatHistoryArray.push({
-            role: sender === 'user' ? 'user' : 'assistant',
-            content: text
-        });
+        // Only add to conversation array if it's not a temporary typing message
+        if (!isTyping) {
+            chatHistoryArray.push({
+                role: sender === 'user' ? 'user' : 'assistant',
+                content: text
+            });
+        }
     }
 
     async function sendQueryToBackend(query) {
@@ -76,11 +84,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const userQuery = userQueryInput.value.trim();
         if (!userQuery) return;
 
+        // 1. Add user's message
         addMessage('user', userQuery);
         userQueryInput.value = '';
 
-        const aiResponse = await sendQueryToBackend(userQuery);
-        addMessage('ria', aiResponse);
+        // 2. Add the temporary typing indicator message
+        addMessage('ria', null, true); // The `null` is a placeholder for the text
+
+        try {
+            // 3. Wait for the backend response
+            const aiResponse = await sendQueryToBackend(userQuery);
+
+            // 4. Find and remove the typing indicator
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+
+            // 5. Add the actual AI response message
+            addMessage('ria', aiResponse);
+        } catch (error) {
+            console.error("Error fetching AI response:", error);
+            // In case of an error, also remove the typing indicator
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+            // Add a fallback error message
+            addMessage('ria', "Sorry, I'm having trouble getting a response. Please try again.");
+        }
     }
 
     // --- Event listeners ---

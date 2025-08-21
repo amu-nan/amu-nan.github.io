@@ -1,4 +1,86 @@
+
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xforia COAST Dashboard</title>
+    <link rel="icon" type="image/png" href="../images/Subject.png">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+        <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="dashboard-header">
+            <h1 id="dashboard-title">Dashboard</h1>
+            <p id="dashboard-subtitle">A quick overview of your patient data.</p>
+        </div>
+
+        <div class="dashboard-grid">
+                        <div class="chart-container" id="chart1"></div>
+            <div class="chart-container" id="chart2"></div>
+            <div class="chart-container" id="chart3"></div>
+            <div class="chart-container" id="chart4"></div>
+            <div class="chart-container" id="chart5"></div>
+            <div class="chart-container" id="chart6"></div>
+            <div class="chart-container" id="chart7"></div>
+        </div>
+
+        <div class="demo-navigation">
+            <a href="dashboard_upload.html" class="nav-button back-btn">Go Back</a>
+            <button class="nav-button end-demo-btn">End Demo</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+        <p>9300 Wade Blvd, Suite 220, Frisco, Texas, 75035.</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch the chart data from the backend
+                // The URL is your backend's endpoint for getting chart data
+                const response = await fetch('http://127.0.0.1:8000/dashboard/');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Parse the JSON response, which contains the HTML for each chart
+                const charts = await response.json();
+
+                // Insert each chart's HTML into its corresponding div
+                for (const chartId in charts) {
+                    const container = document.getElementById(chartId);
+                    if (container) {
+                        container.innerHTML = charts[chartId];
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to load dashboard charts:", error);
+                // Optionally, display a user-friendly error message
+                const dashboardGrid = document.querySelector('.dashboard-grid');
+                if (dashboardGrid) {
+                    dashboardGrid.innerHTML = '<p style="text-align: center; color: red;">Failed to load dashboard. Please try again later.</p>';
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,3 +126,5 @@
 
 </body>
 </html>
+
+-->

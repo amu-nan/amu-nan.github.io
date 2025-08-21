@@ -20,10 +20,6 @@ main {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
-    height: 100vh;
-    display: flex; /* Use flexbox to center content */
-    flex-direction: column;
-    overflow: hidden; /* Prevent the main page from scrolling */
 }
 
 /* --- Dashboard Header Styles --- */
@@ -47,14 +43,10 @@ main {
 /* --- Dashboard Grid & Chart Container Styles --- */
 .dashboard-grid {
     display: grid;
-    /* This creates a 2-column grid with equal-sized columns */
-    grid-template-columns: repeat(2, 1fr);
-    /* Set a minimum height for the rows to ensure charts are visible */
-    grid-auto-rows: minmax(450px, auto); 
+    /* This creates a responsive grid layout */
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 30px;
-    overflow-y: scroll; /* Allows scrolling within the grid itself */
-    padding-bottom: 50px; /* Adds space for the scrollbar and bottom content */
-    flex-grow: 1; /* Allows the grid to take up available vertical space */
+    margin-bottom: 40px;
 }
 
 .chart-container {
@@ -63,9 +55,9 @@ main {
     border-radius: 12px;
     box-shadow: var(--shadow-medium);
     transition: transform 0.3s ease;
-    /* Ensure charts have a consistent height */
-    min-height: 400px; 
+    min-height: 400px;
 }
+
 .chart-container:hover {
     transform: translateY(-5px);
 }

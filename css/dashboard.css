@@ -55,7 +55,11 @@ main {
     border-radius: 12px;
     box-shadow: var(--shadow-medium);
     transition: transform 0.3s ease;
-    min-height: 400px;
+    /* min-height: 400px;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .chart-container:hover {

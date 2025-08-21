@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const endDemoButton = document.querySelector('.end-demo-btn');
     const dashboardTitle = document.getElementById('dashboard-title');
     const dashboardSubtitle = document.getElementById('dashboard-subtitle');
-    const reportFrame = document.getElementById('reportFrame');
+    const reportFrame = document.getElementById('reportFrame'); 
 
     const uploadedFileName = localStorage.getItem('uploadedFileName');
     const orgName = localStorage.getItem('orgName');

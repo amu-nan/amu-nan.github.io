@@ -20,10 +20,10 @@ main {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
-    
-    /* ADD THIS FOR FIXED DASHBOARD BEHAVIOR */
-    height: 100vh; /* Make main container full viewport height */
-    overflow: hidden; /* Hide scrollbars on the main page */
+    height: 100vh;
+    display: flex; /* Use flexbox to center content */
+    flex-direction: column;
+    overflow: hidden; /* Prevent the main page from scrolling */
 }
 
 /* --- Dashboard Header Styles --- */
@@ -47,18 +47,14 @@ main {
 /* --- Dashboard Grid & Chart Container Styles --- */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    /* This creates a 2-column grid with equal-sized columns */
+    grid-template-columns: repeat(2, 1fr);
+    /* Set a minimum height for the rows to ensure charts are visible */
+    grid-auto-rows: minmax(450px, auto); 
     gap: 30px;
-    margin-bottom: 40px;
-    
-    /* ADD THIS FOR FIXED DASHBOARD BEHAVIOR */
-    height: calc(100vh - 200px); /* Adjust height to fit between header and footer */
-    overflow-y: scroll; /* Add a scrollbar to this container */
-}
-
-/* Optional but recommended: Add padding to the scrollable container */
-.dashboard-grid {
-    padding-right: 20px; /* Prevents content from touching the scrollbar */
+    overflow-y: scroll; /* Allows scrolling within the grid itself */
+    padding-bottom: 50px; /* Adds space for the scrollbar and bottom content */
+    flex-grow: 1; /* Allows the grid to take up available vertical space */
 }
 
 .chart-container {
@@ -67,8 +63,9 @@ main {
     border-radius: 12px;
     box-shadow: var(--shadow-medium);
     transition: transform 0.3s ease;
+    /* Ensure charts have a consistent height */
+    min-height: 400px; 
 }
-
 .chart-container:hover {
     transform: translateY(-5px);
 }

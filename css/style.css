@@ -165,7 +165,7 @@ h1 {
 }
 
 .diagram-image {
-    max-width: 100%;
+    max-width: 30%;
     height: auto;
     display: block;
     margin: 0 auto 20px;

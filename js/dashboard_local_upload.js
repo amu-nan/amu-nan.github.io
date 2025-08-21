@@ -40,13 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const reader = new FileReader();
         reader.onload = function(e) {
+            console.log("File loaded. Attempting to parse...");
             try {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
+                console.log("Workbook read:", workbook); // Check if this logs
+                
                 const firstSheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[firstSheetName];
+                console.log("Worksheet found:", worksheet); // Check if this logs
                 
                 const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                console.log("JSON parsed:", json); // Check if this logs
                 
                 if (json.length > 1) {
                     const headers = json[0];
@@ -59,19 +64,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                         return obj;
                     });
+                    
+                    console.log("Formatted data:", formattedData); // Check if this logs
 
                     // Save data to localStorage
                     localStorage.setItem('patientData', JSON.stringify(formattedData));
+                    console.log("Data saved to localStorage. Redirecting..."); // Check if this logs
                     
                     // The redirect happens ONLY after the file is processed and saved.
                     alert('File processed! Redirecting to dashboard...');
                     window.location.href = 'dashboard.html';
                     
                 } else {
+                    console.error('File is empty or formatted incorrectly.');
                     alert('The Excel file is empty or formatted incorrectly.');
                 }
             } catch (error) {
-                console.error("Error processing file:", error);
+                console.error("An error occurred during file processing:", error);
                 alert("An error occurred while processing the file. Please ensure it's a valid Excel file.");
             }
         };

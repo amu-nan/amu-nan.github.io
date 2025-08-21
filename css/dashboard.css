@@ -20,6 +20,10 @@ main {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
+    
+    /* ADD THIS FOR FIXED DASHBOARD BEHAVIOR */
+    height: 100vh; /* Make main container full viewport height */
+    overflow: hidden; /* Hide scrollbars on the main page */
 }
 
 /* --- Dashboard Header Styles --- */
@@ -43,10 +47,18 @@ main {
 /* --- Dashboard Grid & Chart Container Styles --- */
 .dashboard-grid {
     display: grid;
-    /* This creates the responsive grid layout */
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 30px;
     margin-bottom: 40px;
+    
+    /* ADD THIS FOR FIXED DASHBOARD BEHAVIOR */
+    height: calc(100vh - 200px); /* Adjust height to fit between header and footer */
+    overflow-y: scroll; /* Add a scrollbar to this container */
+}
+
+/* Optional but recommended: Add padding to the scrollable container */
+.dashboard-grid {
+    padding-right: 20px; /* Prevents content from touching the scrollbar */
 }
 
 .chart-container {

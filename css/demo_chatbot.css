@@ -103,18 +103,20 @@ body {
     align-items: center;
 }
 
-#user-query {
+#userQueryInput {
     flex-grow: 1;
     padding: 12px 20px;
     border: 1px solid #ddd;
-    border-radius: 25px;
+    border-radius: 25px; /* Makes it a bubble shape */
     font-size: 1em;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-#user-query:focus {
+#userQueryInput:focus {
     outline: none;
     border-color: #3498db;
+    box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
 }
 
 .send-button {
@@ -185,4 +187,40 @@ body {
     background-color: #c0392b;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* New CSS for the loading message */
+.loading-dots {
+    display: flex;
+    align-items: flex-end; /* Aligns dots to the bottom of the container */
+    padding: 12px 20px;
+    max-width: 70%;
+}
+
+.loading-dots span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #888;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+/* Delay the animation for each dot */
+.loading-dots span:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.loading-dots span:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-8px);
+    }
 }

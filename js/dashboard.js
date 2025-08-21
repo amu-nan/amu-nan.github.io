@@ -18,33 +18,48 @@ document.addEventListener('DOMContentLoaded', () => {
         dashboardSubtitle.textContent = `A quick overview of your patient data from ${orgName}.`;
     }
 
-    // A function to find a suitable column for a given chart type
-    function findColumn(data, type) {
+    // --- NEW: Improved findColumn function ---
+    function findColumn(data, type, usedColumns = []) {
         if (!data || data.length === 0) return null;
-        
         const headers = Object.keys(data[0]);
-        for (const header of headers) {
-            // Check the data type of the first non-empty cell in the column
-            const firstValue = data.find(row => row[header] !== undefined && row[header] !== null)?.[header];
-            
-            if (firstValue === undefined) continue;
 
+        const rankedHeaders = headers.map(header => {
+            const firstValue = data.find(row => row[header] !== undefined && row[header] !== null)?.[header];
+            if (firstValue === undefined || usedColumns.includes(header)) return null;
+
+            const uniqueValues = new Set(data.map(row => row[header]));
+            const uniqueCount = uniqueValues.size;
+            const totalRows = data.length;
+
+            let score = 0;
             if (type === 'categorical') {
                 if (typeof firstValue === 'string' && isNaN(parseInt(firstValue))) {
-                    return header;
+                    if (uniqueCount > 1 && uniqueCount <= 20) {
+                        score = 100 - uniqueCount;
+                    }
                 }
             } else if (type === 'numerical') {
-                if (!isNaN(parseFloat(firstValue))) {
-                    return header;
+                if (!isNaN(parseFloat(firstValue)) && uniqueCount > 5) {
+                    if (header.toLowerCase().includes('id') || uniqueCount === totalRows) {
+                        score = 0;
+                    } else {
+                        score = uniqueCount;
+                    }
                 }
             }
-        }
-        return null;
+            return { header, score };
+        }).filter(h => h && h.score > 0);
+
+        rankedHeaders.sort((a, b) => b.score - a.score);
+        return rankedHeaders.length > 0 ? rankedHeaders[0].header : null;
     }
 
-    // --- CHART 1: Pie Chart (Categorical Data) ---
-    const pieColumn = findColumn(patientData, 'categorical');
+    const usedColumns = [];
+
+    // --- CHART 1: Pie Chart (Categorical Distribution) ---
+    const pieColumn = findColumn(patientData, 'categorical', usedColumns);
     if (pieColumn) {
+        usedColumns.push(pieColumn);
         const counts = patientData.reduce((acc, row) => {
             const value = row[pieColumn];
             if (value) {
@@ -59,20 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
             type: 'pie',
             hovertemplate: `<b>${pieColumn}</b>: %{label}<br>Count: %{value}<br>Percentage: %{percent}<extra></extra>`
         }];
-    
-        const pieLayout = {
+        Plotly.newPlot('chart1', pieData, {
             title: `Distribution of ${pieColumn}`,
-            height: 400,
             margin: { t: 40, b: 0, l: 0, r: 0 }
-        };
-        Plotly.newPlot('chart1', pieData, pieLayout);
+        });
     } else {
         document.getElementById('chart1').textContent = "No suitable categorical data for a Pie Chart.";
     }
 
-    // --- CHART 2: Bar Chart (Categorical Data) ---
-    const barColumn = findColumn(patientData, 'categorical');
+    // --- CHART 2: Bar Chart (Categorical Distribution) ---
+    const barColumn = findColumn(patientData, 'categorical', usedColumns);
     if (barColumn) {
+        usedColumns.push(barColumn);
         const counts = patientData.reduce((acc, row) => {
             const value = row[barColumn];
             if (value) {
@@ -87,77 +100,127 @@ document.addEventListener('DOMContentLoaded', () => {
             type: 'bar',
             hovertemplate: `<b>${barColumn}</b>: %{x}<br>Count: %{y}<extra></extra>`
         }];
-    
-        const barLayout = {
+        Plotly.newPlot('chart2', barData, {
             title: `Count of ${barColumn}`,
             xaxis: { title: barColumn },
             yaxis: { title: 'Count' },
-            height: 400,
             margin: { t: 40, b: 40, l: 40, r: 0 }
-        };
-        Plotly.newPlot('chart2', barData, barLayout);
+        });
     } else {
         document.getElementById('chart2').textContent = "No suitable categorical data for a Bar Chart.";
     }
 
-    // --- CHART 3: Line Chart (Numerical Data) ---
-    const lineColumn = findColumn(patientData, 'numerical');
-    if (lineColumn) {
-        const yValues = patientData.map(d => parseFloat(d[lineColumn])).filter(v => !isNaN(v)).sort((a, b) => a - b);
-        const xValues = Array.from({length: yValues.length}, (_, i) => i + 1);
-
-        const lineData = [{
-            x: xValues,
-            y: yValues,
-            mode: 'lines',
-            type: 'scatter',
-            hovertemplate: `Patient Index: %{x}<br>Value: %{y}<extra></extra>`
-        }];
+    // --- CHART 3: Histogram (Numerical Distribution) ---
+    const histColumn = findColumn(patientData, 'numerical', usedColumns);
+    if (histColumn) {
+        usedColumns.push(histColumn);
+        const values = patientData.map(d => parseFloat(d[histColumn])).filter(v => !isNaN(v));
         
-        const lineLayout = {
-            title: `Line Plot of ${lineColumn}`,
-            xaxis: { title: 'Data Point Index' },
-            yaxis: { title: lineColumn },
-            height: 400,
+        const histData = [{
+            x: values,
+            type: 'histogram',
+            hovertemplate: `Range: %{x}<br>Count: %{y}<extra></extra>`
+        }];
+        Plotly.newPlot('chart3', histData, {
+            title: `Distribution of ${histColumn}`,
+            xaxis: { title: histColumn },
+            yaxis: { title: 'Count' },
             margin: { t: 40, b: 40, l: 40, r: 0 }
-        };
-        Plotly.newPlot('chart3', lineData, lineLayout);
+        });
     } else {
-        document.getElementById('chart3').textContent = "No suitable numerical data for a Line Chart.";
+        document.getElementById('chart3').textContent = "No suitable numerical data for a Histogram.";
     }
 
-    // --- CHART 4: Scatter Plot (Numerical Data) ---
-    const scatterColumns = [];
-    Object.keys(patientData[0] || {}).forEach(header => {
-        const firstValue = patientData.find(row => row[header] !== undefined && row[header] !== null)?.[header];
-        if (firstValue !== undefined && !isNaN(parseFloat(firstValue))) {
-            scatterColumns.push(header);
-        }
-    });
-
-    if (scatterColumns.length >= 2) {
-        const xColumn = scatterColumns[0];
-        const yColumn = scatterColumns[1];
+    // --- CHART 4: Scatter Plot (Numerical Correlation) ---
+    const scatterX = findColumn(patientData, 'numerical', usedColumns);
+    if (scatterX) usedColumns.push(scatterX);
+    const scatterY = findColumn(patientData, 'numerical', usedColumns);
+    
+    if (scatterX && scatterY) {
+        usedColumns.push(scatterY);
         
         const scatterData = [{
-            x: patientData.map(d => d[xColumn]),
-            y: patientData.map(d => d[yColumn]),
+            x: patientData.map(d => parseFloat(d[scatterX])),
+            y: patientData.map(d => parseFloat(d[scatterY])),
             mode: 'markers',
             type: 'scatter',
             marker: { size: 8 },
-            hovertemplate: `<b>${xColumn}</b>: %{x}<br><b>${yColumn}</b>: %{y}<extra></extra>`
+            hovertemplate: `<b>${scatterX}</b>: %{x}<br><b>${scatterY}</b>: %{y}<extra></extra>`
+        }];
+        Plotly.newPlot('chart4', scatterData, {
+            title: `Scatter Plot of ${scatterX} vs ${scatterY}`,
+            xaxis: { title: scatterX },
+            yaxis: { title: scatterY },
+            margin: { t: 40, b: 40, l: 40, r: 0 }
+        });
+    } else {
+        document.getElementById('chart4').textContent = "At least two suitable numerical columns are required for a Scatter Plot.";
+    }
+
+    // --- CHART 5: Box Plot (Numerical Summary) ---
+    const boxColumn = findColumn(patientData, 'numerical', usedColumns);
+    if (boxColumn) {
+        usedColumns.push(boxColumn);
+        const values = patientData.map(d => parseFloat(d[boxColumn])).filter(v => !isNaN(v));
+
+        const boxData = [{
+            y: values,
+            type: 'box',
+            name: boxColumn,
+            boxpoints: 'all'
+        }];
+        Plotly.newPlot('chart5', boxData, {
+            title: `Summary of ${boxColumn}`,
+            yaxis: { title: boxColumn },
+            margin: { t: 40, b: 40, l: 40, r: 0 }
+        });
+    } else {
+        document.getElementById('chart5').textContent = "No suitable numerical data for a Box Plot.";
+    }
+
+    // --- CHART 6: Horizontal Bar Chart (Top/Bottom values) ---
+    const barXColumn = findColumn(patientData, 'numerical', usedColumns);
+    const barYColumn = findColumn(patientData, 'categorical', usedColumns);
+
+    if (barXColumn && barYColumn) {
+        usedColumns.push(barXColumn, barYColumn);
+        
+        const aggregatedData = patientData.reduce((acc, row) => {
+            const category = row[barYColumn];
+            const value = parseFloat(row[barXColumn]);
+            if (category && !isNaN(value)) {
+                if (!acc[category]) {
+                    acc[category] = { sum: 0, count: 0 };
+                }
+                acc[category].sum += value;
+                acc[category].count += 1;
+            }
+            return acc;
+        }, {});
+
+        const averagedData = Object.keys(aggregatedData).map(category => ({
+            category,
+            average: aggregatedData[category].sum / aggregatedData[category].count
+        })).sort((a, b) => b.average - a.average);
+
+        const topCategories = averagedData.slice(0, 10);
+        
+        const hBarData = [{
+            x: topCategories.map(d => d.average),
+            y: topCategories.map(d => d.category),
+            type: 'bar',
+            orientation: 'h',
+            hovertemplate: `Category: %{y}<br>Average: %{x:.2f}<extra></extra>`
         }];
 
-        const scatterLayout = {
-            title: `Scatter Plot of ${xColumn} vs ${yColumn}`,
-            xaxis: { title: xColumn },
-            yaxis: { title: yColumn },
-            height: 400,
-            margin: { t: 40, b: 40, l: 40, r: 0 }
-        };
-        Plotly.newPlot('chart4', scatterData, scatterLayout);
+        Plotly.newPlot('chart6', hBarData, {
+            title: `Average ${barXColumn} by ${barYColumn} (Top 10)`,
+            xaxis: { title: `Average ${barXColumn}` },
+            yaxis: { title: barYColumn },
+            margin: { t: 40, b: 40, l: 150, r: 0 }
+        });
     } else {
-        document.getElementById('chart4').textContent = "At least two numerical columns are required for a Scatter Plot.";
+        document.getElementById('chart6').textContent = "A suitable numerical and categorical column are required for this chart.";
     }
 
     // --- Navigation Buttons ---

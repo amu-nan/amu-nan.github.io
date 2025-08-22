@@ -7,6 +7,25 @@
     --icon-color: #3498db;
     --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
     --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
+    --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.2); /* **NEW: Deeper shadow for pop-out effect** */
+}
+
+/* **NEW: Keyframe animations for dynamic effects** */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
 }
 
 * {
@@ -19,20 +38,21 @@ body {
     font-family: 'Work Sans', sans-serif;
     color: var(--text-color);
     background-color: var(--light-bg-color);
-    padding-top: 150px; 
+    padding-top: 150px;
+    overflow-x: hidden; /* **NEW: Prevents horizontal scroll from animation effects** */
 }
 
 header {
     background-color: var(--light-bg-color);
     padding: 10px 5%;
     border-bottom: 1px solid var(--secondary-bg-color);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* **UPDATED: Slightly more prominent shadow** */
     max-height: 150px;
-    /* Styles for the fixed header */
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 100;
+    animation: fadeIn 0.8s ease-out; /* **NEW: Fades in on page load** */
 }
 
 .logo-container {
@@ -46,6 +66,11 @@ header {
     width: 200px;
     height: auto;
     margin-right: 0;
+    transition: transform 0.5s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05); /* **NEW: Slight scale on hover** */
 }
 
 .tagline {
@@ -54,27 +79,33 @@ header {
     color: #14967c;
     white-space: nowrap;
     letter-spacing: 0.5px;
+    animation: pulse 2s infinite ease-in-out; /* **NEW: Subtle, continuous pulse effect** */
 }
 
 main {
-    max-width: 1400px; /* Increased from 1200px to fill more space on larger screens */
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px 20px 40px 20px;
 }
 
 section {
-    padding: 40px 0;
+    padding: 60px 0; /* **UPDATED: More vertical space** */
+    animation: fadeIn 1s ease-out; /* **NEW: Each section fades in as you scroll** */
 }
 
 h1, h2, h3 {
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     color: #0e563b;
     font-weight: 600;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05); /* **NEW: Subtle text shadow for depth** */
 }
 
 h1 {
-    font-size: 1.8rem; 
+    font-size: 2.5rem; /* **UPDATED: Larger font size** */
+    font-weight: 800; /* **UPDATED: Bolder font weight** */
+    letter-spacing: 1px;
+    animation: float 2s infinite ease-in-out; /* **NEW: Gentle floating animation** */
 }
 
 .what-is-coast-section {
@@ -83,78 +114,80 @@ h1 {
 }
 
 .acronym-letter {
-    font-size: 1.5em; /* Makes the letter larger */
-    font-weight: 700; /* Makes the letter bolder */
+    font-size: 1.8em; /* **UPDATED: Larger font size** */
+    font-weight: 800; /* **UPDATED: Bolder** */
     color: #0e563b;
     margin-right: 2px;
+    transition: transform 0.3s ease;
+}
+
+.acronym-letter:hover {
+    transform: translateY(-5px); /* **NEW: Lift on hover** */
 }
 
 .what-is-coast-section p {
     font-size: 1.2em;
     max-width: 800px;
     margin: 0 auto;
-}
-
-.features-section-wrapper {
-    overflow-x: auto;
-    padding-bottom: 20px;
+    line-height: 1.6; /* **UPDATED: Better readability** */
 }
 
 .features-section {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-    flex-wrap: wrap; 
-    gap: 20px; 
+    flex-wrap: wrap;
+    gap: 30px; /* **UPDATED: Increased gap** */
 }
 
 .features-section .feature i {
-    color: #169780; 
-    font-size: 2.5em;
-    margin-bottom: 15px;
+    color: #169780;
+    font-size: 3em; /* **UPDATED: Larger icon** */
+    margin-bottom: 20px;
 }
 
 .feature {
-    flex-grow: 1; 
-    flex-basis: 200px;
-    padding: 30px;
+    flex-grow: 1;
+    flex-basis: 200px; /* **UPDATED: More flexible basis** */
+    padding: 40px; /* **UPDATED: More padding** */
     background: var(--secondary-bg-color);
     border-radius: 12px;
     box-shadow: var(--shadow-light);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.05); /* **NEW: Subtle border for definition** */
 }
 
 .feature:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-medium);
+    transform: translateY(-10px) rotate(-1deg); /* **UPDATED: Lift and slight rotation on hover** */
+    box-shadow: var(--shadow-heavy); /* **UPDATED: Deeper shadow** */
 }
 
 .feature i {
-    font-size: 2.5em;
+    font-size: 3em; /* **UPDATED: Larger icon** */
     color: var(--icon-color);
     margin-bottom: 20px;
     transition: transform 0.3s ease;
 }
 
 .feature:hover i {
-    transform: scale(1.1);
+    transform: scale(1.2) rotate(5deg); /* **UPDATED: Scale and rotate on hover** */
 }
 
 .feature h3 {
-    font-size: 1.2em;
+    font-size: 1.4em; /* **UPDATED: Larger font size** */
     margin-bottom: 10px;
     font-weight: 600;
 }
 
 .feature p {
-    font-size: 0.9em;
+    font-size: 1em; /* **UPDATED: Larger font size** */
     color: #666;
 }
 
 .bottom-section {
     display: flex;
-    justify-content: center; /* Center the two containers */
+    justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
     gap: 50px;
@@ -163,18 +196,18 @@ h1 {
 
 .diagram-container, .outcomes-container {
     flex-basis: 45%;
-    max-width: 550px; /* Set a maximum width to prevent them from becoming too large on very wide screens */
+    max-width: 550px;
     min-width: 350px;
     background: var(--secondary-bg-color);
     padding: 40px;
     border-radius: 12px;
     box-shadow: var(--shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-@media (max-width: 1200px) { 
-    .diagram-container, .outcomes-container {
-        flex-basis: 100%; /* Make them full width on smaller screens */
-    }
+.diagram-container:hover, .outcomes-container:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
 }
 
 .section-title {
@@ -217,11 +250,26 @@ h1 {
     align-items: center;
     gap: 20px;
     font-size: 1.1em;
+    background: var(--light-bg-color); /* **NEW: Added background and padding** */
+    padding: 20px; /* **NEW: Added padding** */
+    border-radius: 8px; /* **NEW: Rounded corners** */
+    box-shadow: var(--shadow-light); /* **NEW: Added shadow for depth** */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.outcome-item:hover {
+    transform: translateX(10px); /* **NEW: Slides to the right on hover** */
+    box-shadow: var(--shadow-medium);
 }
 
 .outcome-item i {
     font-size: 2.5em;
     color: #169880;
+    transition: transform 0.3s ease;
+}
+
+.outcome-item:hover i {
+    transform: scale(1.1);
 }
 
 .outcome-item p {
@@ -236,8 +284,8 @@ h1 {
 
 .button-container {
     display: flex;
-    flex-direction: row; 
-    justify-content: center; 
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
     gap: 30px;
 }
@@ -250,20 +298,44 @@ h1 {
     font-weight: 600;
     border-radius: 50px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, transform 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.4s, transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease; /* **UPDATED: Added filter transition** */
     width: 300px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.demo-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: width 0.4s ease, height 0.4s ease;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+.demo-button:hover::after {
+    width: 300%;
+    height: 300%; /* **NEW: Creates a ripple effect on hover** */
 }
 
 .setup-button {
     background-color: #2ecc71;
     color: #fff;
+    filter: drop-shadow(0 0 10px rgba(46, 204, 113, 0.5)); /* **NEW: Adds a soft green glow** */
 }
 
 .setup-button:hover {
-    background-color: #44a44c;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    background-color: #27ae60;
+    transform: translateY(-5px) scale(1.05); /* **UPDATED: More pronounced lift and scale** */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    filter: drop-shadow(0 0 20px rgba(46, 204, 113, 0.8)); /* **UPDATED: Stronger glow on hover** */
 }
 
 .demo-link {
@@ -272,9 +344,9 @@ h1 {
 }
 
 .demo-link:hover {
-    background-color: #2b84c8;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    background-color: #2980b9;
+    transform: translateY(-5px) scale(1.05); /* **NEW: Lift and scale on hover** */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 footer {
@@ -294,7 +366,7 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.85); /* **UPDATED: Slightly darker overlay** */
     z-index: 1000;
     justify-content: center;
     align-items: center;
@@ -304,7 +376,8 @@ footer {
     max-width: 90%;
     max-height: 90%;
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* **UPDATED: More prominent shadow** */
+    animation: fadeIn 0.5s ease-out; /* **NEW: Fades in on open** */
 }
 
 .close-btn {
@@ -315,6 +388,11 @@ footer {
     font-size: 40px;
     font-weight: bold;
     cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.close-btn:hover {
+    transform: rotate(90deg); /* **NEW: Rotates on hover** */
 }
 
 /* Scrollbar for features row on small screens */
@@ -331,7 +409,7 @@ footer {
 .highlights-section {
     padding: 60px 20px;
     background-color: var(--secondary-bg-color);
-    margin-top: 50px; 
+    margin-top: 50px;
 }
 
 .highlights-section h2 {
@@ -342,7 +420,7 @@ footer {
 }
 
 .highlights-container {
-    display: flex; 
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 25px;
@@ -350,7 +428,7 @@ footer {
 
 .highlight-item {
     flex-basis: 300px;
-    flex-grow: 1; 
+    flex-grow: 1;
     background-color: var(--light-bg-color);
     padding: 30px;
     border-radius: 12px;
@@ -426,4 +504,10 @@ footer {
 .outcome-content p {
     font-size: 0.9em;
     color: #555;
+}
+
+@media (max-width: 1200px) {
+    .diagram-container, .outcomes-container {
+        flex-basis: 100%;
+    }
 }

@@ -64,14 +64,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const data = await response.json();
         const chartsData = data.charts;
-
-        const containers = document.querySelectorAll('.chart-container');
-        containers.forEach((container, index) => {
-            if (chartsData[index]) {
-                const chartJson = chartsData[index];
-                renderChart(container.id, chartJson);
-            }
+        const chartsContainer = document.getElementById("charts-container");
+        
+        // clear out old charts if re-rendering
+        chartsContainer.innerHTML = "";
+        
+        // create a div for each chart returned
+        chartsData.forEach((chartJson, index) => {
+            const div = document.createElement("div");
+            div.id = `chart-container-${index}`;
+            div.classList.add("chart-container");
+            div.style.width = "600px";
+            div.style.height = "400px";
+            chartsContainer.appendChild(div);
+        
+            renderChart(div.id, chartJson);
         });
+
 
         if (endDemoButton) {
             endDemoButton.addEventListener('click', () => {

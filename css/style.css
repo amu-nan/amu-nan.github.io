@@ -184,7 +184,7 @@ h1 {
 }
 
 .diagram-image {
-    max-width: 30%;
+    max-width: 90%;
     height: auto;
     display: block;
     margin: 0 auto 20px;
@@ -331,6 +331,7 @@ footer {
 .highlights-section {
     padding: 60px 20px;
     background-color: var(--secondary-bg-color);
+    margin-top: 50px; 
 }
 
 .highlights-section h2 {

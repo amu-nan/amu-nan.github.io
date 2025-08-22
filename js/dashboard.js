@@ -1,3 +1,4 @@
+// Function to render a chart in a container
 const renderChart = (containerId, chartJson) => {
     const chartContainer = document.getElementById(containerId);
     if (!chartContainer) {
@@ -14,25 +15,11 @@ const renderChart = (containerId, chartJson) => {
         displayModeBar: false
     });
 
+    // Optional click handler
     chartContainer.on('plotly_click', function (data) {
         const point = data.points[0];
-        const xValue = point.x;
-        const yValue = point.y;
-        
-        console.log(`User clicked on: ${xValue} with value: ${yValue}`);
-        updateChartWithDrilldown(xValue);
+        console.log(`User clicked on: ${point.x} with value: ${point.y}`);
     });
-};
-
-const updateChartWithDrilldown = (category) => {
-    console.log(`Triggering a dynamic update based on category: ${category}`);
-    // Example: change the title of a chart to reflect the drilled-down view
-    const drilldownContainer = document.getElementById('chart-container-3');
-    if (drilldownContainer) {
-        const newLayout = { ...drilldownContainer.layout, title: `Detailed View: ${category}` };
-        const mockData = [{ x: ['A', 'B', 'C'], y: [10, 20, 30], type: 'bar' }];
-        Plotly.react('chart-container-3', mockData, newLayout);
-    }
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -41,47 +28,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         const dashboardSubtitle = document.getElementById('dashboard-subtitle');
         const endDemoButton = document.querySelector('.end-demo-btn');
 
-        const uploadedFileName = localStorage.getItem('uploadedFileName');
+        // Optional: show org name from localStorage
         const orgName = localStorage.getItem('orgName');
-
-        if (!uploadedFileName) {
-            dashboardTitle.textContent = "No Data Found";
-            dashboardSubtitle.textContent = "Please upload a file on the previous page to view the dashboard.";
-            return;
-        }
-
         if (orgName) {
             dashboardTitle.textContent = `${orgName} Dashboard`;
             dashboardSubtitle.textContent = `A quick overview of your patient data from ${orgName}.`;
         }
 
+        // Fetch charts from backend
         const backendUrl = 'http://127.0.0.1:8000/api/dashboard/';
         const response = await fetch(backendUrl);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
         const data = await response.json();
         const chartsData = data.charts;
+
         const chartsContainer = document.getElementById("charts-container");
-        
-        // clear out old charts if re-rendering
-        chartsContainer.innerHTML = "";
-        
-        // create a div for each chart returned
+        chartsContainer.innerHTML = ""; // clear any previous charts
+
+        // Dynamically create a container for each chart
         chartsData.forEach((chartJson, index) => {
             const div = document.createElement("div");
             div.id = `chart-container-${index}`;
             div.classList.add("chart-container");
-            div.style.width = "600px";
-            div.style.height = "400px";
+            div.style.width = "600px";  // adjust as needed
+            div.style.height = "400px"; // adjust as needed
             chartsContainer.appendChild(div);
-        
+
             renderChart(div.id, chartJson);
         });
 
-
+        // End demo button
         if (endDemoButton) {
             endDemoButton.addEventListener('click', () => {
                 localStorage.clear();
@@ -91,9 +68,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error("Failed to load dashboard charts:", error);
         const mainContent = document.querySelector('main');
-        mainContent.innerHTML = `<p style="color: red; text-align: center; font-size: 1.2em;">Failed to load dashboard. Please ensure the backend server is running on ${backendUrl}.</p>`;
+        mainContent.innerHTML = `<p style="color: red; text-align: center; font-size: 1.2em;">
+            Failed to load dashboard. Ensure the backend is running on ${backendUrl}.
+        </p>`;
     }
 });
+
 
 /*
 document.addEventListener('DOMContentLoaded', async () => {

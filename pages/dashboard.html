@@ -22,15 +22,10 @@
             <h1 id="dashboard-title">Dashboard</h1>
             <p id="dashboard-subtitle">A quick overview of your patient data.</p>
         </div>
-        <div class="dashboard-grid">
-            <div id="chart-container-1" class="chart-container"></div>
-            <div id="chart-container-2" class="chart-container"></div>
-            <div id="chart-container-3" class="chart-container"></div>
-            <div id="chart-container-4" class="chart-container"></div>
-            <div id="chart-container-5" class="chart-container"></div>
-            <div id="chart-container-6" class="chart-container"></div>
-            <div id="chart-container-7" class="chart-container"></div>
-        </div>
+
+        <!-- Dynamic container for charts -->
+        <div class="dashboard-grid" id="charts-container"></div>
+
         <div class="demo-navigation">
             <a href="dashboard_upload.html" class="nav-button back-btn">Go Back</a>
             <button class="nav-button end-demo-btn">End Demo</button>
@@ -45,6 +40,7 @@
     <script src="../js/dashboard.js"></script>
 </body>
 </html>
+
 
 <!--
 <!DOCTYPE html>

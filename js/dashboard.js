@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const containers = document.querySelectorAll('.chart-container');
         containers.forEach((container, index) => {
             if (chartsData[index]) {
-                const chartJson = JSON.parse(chartsData[index]);
+                const chartJson = chartsData[index];
                 renderChart(container.id, chartJson);
             }
         });

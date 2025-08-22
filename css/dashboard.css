@@ -8,23 +8,14 @@
 }
 
 body, html {
+    height: 100%;
     margin: 0;
-    padding: 0;
-    height: 100vh;
-    overflow: hidden; /* KEY CHANGE: Prevents all page scrolling */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--light-bg-color);
-    color: var(--text-color);
-    line-height: 1.6;
 }
 
 .main-container {
+    height: 100vh; /* full viewport height */
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Fills the entire viewport height */
-    padding: 20px;
-    box-sizing: border-box;
-}
 
 /* --- Dashboard Header Styles --- */
 .dashboard-header {
@@ -47,27 +38,27 @@ body, html {
 
 /* --- Dashboard Grid & Chart Container Styles --- */
 .dashboard-grid {
-    flex-grow: 1; /* Takes up remaining vertical space */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
-    overflow-y: auto; /* KEY CHANGE: Allows scrolling *within* the grid */
-    padding-right: 15px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(2, 1fr); /* 2 charts per row */
+    grid-auto-rows: 350px; /* fixed height for each chart */
+    gap: 20px; /* space between charts */
+    padding: 20px;
+    flex: 1;
+    overflow: hidden;
+}
+.chart-container:last-child {
+    grid-column: 1 / span 2;
 }
 
 .chart-container {
+    width: 100%;
+    height: 100%;
     background-color: #fff;
-    padding: 25px;
     border-radius: 12px;
-    box-shadow: var(--shadow-medium);
-    transition: transform 0.3s ease;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 10px;
 }
+
 
 .chart-container:hover {
     transform: translateY(-5px);

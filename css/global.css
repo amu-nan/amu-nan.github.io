@@ -1,115 +1,177 @@
 :root {
     --primary-color: #2c3e50;
     --accent-color: #3498db;
-    --text-color: #0D1164;
+    --text-color: #34495e;
     --light-bg-color: #ffffff;
     --secondary-bg-color: #f8f9fa;
-    --icon-color: #169880;
+    --icon-color: #3498db;
     --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
     --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
-    --new-icon-color: #169880; 
+    --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+/* New keyframe animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes shimmer { /* ✨ NEW: Animation for a shimmering header effect */
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Header, body, and footer styles */
 body {
     font-family: 'Work Sans', sans-serif;
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--light-bg-color);
+    padding-top: 150px; /* Space for fixed header */
+    overflow-x: hidden;
 }
 
 header {
     background-color: var(--light-bg-color);
     padding: 10px 5%;
-    #border-bottom: 1px solid var(--secondary-bg-color);
-    #box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    display: flex; /* Add flexbox to the header */
-    justify-content: space-between; /* Space out the logo and COAST sections */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    max-height: 150px;
+    position: fixed; /* Makes the header sticky */
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    animation: fadeIn 0.8s ease-out;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ✨ NEW: A dynamic effect for the header on hover or scroll */
+/* To make this truly dynamic on scroll, you'd need a small JavaScript snippet to add a class */
+header:hover {
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15); /* A more pronounced shadow */
 }
 
 .logo-container {
     display: flex;
-    flex-direction: column; /* Changed from default row to column */
-    align-items: center; /* Center both logo and tagline */
+    align-items: center;
+    flex-direction: row;
+    width: 200px;
 }
 
 .logo {
-    width: 120px;
+    width: 200px;
     height: auto;
-    margin-right: 0; /* Remove right margin since we're stacking vertically */
-    margin-bottom: 5px; /* Add bottom margin for spacing */
+    margin-right: 0;
+    transition: transform 0.5s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
 }
 
 .tagline {
     font-size: 0.8em;
     font-weight: 600;
-    color: #063828;
-    letter-spacing: 0.5px;
+    color: #14967c;
     white-space: nowrap;
-    display: inline-block;
+    letter-spacing: 0.5px;
+    animation: pulse 2s infinite ease-in-out;
+    filter: drop-shadow(0 0 2px rgba(20, 150, 124, 0.4)); /* ✨ NEW: Subtle glow for the tagline */
 }
 
-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 20px 40px 20px;
-}
-
-section {
-    padding: 40px 0;
-}
-
-h1, h2, h3 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-.coast-flow-header {
+/* ✨ NEW: Styles for the navigation menu (assuming you have one) */
+nav {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 30px;
 }
 
-.coast-step-container {
+nav a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 1em;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-color);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+
+nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+footer {
+    background-color: #063828;
+    color: #fff;
+    text-align: center;
+    padding: 30px;
+    font-size: 0.9em;
+    margin-top: 50px;
+    position: relative; /* ✨ NEW: For layered effects */
+    overflow: hidden; /* To contain the gradient animation */
+}
+
+/* ✨ NEW: Shimmering effect on the footer for a cool look */
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 10s infinite linear;
+    pointer-events: none; /* Allows clicks to pass through */
+}
+
+.footer-content {
+    position: relative;
+    z-index: 2; /* Ensures content is above the shimmer effect */
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
 }
 
-.coast-letter {
-    font-size: 2.5em;
-    font-weight: 700;
-    color: #b8e6d9;
-    transition: color 0.3s;
+.footer-content a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-.coast-letter.active {
-    color: #13957c;
-}
-
-.coast-step-name {
-    font-size: 0.9em;
-    color: #13957c;
-    text-transform: uppercase;
-    transition: color 0.3s;
-}
-
-.coast-step-name.active {
-    color: #13957c;
-    font-weight: 600;
-}
-
-.features-section .feature i {
-    color: #169880; /* Your requested green color */
-    font-size: 2.5em; /* Make icons prominent */
-    margin-bottom: 15px;
+.footer-content a:hover {
+    color: var(--accent-color);
 }

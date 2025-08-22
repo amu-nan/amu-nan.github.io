@@ -1,3 +1,5 @@
+console.log("dashboard.js loaded!");
+
 // Function to render a chart in a container
 const renderChart = (containerId, chartJson) => {
     const chartContainer = document.getElementById(containerId);

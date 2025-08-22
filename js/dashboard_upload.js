@@ -9,21 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Retrieve names from local storage and display them
     const ownerName = localStorage.getItem('ownerName');
     const orgName = localStorage.getItem('orgName');
-
-   // Check for a flag in local storage to see if a file has been processed.
-    const fileProcessed = localStorage.getItem('fileProcessed');
-
+    
     if (ownerName && orgName) {
         ownerDisplay.textContent = ownerName;
         orgDisplay.textContent = orgName;
-        
-        // If a file has already been processed, show the action buttons immediately.
-        if (fileProcessed === 'true') {
-            actionButtonsContainer.style.display = 'block';
-            uploadSubmitBtn.style.display = 'none';
-            // You can also display a message to the user that the file is ready.
-            fileList.innerHTML = '<li>Your file is ready.</li>';
-        }
     } else {
         // Redirect back to owner page if names aren't set
         window.location.href = 'owner.html';
@@ -36,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (files.length > 0) {
             uploadSubmitBtn.disabled = false;
-            localStorage.removeItem('fileProcessed');
             for (const file of files) {
                 const listItem = document.createElement('li');
                 listItem.textContent = file.name;
@@ -77,9 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             console.log('File uploaded successfully!', data);
-
-            localStorage.setItem('fileProcessed', 'true');
-            
             alert('File uploaded successfully! Start exploring with Ria, your Conversational AI, or dive into real-time AI-powered dashboards.');
             
             // Show the action buttons after a successful upload

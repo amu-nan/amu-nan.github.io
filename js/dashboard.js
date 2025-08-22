@@ -55,8 +55,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const div = document.createElement("div");
             div.id = `chart-container-${index}`;
             div.classList.add("chart-container");
-            div.style.width = "600px";  // adjust as needed
-            div.style.height = "400px"; // adjust as needed
             chartsContainer.appendChild(div);
 
             renderChart(div.id, chartJson);

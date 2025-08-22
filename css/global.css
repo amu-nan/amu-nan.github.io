@@ -87,8 +87,6 @@ header:hover {
     color: #14967c;
     white-space: nowrap;
     letter-spacing: 0.5px;
-    animation: pulse 2s infinite ease-in-out;
-    /* This is the line that was removed: filter: drop-shadow(0 0 2px rgba(20, 150, 124, 0.4)); */
 }
 
 /* Styles for the navigation menu (assuming you have one) */

@@ -5,7 +5,7 @@ const renderChart = (containerId, chartJson) => {
     const chartContainer = document.getElementById(containerId);
     if (!chartContainer) {
         console.error(`Container with ID ${containerId} not found.`);
-        return;
+        return; 
     }
 
     const layout = chartJson.layout || {};

@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const dashboardTitle = document.getElementById('dashboard-title');
         const dashboardSubtitle = document.getElementById('dashboard-subtitle');
-        const endDemoButton = document.querySelector('.back-btn');
+        const endDemoButton = document.querySelector('.end-demo-btn');
 
         // Optional: show org name from localStorage
         const orgName = localStorage.getItem('orgName');
@@ -66,16 +66,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         // End demo button
-        const backButton = document.querySelector('.back-btn'); // Add a back button variable
-
-        if (backButton) {
-            backButton.addEventListener('click', () => {
-                window.location.href = 'dashboard_upload.html'; // Add navigation logic
-            });
-        }
-        
-        // Keep the end demo button logic separate
-        const endDemoButton = document.querySelector('.end-demo-btn');
         if (endDemoButton) {
             endDemoButton.addEventListener('click', () => {
                 localStorage.clear();

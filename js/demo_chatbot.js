@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    if (backButton) backButton.addEventListener('click', () => window.location.href = 'dashboard_upload.html');
+    if (backButton) backButton.addEventListener('click', () => history.back());
     if (endDemoButton) endDemoButton.addEventListener('click', () => {
         localStorage.clear();
         window.location.href = '../index.html';

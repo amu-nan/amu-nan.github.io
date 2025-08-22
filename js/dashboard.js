@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             dashboardSubtitle.textContent = `A quick overview of your patient data from ${orgName}.`;
         }
 
-        const backendUrl = 'http://127.0.0.1:5000/dashboard';
+        const backendUrl = 'http://127.0.0.1:8000/dashboard';
         const response = await fetch(backendUrl);
         
         if (!response.ok) {

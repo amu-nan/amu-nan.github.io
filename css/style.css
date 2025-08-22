@@ -85,7 +85,7 @@ h1 {
 .acronym-letter {
     font-size: 1.5em; /* Makes the letter larger */
     font-weight: 700; /* Makes the letter bolder */
-    color: #169780;
+    color: #0e563b;
     margin-right: 2px;
 }
 
@@ -341,13 +341,15 @@ footer {
 }
 
 .highlights-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 25px;
-    padding: 0;
 }
 
 .highlight-item {
+    flex-basis: 300px;
+    flex-grow: 1; 
     background-color: var(--light-bg-color);
     padding: 30px;
     border-radius: 12px;

@@ -1,47 +1,131 @@
-body, html {
+/* --- Root Variables --- */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --text-color: #333;
+    --light-bg-color: #ecf0f1;
+    --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Reset & Body --- */
+html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--light-bg-color);
+    color: var(--text-color);
 }
 
+/* --- Main Container --- */
 .main-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;  /* full viewport height */
-    box-sizing: border-box;
+    min-height: 100vh; /* full viewport height */
     padding: 20px;
+    box-sizing: border-box;
 }
 
-/* Header stays at top */
+/* --- Dashboard Header --- */
 .dashboard-header {
     text-align: center;
     margin-bottom: 20px;
     flex-shrink: 0;
 }
 
-/* Grid for charts */
+.dashboard-header h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.dashboard-header p {
+    font-size: 1.1em;
+    color: #666;
+}
+
+/* --- Dashboard Grid --- */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    grid-auto-rows: 400px; /* fixed height for each chart */
+    grid-auto-rows: 400px; /* fixed height for charts */
     gap: 20px;
-    flex-grow: 1;      /* take remaining space */
+    flex-grow: 1; /* take remaining space */
 }
 
-/* Chart styling */
+/* --- Chart Container --- */
 .chart-container {
     background-color: #fff;
-    padding: 10px;
+    padding: 15px;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow-medium);
     width: 100%;
     height: 100%;
     overflow: visible;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Footer & navigation stay at bottom */
+/* Hover effect */
+.chart-container:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+/* --- Full width chart (optional) --- */
+.full-width {
+    grid-column: 1 / -1;
+}
+
+/* --- Footer & Navigation --- */
 .demo-navigation, footer {
     flex-shrink: 0;
     text-align: center;
+    margin-top: 20px;
+}
+
+.demo-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-button {
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.nav-button.back-btn {
+    background-color: #95a5a6;
+}
+
+.nav-button.back-btn:hover {
+    background-color: #7f8c8d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.nav-button.end-demo-btn {
+    background-color: #e74c3c;
+}
+
+.nav-button.end-demo-btn:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* --- Footer --- */
+footer {
+    font-size: 0.9em;
+    color: #888;
     margin-top: 20px;
 }

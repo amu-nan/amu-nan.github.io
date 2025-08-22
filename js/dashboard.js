@@ -10,7 +10,7 @@ const renderChart = (containerId, chartJson) => {
 
     const layout = chartJson.layout || {};
     layout.autosize = true;
-    layout.margin = { t: 50, b: 50, l: 50, r: 50 };
+    layout.margin = { t: 40, b: 40, l: 40, r: 40 };
 
     Plotly.react(containerId, chartJson.data, layout, {
         responsive: true,

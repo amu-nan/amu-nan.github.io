@@ -60,10 +60,6 @@ main {
     max-width: 1400px; /* Increased from 1200px to fill more space on larger screens */
     margin: 0 auto;
     padding: 20px 20px 40px 20px;
-}main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 20px 40px 20px;
 }
 
 section {
@@ -89,7 +85,7 @@ h1 {
 .acronym-letter {
     font-size: 1.5em; /* Makes the letter larger */
     font-weight: 700; /* Makes the letter bolder */
-    color: var(--primary-color); /* You can customize the color */
+    color: #169780;
     margin-right: 2px;
 }
 
@@ -113,7 +109,7 @@ h1 {
 }
 
 .features-section .feature i {
-    color: #169880; 
+    color: #169780; 
     font-size: 2.5em;
     margin-bottom: 15px;
 }

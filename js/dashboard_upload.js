@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             console.log('File uploaded successfully!', data);
-            alert('File uploaded successfully! You can now navigate to the Chatbot or Dashboard.');
+            alert('File uploaded successfully! Start exploring with Ria, your Conversational AI, or dive into real-time AI-powered dashboards.');
             
             // Show the action buttons after a successful upload
             actionButtonsContainer.style.display = 'block';

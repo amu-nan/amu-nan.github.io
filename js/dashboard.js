@@ -19,6 +19,11 @@ const renderChart = (containerId, chartJson) => {
         displayModeBar: false
     });
 
+    // Force resize after a small delay to ensure container size is set
+    setTimeout(() => {
+        Plotly.Plots.resize(chartContainer);
+    }, 50);
+
     // Optional click handler
     chartContainer.on('plotly_click', function (data) {
         const point = data.points[0];

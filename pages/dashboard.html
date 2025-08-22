@@ -1,4 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xforia COAST Dashboard</title>
+    <link rel="icon" type="image/png" href="../images/Subject.png">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+    </header>
 
+    <main class="main-container">
+        <div class="dashboard-header">
+            <h1 id="dashboard-title">Dashboard</h1>
+            <p id="dashboard-subtitle">A quick overview of your patient data.</p>
+        </div>
+        <div class="dashboard-grid">
+            <div id="chart-container-1" class="chart-container"></div>
+            <div id="chart-container-2" class="chart-container"></div>
+            <div id="chart-container-3" class="chart-container"></div>
+            <div id="chart-container-4" class="chart-container"></div>
+            <div id="chart-container-5" class="chart-container"></div>
+            <div id="chart-container-6" class="chart-container"></div>
+            <div id="chart-container-7" class="chart-container"></div>
+        </div>
+        <div class="demo-navigation">
+            <a href="dashboard_upload.html" class="nav-button back-btn">Go Back</a>
+            <button class="nav-button end-demo-btn">End Demo</button>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+        <p>9300 Wade Blvd, Suite 220, Frisco, Texas, 75035.</p>
+    </footer>
+    
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>
+
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,51 +119,4 @@
 </html>
 
 
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xforia COAST Dashboard</title>
-    <link rel="icon" type="image/png" href="../images/Subject.png">
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
-</head>
-<body>
-    <header>
-        <div class="logo-container">
-            <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
-            <span class="tagline">Ride the wave of efficiency.</span>
-        </div>
-    </header>
 
-    <main>
-        <div class="dashboard-header">
-            <h1 id="dashboard-title">Dashboard</h1>
-            <p id="dashboard-subtitle">A quick overview of your patient data.</p>
-        </div>
-
-        <div class="dashboard-grid">
-            <iframe id="reportFrame" 
-                    src="http://127.0.0.1:8000/dashboard/" 
-                    width="100%" 
-                    height="1200px" 
-                    style="border:none;">
-            </iframe>
-        </div>
-
-        <div class="demo-navigation">
-            <a href="dashboard_upload.html" class="nav-button back-btn">Go Back</a>
-            <button class="nav-button end-demo-btn">End Demo</button>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
-        <p>9300 Wade Blvd, Suite 220, Frisco, Texas, 75035.</p>
-    </footer>
-
-</body>
-</html>
-
--->

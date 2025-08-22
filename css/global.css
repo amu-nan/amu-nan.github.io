@@ -28,7 +28,7 @@
     100% { transform: translateY(0); }
 }
 
-@keyframes shimmer { /* ✨ NEW: Animation for a shimmering header effect */
+@keyframes shimmer {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
 }
@@ -39,7 +39,7 @@ body {
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--light-bg-color);
-    padding-top: 150px; /* Space for fixed header */
+    padding-top: 150px;
     overflow-x: hidden;
 }
 
@@ -48,7 +48,7 @@ header {
     padding: 10px 5%;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     max-height: 150px;
-    position: fixed; /* Makes the header sticky */
+    position: fixed;
     top: 0;
     width: 100%;
     z-index: 100;
@@ -59,10 +59,8 @@ header {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ✨ NEW: A dynamic effect for the header on hover or scroll */
-/* To make this truly dynamic on scroll, you'd need a small JavaScript snippet to add a class */
 header:hover {
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15); /* A more pronounced shadow */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
 }
 
 .logo-container {
@@ -90,10 +88,10 @@ header:hover {
     white-space: nowrap;
     letter-spacing: 0.5px;
     animation: pulse 2s infinite ease-in-out;
-    filter: drop-shadow(0 0 2px rgba(20, 150, 124, 0.4)); /* ✨ NEW: Subtle glow for the tagline */
+    /* This is the line that was removed: filter: drop-shadow(0 0 2px rgba(20, 150, 124, 0.4)); */
 }
 
-/* ✨ NEW: Styles for the navigation menu (assuming you have one) */
+/* Styles for the navigation menu (assuming you have one) */
 nav {
     display: flex;
     align-items: center;
@@ -134,11 +132,11 @@ footer {
     padding: 30px;
     font-size: 0.9em;
     margin-top: 50px;
-    position: relative; /* ✨ NEW: For layered effects */
-    overflow: hidden; /* To contain the gradient animation */
+    position: relative;
+    overflow: hidden;
 }
 
-/* ✨ NEW: Shimmering effect on the footer for a cool look */
+/* Shimmering effect on the footer for a cool look */
 footer::before {
     content: '';
     position: absolute;
@@ -154,12 +152,12 @@ footer::before {
     );
     background-size: 200% 100%;
     animation: shimmer 10s infinite linear;
-    pointer-events: none; /* Allows clicks to pass through */
+    pointer-events: none;
 }
 
 .footer-content {
     position: relative;
-    z-index: 2; /* Ensures content is above the shimmer effect */
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;

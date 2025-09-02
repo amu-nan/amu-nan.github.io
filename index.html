@@ -10,16 +10,46 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .nav-button-new {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-button-new:hover {
+            background-color: var(--accent-color);
+            color: var(--light-bg-color);
+        }
+    </style>
 </head>
 <body>
 
     <header>
         <div class="logo-container">
             <a href="index.html">
-            <img src="images/logo.png" alt="Xforia COAST Logo" class="logo">
+                <img src="images/logo.png" alt="Xforia COAST Logo" class="logo">
             </a>
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
+        <nav class="main-nav">
+            <a href="pages/login.html" class="nav-button-new">Setup Your Organization</a>
+            <a href="pages/manufacturing/xforia-manufacturing.html" class="nav-button-new">Xforia Coast for Manufacturing</a>
+            <a href="pages/owner.html" class="nav-button-new">Demo for Xforia COASt</a>
+        </nav>
     </header>
 
     <main>
@@ -62,33 +92,33 @@
             <h2>Highlights / Key Features</h2>
             <div class="highlights-container">
                 <div class="highlight-item">
-                  <h3>Conversational AI with Ria</h3>
-                  <p>Engage with Ria, your intelligent AI assistant, designed to answer questions, guide decisions, and streamline workflows through natural conversations.</p>
+                    <h3>Conversational AI with Ria</h3>
+                    <p>Engage with Ria, your intelligent AI assistant, designed to answer questions, guide decisions, and streamline workflows through natural conversations.</p>
                 </div>
                 
                 <div class="highlight-item">
-                  <h3>AI-Powered Insights</h3>
-                  <p>Unlock context-aware insights from your data with advanced AI models that provide deeper analysis and smarter decision support.</p>
+                    <h3>AI-Powered Insights</h3>
+                    <p>Unlock context-aware insights from your data with advanced AI models that provide deeper analysis and smarter decision support.</p>
                 </div>
                 
                 <div class="highlight-item">
-                  <h3>End-to-End Automation</h3>
-                  <p>Automate your entire data workflow—from ingestion to analysis—ensuring consistency, accuracy, and efficiency at every step.</p>
+                    <h3>End-to-End Automation</h3>
+                    <p>Automate your entire data workflow—from ingestion to analysis—ensuring consistency, accuracy, and efficiency at every step.</p>
                 </div>
                 
                 <div class="highlight-item">
-                  <h3>Scalable Architecture</h3>
-                  <p>Leverage a robust, scalable architecture that grows with your business and adapts seamlessly across industries.</p>
+                    <h3>Scalable Architecture</h3>
+                    <p>Leverage a robust, scalable architecture that grows with your business and adapts seamlessly across industries.</p>
                 </div>
                 
                 <div class="highlight-item">
-                  <h3>Data Security & Compliance</h3>
-                  <p>Protect your data with enterprise-grade security and built-in compliance standards, ensuring trust and reliability across all operations.</p>
+                    <h3>Data Security & Compliance</h3>
+                    <p>Protect your data with enterprise-grade security and built-in compliance standards, ensuring trust and reliability across all operations.</p>
                 </div>
                 
                 <div class="highlight-item">
-                  <h3>Seamless Integration</h3>
-                  <p>Connect effortlessly with your existing systems and third-party applications to maximize productivity without disruption.</p>
+                    <h3>Seamless Integration</h3>
+                    <p>Connect effortlessly with your existing systems and third-party applications to maximize productivity without disruption.</p>
                 </div>
 
             </div>
@@ -105,45 +135,45 @@
                 <h2 class="section-title">Business Outcomes</h2>
                 <div class="outcome-list">
                 
-                  <div class="outcome-item">
-                    <i>📊</i>
-                    <div class="outcome-content">
-                      <h3>90% Faster, Real-Time Decisions</h3>
-                      <p>Access live and historical data instantly to act with confidence.</p>
+                    <div class="outcome-item">
+                        <i>📊</i>
+                        <div class="outcome-content">
+                            <h3>90% Faster, Real-Time Decisions</h3>
+                            <p>Access live and historical data instantly to act with confidence.</p>
+                        </div>
                     </div>
-                  </div>
                 
-                  <div class="outcome-item">
-                    <i>🚀</i>
-                    <div class="outcome-content">
-                      <h3>Up to 50% Growth in ROI</h3>
-                      <p>Turn AI-powered automation into measurable business value, fast.</p>
+                    <div class="outcome-item">
+                        <i>🚀</i>
+                        <div class="outcome-content">
+                            <h3>Up to 50% Growth in ROI</h3>
+                            <p>Turn AI-powered automation into measurable business value, fast.</p>
+                        </div>
                     </div>
-                  </div>
                 
-                  <div class="outcome-item">
-                    <i>⚙️</i>
-                    <div class="outcome-content">
-                      <h3>More Efficient Operations</h3>
-                      <p>Cut overhead costs and optimize resources without disruption.</p>
+                    <div class="outcome-item">
+                        <i>⚙️</i>
+                        <div class="outcome-content">
+                            <h3>More Efficient Operations</h3>
+                            <p>Cut overhead costs and optimize resources without disruption.</p>
+                        </div>
                     </div>
-                  </div>
                 
-                  <div class="outcome-item">
-                    <i>🤝</i>
-                    <div class="outcome-content">
-                      <h3>Stronger Team Collaboration</h3>
-                      <p>Keep every stakeholder aligned and projects on track.</p>
+                    <div class="outcome-item">
+                        <i>🤝</i>
+                        <div class="outcome-content">
+                            <h3>Stronger Team Collaboration</h3>
+                            <p>Keep every stakeholder aligned and projects on track.</p>
+                        </div>
                     </div>
-                  </div>
                 
-                  <div class="outcome-item">
-                    <i>🔒</i>
-                    <div class="outcome-content">
-                      <h3>100% Data Security & Compliance</h3>
-                      <p>Protect sensitive data while ensuring audit readiness and trust.</p>
+                    <div class="outcome-item">
+                        <i>🔒</i>
+                        <div class="outcome-content">
+                            <h3>100% Data Security & Compliance</h3>
+                            <p>Protect sensitive data while ensuring audit readiness and trust.</p>
+                        </div>
                     </div>
-                  </div>
                 
                 </div>
             </div>

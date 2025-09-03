@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Your Files</title>
+    <link rel="icon" type="image/png" href="../../images/Subject.png">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/manufacturing/file-upload.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <a href="../../index.html">
+                <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            </a>
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle">
+                        Services <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html">Xforia for Manufacturing</a>
+                        <a href="#">Xforia for Healthcare</a>
+                        <a href="#">Xforia for Finance</a>
+                        <a href="#">Xforia for Academia</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <section class="upload-section">
+            <h1 class="page-title">Upload Documents for Consolidation</h1>
+            <p class="page-intro">
+                Drag and drop your files or click to select. Our intelligent platform
+                will automatically consolidate and process them for you.
+            </p>
+
+            <div class="upload-area" id="drop-area">
+                <input type="file" id="fileElem" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" style="display: none;">
+                <label for="fileElem" class="upload-label">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p>Drag & Drop Files Here</p>
+                    <p class="small-text">or click to browse</p>
+                </label>
+            </div>
+
+            <div class="file-list-container">
+                <h3><i class="fa-solid fa-list-ul"></i> Files to Upload</h3>
+                <ul id="file-list" class="file-list">
+                    </ul>
+            </div>
+
+            <div class="api-info-box">
+                <p>This demo uses an **API endpoint** to send your files securely for processing. This is where your data pipeline begins!</p>
+                <code class="api-endpoint-code">POST /api/upload</code>
+            </div>
+
+            <div class="action-buttons">
+                <button id="upload-button" class="upload-button" disabled>Upload Files</button>
+                <a href="options.html" class="continue-button demo-button" id="continue-button" style="display: none;">
+                    Continue to Dashboard <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+    </footer>
+
+    <script src="../../js/manufacturing/file-upload.js"></script>
+</body>
+</html>

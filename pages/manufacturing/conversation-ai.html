@@ -40,18 +40,24 @@
 
     <main class="chatbot-container">
         <div class="chat-header">
-            <button id="backButton" class="back-button"><i class="fa-solid fa-arrow-left"></i> Back</button>
             <div class="chat-info">
-                <h2>Ria - Your Conversational AI</h2>
+                <h2 class="chat-title">Ria - Your Conversational AI</h2>
                 <p>Ready to answer questions about your manufacturing data.</p>
             </div>
-            <button id="endDemoButton" class="end-button">End Demo</button>
         </div>
         <div id="chat-history" class="chat-history">
             </div>
         <div class="chat-input-area">
             <input type="text" id="userQueryInput" placeholder="Ask a question about your data...">
             <button id="sendButton" class="send-button"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <div class="chat-footer">
+            <a href="#" id="backButton" class="footer-button back-button">
+                <i class="fa-solid fa-arrow-left"></i> Go Back
+            </a>
+            <a href="#" id="endDemoButton" class="footer-button end-button">
+                End Demo <i class="fa-solid fa-xmark"></i>
+            </a>
         </div>
     </main>
 

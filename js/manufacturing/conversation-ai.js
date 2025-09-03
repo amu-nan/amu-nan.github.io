@@ -10,11 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatHistoryArray = [];
 
     // --- Backend Endpoint Configuration ---
-    // Use this URL for the local demo backend provided by the team.
-    // const backendUrl = "http://127.0.0.1:8000/chat";
-
-    // When the real backend is ready, use this commented-out URL instead.
-    const liveBackendUrl = 'YOUR_LIVE_LLM_ENDPOINT_HERE';
+    // Corrected URL to match the backend's /chat/manufacturing endpoint.
+    const backendUrl = "http://127.0.0.1:8000/chat/manufacturing";
 
     // --- Chatbot Functions ---
     function addMessage(sender, text, isTyping = false) {
@@ -43,26 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function sendQueryToBackend(query) {
-        // --- Demo Simulation (Active for now) ---
-        // Once the backend is ready, comment out this block and uncomment the API call below.
-        return new Promise(resolve => {
-            setTimeout(() => {
-                const cannedResponses = [
-                    "Based on the consolidated documents, the total number of work orders for Q3 was 450.",
-                    "I can confirm that the 'Customer_data.xlsx' file contains information for 52 new clients.",
-                    "The CAD file for the 'XYZ-Model' shows a material spec of 6061-T6 aluminum, with a tolerance of +/- 0.05mm.",
-                    "The primary bottleneck identified in the latest production report is the assembly line, which saw an 8% increase in downtime last month.",
-                    "Our analysis of the CRM data suggests a 15% increase in lead conversion rate from the Midwest region."
-                ];
-                const randomIndex = Math.floor(Math.random() * cannedResponses.length);
-                resolve(cannedResponses[randomIndex]);
-            }, 2000); // 2-second typing delay
-        });
-
-        // --- Real API Integration (Commented out for now) ---
-        /*
+        // --- Real API Integration (Now Active) ---
         try {
-            const response = await fetch(liveBackendUrl, {
+            const response = await fetch(backendUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -83,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error sending query:", error);
             return "Sorry, I'm having trouble connecting right now. Please try again later.";
         }
-        */
     }
 
     async function sendQuery() {
@@ -131,13 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     endDemoButton.addEventListener('click', (event) => {
         event.preventDefault();
-        window.location.href = '../../index.html';
-    });
-
-    if (backButton) backButton.addEventListener('click', () => history.back());
-    if (endDemoButton) endDemoButton.addEventListener('click', () => {
-        // Clear local storage if needed, or redirect.
-        // localStorage.clear();
         window.location.href = '../../index.html';
     });
 

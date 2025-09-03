@@ -2,69 +2,72 @@
 html, body {
     height: 100%;
     margin: 0;
-    display: flex; /* Use flexbox for full-page layout */
-    flex-direction: column;
+    overflow: hidden; /* This prevents scrolling */
+    display: flex;
+    flex-direction: column; /* Allows main and footer to stack vertically */
+}
+
+header {
+    /* Assuming header has a fixed height or adjusts dynamically */
+    /* Add any necessary styling for your header here */
+    padding: 1rem 5%;
+    background-color: #fff; /* Example background */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Example shadow */
+    z-index: 1000;
 }
 
 main.xforia-manufacturing-page {
-    flex-grow: 1; /* Allows the main content to fill the remaining space */
+    flex-grow: 1; /* Allows main content to take up available space */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers content vertically */
-    align-items: center; /* Centers content horizontally */
-    padding: 0 5%;
-    text-align: center;
-    overflow-y: auto; /* Allows the main content area to scroll if needed */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    padding: 2rem 5%; /* Add some padding for overall content */
+    box-sizing: border-box; /* Include padding in element's total width and height */
+    overflow-y: auto; /* Allow main content to scroll if it overflows */
 }
 
 .intro-section {
     margin-bottom: 2rem;
-    width: 100%;
+    text-align: center; /* Center the text within the intro section */
+    width: 100%; /* Ensure it takes full width to allow centering */
 }
 
-/* Consistent headline style */
 .intro-headline {
     font-size: 2.8rem;
     font-weight: 800;
     color: var(--primary-color);
-    margin-bottom: 10px; /* Consistent margin */
-    text-align: center;
+    margin-bottom: 0.5rem;
+    text-align: center; /* Explicitly center the headline */
 }
 
-/* Consistent subheadline style */
 .intro-subheadline {
-    font-size: 1.2em;
+    font-size: 1.2rem;
     color: var(--text-color);
     max-width: 800px;
-    margin: 0 auto 50px; /* Consistent margin and centering */
-    line-height: 1.6;
+    margin-left: auto; /* Center block element */
+    margin-right: auto; /* Center block element */
 }
 
 .features-section {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px; /* Consistent grid gap */
+    grid-template-columns: 1fr 1fr; /* Two columns for AI Data Pipelines and Integration Flow */
+    gap: 2rem;
     width: 100%;
     max-width: 1000px;
-    margin-bottom: 50px; /* Consistent margin */
+    margin-bottom: 2rem;
+    align-items: start; /* Align items to the top of their grid cells */
 }
 
-/* Consistent card style from the "Consolidate Files" page */
 .feature-card {
-    background: var(--secondary-bg-color);
-    padding: 40px;
-    border-radius: 15px;
+    background-color: var(--secondary-bg-color);
+    border-radius: 12px;
     box-shadow: var(--shadow-medium);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    text-align: left;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
-}
-
-/* Consistent card hover effect */
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-heavy);
+    text-align: left;
+    height: 100%; /* Ensure cards take full height of their grid cell */
 }
 
 .feature-header {
@@ -110,13 +113,15 @@ main.xforia-manufacturing-page {
 .integration-card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* Align content to the top */
     align-items: center;
 }
 
 .flowchart-container {
     margin-top: 1rem;
     width: 100%;
+    display: flex; /* Use flex to center the image if it's smaller than container */
+    justify-content: center;
 }
 
 .flowchart-image {
@@ -127,34 +132,54 @@ main.xforia-manufacturing-page {
 }
 
 .cta-section {
-    text-align: center;
-    margin-top: 40px; /* Consistent margin */
+    margin-top: 2rem; /* Add some space above the CTA button */
 }
 
-/* Consistent button style from the "Consolidate Files" page */
 .demo-button {
-    background-color: #2ecc71;
+    background-color: var(--accent-color);
     color: #fff;
-    padding: 18px 40px;
+    padding: 1rem 2.5rem;
     border-radius: 50px;
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-weight: 600;
     text-decoration: none;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .demo-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: #2c974b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 footer {
-    background-color: var(--footer-bg-color, #203731);
-    color: var(--footer-text-color, #ffffff);
+    background-color: var(--footer-bg-color, #203731); /* Use your footer background color */
+    color: var(--footer-text-color, #ffffff); /* Use your footer text color */
     text-align: center;
     padding: 1rem 0;
     width: 100%;
-    flex-shrink: 0; /* Ensures the footer stays at the bottom */
+    flex-shrink: 0; /* Prevents footer from shrinking */
     box-sizing: border-box;
+}
+
+/* General styles (assuming this is in style.css or a base CSS) */
+:root {
+    --primary-color: #0d1b2a;
+    --secondary-color: #1b263b;
+    --accent-color: #38b000; /* A shade of green for buttons/icons */
+    --text-color: #4a4a4a;
+    --light-text-color: #e0e1dd;
+    --bg-color: #f8f9fa;
+    --secondary-bg-color: #ffffff;
+    --shadow-light: 0 2px 5px rgba(0,0,0,0.08);
+    --shadow-medium: 0 5px 15px rgba(0,0,0,0.1);
+    --footer-bg-color: #203731; /* Added for footer */
+    --footer-text-color: #ffffff; /* Added for footer */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
 }

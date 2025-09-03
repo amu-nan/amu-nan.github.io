@@ -179,3 +179,45 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
+
+/* Spinner for processing */
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: var(--accent-color);
+    animation: spin 1s ease infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.processing-info {
+    text-align: center;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.success-message {
+    color: #2ecc71;
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.completion-buttons {
+    margin-top: 40px;
+}
+
+.view-dashboard {
+    background-color: var(--primary-color);
+    margin-left: 20px;
+}
+
+.view-dashboard:hover {
+    background-color: #1a242f;
+}

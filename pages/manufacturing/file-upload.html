@@ -56,8 +56,7 @@
 
             <div class="file-list-container">
                 <h3><i class="fa-solid fa-list-ul"></i> Files to Process</h3>
-                <ul id="file-list" class="file-list">
-                </ul>
+                <ul id="file-list" class="file-list"></ul>
             </div>
 
             <div class="action-buttons" id="action-buttons">
@@ -75,8 +74,10 @@
                     <a href="conversation-ai.html" class="continue-button demo-button">
                         Launch Conversational AI (RIA) <i class="fa-solid fa-comment-dots"></i>
                     </a>
-                    <!-- Keep anchor for semantics/SEO; JS will navigate explicitly -->
-                    <a href="http://127.0.0.1:8050/" class="continue-button demo-button view-dashboard" id="view-dashboard-link">
+
+                    <!-- Open Dash as a new page in the same tab -->
+                    <a href="http://127.0.0.1:8050/" target="_top"
+                       class="continue-button demo-button view-dashboard" id="view-dashboard-link">
                         View Dashboard <i class="fa-solid fa-chart-line"></i>
                     </a>
                 </div>
@@ -106,19 +107,15 @@
                 }
             });
 
-            // Navigate to Dash in same tab (full page load)
-            const dashUrl = 'http://127.0.0.1:8050/'; // Dash app URL
+            // Optional: force navigation via JS (not required; href handles it)
+            const dashUrl = 'http://127.0.0.1:8050/';
             const link = document.getElementById('view-dashboard-link');
-
             if (link) {
                 link.addEventListener('click', function(e) {
-                    // Optional: remove this preventDefault and rely on href alone.
-                    e.preventDefault();
-                    // Navigate to Dash; back button returns to this page (assign)
-                    window.location.assign(dashUrl);
-                    // Alternatives:
-                    // window.location.href = dashUrl;   // same behavior
-                    // window.location.replace(dashUrl); // no back to this page
+                    // Do NOT prevent default; allow normal navigation.
+                    // If you must control it via JS, uncomment one line below:
+                    // window.location.assign(dashUrl);   // keeps history
+                    // window.location.replace(dashUrl);  // no back to this page
                 });
             }
         });

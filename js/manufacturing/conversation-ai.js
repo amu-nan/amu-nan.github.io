@@ -23,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
             messageDiv.id = 'typing-indicator'; 
             messageDiv.innerHTML = `<p class="loading-dots"><span></span><span></span><span></span></p>`;
         } else {
-            const paragraph = document.createElement('p');
-            paragraph.textContent = text;
-            messageDiv.appendChild(paragraph);
+            // Convert Markdown to HTML
+            messageDiv.innerHTML = marked.parse(text);
+
         }
 
         chatHistory.appendChild(messageDiv);

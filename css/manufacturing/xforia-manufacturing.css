@@ -1,24 +1,25 @@
-/* Custom styles for the Manufacturing splash page, updated for consistency */
-
+/* Custom styles for the Manufacturing splash page */
 html, body {
     height: 100%;
     margin: 0;
-    display: flex;
+    display: flex; /* Use flexbox for full-page layout */
     flex-direction: column;
 }
 
-/* Page container to match the "Consolidate Files" page layout */
-.page-container {
-    padding: 60px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    flex-grow: 1; /* Allows main content to take up available space */
-    box-sizing: border-box;
+main.xforia-manufacturing-page {
+    flex-grow: 1; /* Allows the main content to fill the remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    padding: 0 5%;
+    text-align: center;
+    overflow-y: auto; /* Allows the main content area to scroll if needed */
 }
 
 .intro-section {
-    text-align: center;
-    animation: fadeIn 1s ease-out;
+    margin-bottom: 2rem;
+    width: 100%;
 }
 
 /* Consistent headline style */
@@ -26,23 +27,26 @@ html, body {
     font-size: 2.8rem;
     font-weight: 800;
     color: var(--primary-color);
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Consistent margin */
+    text-align: center;
 }
 
 /* Consistent subheadline style */
 .intro-subheadline {
     font-size: 1.2em;
-    max-width: 800px;
-    margin: 0 auto 50px;
     color: var(--text-color);
+    max-width: 800px;
+    margin: 0 auto 50px; /* Consistent margin and centering */
     line-height: 1.6;
 }
 
 .features-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px; /* Consistent gap */
-    margin-bottom: 50px;
+    gap: 30px; /* Consistent grid gap */
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 50px; /* Consistent margin */
 }
 
 /* Consistent card style from the "Consolidate Files" page */
@@ -124,11 +128,12 @@ html, body {
 
 .cta-section {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 40px; /* Consistent margin */
 }
 
+/* Consistent button style from the "Consolidate Files" page */
 .demo-button {
-    background-color: #2ecc71; /* Matched the continue button color */
+    background-color: #2ecc71;
     color: #fff;
     padding: 18px 40px;
     border-radius: 50px;
@@ -150,6 +155,6 @@ footer {
     text-align: center;
     padding: 1rem 0;
     width: 100%;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Ensures the footer stays at the bottom */
     box-sizing: border-box;
 }

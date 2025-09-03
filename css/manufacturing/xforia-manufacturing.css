@@ -2,7 +2,7 @@
 html, body {
     height: 100%;
     margin: 0;
-    overflow: hidden; /* This prevents scrolling */
+    overflow: scroll; /* This prevents scrolling */
 }
 
 main.xforia-manufacturing-page {

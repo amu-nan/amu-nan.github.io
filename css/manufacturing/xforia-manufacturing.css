@@ -1,37 +1,144 @@
-/* Custom styles for the Xforia Manufacturing splash page */
+/* Custom styles for the Manufacturing splash page */
 
-.page-container {
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* This prevents scrolling */
+}
+
+main.xforia-manufacturing-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 200px); /* Adjust based on header/footer height */
+    height: 100%;
+    padding: 0 5%;
 }
 
-.splash-section {
+.top-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    max-width: 800px;
-    padding: 60px;
+    height: 100%;
+}
+
+.intro-content {
+    max-width: 600px;
+    padding: 20px;
+}
+
+.intro-headline {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.intro-subheadline {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
+
+.demo-button {
+    background-color: var(--accent-color);
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.demo-button:hover {
+    background-color: #2c974b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.feature-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.feature-card {
     background-color: var(--secondary-bg-color);
     border-radius: 12px;
     box-shadow: var(--shadow-medium);
-    animation: fadeIn 1s ease-out;
+    padding: 30px;
+    max-width: 450px;
+    width: 100%;
 }
 
-.splash-headline {
-    font-size: 3em;
-    font-weight: 800;
+.feature-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 20px;
     color: var(--primary-color);
 }
 
-.splash-text {
-    font-size: 1.2em;
-    line-height: 1.6;
-    color: var(--text-color);
-    margin-bottom: 40px;
+.feature-header h2 {
+    font-size: 1.8em;
+    font-weight: 700;
 }
 
-.splash-button-container {
-    display: flex;
-    justify-content: center;
+.feature-header i {
+    font-size: 2em;
+    color: var(--accent-color);
+}
+
+.pipeline-step {
+    margin-bottom: 20px;
+}
+
+.pipeline-step h4 {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.pipeline-step i {
+    color: var(--accent-color);
+    margin-right: 8px;
+}
+
+.pipeline-step p {
+    font-size: 0.9em;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.integration-section {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.integration-section h2 {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.flowchart-container {
+    width: 600px;
+    height: 150px;
+}
+
+.flowchart-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow-medium);
 }

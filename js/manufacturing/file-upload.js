@@ -4,12 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileList = document.getElementById('file-list');
     const processButton = document.getElementById('process-button');
     const processingInfo = document.getElementById('processing-info');
-    const completionButtons = document.getElementById('completion-buttons');
+    const completionContainer = document.getElementById('completion-container');
 
     let uploadedFiles = [];
 
     // **Backend Endpoint URL Placeholder**
-    // When the backend is ready, replace this with the actual URL.
     const backendEndpointUrl = 'YOUR_BACKEND_API_ENDPOINT_HERE'; 
 
     // --- Core Demo Logic ---
@@ -81,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Once the backend is ready, comment out this block.
         setTimeout(() => {
             processingInfo.style.display = 'none';
-            completionButtons.style.display = 'flex';
+            completionContainer.style.display = 'flex';
         }, 3000);
 
         // --- Real API Integration (Commented out for now) ---

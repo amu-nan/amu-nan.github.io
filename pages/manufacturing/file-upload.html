@@ -21,6 +21,21 @@
             </a>
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle">
+                        Services <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html">Xforia for Manufacturing</a>
+                        <a href="#">Xforia for Healthcare</a>
+                        <a href="#">Xforia for Finance</a>
+                        <a href="#">Xforia for Academia</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <main class="page-container">
@@ -42,7 +57,7 @@
             <div class="file-list-container">
                 <h3><i class="fa-solid fa-list-ul"></i> Files to Process</h3>
                 <ul id="file-list" class="file-list">
-                    </ul>
+                </ul>
             </div>
 
             <div class="action-buttons" id="action-buttons">
@@ -60,10 +75,15 @@
                     <a href="conversation-ai.html" class="continue-button demo-button">
                         Launch Conversational AI (RIA) <i class="fa-solid fa-comment-dots"></i>
                     </a>
-                    <a href="dashboard.html" class="continue-button demo-button view-dashboard">
+                    <a href="dashboard.html" class="continue-button demo-button view-dashboard" id="view-dashboard-link">
                         View Dashboard <i class="fa-solid fa-chart-line"></i>
                     </a>
                 </div>
+            </div>
+
+            <!-- Inline dashboard host (initially hidden) -->
+            <div id="dashboard-host" style="display:none; width:100%; height:80vh; margin-top: 16px;">
+                <!-- iframe will be inserted here -->
             </div>
         </section>
     </main>
@@ -89,6 +109,35 @@
                     }
                 }
             });
+
+            // Inline Dashboard Loader
+            const dashUrl = 'http://127.0.0.1:8050/'; // Dash app URL
+            const link = document.getElementById('view-dashboard-link');
+            const host = document.getElementById('dashboard-host');
+            const completion = document.getElementById('completion-container');
+
+            function showDashboardInline(e) {
+                // Prevent navigating to dashboard.html; keep within page
+                e.preventDefault(); // stop default anchor navigation
+                // Create iframe once
+                if (!host.querySelector('iframe')) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = dashUrl;                 // embed Dash inline
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = '0';
+                    iframe.setAttribute('loading', 'lazy');
+                    host.appendChild(iframe);
+                }
+                // Reveal the embedded dashboard
+                host.style.display = 'block';
+                // Optional: hide the success block to make space
+                // completion.style.display = 'none';
+            }
+
+            if (link) {
+                link.addEventListener('click', showDashboardInline);
+            }
         });
     </script>
 </body>

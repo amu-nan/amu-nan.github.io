@@ -124,6 +124,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    backButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        history.back();
+    });
+
+    endDemoButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = '../../index.html';
+    });
+
     if (backButton) backButton.addEventListener('click', () => history.back());
     if (endDemoButton) endDemoButton.addEventListener('click', () => {
         // Clear local storage if needed, or redirect.

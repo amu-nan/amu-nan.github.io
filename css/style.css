@@ -508,3 +508,65 @@ footer {
         flex-basis: 100%;
     }
 }
+
+/* --- Dropdown Menu Styles --- */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background-color: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 1em;
+}
+
+.dropdown-toggle:hover {
+    background-color: var(--accent-color);
+    color: var(--light-bg-color);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: var(--secondary-bg-color);
+    min-width: 250px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    right: 0; /* Align to the right side of the button */
+    top: 100%; /* Position below the button */
+    margin-top: 10px; /* Space between button and dropdown */
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu a {
+    color: var(--text-color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--accent-color);
+    color: var(--light-bg-color);
+}
+
+/* Optional: Adjust main nav for the new button */
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidate Your Files</title>
+    <link rel="icon" type="image/png" href="../images/Subject.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/consolidate-files.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <a href="../index.html">
+                <img src="../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            </a>
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle">
+                        Services <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="manufacturing/xforia-manufacturing.html">Xforia for Manufacturing</a>
+                        <a href="#">Xforia for Healthcare</a>
+                        <a href="#">Xforia for Finance</a>
+                        <a href="#">Xforia for Academia</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <section class="consolidate-section">
+            <h1 class="page-title">Consolidate Your Data Sources</h1>
+            <p class="page-intro">
+                Xforia COAST's **Consolidate** module is the central hub for unifying your organization's data. 
+                Seamlessly ingest information from various systems and file types to create a single, unified source of truth.
+            </p>
+
+            <div class="options-grid">
+                <div class="option-card">
+                    <h2><i class="fa-solid fa-cloud"></i> Connect Systems</h2>
+                    <p>Integrate directly with your enterprise systems for real-time data flow.</p>
+                    <div class="system-input-group">
+                        <div class="system-input">
+                            <label for="erp-url">ERP System URL:</label>
+                            <input type="url" id="erp-url" placeholder="e.g., https://my-erp.com">
+                            <button class="integration-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                            <small><i>(Functionality to be integrated)</i></small>
+                        </div>
+                        <div class="system-input">
+                            <label for="crm-url">CRM System URL:</label>
+                            <input type="url" id="crm-url" placeholder="e.g., https://my-crm.com">
+                            <button class="integration-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                            <small><i>(Functionality to be integrated)</i></small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option-card">
+                    <h2><i class="fa-solid fa-robot"></i> AI Data Pipelines</h2>
+                    <p>Unlock deep insights from unstructured data using our AI-driven process.</p>
+                    <div class="ai-pipeline-info">
+                        <h3>What happens behind the scenes?</h3>
+                        <div class="pipeline-step">
+                            <h4><i class="fa-solid fa-cubes"></i> R.A.G. Pipeline</h4>
+                            <p>Our **Retrieval-Augmented Generation (RAG)** pipeline retrieves relevant data from your documents, providing the LLM with up-to-date, accurate context for every query.</p>
+                        </div>
+                        <div class="pipeline-step">
+                            <h4><i class="fa-solid fa-gears"></i> Engineering Data</h4>
+                            <p>COAST is a specialist in processing complex engineering files like **AutoCAD**, **CATIA**, and **SolidWorks**. We extract key metrics and insights that standard systems miss.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option-card flowchart-card">
+                    <h2><i class="fa-solid fa-diagram-project"></i> Integration Flow</h2>
+                    <p>Visualize how we connect your systems to power your AI.</p>
+                    <img src="../images/erp-flowchart.png" alt="ERP and CRM Integration Flowchart" class="flowchart-image" id="flowchart-image">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="file-upload.html" class="continue-button demo-button">Continue to File Upload <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            dropdownToggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                dropdownMenu.classList.toggle('show');
+            });
+            window.addEventListener('click', function(event) {
+                if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
+                    if (dropdownMenu.classList.contains('show')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -21,29 +21,13 @@
             </a>
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
-        <div class="menu-container">
-            <nav class="main-nav">
-                <div class="dropdown">
-                    <button class="nav-button dropdown-toggle">
-                        Services <i class="fa-solid fa-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a href="xforia-manufacturing.html">Xforia for Manufacturing</a>
-                        <a href="#">Xforia for Healthcare</a>
-                        <a href="#">Xforia for Finance</a>
-                        <a href="#">Xforia for Academia</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
     </header>
 
     <main class="page-container">
         <section class="upload-section">
             <h1 class="page-title">Upload Documents for Consolidation</h1>
             <p class="page-intro">
-                Drag and drop your files or click to select. Our intelligent platform
-                will automatically consolidate and process them for you.
+                Drag and drop your files or click to select. Our intelligent platform will automatically process them for you.
             </p>
 
             <div class="upload-area" id="drop-area">
@@ -56,20 +40,27 @@
             </div>
 
             <div class="file-list-container">
-                <h3><i class="fa-solid fa-list-ul"></i> Files to Upload</h3>
+                <h3><i class="fa-solid fa-list-ul"></i> Files to Process</h3>
                 <ul id="file-list" class="file-list">
                     </ul>
             </div>
 
-            <div class="api-info-box">
-                <p>This demo uses an **API endpoint** to send your files securely for processing. This is where your data pipeline begins!</p>
-                <code class="api-endpoint-code">POST /api/upload</code>
+            <div class="action-buttons" id="action-buttons">
+                <button id="process-button" class="process-button" disabled>Process Files</button>
             </div>
 
-            <div class="action-buttons">
-                <button id="upload-button" class="upload-button" disabled>Upload Files</button>
-                <a href="options.html" class="continue-button demo-button" id="continue-button" style="display: none;">
-                    Continue to Dashboard <i class="fa-solid fa-arrow-right"></i>
+            <div class="processing-info" id="processing-info" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Processing your files with the RAG pipeline...</p>
+            </div>
+
+            <div class="completion-buttons" id="completion-buttons" style="display: none;">
+                <p class="success-message">Files successfully processed! Ready for AI analysis.</p>
+                <a href="conversation-ai.html" class="continue-button demo-button">
+                    Launch Conversational AI <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="dashboard.html" class="continue-button demo-button view-dashboard">
+                    View Dashboard <i class="fa-solid fa-chart-line"></i>
                 </a>
             </div>
         </section>
@@ -80,5 +71,25 @@
     </footer>
 
     <script src="../../js/manufacturing/file-upload.js"></script>
+    <script>
+        // Dropdown Menu Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+
+            dropdownToggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            window.addEventListener('click', function(event) {
+                if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
+                    if (dropdownMenu.classList.contains('show')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

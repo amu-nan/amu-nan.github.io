@@ -1,0 +1,37 @@
+/* Custom styles for the Xforia Manufacturing splash page */
+
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px); /* Adjust based on header/footer height */
+}
+
+.splash-section {
+    text-align: center;
+    max-width: 800px;
+    padding: 60px;
+    background-color: var(--secondary-bg-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    animation: fadeIn 1s ease-out;
+}
+
+.splash-headline {
+    font-size: 3em;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.splash-text {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-bottom: 40px;
+}
+
+.splash-button-container {
+    display: flex;
+    justify-content: center;
+}

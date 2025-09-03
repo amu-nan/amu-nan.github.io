@@ -158,3 +158,36 @@
     0%, 80%, 100% { transform: scale(0); }
     40% { transform: scale(1); }
 }
+
+/* --- Markdown Rendering in Chat Bubbles --- */
+.ria-message h1,
+.ria-message h2,
+.ria-message h3,
+.ria-message h4,
+.ria-message h5,
+.ria-message h6 {
+    text-align: left;        /* Ensure headings are left-aligned */
+    margin: 0.5em 0;         /* Space above/below heading */
+    font-weight: bold;
+}
+
+.ria-message p {
+    margin: 0.3em 0;         /* Space between paragraphs */
+    line-height: 1.5;
+}
+
+.ria-message ul,
+.ria-message ol {
+    margin: 0.5em 0 0.5em 1.5em; /* Top/bottom spacing + left indent */
+    padding-left: 1em;            /* Proper indentation */
+}
+
+.ria-message li {
+    margin-bottom: 0.3em;         /* Space between list items */
+}
+
+/* Optional: make strong text stand out */
+.ria-message strong,
+.ria-message b {
+    font-weight: bold;
+}

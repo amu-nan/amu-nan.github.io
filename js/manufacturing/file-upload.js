@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let uploadedFiles = [];
 
     // **Backend Endpoint URL Placeholder**
-    const backendEndpointUrl = 'YOUR_BACKEND_API_ENDPOINT_HERE'; 
+    const backendEndpointUrl = 'http://127.0.0.1:8000/upload_cad_pdf/'; 
 
     // --- Core Demo Logic ---
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function handleFiles(files) {
-        uploadedFiles = [...files];
+        // The backend only supports a single file, so we'll only take the first one.
+        uploadedFiles = files.length > 0 ? [files[0]] : [];
         displayFiles();
         processButton.disabled = false;
         completionButtons.style.display = 'none';
@@ -76,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         processButton.style.display = 'none';
         processingInfo.style.display = 'block';
 
+         /*
         // --- Demo Simulation (Active for now) ---
         // Once the backend is ready, comment out this block.
         setTimeout(() => {
@@ -83,14 +85,16 @@ document.addEventListener('DOMContentLoaded', () => {
             completionContainer.style.display = 'flex';
         }, 3000);
 
+        */
+
         // --- Real API Integration (Commented out for now) ---
-        /*
+       
         // Uncomment this section when you're ready to connect to the backend.
         if (uploadedFiles.length > 0) {
             const formData = new FormData();
-            uploadedFiles.forEach(file => {
-                formData.append('files', file); // 'files' must match the backend's expected field name
-            });
+            if (uploadedFiles.length > 0) {
+                formData.append('file', uploadedFiles[0]); // 'file' must match the backend's expected field name
+            }
 
             fetch(backendEndpointUrl, {
                 method: 'POST',
@@ -106,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Handle successful response from the backend
                 console.log('Files processed successfully:', data);
                 processingInfo.style.display = 'none';
-                completionButtons.style.display = 'flex';
+                completionContainer.style.display = 'flex';
             })
             .catch(error => {
                 // Handle any errors during the upload
@@ -120,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please select files to upload.');
             processButton.style.display = 'block';
         }
-        */
     });
 
     // Initial state setup

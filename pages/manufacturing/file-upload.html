@@ -21,11 +21,26 @@
             </a>
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle">
+                        Services <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html">Xforia for Manufacturing</a>
+                        <a href="#">Xforia for Healthcare</a>
+                        <a href="#">Xforia for Finance</a>
+                        <a href="#">Xforia for Academia</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <main class="page-container">
         <section class="upload-section">
-            <h1 class="page-title">Upload Documents for Consolidation</h1>
+            <h1 class="page-title">Upload Your Files</h1>
             <p class="page-intro">
                 Drag and drop your files or click to select. Our intelligent platform will automatically process them for you.
             </p>
@@ -54,14 +69,16 @@
                 <p>Processing your files with the RAG pipeline...</p>
             </div>
 
-            <div class="completion-buttons" id="completion-buttons" style="display: none;">
+            <div class="completion-container" id="completion-container" style="display: none;">
                 <p class="success-message">Files successfully processed! Ready for AI analysis.</p>
-                <a href="conversation-ai.html" class="continue-button demo-button">
-                    Launch Conversational AI <i class="fa-solid fa-arrow-right"></i>
-                </a>
-                <a href="dashboard.html" class="continue-button demo-button view-dashboard">
-                    View Dashboard <i class="fa-solid fa-chart-line"></i>
-                </a>
+                <div class="completion-buttons" id="completion-buttons">
+                    <a href="conversation-ai.html" class="continue-button demo-button">
+                        Launch Conversational AI (RIA) <i class="fa-solid fa-comment-dots"></i>
+                    </a>
+                    <a href="dashboard.html" class="continue-button demo-button view-dashboard">
+                        View Dashboard <i class="fa-solid fa-chart-line"></i>
+                    </a>
+                </div>
             </div>
         </section>
     </main>
@@ -72,16 +89,14 @@
 
     <script src="../../js/manufacturing/file-upload.js"></script>
     <script>
-        // Dropdown Menu Logic
+        // Dropdown Menu Logic (retained)
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
-
             dropdownToggle.addEventListener('click', function(event) {
                 event.preventDefault();
                 dropdownMenu.classList.toggle('show');
             });
-
             window.addEventListener('click', function(event) {
                 if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
                     if (dropdownMenu.classList.contains('show')) {

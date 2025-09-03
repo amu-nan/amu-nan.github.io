@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consolidate Your Files</title>
+    <title>Consolidate Your Data Sources</title>
     <link rel="icon" type="image/png" href="../../images/Subject.png">
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/manufacturing/consolidate-files.css">
@@ -24,67 +24,43 @@
     </header>
 
     <main class="page-container">
-        <section class="consolidate-section">
+        <section class="main-content">
             <h1 class="page-title">Consolidate Your Data Sources</h1>
             <p class="page-intro">
-                Xforia COAST's **Consolidate** module is the central hub for unifying your organization's data. 
-                Seamlessly ingest information from various systems and file types to create a single, unified source of truth.
+                Seamlessly ingest data from various enterprise systems and file types to create a single, unified source of truth.
             </p>
 
-            <div class="options-grid">
-                <div class="option-card">
-                    <h2><i class="fa-solid fa-cloud"></i> Connect Systems</h2>
-                    <p>Integrate directly with your enterprise systems for real-time data flow.</p>
-                    <div class="system-input-group">
-                        <div class="system-input">
-                            <label for="erp-url">ERP System API Endpoint:</label>
-                            <input type="url" id="erp-url" placeholder="e.g., https://api.sap.com/data/v1/sales">
-                            <button class="integration-btn"><i class="fa-solid fa-plug"></i> Connect</button>
-                            <small><i>(Functionality to be integrated)</i></small>
-                        </div>
-                        <div class="system-input">
-                            <label for="crm-url">CRM System API Endpoint:</label>
-                            <input type="url" id="crm-url" placeholder="e.g., https://api.salesforce.com/services/data/v55.0">
-                            <button class="integration-btn"><i class="fa-solid fa-plug"></i> Connect</button>
-                            <small><i>(Functionality to be integrated)</i></small>
-                        </div>
+            <div class="option-card">
+                <h2><i class="fa-solid fa-cloud"></i> Connect Systems</h2>
+                <p>Integrate directly with your enterprise systems for real-time data flow.</p>
+                <div class="system-input-group">
+                    <div class="system-input">
+                        <label for="erp-url">ERP System API Endpoint:</label>
+                        <input type="url" id="erp-url" placeholder="e.g., https://api.sap.com/data/v1/sales">
+                        <button class="integration-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                        <small><i>(Functionality to be integrated)</i></small>
+                    </div>
+                    <div class="system-input">
+                        <label for="crm-url">CRM System API Endpoint:</label>
+                        <input type="url" id="crm-url" placeholder="e.g., https://api.salesforce.com/services/data/v55.0">
+                        <button class="integration-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                        <small><i>(Functionality to be integrated)</i></small>
                     </div>
                 </div>
-
-                <div class="option-card">
-                    <h2><i class="fa-solid fa-robot"></i> AI Data Pipelines</h2>
-                    <p>Unlock deep insights from unstructured data using our AI-driven process.</p>
-                    <div class="ai-pipeline-info">
-                        <h3>What happens behind the scenes?</h3>
-                        <div class="pipeline-step">
-                            <h4><i class="fa-solid fa-cubes"></i> R.A.G. Pipeline</h4>
-                            <p>Our <strong>Retrieval-Augmented Generation (RAG)</strong> pipeline retrieves relevant data from your documents, providing the LLM with up-to-date, accurate context for every query.</p>
-                        </div>
-                        <div class="pipeline-step">
-                            <h4><i class="fa-solid fa-gears"></i> Engineering Data</h4>
-                            <p>COAST is a specialist in processing complex engineering files like <strong>AutoCAD</strong>, <strong>CATIA</strong>, and <strong>SolidWorks</strong>. We extract key metrics and insights that standard systems miss.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="option-card flowchart-card">
-                    <h2><i class="fa-solid fa-diagram-project"></i> Integration Flow</h2>
-                    <p>Visualize how we connect your systems to power your AI.</p>
-                    <img src="../images/erp-flowchart.png" alt="ERP and CRM Integration Flowchart" class="flowchart-image" id="flowchart-image">
-                </div>
-            </div>
-
-            <div class="action-buttons">
-                <a href="file-upload.html" class="continue-button demo-button">Continue to File Upload <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </section>
+
+        <div class="bottom-nav">
+            <a href="file-upload.html" class="demo-button setup-button">Continue to File Upload <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
     </main>
 
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
-    
+
     <script>
+        // Dropdown Menu Logic (retained)
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');

@@ -1,7 +1,7 @@
 /* --- Chatbot Specific Styles --- */
 .chatbot-container {
     max-width: 800px;
-    margin: 40px auto;
+    margin: 40px auto 0;
     background-color: var(--secondary-bg-color);
     border-radius: 12px;
     box-shadow: var(--shadow-medium);
@@ -44,6 +44,7 @@
     padding: 15px 20px;
     border-top: 1px solid #ddd;
     background-color: var(--secondary-bg-color);
+    margin-top: 20px;
 }
 
 .footer-button {

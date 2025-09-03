@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xforia COAST Chatbot (Ria)</title>
+    <link rel="icon" type="image/png" href="../../images/Subject.png">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/manufacturing/conversation-ai.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <a href="../../index.html">
+                <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            </a>
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle">
+                        Services <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html">Xforia for Manufacturing</a>
+                        <a href="#">Xforia for Healthcare</a>
+                        <a href="#">Xforia for Finance</a>
+                        <a href="#">Xforia for Academia</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="chatbot-container">
+        <div class="chat-header">
+            <button id="backButton" class="back-button"><i class="fa-solid fa-arrow-left"></i> Back</button>
+            <div class="chat-info">
+                <h2>Ria - Your Conversational AI</h2>
+                <p>Ready to answer questions about your manufacturing data.</p>
+            </div>
+            <button id="endDemoButton" class="end-button">End Demo</button>
+        </div>
+        <div id="chat-history" class="chat-history">
+            </div>
+        <div class="chat-input-area">
+            <input type="text" id="userQueryInput" placeholder="Ask a question about your data...">
+            <button id="sendButton" class="send-button"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+    </footer>
+
+    <script src="../../js/manufacturing/conversation-ai.js"></script>
+    <script>
+        // Dropdown Menu Logic (retained)
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+
+            dropdownToggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            window.addEventListener('click', function(event) {
+                if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
+                    if (dropdownMenu.classList.contains('show')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

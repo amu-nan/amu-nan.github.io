@@ -10,31 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .main-nav {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .nav-button-new {
-            background-color: transparent;
-            border: 2px solid var(--accent-color);
-            color: var(--text-color);
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 500;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .nav-button-new:hover {
-            background-color: var(--accent-color);
-            color: var(--light-bg-color);
-        }
-    </style>
 </head>
 <body>
 
@@ -45,10 +20,21 @@
             </a>
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
+        
         <nav class="main-nav">
-            <a href="pages/login.html" class="nav-button-new">Setup Your Organization</a>
-            <a href="pages/manufacturing/xforia-manufacturing.html" class="nav-button-new">Xforia Coast for Manufacturing</a>
-            <a href="pages/owner.html" class="nav-button-new">Demo for Xforia COASt</a>
+            <div class="dropdown">
+                <button class="nav-button dropdown-toggle">
+                    Services <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="pages/manufacturing/xforia-manufacturing.html">Xforia for Manufacturing</a>
+                    <a href="#">Xforia for Healthcare</a>
+                    <a href="#">Xforia for Finance</a>
+                    <a href="#">Xforia for Academia</a>
+                </div>
+            </div>
+            <a href="pages/login.html" class="nav-button">Setup Your Organization</a>
+            <a href="pages/owner.html" class="nav-button">Demo for Xforia COAST</a>
         </nav>
     </header>
 
@@ -220,6 +206,26 @@
                 expandedContainer.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
+        });
+
+        // Dropdown Menu Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+
+            dropdownToggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            // Close the dropdown if the user clicks outside of it
+            window.addEventListener('click', function(event) {
+                if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
+                    if (dropdownMenu.classList.contains('show')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                }
+            });
         });
     </script>
 </body>

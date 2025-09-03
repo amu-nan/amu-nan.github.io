@@ -13,12 +13,18 @@
 
 .chat-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid #ddd;
     background-color: var(--primary-color);
     color: #fff;
+}
+
+.chat-header .chat-title {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #fff; /* Make the title white */
 }
 
 .chat-header h2 {
@@ -31,20 +37,33 @@
     opacity: 0.8;
 }
 
-.back-button, .end-button {
+.chat-footer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    background-color: var(--secondary-bg-color);
+}
+
+.footer-button {
+    text-decoration: none;
     background: transparent;
-    border: 2px solid #fff;
-    color: #fff;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
     padding: 8px 15px;
     border-radius: 50px;
     cursor: pointer;
     font-size: 0.9em;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.back-button:hover, .end-button:hover {
-    background-color: #fff;
-    color: var(--primary-color);
+.footer-button:hover {
+    background-color: var(--primary-color);
+    color: #fff;
 }
 
 .chat-history {

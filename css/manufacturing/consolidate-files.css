@@ -1,0 +1,167 @@
+/* Custom styles for the Consolidate Files page */
+
+.page-container {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.consolidate-section {
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+}
+
+.page-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.page-intro {
+    font-size: 1.2em;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.option-card {
+    background: var(--secondary-bg-color);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-medium);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.option-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.option-card h2 {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.option-card h2 i {
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.option-card p {
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.system-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.system-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.system-input label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.system-input input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.integration-btn {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: not-allowed;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.integration-btn:hover {
+    background-color: #1a242f;
+}
+
+.integration-btn i {
+    margin-right: 8px;
+}
+
+.ai-pipeline-info h3 {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+}
+
+.pipeline-step {
+    border-left: 3px solid var(--accent-color);
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+
+.pipeline-step h4 {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.pipeline-step h4 i {
+    color: var(--primary-color);
+    margin-right: 8px;
+}
+
+.flowchart-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: var(--shadow-light);
+    margin-top: 20px;
+}
+
+.action-buttons {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.continue-button {
+    background-color: #2ecc71;
+    color: #fff;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 1.3em;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.continue-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}

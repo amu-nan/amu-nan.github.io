@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('chat-message');
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
-        
+
         if (isTyping) {
             messageDiv.id = 'typing-indicator';
             messageDiv.innerHTML = `<p class="loading-dots"><span></span><span></span><span></span></p>`;
@@ -70,9 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const userQuery = userQueryInput.value.trim();
         if (!userQuery) return;
 
-        // Add user message to history, then send to backend
-        chatHistoryArray.push({ role: "user", content: userQuery });
+        // Add the user's message to the display and to the history array
         addMessage('user', userQuery);
+        chatHistoryArray.push({ role: "user", content: userQuery });
         userQueryInput.value = '';
 
         addMessage('ria', null, true);
@@ -86,11 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const aiResponseText = backendResponse.response;
+            // The frontend should completely replace its history with the backend's
             chatHistoryArray = backendResponse.conversation_history;
 
             addMessage('ria', aiResponseText);
         } catch (error) {
-            console.error("Error fetching AI response:", error);
+            console.log("Error fetching AI response:", error);
             const typingIndicator = document.getElementById('typing-indicator');
             if (typingIndicator) {
                 typingIndicator.remove();

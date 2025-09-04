@@ -69,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const userQuery = userQueryInput.value.trim();
         if (!userQuery) return;
 
+        // Add user message to history, then send to backend
+        chatHistoryArray.push({ role: "user", content: userQuery });
         addMessage('user', userQuery);
         userQueryInput.value = '';
 

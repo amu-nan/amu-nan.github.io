@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                const text = await response.text();
-                console.error("Backend error response:", text);
+                // const text = await response.text();
+                // console.error("Backend error response:", text);
                 throw new Error(`HTTP ${response.status}`);
             }
 
@@ -89,7 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 typingIndicator.remove();
             }
 
-            addMessage('ria', aiResponse);
+            addMessage('ria', aiResponse.response);
+            chatHistoryArray = aiResponse.coversation_history;
         } catch (error) {
             console.error("Error fetching AI response:", error);
             const typingIndicator = document.getElementById('typing-indicator');

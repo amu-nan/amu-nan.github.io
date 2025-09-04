@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // addMessage('ria', aiResponse.response);
-            const aiResponseText = aiResponse.response;
+            let aiResponseText = aiResponse.response;
             chatHistoryArray = aiResponse.coversation_history;
 
             addMessage('ria', aiResponseText);

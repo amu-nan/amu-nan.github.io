@@ -1,13 +1,13 @@
 /* --- Chatbot Specific Styles --- */
 .chatbot-container {
-    max-width: 800px;
+    max-width: 90%; /* Increased from 800px */
     margin: 40px auto 0;
     background-color: var(--secondary-bg-color);
     border-radius: 12px;
     box-shadow: var(--shadow-medium);
     display: flex;
     flex-direction: column;
-    height: 70vh;
+    height: 85vh; /* Increased from 70vh */
     overflow: hidden;
 }
 
@@ -24,7 +24,7 @@
 .chat-header .chat-title {
     font-size: 1.5em;
     font-weight: 600;
-    color: #fff; /* Make the title white */
+    color: #fff;
 }
 
 .chat-header h2 {
@@ -166,27 +166,26 @@
 .ria-message h4,
 .ria-message h5,
 .ria-message h6 {
-    text-align: left;        /* Ensure headings are left-aligned */
-    margin: 0.5em 0;         /* Space above/below heading */
+    text-align: left;
+    margin: 0.5em 0;
     font-weight: bold;
 }
 
 .ria-message p {
-    margin: 0.3em 0;         /* Space between paragraphs */
+    margin: 0.3em 0;
     line-height: 1.5;
 }
 
 .ria-message ul,
 .ria-message ol {
-    margin: 0.5em 0 0.5em 1.5em; /* Top/bottom spacing + left indent */
-    padding-left: 1em;            /* Proper indentation */
+    margin: 0.5em 0 0.5em 1.5em;
+    padding-left: 1em;
 }
 
 .ria-message li {
-    margin-bottom: 0.3em;         /* Space between list items */
+    margin-bottom: 0.3em;
 }
 
-/* Optional: make strong text stand out */
 .ria-message strong,
 .ria-message b {
     font-weight: bold;

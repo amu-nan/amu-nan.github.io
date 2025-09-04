@@ -201,8 +201,39 @@ header {
     box-shadow: var(--shadow-light);
 }
 
-.cta-section {
-    margin-top: 2rem; /* Add some space above the CTA button */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 2rem;
+}
+
+.company-input-group {
+    width: 100%;
+}
+
+#companyNameInput {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 50px;
+    border: 2px solid var(--text-color);
+    font-size: 1em;
+    text-align: center;
+    box-sizing: border-box; /* Ensures padding doesn't affect total width */
+    transition: border-color 0.3s;
+}
+
+#companyNameInput::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+#companyNameInput:focus {
+    outline: none;
+    border-color: var(--accent-color);
 }
 
 .demo-button {
@@ -215,6 +246,8 @@ header {
     text-decoration: none;
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
 }
 
 .demo-button:hover {

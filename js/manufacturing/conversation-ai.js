@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('chat-message');
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
-
+        
         if (isTyping) {
             messageDiv.id = 'typing-indicator';
             messageDiv.innerHTML = `<p class="loading-dots"><span></span><span></span><span></span></p>`;
@@ -55,11 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            console.log("Backend response for subsequent queries:", data);
             return data;
         } catch (error) {
             console.error("Error sending query:", error);
-            // Return a structured object with a default response and empty history
             return {
                 response: "Sorry, I'm having trouble connecting right now. Please try again later.",
                 conversation_history: []
@@ -89,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             addMessage('ria', aiResponseText);
         } catch (error) {
-            console.log("Error fetching AI response:", error);
+            console.error("Error fetching AI response:", error);
             const typingIndicator = document.getElementById('typing-indicator');
             if (typingIndicator) {
                 typingIndicator.remove();

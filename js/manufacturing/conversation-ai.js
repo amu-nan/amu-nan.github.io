@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Get company name from URL ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const companyName = urlParams.get('company');
+
+    if (companyName) {
+        document.getElementById('companyNameDisplay').textContent = `${companyName}'s`;
+    }
+
     // --- Element references ---
     const userQueryInput = document.getElementById('userQueryInput');
     const sendButton = document.getElementById('sendButton');
@@ -25,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // Convert Markdown to HTML
             messageDiv.innerHTML = marked.parse(text);
-
         }
 
         chatHistory.appendChild(messageDiv);

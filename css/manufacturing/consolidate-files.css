@@ -262,7 +262,7 @@
 }
 
 .demo-button {
-    background-color: var(--accent-color);
+    background-color: #41ba64;
     color: #fff;
     padding: 1rem 2.5rem;
     border-radius: 50px;

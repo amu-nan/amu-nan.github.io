@@ -21,59 +21,106 @@
             </a>
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle">
+                        Services <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html">Xforia for Manufacturing</a>
+                        <a href="#">Xforia for Healthcare</a>
+                        <a href="#">Xforia for Finance</a>
+                        <a href="#">Xforia for Academia</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <main class="page-container">
-        <section class="main-content">
-            <h1 class="page-title">Consolidate Your Data Sources</h1>
+        <section class="consolidate-section">
+            <h1 class="page-title" id="pageTitle">Consolidate Your Data Sources</h1>
             <p class="page-intro">
                 Seamlessly ingest data from various enterprise systems and file types to create a single, unified source of truth.
             </p>
 
-            <div class="option-card">
-                <h2><i class="fa-solid fa-cloud"></i> Connect Systems</h2>
-                <p>Integrate directly with your enterprise systems for real-time data flow.</p>
-                <div class="system-input-group">
-                    <div class="system-input">
-                        <label for="erp-url">ERP System API Endpoint:</label>
-                        <input type="url" id="erp-url" placeholder="e.g., https://api.sap.com/data/v1/sales">
-                        <button class="integration-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+            <div class="options-grid">
+                <div class="option-card">
+                    <h2><i class="fa-solid fa-industry"></i> ERP Systems</h2>
+                    <p>Integrate directly with your ERP for real-time data flow or upload a file for the demo.</p>
+                    <div class="system-input-group">
+                        <div class="system-input">
+                            <label for="erp-url">Connect to API:</label>
+                            <input type="url" id="erp-url" placeholder="e.g., https://api.sap.com/data/v1/sales">
+                            <button class="integration-btn erp-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                        </div>
+                        <div class="file-upload-box local-upload" id="erpDropArea">
+                            <i class="fa-solid fa-upload"></i>
+                            <p>Load your ERP Data</p>
+                            <p class="file-upload-info">Click or drag and drop files here (e.g., .xlsx, .csv)</p>
+                            <input type="file" id="erpFileElem" multiple accept=".csv, .xlsx, .xls" class="file-input">
+                            <ul class="file-list" id="erpFileList"></ul>
+                            <p class="upload-status" id="erpUploadStatus"></p>
+                        </div>
                     </div>
-                    <div class="system-input">
-                        <label for="crm-url">CRM System API Endpoint:</label>
-                        <input type="url" id="crm-url" placeholder="e.g., https://api.salesforce.com/services/data/v55.0">
-                        <button class="integration-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                </div>
+
+                <div class="option-card">
+                    <h2><i class="fa-solid fa-handshake"></i> CRM Systems</h2>
+                    <p>Integrate directly with your CRM or upload a file for the demo.</p>
+                    <div class="system-input-group">
+                        <div class="system-input">
+                            <label for="crm-url">Connect to API:</label>
+                            <input type="url" id="crm-url" placeholder="e.g., https://api.salesforce.com/services">
+                            <button class="integration-btn crm-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                        </div>
+                        <div class="file-upload-box local-upload" id="crmDropArea">
+                            <i class="fa-solid fa-upload"></i>
+                            <p>Load your CRM Data</p>
+                            <p class="file-upload-info">Click or drag and drop files here (e.g., .xlsx, .csv)</p>
+                            <input type="file" id="crmFileElem" multiple accept=".csv, .xlsx, .xls" class="file-input">
+                            <ul class="file-list" id="crmFileList"></ul>
+                            <p class="upload-status" id="crmUploadStatus"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option-card full-width">
+                    <h2><i class="fa-solid fa-layer-group"></i> Ingest Engineering Diagram</h2>
+                    <p>Upload a CAD or PDF file to unify with your business data. This will be sent to the backend.</p>
+                    <div class="file-upload-box" id="drop-area">
+                        <input type="file" id="fileElem" accept=".pdf" class="file-input">
+                        <i class="fa-solid fa-cloud-arrow-up fa-3x"></i>
+                        <p>Click to browse or drag and drop your file here</p>
+                        <p class="file-upload-info">(.pdf only)</p>
+                        <div id="file-list"></div>
+                        <button id="processButton" class="process-button" disabled>Load Data</button>
+                        <div id="processing-info" class="processing-info">
+                            <div class="loading-spinner"></div>
+                            <p>Loading...</p>
+                        </div>
+                        <p id="unify-message" class="unify-message"></p>
+                        <p id="success-message" class="success-message"></p>
+                        <div id="completion-container" class="completion-container">
+                            <button id="continue-button" class="demo-button setup-button">Unify & Activate AI <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <div class="bottom-nav">
-            <a href="file-upload.html" class="demo-button setup-button">Continue to File Upload <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
+            <div class="bottom-nav">
+                <a href="#" class="demo-button back-button" onclick="history.back(); return false;">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </section>
     </main>
 
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
 
-    <script>
-        // Dropdown Menu Logic (retained)
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdownToggle = document.querySelector('.dropdown-toggle');
-            const dropdownMenu = document.querySelector('.dropdown-menu');
-            dropdownToggle.addEventListener('click', function(event) {
-                event.preventDefault();
-                dropdownMenu.classList.toggle('show');
-            });
-            window.addEventListener('click', function(event) {
-                if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
-                    if (dropdownMenu.classList.contains('show')) {
-                        dropdownMenu.classList.remove('show');
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="../../js/manufacturing/consolidate-files.js"></script>
 </body>
 </html>

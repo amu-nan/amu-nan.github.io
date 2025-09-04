@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Get company name from URL ---
     const urlParams = new URLSearchParams(window.location.search);
-    const companyName = urlParams.get('company');
+    const companyName = urlParams.get('company'); 
 
     if (companyName) {
         document.getElementById('companyNameDisplay').textContent = `${companyName}'s`;

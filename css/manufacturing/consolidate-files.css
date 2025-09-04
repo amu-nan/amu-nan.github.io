@@ -34,11 +34,6 @@
     margin-bottom: 50px;
 }
 
-/* This class makes the engineering diagram card span the full width of the grid */
-.option-card.full-width {
-    grid-column: 1 / -1;
-}
-
 .option-card {
     background: var(--secondary-bg-color);
     padding: 40px;
@@ -127,6 +122,11 @@
     transition: background-color 0.3s, border-color 0.3s;
     margin-top: 20px;
     position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .file-upload-box.highlight {
@@ -159,6 +159,7 @@
     padding: 0;
     margin: 15px 0 0;
     font-size: 0.9em;
+    width: 100%;
 }
 
 .file-list li {
@@ -237,7 +238,7 @@
 
 .bottom-nav {
     display: flex;
-    justify-content: flex-start; /* Aligns items to the left */
+    justify-content: center; /* Aligns items to the center */
     width: 100%;
     max-width: 1200px;
     margin: 20px auto 0;
@@ -276,13 +277,4 @@
     background-color: #2c974b;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Styles for the "Unify & Activate AI" button */
-#continue-button {
-    display: block;
-    width: 100%;
-    padding: 1.2rem 3rem;
-    font-size: 1.3em;
-    margin-top: 20px;
 }

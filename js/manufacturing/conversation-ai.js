@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            return data.response;
+            return data;
         } catch (error) {
             console.error("Error sending query:", error);
             return "Sorry, I'm having trouble connecting right now. Please try again later.";
@@ -89,8 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 typingIndicator.remove();
             }
 
-            addMessage('ria', aiResponse.response);
+            // addMessage('ria', aiResponse.response);
+            const aiResponseText = aiResponse.response;
             chatHistoryArray = aiResponse.coversation_history;
+
+            addMessage('ria', aiResponseText);
         } catch (error) {
             console.error("Error fetching AI response:", error);
             const typingIndicator = document.getElementById('typing-indicator');

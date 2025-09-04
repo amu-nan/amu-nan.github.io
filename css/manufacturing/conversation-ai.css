@@ -211,3 +211,22 @@
 .ria-message {
     padding: 12px 15px 12px 12px; /* Adjusted padding if icon is inside */
 }
+
+/* Add to manufacturing/conversation-ai.css */
+/* Decrease the overall font size for chat messages */
+.chat-message p,
+.chat-message ul,
+.chat-message ol,
+.chat-message li {
+    font-size: 0.9em; /* You can adjust this value as needed, 1em is the default */
+}
+
+/* Optional: Adjust other elements to match the new font size */
+
+#userQueryInput {
+    font-size: 0.9em; /* Adjusts the font size of the input text */
+}
+
+.chat-header p {
+    font-size: 0.8em; /* Reduces the subtitle font size for better hierarchy */
+}

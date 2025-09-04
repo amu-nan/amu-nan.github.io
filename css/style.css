@@ -601,3 +601,12 @@ footer {
     right: 0;
     left: auto; /* This ensures it stays on the right */
 }
+
+/* New style for the "Coming Soon" links */
+.coming-soon {
+    color: grey;
+    /* Optional: Add a subtle cursor change to indicate the link isn't active */
+    cursor: default;
+    /* Optional: Remove the hover effect */
+    pointer-events: none;
+}

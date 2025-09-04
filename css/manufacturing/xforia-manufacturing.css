@@ -1,4 +1,3 @@
-
 /* Custom styles for the Manufacturing splash page */
 html, body {
     height: 100%;
@@ -118,6 +117,67 @@ header {
     font-size: 0.9em;
     line-height: 1.5;
     color: var(--text-color);
+}
+
+/* * The following rules for the outcomes-card are new
+* They replace the old integration flow rules
+* for a better layout
+*/
+.outcomes-card {
+    /* No longer need flex-direction, it's a grid container now */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start; /* Align content to the left inside the card */
+}
+
+.outcome-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between each outcome item */
+    width: 100%;
+    margin-top: 10px;
+}
+
+.outcome-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.3s ease;
+}
+
+.outcome-item:hover {
+    transform: translateY(-5px);
+}
+
+.outcome-item h4 {
+    margin: 0;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.outcome-item i {
+    color: var(--accent-color);
+    font-size: 1.5em;
+}
+
+.outcome-item p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.bottom-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 2rem;
+    align-items: start;
 }
 
 .integration-card {

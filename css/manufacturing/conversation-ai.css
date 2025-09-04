@@ -190,3 +190,24 @@
 .ria-message b {
     font-weight: bold;
 }
+
+/* Add to manufacturing/conversation-ai.css */
+
+.ria-message-content {
+    display: flex;
+    align-items: flex-start; /* Aligns icon and text at the top */
+    gap: 10px; /* Space between the icon and the message text */
+}
+
+.ria-message-icon {
+    width: 30px; /* Adjust icon size as needed */
+    height: 30px;
+    border-radius: 50%; /* If your icon is circular */
+    object-fit: cover; /* Ensures image covers the area */
+    flex-shrink: 0; /* Prevents icon from shrinking */
+}
+
+/* Optional: Adjust padding for RIA message if icon causes issues */
+.ria-message {
+    padding: 12px 15px 12px 12px; /* Adjusted padding if icon is inside */
+}

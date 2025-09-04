@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, false);
     });
 
-    // New: Handle click to open file dialog
+    // Handle click to open file dialog
     dropArea.addEventListener('click', () => fileElem.click());
     
     dropArea.addEventListener('drop', handleDrop, false);
@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Show loading state and hide process button
         processButton.style.display = 'none';
         processingInfo.style.display = 'block';
         unifyMessage.style.display = 'block';
@@ -117,19 +118,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             console.log('Files processed successfully:', data);
             
+            // Hide loading state and show success message and continue button
             processingInfo.style.display = 'none';
             unifyMessage.style.display = 'none';
             successMessage.textContent = "Your data has been unified!";
+            successMessage.style.color = '#28a745';
             successMessage.style.display = 'block';
             completionContainer.style.display = 'block';
 
         } catch (error) {
             console.error('Upload error:', error);
+            // Hide loading and show error message
             processingInfo.style.display = 'none';
             unifyMessage.style.display = 'none';
             successMessage.textContent = `Error: ${error.message}`;
             successMessage.style.color = 'red';
             successMessage.style.display = 'block';
+            // Show the process button again so the user can retry
             processButton.style.display = 'block';
         }
     });
@@ -158,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'), false);
         });
 
-        // New: Handle click to open file dialog for CRM/ERP
+        // Handle click to open file dialog for CRM/ERP
         dropArea.addEventListener('click', () => fileElem.click());
 
         fileElem.addEventListener('change', () => handleLocalFiles(fileElem.files, fileList, uploadStatus));

@@ -21,6 +21,21 @@
             </a>
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle">
+                        Services <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html">Xforia for Manufacturing</a>
+                        <a href="#">Xforia for Healthcare</a>
+                        <a href="#">Xforia for Finance</a>
+                        <a href="#">Xforia for Academia</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <main class="xforia-manufacturing-page">
@@ -82,8 +97,11 @@
             </div>
         </section>
 
-        <section class="cta-section">
-            <a href="consolidate-files.html" class="demo-button setup-button">Start Demo</a>
+        <section class="form-section">
+            <div class="company-input-group">
+                <input type="text" id="companyNameInput" placeholder="Enter your company name">
+            </div>
+            <a href="#" class="demo-button setup-button" id="powerMyManufacturingButton">Power My Manufacturing</a>
         </section>
     </main>
 
@@ -92,8 +110,8 @@
     </footer>
 
     <script>
-        // Dropdown Menu Logic (retained)
         document.addEventListener('DOMContentLoaded', function() {
+            // Dropdown Menu Logic (retained)
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
 
@@ -107,6 +125,22 @@
                     if (dropdownMenu.classList.contains('show')) {
                         dropdownMenu.classList.remove('show');
                     }
+                }
+            });
+
+            // New logic for the Company Name and Button
+            const companyNameInput = document.getElementById('companyNameInput');
+            const powerMyManufacturingButton = document.getElementById('powerMyManufacturingButton');
+
+            powerMyManufacturingButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                const companyName = companyNameInput.value.trim();
+                
+                if (companyName) {
+                    // Redirect to the consolidate page with the company name as a query parameter
+                    window.location.href = `consolidate-files.html?company=${encodeURIComponent(companyName)}`;
+                } else {
+                    alert('Please enter your company name to proceed.');
                 }
             });
         });

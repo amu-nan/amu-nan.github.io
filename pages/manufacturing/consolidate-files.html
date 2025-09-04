@@ -21,6 +21,21 @@
             </a>
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle hamburger-icon" aria-label="Services Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="pages/manufacturing/xforia-manufacturing.html">Manufacturing</a>
+                        <a href="#">Healthcare</a>
+                        <a href="#">Finance</a>
+                        <a href="#">Academia</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <main class="page-container">
@@ -33,7 +48,7 @@
             <div class="options-grid">
                 <div class="option-card">
                     <h2><i class="fa-solid fa-industry"></i> ERP Systems</h2>
-                    <p>Integrate directly with your ERP for real-time data flow or upload a file for the demo.</p>
+                    <p>Integrate directly with your ERP for real-time data flow or upload a file.</p>
                     <div class="system-input-group">
                         <div class="system-input">
                             <label for="erp-url">Connect to API:</label>
@@ -53,7 +68,7 @@
 
                 <div class="option-card">
                     <h2><i class="fa-solid fa-handshake"></i> CRM Systems</h2>
-                    <p>Integrate directly with your CRM or upload a file for the demo.</p>
+                    <p>Integrate directly with your CRM or upload a file.</p>
                     <div class="system-input-group">
                         <div class="system-input">
                             <label for="crm-url">Connect to API:</label>
@@ -73,7 +88,7 @@
 
                 <div class="option-card">
                     <h2><i class="fa-solid fa-layer-group"></i> Ingest Engineering Diagram</h2>
-                    <p>Upload a CAD or PDF file to unify with your business data. This will be sent to the backend.</p>
+                    <p>Upload a CAD or PDF file to unify with your business data.</p>
                     <div class="file-upload-box" id="drop-area">
                         <input type="file" id="fileElem" accept=".pdf" class="file-input">
                         <i class="fa-solid fa-cloud-arrow-up fa-3x"></i>
@@ -87,7 +102,7 @@
             
             <div id="processing-info" class="processing-info">
                 <div class="loading-spinner"></div>
-                <p>Processing your files...</p>
+                <p>Processing your data...</p>
             </div>
             <p id="unify-message" class="unify-message"></p>
             <p id="success-message" class="success-message"></p>

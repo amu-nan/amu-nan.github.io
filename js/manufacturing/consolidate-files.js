@@ -44,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, false);
     });
 
+    // New: Handle click to open file dialog
+    dropArea.addEventListener('click', () => fileElem.click());
+    
     dropArea.addEventListener('drop', handleDrop, false);
 
     fileElem.addEventListener('change', (e) => {
@@ -155,6 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
             dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'), false);
         });
 
+        // New: Handle click to open file dialog for CRM/ERP
+        dropArea.addEventListener('click', () => fileElem.click());
+
         fileElem.addEventListener('change', () => handleLocalFiles(fileElem.files, fileList, uploadStatus));
         dropArea.addEventListener('drop', (e) => handleLocalFiles(e.dataTransfer.files, fileList, uploadStatus));
     }
@@ -167,8 +173,10 @@ document.addEventListener('DOMContentLoaded', () => {
             fileList.appendChild(li);
             uploadStatus.textContent = "Data loaded successfully!";
             uploadStatus.style.color = 'green';
+            uploadStatus.style.display = 'block';
         } else {
             uploadStatus.textContent = "";
+            uploadStatus.style.display = 'none';
         }
     }
 

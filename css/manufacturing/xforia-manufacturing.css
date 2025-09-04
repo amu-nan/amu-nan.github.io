@@ -37,7 +37,7 @@ header {
 
 
 .intro-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem; /* Reduced spacing */
     text-align: center; /* Center the text within the intro section */
     width: 100%; /* Ensure it takes full width to allow centering */
 }
@@ -60,7 +60,7 @@ header {
 
 .features-section {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Two columns for AI Data Pipelines and Integration Flow */
+    grid-template-columns: 1fr 1fr; /* Two columns for Business Outcomes and Integration Flow */
     gap: 2rem;
     width: 100%;
     max-width: 1000px;
@@ -119,12 +119,7 @@ header {
     color: var(--text-color);
 }
 
-/* * The following rules for the outcomes-card are new
-* They replace the old integration flow rules
-* for a better layout
-*/
 .outcomes-card {
-    /* No longer need flex-direction, it's a grid container now */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -141,8 +136,9 @@ header {
 
 .outcome-item {
     display: flex;
+    flex-direction: column; /* Change to column to stack icon/title and text */
     align-items: flex-start;
-    gap: 15px;
+    gap: 5px; /* Reduced gap between icon/title and paragraph */
     padding: 15px;
     background-color: #f8f8f8;
     border-radius: 8px;
@@ -158,26 +154,32 @@ header {
     margin: 0;
     color: var(--primary-color);
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.outcome-item h4 i {
+    margin-right: 0; /* Remove right margin since it's now part of flex gap */
+}
+.outcome-item > i {
+    display: none; /* Hide the old icon to prevent duplicates */
 }
 
-.outcome-item i {
+.outcome-item h4 {
+    margin: 0;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.outcome-item h4 i {
     color: var(--accent-color);
     font-size: 1.5em;
+    margin-right: 0.5rem;
 }
 
 .outcome-item p {
     margin: 0;
     font-size: 0.9em;
-}
-
-.bottom-sections {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    width: 100%;
-    max-width: 1000px;
-    margin-bottom: 2rem;
-    align-items: start;
 }
 
 .integration-card {

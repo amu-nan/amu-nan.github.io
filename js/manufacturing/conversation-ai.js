@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Get company name from URL ---
     const urlParams = new URLSearchParams(window.location.search);
-    const companyName = urlParams.get('company'); 
+    const companyName = urlParams.get('company');
 
     if (companyName) {
         document.getElementById('companyNameDisplay').textContent = `${companyName}'s`;
@@ -15,10 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const endDemoButton = document.getElementById('endDemoButton');
 
     // Conversation array in backend format
-    const chatHistoryArray = [];
+    let chatHistoryArray = [];
 
     // --- Backend Endpoint Configuration ---
-    // Corrected URL to match the backend's /chat/manufacturing endpoint.
     const backendUrl = "http://127.0.0.1:8000/chat/manufacturing";
 
     // --- Chatbot Functions ---
@@ -28,26 +27,17 @@ document.addEventListener('DOMContentLoaded', () => {
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
         
         if (isTyping) {
-            messageDiv.id = 'typing-indicator'; 
+            messageDiv.id = 'typing-indicator';
             messageDiv.innerHTML = `<p class="loading-dots"><span></span><span></span><span></span></p>`;
         } else {
-            // Convert Markdown to HTML
             messageDiv.innerHTML = marked.parse(text);
         }
 
         chatHistory.appendChild(messageDiv);
         chatHistory.scrollTop = chatHistory.scrollHeight;
-
-        if (!isTyping) {
-            chatHistoryArray.push({
-                role: sender === 'user' ? 'user' : 'assistant',
-                content: text
-            });
-        }
     }
 
     async function sendQueryToBackend(query) {
-        // --- Real API Integration (Now Active) ---
         try {
             const response = await fetch(backendUrl, {
                 method: "POST",
@@ -59,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                // const text = await response.text();
-                // console.error("Backend error response:", text);
+                const text = await response.text();
+                console.error("Backend error response:", text);
                 throw new Error(`HTTP ${response.status}`);
             }
 
@@ -68,7 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return data;
         } catch (error) {
             console.error("Error sending query:", error);
-            return "Sorry, I'm having trouble connecting right now. Please try again later.";
+            return {
+                response: "Sorry, I'm having trouble connecting right now. Please try again later.",
+                conversation_history: []
+            };
         }
     }
 
@@ -82,16 +75,15 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage('ria', null, true);
 
         try {
-            const aiResponse = await sendQueryToBackend(userQuery);
+            const backendResponse = await sendQueryToBackend(userQuery);
 
             const typingIndicator = document.getElementById('typing-indicator');
             if (typingIndicator) {
                 typingIndicator.remove();
             }
 
-            // addMessage('ria', aiResponse.response);
-            let aiResponseText = aiResponse.response;
-            chatHistoryArray = aiResponse.coversation_history;
+            const aiResponseText = backendResponse.response;
+            chatHistoryArray = backendResponse.conversation_history;
 
             addMessage('ria', aiResponseText);
         } catch (error) {

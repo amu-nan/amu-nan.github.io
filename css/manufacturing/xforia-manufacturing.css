@@ -63,6 +63,7 @@ header {
     grid-template-columns: 1fr 1fr; /* Two columns for Business Outcomes and Integration Flow */
     gap: 2rem;
     width: 100%;
+    padding: 0px;
     max-width: 1000px;
     margin-bottom: 2rem;
     align-items: start; /* Align items to the top of their grid cells */

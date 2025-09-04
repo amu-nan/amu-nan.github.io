@@ -39,6 +39,7 @@ body {
     color: var(--text-color);
     background-color: var(--light-bg-color);
     padding-top: 100px;
+    min-height: 100vh;
     overflow-x: hidden; /* **NEW: Prevents horizontal scroll from animation effects** */
 }
 
@@ -90,6 +91,7 @@ header {
 main {
     max-width: 1400px;
     margin: 0 auto;
+    flex-grow: 1;
     padding: 20px 20px 40px 20px;
 }
 

@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <div class="option-card full-width">
+                <div class="option-card">
                     <h2><i class="fa-solid fa-layer-group"></i> Ingest Engineering Diagram</h2>
                     <p>Upload a CAD or PDF file to unify with your business data. This will be sent to the backend.</p>
                     <div class="file-upload-box" id="drop-area">
@@ -96,19 +96,19 @@
                         <p class="file-upload-info">(.pdf only)</p>
                         <div id="file-list"></div>
                         <button id="processButton" class="process-button" disabled>Load Data</button>
-                        <div id="processing-info" class="processing-info">
-                            <div class="loading-spinner"></div>
-                            <p>Loading...</p>
-                        </div>
-                        <p id="unify-message" class="unify-message"></p>
-                        <p id="success-message" class="success-message"></p>
-                        <div id="completion-container" class="completion-container">
-                            <button id="continue-button" class="demo-button setup-button">Unify & Activate AI <i class="fa-solid fa-arrow-right"></i></button>
-                        </div>
                     </div>
                 </div>
             </div>
-
+            
+            <div id="processing-info" class="processing-info">
+                <div class="loading-spinner"></div>
+                <p>Processing your files...</p>
+            </div>
+            <p id="unify-message" class="unify-message"></p>
+            <p id="success-message" class="success-message"></p>
+            <div id="completion-container" class="completion-container">
+                <button id="continue-button" class="demo-button setup-button">Unify & Activate AI <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
             <div class="bottom-nav">
                 <a href="#" class="demo-button back-button" onclick="history.back(); return false;">
                     <i class="fa-solid fa-arrow-left"></i> Back

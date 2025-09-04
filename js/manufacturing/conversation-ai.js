@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
+            console.log("Backend response for subsequent queries:", data);
             return data;
         } catch (error) {
             console.error("Error sending query:", error);
@@ -70,9 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const userQuery = userQueryInput.value.trim();
         if (!userQuery) return;
 
-        // Add the user's message to the display and to the history array
         addMessage('user', userQuery);
-        chatHistoryArray.push({ role: "user", content: userQuery });
         userQueryInput.value = '';
 
         addMessage('ria', null, true);
@@ -86,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const aiResponseText = backendResponse.response;
-            // The frontend should completely replace its history with the backend's
             chatHistoryArray = backendResponse.conversation_history;
 
             addMessage('ria', aiResponseText);

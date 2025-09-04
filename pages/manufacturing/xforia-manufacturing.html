@@ -82,11 +82,8 @@
             </div>
         </section>
 
-        <section class="form-section">
-            <div class="company-input-group">
-                <input type="text" id="companyNameInput" placeholder="Enter your company name">
-            </div>
-            <a href="#" class="demo-button setup-button" id="powerMyManufacturingButton">Power My Manufacturing</a>
+        <section class="cta-section">
+            <a href="consolidate-files.html" class="demo-button setup-button">Start Demo</a>
         </section>
     </main>
 
@@ -95,8 +92,8 @@
     </footer>
 
     <script>
+        // Dropdown Menu Logic (retained)
         document.addEventListener('DOMContentLoaded', function() {
-            // Dropdown Menu Logic (retained)
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
 
@@ -110,22 +107,6 @@
                     if (dropdownMenu.classList.contains('show')) {
                         dropdownMenu.classList.remove('show');
                     }
-                }
-            });
-
-            // New logic for the Company Name and Button
-            const companyNameInput = document.getElementById('companyNameInput');
-            const powerMyManufacturingButton = document.getElementById('powerMyManufacturingButton');
-
-            powerMyManufacturingButton.addEventListener('click', function(event) {
-                event.preventDefault();
-                const companyName = companyNameInput.value.trim();
-                
-                if (companyName) {
-                    // Redirect to the consolidate page with the company name as a query parameter
-                    window.location.href = `consolidate-files.html?company=${encodeURIComponent(companyName)}`;
-                } else {
-                    alert('Please enter your company name to proceed.');
                 }
             });
         });

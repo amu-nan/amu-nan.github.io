@@ -44,8 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, false);
     });
 
-    // Handle click to open file dialog
-    dropArea.addEventListener('click', () => fileElem.click());
+    // Handle click to open file dialog, but prevent it from happening on the button
+    dropArea.addEventListener('click', (e) => {
+        if (e.target.id === 'processButton') {
+            return; // Do nothing if the click originated on the button
+        }
+        fileElem.click();
+    });
     
     dropArea.addEventListener('drop', handleDrop, false);
 
@@ -60,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleFiles(files) {
-        // Enforce single-file upload as the backend only accepts one.
         uploadedFile = files.length > 0 ? files[0] : null;
         displayFiles();
         if (uploadedFile) {
@@ -95,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Show loading state and hide process button
         processButton.style.display = 'none';
         processingInfo.style.display = 'block';
         unifyMessage.style.display = 'block';
@@ -118,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             console.log('Files processed successfully:', data);
             
-            // Hide loading state and show success message and continue button
             processingInfo.style.display = 'none';
             unifyMessage.style.display = 'none';
             successMessage.textContent = "Your data has been unified!";
@@ -128,13 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Upload error:', error);
-            // Hide loading and show error message
             processingInfo.style.display = 'none';
             unifyMessage.style.display = 'none';
             successMessage.textContent = `Error: ${error.message}`;
             successMessage.style.color = 'red';
             successMessage.style.display = 'block';
-            // Show the process button again so the user can retry
             processButton.style.display = 'block';
         }
     });
@@ -190,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Final Navigation ---
     continueButton.addEventListener('click', () => {
-        // Redirect to file-upload.html with the company name
         window.location.href = `file-upload.html?company=${encodeURIComponent(companyName)}`;
     });
 
@@ -198,16 +197,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropdownToggle = document.querySelector('.dropdown-toggle');
     const dropdownMenu = document.querySelector('.dropdown-menu');
 
-    dropdownToggle.addEventListener('click', function(event) {
-        event.preventDefault();
-        dropdownMenu.classList.toggle('show');
-    });
+    if (dropdownToggle && dropdownMenu) {
+        dropdownToggle.addEventListener('click', function(event) {
+            event.preventDefault();
+            dropdownMenu.classList.toggle('show');
+        });
 
-    window.addEventListener('click', function(event) {
-        if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
-            if (dropdownMenu.classList.contains('show')) {
-                dropdownMenu.classList.remove('show');
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
             }
-        }
-    });
+        });
+    }
 });

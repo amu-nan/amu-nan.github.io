@@ -32,7 +32,7 @@
 
             <div class="completion-container" id="completion-container">
                 <div class="completion-buttons-wrapper">
-                    <a href="conversation-ai.html" class="continue-button demo-button">
+                    <a href="conversation-ai.html" class="continue-button demo-button" id="chatButton">
                         <i class="fa-solid fa-comment-dots"></i> Chat with RIA
                     </a>
                     
@@ -57,22 +57,30 @@
 
             if (companyName) {
                 document.getElementById('pageTitle').textContent = `Data is unified for ${companyName}`;
+                
+                // Get the chat button and update its href
+                const chatButton = document.getElementById('chatButton');
+                if (chatButton) {
+                    chatButton.href = `conversation-ai.html?company=${encodeURIComponent(companyName)}`;
+                }
             }
 
             // Dropdown Menu Logic (retained)
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
-            dropdownToggle.addEventListener('click', function(event) {
-                event.preventDefault();
-                dropdownMenu.classList.toggle('show');
-            });
-            window.addEventListener('click', function(event) {
-                if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
-                    if (dropdownMenu.classList.contains('show')) {
-                        dropdownMenu.classList.remove('show');
+            if (dropdownToggle && dropdownMenu) { // Check if elements exist
+                dropdownToggle.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    dropdownMenu.classList.toggle('show');
+                });
+                window.addEventListener('click', function(event) {
+                    if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
+                        if (dropdownMenu.classList.contains('show')) {
+                            dropdownMenu.classList.remove('show');
+                        }
                     }
-                }
-            });
+                });
+            }
         });
     </script>
 </body>

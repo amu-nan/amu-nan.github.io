@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return data;
         } catch (error) {
             console.error("Error sending query:", error);
+            // Return a structured object with a default response and empty history
             return {
                 response: "Sorry, I'm having trouble connecting right now. Please try again later.",
                 conversation_history: []
@@ -121,4 +122,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial greeting ---
     addMessage('ria', "Hello! I'm Ria. I'm ready to answer questions about the consolidated manufacturing data. How can I help?");
 });
-

@@ -141,6 +141,7 @@ header {
     align-items: flex-start;
     gap: 5px; /* Reduced gap between icon/title and paragraph */
     padding: 15px;
+    font-size: 1.1em;
     background-color: #f8f8f8;
     border-radius: 8px;
     box-shadow: var(--shadow-light);

@@ -123,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
         processingInfo.style.display = 'none';
         unifyMessage.style.display = 'none';
         successMessage.style.display = 'none';
-        processButton.style.display = 'block';
     }
 
     // --- Main Action Trigger for Engineering Diagram ---

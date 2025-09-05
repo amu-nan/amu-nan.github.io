@@ -100,13 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleFiles(files) {
         uploadedFile = files.length > 0 ? files[0] : null;
         displayFiles();
-    
         if (uploadedFile) {
             processButton.disabled = false;
-            processButton.classList.remove('hidden'); // Make the button visible
+            processButton.style.display = 'block'; // Show the button
         } else {
             processButton.disabled = true;
-            processButton.classList.add('hidden'); // Hide the button
+            processButton.style.display = 'none'; // Hide the button
         }
         resetStatus();
     }

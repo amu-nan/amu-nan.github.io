@@ -3,11 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const companyName = urlParams.get('company');
 
-    if (companyName) {
-        document.getElementById('pageTitle').textContent = `Consolidate Data for ${companyName}`;
-    }
+    // --- References for State Management ---
+    const initialStateContainer = document.getElementById('initial-state-container');
+    const unifiedStateContainer = document.getElementById('unified-state-container');
+    const pageTitle = document.getElementById('pageTitle');
+    const unifiedTitle = document.getElementById('unifiedTitle');
 
-    // --- References for Engineering Diagram Upload ---
+    // --- References for Initial State (Upload) UI ---
     const dropArea = document.getElementById('drop-area');
     const fileElem = document.getElementById('fileElem');
     const fileList = document.getElementById('file-list');
@@ -15,12 +17,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const processingInfo = document.getElementById('processing-info');
     const unifyMessage = document.getElementById('unify-message');
     const successMessage = document.getElementById('success-message');
-    const completionContainer = document.getElementById('completion-container');
-    const continueButton = document.getElementById('continue-button');
+    
+    // --- References for Unified State (Completion) UI ---
+    const chatButton = document.getElementById('chatButton');
+    const insightsButton = document.querySelector('.view-dashboard');
 
     // **Backend Endpoint URL**
     const backendEndpointUrl = 'http://127.0.0.1:8000/upload_cad_pdf/';
     let uploadedFile = null;
+
+    // --- Check for URL parameter to determine UI state on page load ---
+    const isUnified = urlParams.get('unified');
+    if (isUnified === 'true') {
+        showUnifiedState();
+    } else {
+        showInitialState();
+    }
+    
+    // Function to set the initial UI state
+    function showInitialState() {
+        if (companyName) {
+            pageTitle.textContent = `Consolidate Data for ${companyName}`;
+        }
+        initialStateContainer.style.display = 'block';
+        unifiedStateContainer.style.display = 'none';
+        resetStatus();
+    }
+
+    // Function to set the unified UI state
+    function showUnifiedState() {
+        if (companyName) {
+            unifiedTitle.textContent = `${companyName}'s Data is Unified`;
+        }
+        initialStateContainer.style.display = 'none';
+        unifiedStateContainer.style.display = 'block';
+        // Update the links to pass the company name
+        chatButton.href = `conversation-ai.html?company=${encodeURIComponent(companyName)}`;
+        // Insights button's href doesn't change, so no need to update it here unless we need the company name
+    }
 
     // --- Core File Handling Logic for Engineering Diagram ---
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -44,10 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, false);
     });
 
-    // Handle click to open file dialog, but prevent it from happening on the button
     dropArea.addEventListener('click', (e) => {
         if (e.target.id === 'processButton') {
-            return; // Do nothing if the click originated on the button
+            return;
         }
         fileElem.click();
     });
@@ -88,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
         processingInfo.style.display = 'none';
         unifyMessage.style.display = 'none';
         successMessage.style.display = 'none';
-        completionContainer.style.display = 'none';
         processButton.style.display = 'block';
     }
 
@@ -123,10 +155,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             processingInfo.style.display = 'none';
             unifyMessage.style.display = 'none';
-            successMessage.textContent = "Your data has been unified!";
-            successMessage.style.color = '#28a745';
-            successMessage.style.display = 'block';
-            completionContainer.style.display = 'block';
+
+            // Show unified state on success
+            showUnifiedState();
+
+            // Append a URL parameter to the current page to preserve the state
+            const newUrl = `${window.location.pathname}?company=${encodeURIComponent(companyName)}&unified=true`;
+            history.pushState({}, '', newUrl);
 
         } catch (error) {
             console.error('Upload error:', error);
@@ -163,7 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
             dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'), false);
         });
 
-        // Handle click to open file dialog for CRM/ERP
         dropArea.addEventListener('click', () => fileElem.click());
 
         fileElem.addEventListener('change', () => handleLocalFiles(fileElem.files, fileList, uploadStatus));
@@ -187,11 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupLocalUpload(erpDropArea, erpFileElem, erpFileList, erpUploadStatus);
     setupLocalUpload(crmDropArea, crmFileElem, crmFileList, crmUploadStatus);
-
-    // --- Final Navigation ---
-    continueButton.addEventListener('click', () => {
-        window.location.href = `file-upload.html?company=${encodeURIComponent(companyName)}`;
-    });
 
     // --- Dropdown Menu Logic (retained) ---
     const dropdownToggle = document.querySelector('.dropdown-toggle');

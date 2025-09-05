@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const li = document.createElement('li');
             li.innerHTML = `<span class="file-name">${files[0].name}</span>`;
             fileList.appendChild(li);
-            uploadStatus.textContent = "Data loaded successfully!";
+            uploadStatus.textContent = "Integrated system successfully!";
             uploadStatus.style.color = 'green';
             uploadStatus.style.display = 'block';
         } else {

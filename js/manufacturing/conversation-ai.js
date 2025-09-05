@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('sendButton');
     const chatHistory = document.getElementById('chat-history');
     const backButton = document.getElementById('backButton');
-    const endDemoButton = document.getElementById('endDemoButton');
 
     // Conversation array in backend format
     let chatHistoryArray = [];
@@ -140,11 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
     backButton.addEventListener('click', (event) => {
         event.preventDefault();
         history.back();
-    });
-
-    endDemoButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        window.location.href = '../../index.html';
     });
 
     // --- Initial greeting ---

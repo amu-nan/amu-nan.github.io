@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function sendQueryToBackend(query) {
-        const backendUrl = "http://127.0.0.1:8000/chat";
+        const backendUrl = "http://127.0.0.1:8000/chat/demo";
 
         try {
             const response = await fetch(backendUrl, {

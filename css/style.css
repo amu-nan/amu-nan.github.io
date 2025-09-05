@@ -255,7 +255,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 20px;
-    font-size: 1.1em;
+    font-size: 0.9em;
     background: var(--light-bg-color); /* **NEW: Added background and padding** */
     padding: 20px; /* **NEW: Added padding** */
     border-radius: 8px; /* **NEW: Rounded corners** */
@@ -463,8 +463,8 @@ footer {
 
 /* Business Outcomes Section */
 .outcomes-container {
-    padding: 60px 20px;
-    background-color: var(--light-bg-color);
+/*     padding: 60px 20px; */
+    background-color: var(--secondary-bg-color);
 }
 
 .outcome-list {

@@ -142,5 +142,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Initial greeting ---
-    addMessage('ria', "Hello! I'm Ria. I'm ready to answer questions about the consolidated manufacturing data. How can I help?");
+    addMessage('ria', "Hello! I'm Ria. I'm ready to answer questions about your manufacturing data. How can I help?");
 });

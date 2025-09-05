@@ -310,6 +310,6 @@
     margin: 0 auto;
 }
 
-.hidden {
+.process-button.hidden {
     display: none;
 }

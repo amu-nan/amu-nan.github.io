@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to set the initial UI state
     function showInitialState() {
         if (companyName) {
-            pageTitle.textContent = `Consolidate Data for ${companyName}`;
+            pageTitle.textContent = `Unify Data for ${companyName}`;
         }
         initialStateContainer.style.display = 'block';
         unifiedStateContainer.style.display = 'none';

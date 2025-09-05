@@ -41,15 +41,15 @@
     <main class="page-container">
         <section class="consolidate-section">
             <div id="initial-state-container">
-                <h1 class="page-title" id="pageTitle">Consolidate Your Data Sources</h1>
+                <h1 class="page-title" id="pageTitle">Unify Your Data Sources</h1>
                 <p class="page-intro">
-                    Seamlessly ingest data from various enterprise systems and AutoCAD to create a single, unified source of truth.
+                    Seamlessly ingest data from various enterprise applications to create a single, unified source of truth.
                 </p>
 
                 <div class="options-grid">
                     <div class="option-card">
                         <h2><i class="fa-solid fa-industry"></i> ERP Systems</h2>
-                        <p>Integrate directly with your ERP system or upload data.</p>
+                        <p>Integrate with your ERP system.</p>
                         <div class="system-input-group">
                             <div class="system-input">
                                 <label for="erp-url">Connect to API:</label>
@@ -69,7 +69,7 @@
 
                     <div class="option-card">
                         <h2><i class="fa-solid fa-handshake"></i> CRM Systems</h2>
-                        <p>Integrate directly with your CRM system or upload data.</p>
+                        <p>Integrate with your CRM system.</p>
                         <div class="system-input-group">
                             <div class="system-input">
                                 <label for="crm-url">Connect to API:</label>
@@ -88,39 +88,45 @@
                     </div>
 
                     <div class="option-card">
-                        <h2><i class="fa-solid fa-layer-group"></i> Ingest Engineering Diagram</h2>
-                        <p>Upload a CAD or PDF file to unify with your business data.</p>
-                        <div class="file-upload-box" id="drop-area">
-                            <input type="file" id="fileElem" accept=".pdf" class="file-input">
-                            <i class="fa-solid fa-cloud-arrow-up fa-3x"></i>
-                            <p>Click to browse or drag and drop your file here</p>
-                            <p class="file-upload-info">(.pdf only)</p>
-                            <div id="file-list"></div>
-                            <button id="processButton" class="process-button" disabled>Load Data</button>
+                        <h2><i class="fa-solid fa-layer-group"></i> Engineering systems</h2>
+                        <p>Integrate with your Engineering system.</p>
+                        <div class="system-input-group">
+                            <div class="system-input">
+                                <label for="engineering-url">Connect to API:</label>
+                                <input type="url" id="engineering-url" placeholder="e.g., https://api.autodesk.com/design">
+                                <button class="integration-btn engineering-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                            </div>
+                            <div class="file-upload-box local-upload" id="drop-area">
+                                <i class="fa-solid fa-cloud-arrow-up fa-3x"></i>
+                                <p>Load your Engineering Diagram</p>
+                                <p class="file-upload-info">Click or drag and drop files here (.pdf only)</p>
+                                <input type="file" id="fileElem" accept=".pdf" class="file-input">
+                                <div id="file-list"></div>
+                                <button id="processButton" class="process-button" disabled>Load </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="processing-info" class="processing-info">
                     <div class="loading-spinner"></div>
-                    <p>Processing your data...</p>
                 </div>
                 <p id="unify-message" class="unify-message"></p>
                 <p id="success-message" class="success-message"></p>
             </div>
 
             <div id="unified-state-container" class="unified-state-container" style="display:none;">
-                <h1 class="page-title" id="unifiedTitle">Your Data is Unified</h1>
+                <h1 class="page-title" id="unifiedTitle">Your Data is Unified Now.</h1>
                 <p class="page-intro">
-                    Your data is now ready. Take a look at your insights or chat with your AI assistant.
+                    Insights unlocked. Answers delivered.
+<!--                     Data simplified. Answers amplified. -->
                 </p>
                 <div class="completion-container" id="completion-buttons-wrapper">
                     <a href="conversation-ai.html" class="continue-button demo-button" id="chatButton">
-                        <i class="fa-solid fa-comment-dots"></i> Chat with RIA
+                        <i class="fa-solid fa-comment-dots"></i> Explore with RIA
                     </a>
                     <a href="http://127.0.0.1:8000/xforia-coast/dashboard/" target="_blank" class="continue-button demo-button view-dashboard">
-                        <i class="fa-solid fa-chart-line"></i> Xforia Insights
-                        <span class="tagline-link">Your vendor decision hub</span>
+                        <i class="fa-solid fa-chart-line"></i> Insights
                     </a>
                 </div>
             </div>

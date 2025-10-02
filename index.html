@@ -44,16 +44,7 @@
         <section class="what-is-coast-section">
             <h1>What is Xforia COAST</h1>
             <p>Xforia COAST is a comprehensive AI-powered platform designed to streamline the way organizations handle their data. Each component of COAST is built to maximize efficiency, enhance decision-making, and make data work for you.</p>
-            
-            <div class="why-toggle-container">
-                <button class="why-toggle-button" aria-expanded="false" aria-controls="why-answer">
-                    🌊 Why Xforia COAST? (Click to reveal)
-                </button>
-                <p id="why-answer" class="why-coast-answer" hidden>
-                    **Because disconnected data is costing you time, money, and growth.**
-                </p>
-            </div>
-            </section>
+        </section>
 
         <section class="features-section-wrapper">
             <div class="features-section">
@@ -188,7 +179,6 @@
 
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
-        <p class="footer-legal"><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
     </footer>
 
     <div id="expanded-diagram-container">
@@ -238,25 +228,6 @@
                     }
                 }
             });
-
-            // **Why COAST Toggle Logic**
-            const whyToggleButton = document.querySelector('.why-toggle-button');
-            const whyAnswer = document.getElementById('why-answer');
-
-            if (whyToggleButton && whyAnswer) {
-                whyToggleButton.addEventListener('click', function() {
-                    const isHidden = whyAnswer.hidden;
-                    whyAnswer.hidden = !isHidden;
-                    whyToggleButton.setAttribute('aria-expanded', isHidden);
-
-                    // Change the button text/icon when expanded/collapsed
-                    if (isHidden) {
-                        whyToggleButton.innerHTML = '🌊 Why Xforia COAST? (Click to hide)';
-                    } else {
-                        whyToggleButton.innerHTML = '🌊 Why Xforia COAST? (Click to reveal)';
-                    }
-                });
-            }
         });
     </script>
 </body>

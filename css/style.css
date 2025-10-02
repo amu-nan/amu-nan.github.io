@@ -610,3 +610,61 @@ footer {
     /* Optional: Remove the hover effect */
     pointer-events: none;
 }
+
+/* ... after .what-is-coast-section p ... */
+
+/* **NEW: Why Coast Section Styles** */
+.why-coast-section {
+    padding: 20px 0;
+    text-align: center;
+    background-color: var(--light-bg-color); /* Matches the section above/below for clean look */
+    /* Add a visual separator */
+    border-top: 2px solid rgba(14, 86, 59, 0.1); 
+    border-bottom: 2px solid rgba(14, 86, 59, 0.1); 
+    margin: 40px auto; /* Provides separation from adjacent sections */
+    max-width: 1000px;
+    border-radius: 12px;
+}
+
+.why-toggle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.why-toggle-button {
+    background-color: #0e563b; /* A deep, consistent green */
+    color: var(--light-bg-color);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(14, 86, 59, 0.3);
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.why-toggle-button:hover {
+    background-color: #14967c; /* Lighter green on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(14, 86, 59, 0.4);
+}
+
+.why-coast-answer {
+    margin-top: 20px;
+    padding: 15px 30px;
+    background-color: #e6f7f2; /* Very light green background */
+    color: #0e563b; /* Deep green text */
+    font-size: 1.3em;
+    font-style: italic;
+    font-weight: 500;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    max-width: 80%;
+    animation: fadeIn 0.5s ease-out; /* Fades in when revealed */
+}

@@ -239,7 +239,25 @@
                     }
                 }
             });
-        });
-    </script>
+            / **NEW: Why COAST Toggle Logic**
+            const whyToggleButton = document.querySelector('.why-toggle-button');
+            const whyAnswer = document.getElementById('why-answer');
+
+            if (whyToggleButton && whyAnswer) {
+                whyToggleButton.addEventListener('click', function() {
+                    const isHidden = whyAnswer.hidden;
+                    whyAnswer.hidden = !isHidden;
+                    whyToggleButton.setAttribute('aria-expanded', isHidden);
+
+                    // Change the button text/icon when expanded/collapsed
+                    if (isHidden) {
+                        whyToggleButton.innerHTML = 'Why? (Click to hide)';
+                    } else {
+                        whyToggleButton.innerHTML = 'Why? (Click to reveal)';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

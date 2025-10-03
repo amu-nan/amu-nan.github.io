@@ -152,7 +152,7 @@ h1 {
     font-weight: 700;
     color: #0e563b; /* Specified dark green color */
     cursor: pointer;
-    text-decoration: underline; /* Visual cue that it's clickable */
+    /* text-decoration: underline; /* Visual cue that it's clickable */ */
     transition: color 0.2s ease;
 }
 

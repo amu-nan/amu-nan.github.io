@@ -41,6 +41,7 @@
     text-align: left;
     display: flex;
     flex-direction: column;
+    justify-content: space-between; /* Ensures content aligns nicely */
 }
 
 .option-card:hover {
@@ -170,16 +171,59 @@
     align-items: center;
 }
 
+/* --- NEW STYLES FOR VISUAL CONFIRMATION --- */
+.image-preview-container {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #00bcd4; /* Light blue border for loaded state */
+    border-radius: 10px;
+    background-color: #e0f7fa; /* Light blue background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    height: 100%;
+    box-sizing: border-box;
+    flex-grow: 1; /* Allows it to take up available vertical space */
+}
+
+.preview-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.reset-upload-btn {
+    background-color: #f44336; /* Red color for reset/change */
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 500;
+}
+
+.reset-upload-btn:hover {
+    background-color: #d32f2f;
+}
+/* --- END NEW STYLES --- */
+
+
 .process-button {
     background-color: var(--accent-color);
     color: #fff;
     border: none;
-    padding: 12px 20px;
+    padding: 15px 30px; /* Larger padding for unified button */
     border-radius: 50px;
-    font-size: 1em;
+    font-size: 1.2em; /* Larger font size for unified button */
     cursor: pointer;
     transition: background-color 0.3s;
     margin-top: 20px;
+    margin-bottom: 50px; /* Added spacing below the button */
     font-weight: 600;
 }
 
@@ -309,4 +353,3 @@
     max-width: 1200px;
     margin: 0 auto;
 }
-

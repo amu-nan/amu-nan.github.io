@@ -45,10 +45,10 @@
             <h1>What is Xforia COAST</h1>
             <p>Xforia COAST is a comprehensive AI-powered platform designed to streamline the way organizations handle their data. Each component of COAST is built to maximize efficiency, enhance decision-making, and make data work for you.</p>
         </section>
-
-        <div class="why-block-container">
-                <div id="why-toggle" class="why-toggle">Why?</div>
-                <p id="why-text" class="why-text">Accelerate from raw information to actionable insight in seconds, not weeks.</p>
+        
+            <div class="why-block-container-revised">
+                <span id="why-toggle" class="why-toggle-revised">Why?</span>
+                <span id="why-text" class="why-text-revised">Accelerate from raw information to actionable insight in seconds, not weeks.</span>
             </div>
             </section>
 
@@ -222,9 +222,14 @@
             const whyToggle = document.getElementById('why-toggle');
             const whyText = document.getElementById('why-text');
 
-            if (whyToggle) {
+            if (whyToggle && whyText) {
+                // Initialize state: Text is hidden
+                whyText.style.display = 'none'; 
+
                 whyToggle.addEventListener('click', function() {
-                    whyText.classList.toggle('show');
+                    // Toggle visibility of both elements for the swap effect
+                    whyToggle.style.display = 'none';
+                    whyText.style.display = 'inline';
                 });
             }
             const dropdownMenu = document.querySelector('.dropdown-menu');

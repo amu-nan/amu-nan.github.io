@@ -96,7 +96,7 @@ main {
 }
 
 section {
-    padding: 60px 0; /* **UPDATED: More vertical space** */
+    padding: 30px 0; /* **UPDATED: More vertical space** */
     animation: fadeIn 1s ease-out; /* **NEW: Each section fades in as you scroll** */
 }
 

@@ -49,10 +49,10 @@
                 </p>
 
                 <div class="options-grid">
-                    <div class="option-card">
+                    <div class="option-card" data-system="erp">
                         <h2><i class="fa-solid fa-industry"></i> ERP Systems</h2>
                         <p>Integrate with your ERP system.</p>
-                        <div class="system-input-group">
+                        <div class="system-input-group" id="erp-input-group">
                             <div class="system-input">
                                 <label for="erp-url">Connect to API:</label>
                                 <input type="url" id="erp-url" placeholder="e.g., https://api.sap.com/data/v1/sales">
@@ -67,12 +67,16 @@
                                 <p class="upload-status" id="erpUploadStatus"></p>
                             </div>
                         </div>
+                        <div class="image-preview-container" id="erp-preview-container" style="display:none;">
+                            <img src="../../images/placeholder-erp.png" alt="ERP Data Loaded" class="preview-image">
+                            <button class="reset-upload-btn" data-system="erp">Change File</button>
+                        </div>
                     </div>
 
-                    <div class="option-card">
+                    <div class="option-card" data-system="crm">
                         <h2><i class="fa-solid fa-handshake"></i> CRM Systems</h2>
                         <p>Integrate with your CRM system.</p>
-                        <div class="system-input-group">
+                        <div class="system-input-group" id="crm-input-group">
                             <div class="system-input">
                                 <label for="crm-url">Connect to API:</label>
                                 <input type="url" id="crm-url" placeholder="e.g., https://api.salesforce.com/services">
@@ -87,12 +91,16 @@
                                 <p class="upload-status" id="crmUploadStatus"></p>
                             </div>
                         </div>
+                        <div class="image-preview-container" id="crm-preview-container" style="display:none;">
+                            <img src="../../images/placeholder-crm.png" alt="CRM Data Loaded" class="preview-image">
+                            <button class="reset-upload-btn" data-system="crm">Change File</button>
+                        </div>
                     </div>
 
-                    <div class="option-card">
+                    <div class="option-card" data-system="engineering">
                         <h2><i class="fa-solid fa-layer-group"></i> Engineering systems</h2>
                         <p>Integrate with your Engineering system.</p>
-                        <div class="system-input-group">
+                        <div class="system-input-group" id="engineering-input-group">
                             <div class="system-input">
                                 <label for="engineering-url">Connect to API:</label>
                                 <input type="url" id="engineering-url" placeholder="e.g., https://api.autodesk.com/design">
@@ -103,12 +111,17 @@
                                 <p>Load your Engineering Diagram</p>
                                 <p class="file-upload-info">Click or drag and drop files here (.pdf only)</p>
                                 <input type="file" id="fileElem" accept=".pdf" class="file-input">
-                                <div id="file-list"></div>
-                                <button id="processButton" class="process-button" disabled style="display:none;">Load Data</button>
                             </div>
+                            <div id="file-list"></div>
+                        </div>
+                        <div class="image-preview-container" id="engineering-preview-container" style="display:none;">
+                            <img src="../../images/placeholder-engineering.png" alt="Engineering Data Loaded" class="preview-image">
+                            <button class="reset-upload-btn" data-system="engineering">Change File</button>
                         </div>
                     </div>
                 </div>
+
+                <button id="processButton" class="process-button" disabled style="display:none;">Load & Unify All Data</button>
 
                 <div id="processing-info" class="processing-info">
                     <div class="loading-spinner"></div>
@@ -121,7 +134,6 @@
                 <h1 class="page-title" id="unifiedTitle">Your Data is Unified Now.</h1>
                 <p class="page-intro">
                     Insights unlocked. Answers delivered.
-<!--                     Data simplified. Answers amplified. -->
                 </p>
                 <div class="completion-container" id="completion-buttons-wrapper">
                     <a href="conversation-ai.html" class="continue-button demo-button" id="chatButton">

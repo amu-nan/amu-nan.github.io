@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageTitle = document.getElementById('pageTitle');
     const unifiedTitle = document.getElementById('unifiedTitle');
 
-    // --- References for Initial State (Upload) UI ---
+    // --- References for Engineering (Main) System ---
     const dropArea = document.getElementById('drop-area');
     const fileElem = document.getElementById('fileElem');
     const fileList = document.getElementById('file-list');
@@ -17,14 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const processingInfo = document.getElementById('processing-info');
     const unifyMessage = document.getElementById('unify-message');
     const successMessage = document.getElementById('success-message');
+    const engineeringInputGroup = document.getElementById('engineering-input-group');
+    const engineeringPreviewContainer = document.getElementById('engineering-preview-container');
     
-    // --- References for Unified State (Completion) UI ---
-    const chatButton = document.getElementById('chatButton');
-    const insightsButton = document.querySelector('.view-dashboard');
-
     // **Backend Endpoint URL**
     const backendEndpointUrl = 'http://127.0.0.1:8000/upload_cad_pdf/';
+    
+    // State object to track uploads
     let uploadedFile = null;
+    let erpFileLoaded = false;
+    let crmFileLoaded = false;
+    let engineeringFileLoaded = false;
+
+    // --- References for Unified State (Completion) UI ---
+    const chatButton = document.getElementById('chatButton');
 
     // --- Check for URL parameter to determine UI state on page load ---
     const isUnified = urlParams.get('unified');
@@ -34,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showInitialState();
     }
     
-    // Function to set the initial UI state
+    // --- State and UI Management Functions ---
+
     function showInitialState() {
         if (companyName) {
             pageTitle.textContent = `Unify Data for ${companyName}`;
@@ -44,27 +51,41 @@ document.addEventListener('DOMContentLoaded', () => {
         resetStatus();
     }
 
-    // Function to set the unified UI state
     function showUnifiedState() {
         if (companyName) {
             unifiedTitle.textContent = `${companyName}'s Data is Unified`;
         }
         initialStateContainer.style.display = 'none';
         unifiedStateContainer.style.display = 'block';
-        // Update the links to pass the company name
         chatButton.href = `conversation-ai.html?company=${encodeURIComponent(companyName)}`;
-        // Insights button's href doesn't change, so no need to update it here unless we need the company name
+    }
+
+    function updateProcessButtonState() {
+        // Only enable the main process button if the engineering file is loaded
+        const canProcess = engineeringFileLoaded;
+        processButton.disabled = !canProcess;
+        // Show the button if at least the Engineering file is loaded
+        processButton.style.display = canProcess ? 'block' : 'none';
+    }
+
+    function resetStatus() {
+        processingInfo.style.display = 'none';
+        unifyMessage.style.display = 'none';
+        successMessage.style.display = 'none';
     }
 
     // --- Core File Handling Logic for Engineering Diagram ---
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, preventDefaults, false);
-    });
 
+    // Drag/Drop helper function
     function preventDefaults(e) {
         e.preventDefault();
         e.stopPropagation();
     }
+
+    // Engineering System File Handling
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+    });
 
     ['dragenter', 'dragover'].forEach(eventName => {
         dropArea.addEventListener(eventName, () => {
@@ -78,69 +99,70 @@ document.addEventListener('DOMContentLoaded', () => {
         }, false);
     });
 
-    dropArea.addEventListener('click', (e) => {
-        if (e.target.id === 'processButton') {
-            return;
-        }
+    dropArea.addEventListener('click', () => {
         fileElem.click();
     });
     
-    dropArea.addEventListener('drop', handleDrop, false);
+    dropArea.addEventListener('drop', handleDropEngineering, false);
 
     fileElem.addEventListener('change', (e) => {
-        handleFiles(e.target.files);
+        handleFilesEngineering(e.target.files);
     });
 
-    function handleDrop(e) {
+    function handleDropEngineering(e) {
         const dt = e.dataTransfer;
         const files = dt.files;
-        handleFiles(files);
+        handleFilesEngineering(files);
     }
 
-    function handleFiles(files) {
+    function handleFilesEngineering(files) {
         uploadedFile = files.length > 0 ? files[0] : null;
-        displayFiles();
-        if (uploadedFile) {
-            processButton.disabled = false;
-            processButton.style.display = 'block'; // Show the button
-        } else {
-            processButton.disabled = true;
-            processButton.style.display = 'none'; // Hide the button
-        }
+        engineeringFileLoaded = uploadedFile !== null;
+        displayFilesEngineering();
+        updateEngineeringCardState();
+        updateProcessButtonState();
         resetStatus();
     }
 
-    function displayFiles() {
+    function displayFilesEngineering() {
         fileList.innerHTML = '';
         if (uploadedFile) {
             const li = document.createElement('li');
-            li.innerHTML = `<span class="file-name">${uploadedFile.name}</span>`;
+            li.innerHTML = `<span class="file-name"><i class="fa-solid fa-file-pdf"></i> ${uploadedFile.name} Loaded</span>`;
             fileList.appendChild(li);
         }
     }
 
-    function resetStatus() {
-        processingInfo.style.display = 'none';
-        unifyMessage.style.display = 'none';
-        successMessage.style.display = 'none';
+    function updateEngineeringCardState() {
+        if (engineeringFileLoaded) {
+            // Hide input/API section, show preview
+            engineeringInputGroup.style.display = 'none';
+            engineeringPreviewContainer.style.display = 'flex';
+        } else {
+            // Show input/API section, hide preview
+            engineeringInputGroup.style.display = 'flex';
+            engineeringPreviewContainer.style.display = 'none';
+        }
     }
 
-    // --- Main Action Trigger for Engineering Diagram ---
+    // --- Main Action Trigger for Engineering Diagram (Unified Button) ---
     processButton.addEventListener('click', async () => {
         if (!uploadedFile) {
-            alert('Please select a file to upload.');
+            alert('Please upload an Engineering Diagram to proceed.');
             return;
         }
 
         processButton.style.display = 'none';
         processingInfo.style.display = 'block';
         unifyMessage.style.display = 'block';
-        unifyMessage.textContent = `Now unifying data for ${companyName || 'your company'}...`;
+        unifyMessage.textContent = `Now unifying data for ${companyName || 'your company'}... this may take a moment.`;
+        successMessage.style.display = 'none';
 
         const formData = new FormData();
         formData.append('file', uploadedFile);
 
         try {
+            // BACKEND LOGIC REMAINS THE SAME
             const response = await fetch(backendEndpointUrl, {
                 method: 'POST',
                 body: formData,
@@ -175,53 +197,114 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Logic for CRM & ERP Local Uploads (Front-End Only) ---
-    const erpDropArea = document.getElementById('erpDropArea');
-    const erpFileElem = document.getElementById('erpFileElem');
-    const erpFileList = document.getElementById('erpFileList');
-    const erpUploadStatus = document.getElementById('erpUploadStatus');
+    // --- Logic for CRM & ERP Local Uploads (Visual Only) ---
+    const systems = [
+        { 
+            name: 'erp', 
+            dropArea: document.getElementById('erpDropArea'), 
+            fileElem: document.getElementById('erpFileElem'), 
+            fileList: document.getElementById('erpFileList'), 
+            uploadStatus: document.getElementById('erpUploadStatus'),
+            inputGroup: document.getElementById('erp-input-group'),
+            previewContainer: document.getElementById('erp-preview-container'),
+            stateVar: 'erpFileLoaded'
+        },
+        { 
+            name: 'crm', 
+            dropArea: document.getElementById('crmDropArea'), 
+            fileElem: document.getElementById('crmFileElem'), 
+            fileList: document.getElementById('crmFileList'), 
+            uploadStatus: document.getElementById('crmUploadStatus'),
+            inputGroup: document.getElementById('crm-input-group'),
+            previewContainer: document.getElementById('crm-preview-container'),
+            stateVar: 'crmFileLoaded'
+        }
+    ];
 
-    const crmDropArea = document.getElementById('crmDropArea');
-    const crmFileElem = document.getElementById('crmFileElem');
-    const crmFileList = document.getElementById('crmFileList');
-    const crmUploadStatus = document.getElementById('crmUploadStatus');
-
-    function setupLocalUpload(dropArea, fileElem, fileList, uploadStatus) {
+    function setupLocalUpload(system) {
+        // Drag/Drop visual feedback
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false);
+            system.dropArea.addEventListener(eventName, preventDefaults, false);
         });
 
         ['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, () => dropArea.classList.add('highlight'), false);
+            system.dropArea.addEventListener(eventName, () => system.dropArea.classList.add('highlight'), false);
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'), false);
+            system.dropArea.addEventListener(eventName, () => system.dropArea.classList.remove('highlight'), false);
         });
 
-        dropArea.addEventListener('click', () => fileElem.click());
+        system.dropArea.addEventListener('click', () => system.fileElem.click());
 
-        fileElem.addEventListener('change', () => handleLocalFiles(fileElem.files, fileList, uploadStatus));
-        dropArea.addEventListener('drop', (e) => handleLocalFiles(e.dataTransfer.files, fileList, uploadStatus));
+        system.fileElem.addEventListener('change', () => handleLocalFiles(system, system.fileElem.files));
+        system.dropArea.addEventListener('drop', (e) => handleLocalFiles(system, e.dataTransfer.files));
     }
 
-    function handleLocalFiles(files, fileList, uploadStatus) {
-        fileList.innerHTML = '';
-        if (files.length > 0) {
+    function handleLocalFiles(system, files) {
+        const fileLoaded = files.length > 0;
+        
+        if (fileLoaded) {
+            // Update internal state
+            if (system.name === 'erp') erpFileLoaded = true;
+            if (system.name === 'crm') crmFileLoaded = true;
+            
+            // Visual feedback
+            system.fileList.innerHTML = '';
             const li = document.createElement('li');
-            li.innerHTML = `<span class="file-name">${files[0].name}</span>`;
-            fileList.appendChild(li);
-            uploadStatus.textContent = "Integrated system successfully!";
-            uploadStatus.style.color = 'green';
-            uploadStatus.style.display = 'block';
-        } else {
-            uploadStatus.textContent = "";
-            uploadStatus.style.display = 'none';
-        }
-    }
+            li.innerHTML = `<span class="file-name"><i class="fa-solid fa-file-invoice"></i> ${files[0].name}</span>`;
+            system.fileList.appendChild(li);
+            system.uploadStatus.textContent = "System data integrated successfully!";
+            system.uploadStatus.style.color = 'green';
+            system.uploadStatus.style.display = 'block';
 
-    setupLocalUpload(erpDropArea, erpFileElem, erpFileList, erpUploadStatus);
-    setupLocalUpload(crmDropArea, crmFileElem, crmFileList, crmUploadStatus);
+            // Show preview and hide input
+            system.inputGroup.style.display = 'none';
+            system.previewContainer.style.display = 'flex';
+        } else {
+            // Reset visual feedback if files is empty
+            system.uploadStatus.textContent = "";
+            system.uploadStatus.style.display = 'none';
+            system.fileList.innerHTML = '';
+        }
+        updateProcessButtonState();
+    }
+    
+    // --- Reset Functionality for all cards ---
+    document.querySelectorAll('.reset-upload-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const systemName = e.target.getAttribute('data-system');
+            
+            if (systemName === 'engineering') {
+                // Reset Engineering state
+                uploadedFile = null;
+                engineeringFileLoaded = false;
+                fileList.innerHTML = '';
+                fileElem.value = ''; // Clear file input
+                updateEngineeringCardState();
+            } else {
+                // Reset ERP/CRM state
+                const system = systems.find(s => s.name === systemName);
+                if (system) {
+                    if (system.name === 'erp') erpFileLoaded = false;
+                    if (system.name === 'crm') crmFileLoaded = false;
+                    
+                    system.fileElem.value = ''; // Clear file input
+                    system.uploadStatus.style.display = 'none';
+                    system.fileList.innerHTML = '';
+                    system.inputGroup.style.display = 'flex';
+                    system.previewContainer.style.display = 'none';
+                }
+            }
+            updateProcessButtonState();
+            resetStatus();
+        });
+    });
+
+    // Initialize event listeners
+    systems.forEach(setupLocalUpload);
+    updateProcessButtonState(); // Initial check for button state
 
     // --- Dropdown Menu Logic (retained) ---
     const dropdownToggle = document.querySelector('.dropdown-toggle');

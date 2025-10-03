@@ -610,3 +610,48 @@ footer {
     /* Optional: Remove the hover effect */
     pointer-events: none;
 }
+
+/* 🟢 NEW: Why Block Styles (REVISED) */
+.why-block-container {
+    margin: 30px auto 10px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.why-toggle {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #14967c; /* Using the green from the tagline/icons */
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 2px solid #14967c; /* Using the green from the tagline/icons */
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 10px;
+}
+
+.why-toggle:hover {
+    background-color: #14967c;
+    color: var(--light-bg-color);
+}
+
+.why-text {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+    padding: 0 10px;
+    font-style: italic;
+    color: #555;
+    font-size: 1.1em;
+}
+
+.why-text.show {
+    max-height: 100px;
+    opacity: 1;
+    padding: 10px;
+    border-left: 3px solid #0e563b; /* Using the dark green from the H1 */
+}
+/* 🟢 END NEW: Why Block Styles (REVISED) */

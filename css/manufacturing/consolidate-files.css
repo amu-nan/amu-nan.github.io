@@ -217,15 +217,15 @@
 }
 /* --- END UPDATED STYLES --- */
 
-* New rule to center the unified button */
+/* New rule to center the unified button */
 .process-button-container {
-    display: flex;
-    justify-content: center; /* Centers the button horizontally */
     width: 100%;
+    /* Use text-align as a fallback */
+    text-align: center; 
     margin-top: 20px;
+    margin-bottom: 50px; /* Consolidate bottom margin here */
 }
 
-/* Ensure the button itself has the necessary margins */
 .process-button {
     background-color: var(--accent-color);
     color: #fff;
@@ -235,16 +235,18 @@
     font-size: 1.2em;
     cursor: pointer;
     transition: background-color 0.3s;
-    /* Removed margin-top/bottom from here, managed by the container's margin */
-    margin-bottom: 50px; 
     font-weight: 600;
-    display: inline-block;
+    
+    /* THE CRITICAL CENTERING RULES */
+    display: block; /* MUST be a block element to use margin: auto */
+    margin: 0 auto; /* This centers the block element */
 }
 
 .process-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
+
 
 .processing-info {
     display: none;

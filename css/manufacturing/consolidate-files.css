@@ -171,46 +171,51 @@
     align-items: center;
 }
 
-/* --- NEW STYLES FOR VISUAL CONFIRMATION --- */
+/* --- UPDATED STYLES FOR VISUAL CONFIRMATION --- */
 .image-preview-container {
     text-align: center;
-    padding: 20px;
-    border: 1px solid #00bcd4; /* Light blue border for loaded state */
+    padding: 10px; /* Reduced padding */
+    border: 1px solid #ddd; /* Subtle border */
     border-radius: 10px;
-    background-color: #e0f7fa; /* Light blue background */
+    background-color: #fff; /* White background */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 10px; /* Reduced gap */
     height: 100%;
     box-sizing: border-box;
-    flex-grow: 1; /* Allows it to take up available vertical space */
+    flex-grow: 1;
 }
 
 .preview-image {
-    max-width: 100%;
-    height: auto;
+    max-width: 1000%; /* Make image slightly smaller to give more margin */
+    max-height: 250px; /* Fixed height for consistency */
+    width: auto; /* Allow width to adjust */
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+/*     object-fit: contain; Ensures the entire image is visible within the bounds */
+    margin-bottom: 5px; /* Added margin below image */
 }
 
 .reset-upload-btn {
-    background-color: #f44336; /* Red color for reset/change */
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 50px;
-    font-size: 0.9em;
+    background-color: #ffffff; /* White background */
+    color: var(--primary-color); /* Primary text color */
+    border: 1px solid var(--primary-color); /* Border color matching primary */
+    padding: 6px 12px; /* Smaller padding */
+    border-radius: 20px; /* More subtle rounded corners */
+    font-size: 0.8em; /* Smaller font size */
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     font-weight: 500;
 }
 
 .reset-upload-btn:hover {
-    background-color: #d32f2f;
+    background-color: var(--primary-color); /* Hover background becomes primary color */
+    color: #fff; /* Hover text becomes white */
+    border-color: var(--primary-color); /* Border stays primary color */
 }
-/* --- END NEW STYLES --- */
+/* --- END UPDATED STYLES --- */
 
 
 .process-button {

@@ -134,9 +134,38 @@ h1 {
 .what-is-coast-section p {
     font-size: 1.2em;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 0 auto 10px;
     line-height: 1.6; /* **UPDATED: Better readability** */
 }
+
+/* 🟢 NEW: Why Block Styles (Revised - Simple Text Click Swap) */
+.why-block-container-revised {
+    /* Centering the block */
+    text-align: center; 
+    /* Reduced top and bottom margin for tighter spacing */
+    margin: 10px auto 30px; 
+    max-width: 800px;
+    font-size: 1.2em; 
+}
+
+.why-toggle-revised {
+    font-weight: 700;
+    color: #0e563b; /* Specified dark green color */
+    cursor: pointer;
+    text-decoration: underline; /* Visual cue that it's clickable */
+    transition: color 0.2s ease;
+}
+
+.why-toggle-revised:hover {
+    color: #1a7e58; /* Slightly lighter shade for hover effect */
+}
+
+.why-text-revised {
+    font-weight: 500;
+    color: #0e563b; /* Specified dark green color */
+    font-style: italic;
+}
+/* 🟢 END NEW: Why Block Styles (Revised) */
 
 .features-section {
     display: flex;

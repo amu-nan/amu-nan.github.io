@@ -138,34 +138,24 @@ h1 {
     line-height: 1.6; /* **UPDATED: Better readability** */
 }
 
-/* 🟢 NEW: Why Block Styles (Revised - Simple Text Click Swap) */
-.why-block-container-revised {
-    /* Centering the block */
+/* 🟢 FINAL: Static Key Statement Styles */
+.static-key-statement {
+    /* Centering the text */
+    width: 100%;
     text-align: center; 
-    /* Reduced top and bottom margin for tighter spacing */
+    
+    /* Styling the statement text */
+    font-weight: 600; /* Bolder than the paragraph, less than a heading */
+    font-size: 1.25em; /* Slightly larger than the paragraph */
+    color: #0e563b; /* The dark green color you specified */
+    font-style: italic;
+    
+    /* Spacing: Tighter below the paragraph, reduced space above features */
     margin: 10px auto 30px; 
     max-width: 800px;
-    font-size: 1.2em; 
+    padding: 0 20px;
 }
-
-.why-toggle-revised {
-    font-weight: 700;
-    color: #0e563b; /* Specified dark green color */
-    cursor: pointer;
-    /* text-decoration: underline; /* Visual cue that it's clickable */ */
-    transition: color 0.2s ease;
-}
-
-.why-toggle-revised:hover {
-    color: #1a7e58; /* Slightly lighter shade for hover effect */
-}
-
-.why-text-revised {
-    font-weight: 500;
-    color: #0e563b; /* Specified dark green color */
-    font-style: italic;
-}
-/* 🟢 END NEW: Why Block Styles (Revised) */
+/* 🟢 END FINAL: Static Key Statement Styles */
 
 .features-section {
     display: flex;

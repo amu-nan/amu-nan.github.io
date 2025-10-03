@@ -217,19 +217,28 @@
 }
 /* --- END UPDATED STYLES --- */
 
+* New rule to center the unified button */
+.process-button-container {
+    display: flex;
+    justify-content: center; /* Centers the button horizontally */
+    width: 100%;
+    margin-top: 20px;
+}
 
+/* Ensure the button itself has the necessary margins */
 .process-button {
     background-color: var(--accent-color);
     color: #fff;
     border: none;
-    padding: 15px 30px; /* Larger padding for unified button */
+    padding: 15px 30px; 
     border-radius: 50px;
-    font-size: 1.2em; /* Larger font size for unified button */
+    font-size: 1.2em;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-top: 20px;
-    margin-bottom: 50px; /* Added spacing below the button */
+    /* Removed margin-top/bottom from here, managed by the container's margin */
+    margin-bottom: 50px; 
     font-weight: 600;
+    display: inline-block;
 }
 
 .process-button:disabled {

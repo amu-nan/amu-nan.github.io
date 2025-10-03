@@ -46,6 +46,12 @@
             <p>Xforia COAST is a comprehensive AI-powered platform designed to streamline the way organizations handle their data. Each component of COAST is built to maximize efficiency, enhance decision-making, and make data work for you.</p>
         </section>
 
+        <div class="why-block-container">
+                <div id="why-toggle" class="why-toggle">Why?</div>
+                <p id="why-text" class="why-text">Accelerate from raw information to actionable insight in seconds, not weeks.</p>
+            </div>
+            </section>
+
         <section class="features-section-wrapper">
             <div class="features-section">
                 <div class="feature">
@@ -213,6 +219,14 @@
         // Dropdown Menu Logic
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const whyToggle = document.getElementById('why-toggle');
+            const whyText = document.getElementById('why-text');
+
+            if (whyToggle) {
+                whyToggle.addEventListener('click', function() {
+                    whyText.classList.toggle('show');
+                });
+            }
             const dropdownMenu = document.querySelector('.dropdown-menu');
 
             dropdownToggle.addEventListener('click', function(event) {

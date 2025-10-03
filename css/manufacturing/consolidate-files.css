@@ -358,3 +358,21 @@
     max-width: 1200px;
     margin: 0 auto;
 }
+
+/* New temporary loading container for each system card */
+.system-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+    text-align: center;
+    min-height: 150px;
+    gap: 10px;
+}
+
+.system-loading p {
+    font-weight: 500;
+    color: var(--primary-color);
+    margin: 0;
+}

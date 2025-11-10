@@ -24,7 +24,7 @@
     line-height: 1.6;
 }
 
-/* Updated grid for the three main cards */
+/* Updated grid for the two main cards */
 .options-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -194,7 +194,7 @@
     width: auto; /* Allow width to adjust */
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow */
-/*     object-fit: contain; Ensures the entire image is visible within the bounds */
+/*     object-fit: contain; Ensures the entire image is visible within the bounds */
     margin-bottom: 5px; /* Added margin below image */
 }
 
@@ -221,7 +221,7 @@
 .process-button-container {
     width: 100%;
     /* Use text-align as a fallback */
-    text-align: center; 
+    text-align: center; 
     margin-top: 20px;
     margin-bottom: 50px; /* Consolidate bottom margin here */
 }
@@ -230,13 +230,13 @@
     background-color: var(--accent-color);
     color: #fff;
     border: none;
-    padding: 15px 30px; 
+    padding: 15px 30px; 
     border-radius: 50px;
     font-size: 1.2em;
     cursor: pointer;
     transition: background-color 0.3s;
     font-weight: 600;
-    
+     
     /* THE CRITICAL CENTERING RULES */
     display: block; /* MUST be a block element to use margin: auto */
     margin: 0 auto; /* This centers the block element */
@@ -386,4 +386,110 @@
     font-weight: 500;
     color: var(--primary-color);
     margin: 0;
+}
+
+
+/* --- NEW STYLES FOR ENTERPRISE SYSTEM DROPDOWN AND MODULE SELECTION --- */
+
+/* Style for the main system selection dropdown */
+.system-select {
+    /* Reuse input styling for visual consistency */
+    padding: 12px;
+    border: 1px solid var(--primary-color); /* Highlight the select box */
+    border-radius: 8px;
+    font-size: 1em;
+    width: 100%; /* Take full width of the input group */
+    background-color: #fff; /* Ensure a white background */
+    cursor: pointer;
+    appearance: none; /* Hide default dropdown arrow */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c3e50' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+/* Container for module selection (to add separation) */
+#module-selection-container {
+    padding-top: 15px;
+    border-top: 1px solid #eee; /* Subtle separator */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Spacing between module groups and button */
+}
+
+/* Label for "Select Modules" */
+.module-label {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+/* Container for a specific system's module checkboxes */
+.module-group {
+    display: flex;
+    flex-wrap: wrap; /* Allow modules to wrap if space is limited */
+    gap: 15px; /* Space between individual checkbox labels */
+    padding: 5px 0;
+}
+
+/* Style for individual checkbox labels (making them clickable blocks) */
+.module-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: var(--background-color); /* Lighter background for unselected */
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-size: 0.95em;
+}
+
+/* Style for the actual checkbox input (hide the default box) */
+.module-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--primary-color); /* Use primary color for the checkmark */
+}
+
+/* Highlight modules when checked/hovered */
+.module-group label:has(input[type="checkbox"]:checked) {
+    background-color: var(--secondary-bg-color); /* Success/selected color */
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.module-group label:hover {
+    border-color: var(--accent-color);
+}
+
+/* Style for the new integration button, reusing existing button styles */
+#moduleIntegrateBtn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px 20px; /* Make it a bit bigger */
+    font-weight: 600;
+}
+
+/* Additional styling for the success state summary */
+#integrated-summary {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: var(--text-color);
+    text-align: center;
+    line-height: 1.6;
+    margin: 5px auto;
+}
+
+/* Ensures the preview image maintains its consistency within the new card */
+#enterprise-preview-container .preview-image {
+    content: url('../../images/placeholder-enterprise.png'); /* Set a distinct image for this card */
+}
+
+/* Ensure the system loading spinner looks good inside the enterprise card */
+#enterprise-loading-spinner {
+    width: 100%;
 }

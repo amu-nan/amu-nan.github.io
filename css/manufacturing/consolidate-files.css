@@ -111,7 +111,7 @@
     margin-right: 8px;
 }
 
-/* New styling for the file upload areas */
+/* File upload (Engineering) styles retained */
 .file-upload-box {
     border: 2px dashed var(--accent-color);
     border-radius: 10px;
@@ -171,59 +171,61 @@
     align-items: center;
 }
 
-/* --- UPDATED STYLES FOR VISUAL CONFIRMATION --- */
+/* --- VISUAL CONFIRMATION & RESET BUTTONS --- */
 .image-preview-container {
     text-align: center;
-    padding: 10px; /* Reduced padding */
-    border: 1px solid #ddd; /* Subtle border */
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    background-color: #fff; /* White background */
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Reduced gap */
+    gap: 10px;
     height: 100%;
     box-sizing: border-box;
     flex-grow: 1;
 }
 
 .preview-image {
-    max-width: 1000%; /* Make image slightly smaller to give more margin */
-    max-height: 250px; /* Fixed height for consistency */
-    width: auto; /* Allow width to adjust */
+    max-width: 1000%;
+    max-height: 250px;
+    width: auto;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow */
-/*     object-fit: contain; Ensures the entire image is visible within the bounds */
-    margin-bottom: 5px; /* Added margin below image */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
 }
 
 .reset-upload-btn {
-    background-color: #ffffff; /* White background */
-    color: var(--primary-color); /* Primary text color */
-    border: 1px solid var(--primary-color); /* Border color matching primary */
-    padding: 6px 12px; /* Smaller padding */
-    border-radius: 20px; /* More subtle rounded corners */
-    font-size: 0.8em; /* Smaller font size */
+    background-color: #ffffff;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     font-weight: 500;
 }
 
 .reset-upload-btn:hover {
-    background-color: var(--primary-color); /* Hover background becomes primary color */
-    color: #fff; /* Hover text becomes white */
-    border-color: var(--primary-color); /* Border stays primary color */
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
 }
-/* --- END UPDATED STYLES --- */
+/* Ensure reset buttons line up nicely */
+.image-preview-container > .reset-upload-btn[data-system="enterprise-systems"] {
+    margin-top: 10px;
+}
 
-/* New rule to center the unified button */
+
+/* --- MAIN PROCESS BUTTON & SPINNER --- */
 .process-button-container {
     width: 100%;
-    /* Use text-align as a fallback */
     text-align: center; 
     margin-top: 20px;
-    margin-bottom: 50px; /* Consolidate bottom margin here */
+    margin-bottom: 50px;
 }
 
 .process-button {
@@ -236,17 +238,14 @@
     cursor: pointer;
     transition: background-color 0.3s;
     font-weight: 600;
-     
-    /* THE CRITICAL CENTERING RULES */
-    display: block; /* MUST be a block element to use margin: auto */
-    margin: 0 auto; /* This centers the block element */
+    display: block; 
+    margin: 0 auto; 
 }
 
 .process-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
-
 
 .processing-info {
     display: none;
@@ -276,98 +275,7 @@
     font-weight: 600;
     color: var(--primary-color);
     font-size: 1.1em;
-    display: none; /* Hide by default */
-}
-
-.unify-message {
-    color: var(--primary-color);
-}
-
-.success-message {
-    color: #28a745;
-}
-
-.completion-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
-    margin-top: 30px;
-    width: 100%;
-}
-
-.completion-buttons-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-}
-
-.bottom-nav {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 250px;
-    margin: 20px auto 0;
-}
-
-.back-button {
-    background-color: #fff;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    padding: 1rem 2.5rem;
-    border-radius: 50px;
-    font-size: 1.1em;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.back-button:hover {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-.demo-button {
-    background-color: #41ba64;
-    color: #fff;
-    padding: 1rem 2.5rem;
-    border-radius: 50px;
-    font-size: 1.1em;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.demo-button:hover {
-    background-color: #2c974b;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-.view-dashboard {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-.view-dashboard:hover {
-    background-color: #1a242f;
-}
-
-.tagline-link {
-    font-size: 0.8em;
-    display: block;
-    margin-top: 5px;
-}
-
-/* New classes for state management */
-.initial-state-container,
-.unified-state-container {
-    padding: 60px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    display: none;
 }
 
 /* New temporary loading container for each system card */
@@ -389,31 +297,38 @@
 }
 
 
-/* --- NEW STYLES FOR ENTERPRISE SYSTEM DROPDOWN AND MODULE SELECTION --- */
+/* --- ENTERPRISE SYSTEM DROPDOWN AND MODULE SELECTION --- */
 
 /* Style for the main system selection dropdown */
 .system-select {
-    /* Reuse input styling for visual consistency */
     padding: 12px;
-    border: 1px solid var(--primary-color); /* Highlight the select box */
+    border: 1px solid var(--primary-color); 
     border-radius: 8px;
     font-size: 1em;
-    width: 100%; /* Take full width of the input group */
-    background-color: #fff; /* Ensure a white background */
+    width: 100%; 
+    background-color: #fff; 
     cursor: pointer;
-    appearance: none; /* Hide default dropdown arrow */
+    appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c3e50' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
 }
 
+/* API Status/Error Message */
+.api-status {
+    margin: 0;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #cc0000; /* Default error color */
+}
+
 /* Container for module selection (to add separation) */
 #module-selection-container {
     padding-top: 15px;
-    border-top: 1px solid #eee; /* Subtle separator */
+    border-top: 1px solid #eee; 
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Spacing between module groups and button */
+    gap: 15px;
 }
 
 /* Label for "Select Modules" */
@@ -426,8 +341,8 @@
 /* Container for a specific system's module checkboxes */
 .module-group {
     display: flex;
-    flex-wrap: wrap; /* Allow modules to wrap if space is limited */
-    gap: 15px; /* Space between individual checkbox labels */
+    flex-wrap: wrap; 
+    gap: 15px; 
     padding: 5px 0;
 }
 
@@ -437,7 +352,7 @@
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
-    background-color: var(--background-color); /* Lighter background for unselected */
+    background-color: var(--background-color); 
     border: 1px solid #ddd;
     border-radius: 20px;
     cursor: pointer;
@@ -446,17 +361,16 @@
     font-size: 0.95em;
 }
 
-/* Style for the actual checkbox input (hide the default box) */
 .module-group input[type="checkbox"] {
     width: 18px;
     height: 18px;
     margin: 0;
-    accent-color: var(--primary-color); /* Use primary color for the checkmark */
+    accent-color: var(--primary-color); 
 }
 
-/* Highlight modules when checked/hovered */
+/* Highlight modules when checked */
 .module-group label:has(input[type="checkbox"]:checked) {
-    background-color: var(--secondary-bg-color); /* Success/selected color */
+    background-color: var(--secondary-bg-color); 
     border-color: var(--primary-color);
     color: var(--primary-color);
     box-shadow: 0 0 5px rgba(var(--primary-color-rgb), 0.3);
@@ -470,26 +384,36 @@
 #moduleIntegrateBtn {
     width: 100%;
     margin-top: 15px;
-    padding: 15px 20px; /* Make it a bit bigger */
+    padding: 15px 20px; 
     font-weight: 600;
 }
 
-/* Additional styling for the success state summary */
-#integrated-summary {
-    font-size: 1.1em;
-    font-weight: 500;
-    color: var(--text-color);
-    text-align: center;
-    line-height: 1.6;
-    margin: 5px auto;
-}
-
-/* Ensures the preview image maintains its consistency within the new card */
-#enterprise-preview-container .preview-image {
-    content: url('../../images/placeholder-enterprise.png'); /* Set a distinct image for this card */
-}
-
-/* Ensure the system loading spinner looks good inside the enterprise card */
-#enterprise-loading-spinner {
+/* NEW: Style for the list of integrated systems in the preview state */
+#integrated-systems-list {
+    margin: 15px auto;
     width: 100%;
+}
+
+.integrated-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    max-width: 300px;
+    margin: 10px auto;
+}
+
+.integrated-list li {
+    font-size: 1em;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    color: var(--text-color);
+}
+
+.integrated-list li:last-child {
+    border-bottom: none;
+}
+
+.integrated-list li i {
+    color: #28a745;
+    margin-right: 8px;
 }

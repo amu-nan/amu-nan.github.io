@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageTitle = document.getElementById('pageTitle');
     const unifiedTitle = document.getElementById('unifiedTitle');
 
-    // --- References for Engineering (Main) System ---
+    // --- References for Engineering System (Main Upload) ---
     const dropArea = document.getElementById('drop-area');
     const fileElem = document.getElementById('fileElem');
     const fileList = document.getElementById('file-list');
@@ -20,19 +20,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const engineeringInputGroup = document.getElementById('engineering-input-group');
     const engineeringPreviewContainer = document.getElementById('engineering-preview-container');
     
+    // --- References for Enterprise System (New Dropdown Logic) ---
+    const enterpriseInputGroup = document.getElementById('enterprise-input-group');
+    const systemSelect = document.getElementById('system-select');
+    const moduleSelectionContainer = document.getElementById('module-selection-container');
+    const moduleIntegrateBtn = document.getElementById('moduleIntegrateBtn');
+    const enterpriseModuleCheckboxes = document.querySelectorAll('.module-group input[type="checkbox"]');
+    const enterprisePreviewContainer = document.getElementById('enterprise-preview-container');
+    const integratedSummary = document.getElementById('integrated-summary');
+
     // **Backend Endpoint URL**
     const backendEndpointUrl = 'http://127.0.0.1:8000/upload_cad_pdf/';
     
     // State object to track uploads
     let uploadedFile = null;
-    let erpFileLoaded = false;
-    let crmFileLoaded = false;
     let engineeringFileLoaded = false;
+    let enterpriseModulesLoaded = false; // NEW state for combined card
+    let selectedEnterpriseSystem = '';
+    let selectedModules = [];
 
     // --- References for Unified State (Completion) UI ---
     const chatButton = document.getElementById('chatButton');
 
-    // --- Check for URL parameter to determine UI state on page load ---
+    // --- Initial State Check ---
     const isUnified = urlParams.get('unified');
     if (isUnified === 'true') {
         showUnifiedState();
@@ -61,10 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateProcessButtonState() {
-        // Only enable the main process button if the engineering file is loaded
-        const canProcess = engineeringFileLoaded;
+        // Enable if BOTH engineering file AND enterprise modules are loaded
+        const canProcess = engineeringFileLoaded && enterpriseModulesLoaded;
         processButton.disabled = !canProcess;
-        // Show the button if at least the Engineering file is loaded
         processButton.style.display = canProcess ? 'block' : 'none';
     }
 
@@ -80,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
     }
 
-    // --- Engineering System File Handling ---
+    // --- Engineering System File Handling (Existing Logic Retained) ---
 
     // Setup drag/drop events
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -115,21 +124,36 @@ document.addEventListener('DOMContentLoaded', () => {
         handleFilesEngineering(files);
     }
 
+    function showEngineeringLocalLoading(files, callback) {
+        // Hide file upload box and display the spinner temporarily
+        dropArea.style.display = 'none';
+        
+        const spinnerHtml = `<div class="system-loading" id="engineering-loading-spinner"><div class="loading-spinner"></div><p>Processing Engineering data...</p></div>`;
+        engineeringInputGroup.insertAdjacentHTML('beforeend', spinnerHtml);
+        
+        setTimeout(() => {
+            // Remove spinner
+            document.getElementById('engineering-loading-spinner')?.remove();
+            // Restore drop area for engineering
+            dropArea.style.display = 'flex';
+            // Execute the callback to show the success state (image preview)
+            callback();
+        }, 2000);
+    }
+
+
     function handleFilesEngineering(files) {
         uploadedFile = files.length > 0 ? files[0] : null;
         engineeringFileLoaded = uploadedFile !== null;
         
         if (engineeringFileLoaded) {
-            // Show the spinner and start the 2-second timeout for a smooth transition
-            const system = systems.find(s => s.name === 'engineering');
-            showLocalLoading(system, files, () => {
+            showEngineeringLocalLoading(files, () => {
                 displayFilesEngineering();
                 updateEngineeringCardState();
                 updateProcessButtonState();
                 resetStatus();
             });
         } else {
-            // If no file, just reset
             displayFilesEngineering();
             updateEngineeringCardState();
             updateProcessButtonState();
@@ -162,6 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please upload an Engineering Diagram to proceed.');
             return;
         }
+        if (!enterpriseModulesLoaded) {
+             alert('Please select and integrate Enterprise System Modules to proceed.');
+            return;
+        }
 
         processButton.style.display = 'none';
         processingInfo.style.display = 'block';
@@ -171,9 +199,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData();
         formData.append('file', uploadedFile);
+        // NOTE: We don't send the selected enterprise modules to the current backend endpoint, 
+        // as the requirement was to keep the backend logic "as is" and the module selection is visual.
+        // If the backend needed this info, it would be appended here:
+        // formData.append('enterprise_system', selectedEnterpriseSystem);
+        // formData.append('modules', JSON.stringify(selectedModules)); 
 
         try {
-            // BACKEND LOGIC REMAINS THE SAME
             const response = await fetch(backendEndpointUrl, {
                 method: 'POST',
                 body: formData,
@@ -208,126 +240,81 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Logic for CRM & ERP Local Uploads (Visual Only) ---
-    const systems = [
-        { 
-            name: 'erp', 
-            dropArea: document.getElementById('erpDropArea'), 
-            fileElem: document.getElementById('erpFileElem'), 
-            fileList: document.getElementById('erpFileList'), 
-            uploadStatus: document.getElementById('erpUploadStatus'),
-            inputGroup: document.getElementById('erp-input-group'),
-            previewContainer: document.getElementById('erp-preview-container'),
-            stateVar: 'erpFileLoaded'
-        },
-        { 
-            name: 'crm', 
-            dropArea: document.getElementById('crmDropArea'), 
-            fileElem: document.getElementById('crmFileElem'), 
-            fileList: document.getElementById('crmFileList'), 
-            uploadStatus: document.getElementById('crmUploadStatus'),
-            inputGroup: document.getElementById('crm-input-group'),
-            previewContainer: document.getElementById('crm-preview-container'),
-            stateVar: 'crmFileLoaded'
-        },
-        // Adding engineering system to the array for easy access to elements
-        {
-            name: 'engineering',
-            dropArea: document.getElementById('drop-area'), 
-            fileElem: document.getElementById('fileElem'), 
-            fileList: document.getElementById('file-list'), 
-            uploadStatus: document.getElementById('erpUploadStatus'), // Not used here, but keeping structure
-            inputGroup: document.getElementById('engineering-input-group'),
-            previewContainer: document.getElementById('engineering-preview-container'),
-            stateVar: 'engineeringFileLoaded'
+    // --- Enterprise System Dropdown and Module Selection Logic (NEW) ---
+
+    systemSelect.addEventListener('change', function() {
+        selectedEnterpriseSystem = this.value;
+        const moduleGroups = document.querySelectorAll('.module-group');
+        
+        // Hide all module groups and module container initially
+        moduleGroups.forEach(group => {
+            group.style.display = 'none';
+            // Uncheck all modules when system changes
+            group.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+        });
+        moduleSelectionContainer.style.display = 'none';
+
+        // Show the relevant module group
+        if (selectedEnterpriseSystem) {
+            document.getElementById(`${selectedEnterpriseSystem}-modules`).style.display = 'block';
+            moduleSelectionContainer.style.display = 'block';
         }
-    ];
-
-    // NEW FUNCTION: Handles the spinner/loading animation
-    function showLocalLoading(system, files, callback) {
-        // Hide file upload box and display the spinner temporarily
-        system.dropArea.style.display = 'none';
         
-        // Show loading state in the input group area (Engineering uses fileList, ERP/CRM uses uploadStatus)
-        const spinnerHtml = `<div class="system-loading"><div class="loading-spinner"></div><p>Processing ${system.name.toUpperCase()} data...</p></div>`;
-        system.inputGroup.insertAdjacentHTML('beforeend', spinnerHtml);
-        
-        // 2-second delay
-        setTimeout(() => {
-            // Remove spinner
-            const spinner = system.inputGroup.querySelector('.system-loading');
-            if (spinner) spinner.remove();
+        // Reset state and button
+        selectedModules = [];
+        moduleIntegrateBtn.disabled = true;
+        enterpriseModulesLoaded = false;
+        enterprisePreviewContainer.style.display = 'none';
+        enterpriseInputGroup.style.display = 'block'; // Ensure the selection dropdown is visible
+        systemSelect.style.display = 'block';
+        updateProcessButtonState();
+    });
 
-            // Restore drop area for engineering (only for engineering, others will be hidden later)
-            if (system.name === 'engineering') {
-                 system.dropArea.style.display = 'flex';
-            }
-
-            // Execute the callback to show the success state (image preview)
-            callback();
-        }, 2000);
-    }
-    
-    function setupLocalUpload(system) {
-        if (system.name === 'engineering') return; // Skip engineering setup here, handled above
-
-        // Drag/Drop visual feedback
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            system.dropArea.addEventListener(eventName, preventDefaults, false);
-        });
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-            system.dropArea.addEventListener(eventName, () => system.dropArea.classList.add('highlight'), false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            system.dropArea.addEventListener(eventName, () => system.dropArea.classList.remove('highlight'), false);
-        });
-
-        system.dropArea.addEventListener('click', () => system.fileElem.click());
-
-        system.fileElem.addEventListener('change', () => handleLocalFiles(system, system.fileElem.files));
-        system.dropArea.addEventListener('drop', (e) => handleLocalFiles(system, e.dataTransfer.files));
-    }
-
-    function handleLocalFiles(system, files) {
-        const fileLoaded = files.length > 0;
-        
-        if (fileLoaded) {
-            // Start loading sequence
-            system.inputGroup.style.display = 'flex'; // Ensure the input group container is visible for the spinner
-            system.dropArea.style.display = 'none'; // Hide the drop area itself
+    // Listener for module checkboxes
+    enterpriseModuleCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            // Only consider checkboxes in the currently selected module group
+            const currentModuleGroup = document.getElementById(`${selectedEnterpriseSystem}-modules`);
             
-            showLocalLoading(system, files, () => {
-                // Update internal state
-                if (system.name === 'erp') erpFileLoaded = true;
-                if (system.name === 'crm') crmFileLoaded = true;
+            if (currentModuleGroup) {
+                selectedModules = Array.from(currentModuleGroup.querySelectorAll('input:checked'))
+                                       .map(input => input.value);
                 
-                // Final Visual feedback
-                system.fileList.innerHTML = '';
-                const li = document.createElement('li');
-                li.innerHTML = `<span class="file-name"><i class="fa-solid fa-file-invoice"></i> ${files[0].name}</span>`;
-                system.fileList.appendChild(li);
-                system.uploadStatus.textContent = "System data integrated successfully!";
-                system.uploadStatus.style.color = 'green';
-                system.uploadStatus.style.display = 'block';
+                moduleIntegrateBtn.disabled = selectedModules.length === 0;
+            }
+        });
+    });
 
-                // Show preview and hide input group
-                system.inputGroup.style.display = 'none';
-                system.previewContainer.style.display = 'flex';
+    moduleIntegrateBtn.addEventListener('click', function() {
+        if (selectedModules.length > 0) {
+            
+            // 1. Hide selection, show loading spinner
+            moduleSelectionContainer.style.display = 'none';
+            systemSelect.style.display = 'none';
+            
+            const spinnerHtml = `<div class="system-loading" id="enterprise-loading-spinner"><div class="loading-spinner"></div><p>Integrating **${selectedEnterpriseSystem.toUpperCase()}** modules...</p></div>`;
+            enterpriseInputGroup.insertAdjacentHTML('beforeend', spinnerHtml);
+
+            // Simulate a 2-second integration (visual-only)
+            setTimeout(() => {
+                // 2. Remove loading
+                document.getElementById('enterprise-loading-spinner')?.remove();
+
+                // 3. Update state and show success preview
+                enterpriseModulesLoaded = true;
+                
+                integratedSummary.innerHTML = `**System:** ${selectedEnterpriseSystem.toUpperCase()}<br>**Modules:** ${selectedModules.join(', ')}`;
+                
+                enterpriseInputGroup.style.display = 'none'; // Hide the entire input group (dropdowns)
+                enterprisePreviewContainer.style.display = 'flex';
+                
                 updateProcessButtonState();
-            });
-
+            }, 2000); 
         } else {
-            // Reset visual feedback if files is empty
-            system.uploadStatus.textContent = "";
-            system.uploadStatus.style.display = 'none';
-            system.fileList.innerHTML = '';
-            system.dropArea.style.display = 'flex';
-            updateProcessButtonState();
+            alert('Please select at least one module to integrate.');
         }
-    }
-    
+    });
+
     // --- Reset Functionality for all cards ---
     document.querySelectorAll('.reset-upload-btn').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -342,35 +329,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 fileElem.value = ''; // Clear file input
                 updateEngineeringCardState();
                 
-                // Show drop area and hide preview
-                const engSystem = systems.find(s => s.name === 'engineering');
-                engSystem.inputGroup.style.display = 'flex';
-                engSystem.dropArea.style.display = 'flex';
-                engSystem.previewContainer.style.display = 'none';
+                engineeringInputGroup.style.display = 'flex';
+                dropArea.style.display = 'flex';
+                engineeringPreviewContainer.style.display = 'none';
 
-            } else {
-                // Reset ERP/CRM state
-                const system = systems.find(s => s.name === systemName);
-                if (system) {
-                    if (system.name === 'erp') erpFileLoaded = false;
-                    if (system.name === 'crm') crmFileLoaded = false;
-                    
-                    system.fileElem.value = ''; // Clear file input
-                    system.uploadStatus.style.display = 'none';
-                    system.fileList.innerHTML = '';
-                    system.inputGroup.style.display = 'flex';
-                    system.dropArea.style.display = 'flex';
-                    system.previewContainer.style.display = 'none';
-                }
+            } else if (systemName === 'enterprise-systems') { 
+                // Reset Enterprise System state
+                enterpriseModulesLoaded = false;
+                selectedEnterpriseSystem = '';
+                selectedModules = [];
+                
+                // Reset UI
+                systemSelect.value = '';
+                systemSelect.style.display = 'block'; // Show dropdown again
+                moduleSelectionContainer.style.display = 'none';
+                enterprisePreviewContainer.style.display = 'none';
+                enterpriseInputGroup.style.display = 'block'; // Show input group container
+                
+                // Hide and uncheck all modules
+                document.querySelectorAll('.module-group').forEach(group => {
+                    group.style.display = 'none';
+                    group.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+                });
+                moduleIntegrateBtn.disabled = true;
             }
             updateProcessButtonState();
             resetStatus();
         });
     });
 
-    // Initialize event listeners
-    systems.forEach(setupLocalUpload);
-    updateProcessButtonState(); // Initial check for button state
 
     // --- Dropdown Menu Logic (retained) ---
     const dropdownToggle = document.querySelector('.dropdown-toggle');
@@ -390,4 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Initial check for button state
+    updateProcessButtonState(); 
 });

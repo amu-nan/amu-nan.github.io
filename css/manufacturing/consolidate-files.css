@@ -26,13 +26,18 @@
 
 /* Updated grid for the two main cards */
 .options-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
-    margin-bottom: 50px;
+    /* CHANGE: Max width and stack the cards vertically */
+    display: flex; /* Use flexbox for stacking */
+    flex-direction: column; /* Stack vertically */
+    align-items: center; /* Center the column */
+    max-width: 900px; /* Set a reasonable maximum width for the centered column */
+    margin: 0 auto 50px auto; /* Center the grid container itself */
+    gap: 30px; 
 }
 
 .option-card {
+    /* Ensure cards use the full width of the container */
+    width: 100%;
     background: var(--secondary-bg-color);
     padding: 40px;
     border-radius: 15px;

@@ -27,7 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const moduleIntegrateBtn = document.getElementById('moduleIntegrateBtn');
     const enterpriseModuleCheckboxes = document.querySelectorAll('.module-group input[type="checkbox"]');
     const enterprisePreviewContainer = document.getElementById('enterprise-preview-container');
-    const integratedSummary = document.getElementById('integrated-summary');
+    const integratedSystemsList = document.getElementById('integrated-systems-list'); 
+
+    const apiInput = document.getElementById('system-api-url');
+    const apiStatus = document.getElementById('api-connect-status');
+    const integrateMoreBtn = document.querySelector('.integrate-more-btn');
+    const resetAllBtn = document.querySelector('.reset-all-btn');
+
 
     // **Backend Endpoint URL**
     const backendEndpointUrl = 'http://127.0.0.1:8000/upload_cad_pdf/';
@@ -35,9 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // State object to track uploads
     let uploadedFile = null;
     let engineeringFileLoaded = false;
-    let enterpriseModulesLoaded = false; // NEW state for combined card
+    let integratedSystems = []; // Array to store integrated system objects
     let selectedEnterpriseSystem = '';
     let selectedModules = [];
+
+    // --- Global helper to map system names for display ---
+    const systemNameMap = {
+        erp: 'ERP System',
+        crm: 'CRM System',
+        scm: 'SCM System'
+    };
 
     // --- References for Unified State (Completion) UI ---
     const chatButton = document.getElementById('chatButton');
@@ -71,8 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateProcessButtonState() {
-        // Enable if BOTH engineering file AND enterprise modules are loaded
-        const canProcess = engineeringFileLoaded && enterpriseModulesLoaded;
+        // Enable if BOTH engineering file AND at least one enterprise system are integrated
+        const canProcess = engineeringFileLoaded && integratedSystems.length > 0;
         processButton.disabled = !canProcess;
         processButton.style.display = canProcess ? 'block' : 'none';
     }
@@ -89,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
     }
 
-    // --- Engineering System File Handling (Existing Logic Retained) ---
+    // --- Engineering System File Handling (UNCHANGED BACKEND LOGIC) ---
 
     // Setup drag/drop events
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -125,18 +138,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showEngineeringLocalLoading(files, callback) {
-        // Hide file upload box and display the spinner temporarily
         dropArea.style.display = 'none';
         
         const spinnerHtml = `<div class="system-loading" id="engineering-loading-spinner"><div class="loading-spinner"></div><p>Processing Engineering data...</p></div>`;
         engineeringInputGroup.insertAdjacentHTML('beforeend', spinnerHtml);
         
         setTimeout(() => {
-            // Remove spinner
             document.getElementById('engineering-loading-spinner')?.remove();
-            // Restore drop area for engineering
             dropArea.style.display = 'flex';
-            // Execute the callback to show the success state (image preview)
             callback();
         }, 2000);
     }
@@ -186,8 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please upload an Engineering Diagram to proceed.');
             return;
         }
-        if (!enterpriseModulesLoaded) {
-             alert('Please select and integrate Enterprise System Modules to proceed.');
+        if (integratedSystems.length === 0) {
+             alert('Please select and integrate at least one Enterprise System.');
             return;
         }
 
@@ -199,11 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData();
         formData.append('file', uploadedFile);
-        // NOTE: We don't send the selected enterprise modules to the current backend endpoint, 
-        // as the requirement was to keep the backend logic "as is" and the module selection is visual.
-        // If the backend needed this info, it would be appended here:
-        // formData.append('enterprise_system', selectedEnterpriseSystem);
-        // formData.append('modules', JSON.stringify(selectedModules)); 
+        // If the backend needed the Enterprise integration data, we would append it here:
+        // formData.append('integrated_systems', JSON.stringify(integratedSystems));
 
         try {
             const response = await fetch(backendEndpointUrl, {
@@ -222,10 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
             processingInfo.style.display = 'none';
             unifyMessage.style.display = 'none';
 
-            // Show unified state on success
             showUnifiedState();
 
-            // Append a URL parameter to the current page to preserve the state
             const newUrl = `${window.location.pathname}?company=${encodeURIComponent(companyName)}&unified=true`;
             history.pushState({}, '', newUrl);
 
@@ -241,92 +245,150 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Enterprise System Dropdown and Module Selection Logic (NEW) ---
+    
+    function updateApiPlaceholder(system) {
+        let placeholder = 'e.g., https://api.mysystem.com/data';
+        if (system === 'erp') placeholder = 'e.g., https://api.sap.com/data/v1/sales';
+        if (system === 'crm') placeholder = 'e.g., https://api.salesforce.com/services';
+        if (system === 'scm') placeholder = 'e.g., https://api.oracle.com/supplychain';
+        apiInput.placeholder = placeholder;
+        apiStatus.textContent = ''; // Clear status
+        apiInput.value = '';        // Clear previous URL
+    }
+
+    function updateIntegratedSystemsDisplay() {
+        integratedSystemsList.innerHTML = '';
+        if (integratedSystems.length === 0) return;
+
+        const ul = document.createElement('ul');
+        ul.className = 'integrated-list';
+        
+        integratedSystems.forEach(sys => {
+            const li = document.createElement('li');
+            li.innerHTML = `<i class="fa-solid fa-check-circle"></i> **${sys.name}** Integrated (${sys.modules.length} modules)`;
+            ul.appendChild(li);
+        });
+
+        integratedSystemsList.appendChild(ul);
+        
+        // Show/Hide Reset All button based on integration count
+        if (integratedSystems.length > 0) {
+            resetAllBtn.style.display = 'inline-block';
+            integrateMoreBtn.style.display = 'inline-block';
+        } else {
+            resetAllBtn.style.display = 'none';
+            integrateMoreBtn.style.display = 'none';
+        }
+    }
 
     systemSelect.addEventListener('change', function() {
         selectedEnterpriseSystem = this.value;
         const moduleGroups = document.querySelectorAll('.module-group');
         
-        // Hide all module groups and module container initially
         moduleGroups.forEach(group => {
             group.style.display = 'none';
-            // Uncheck all modules when system changes
             group.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
         });
         moduleSelectionContainer.style.display = 'none';
 
-        // Show the relevant module group
         if (selectedEnterpriseSystem) {
-            document.getElementById(`${selectedEnterpriseSystem}-modules`).style.display = 'block';
-            moduleSelectionContainer.style.display = 'block';
+            updateApiPlaceholder(selectedEnterpriseSystem);
+            
+            document.getElementById(`${selectedEnterpriseSystem}-modules`).style.display = 'flex'; 
+            moduleSelectionContainer.style.display = 'flex'; 
         }
         
-        // Reset state and button
         selectedModules = [];
         moduleIntegrateBtn.disabled = true;
-        enterpriseModulesLoaded = false;
-        enterprisePreviewContainer.style.display = 'none';
-        enterpriseInputGroup.style.display = 'block'; // Ensure the selection dropdown is visible
-        systemSelect.style.display = 'block';
-        updateProcessButtonState();
     });
 
-    // Listener for module checkboxes
     enterpriseModuleCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
-            // Only consider checkboxes in the currently selected module group
             const currentModuleGroup = document.getElementById(`${selectedEnterpriseSystem}-modules`);
             
             if (currentModuleGroup) {
                 selectedModules = Array.from(currentModuleGroup.querySelectorAll('input:checked'))
                                        .map(input => input.value);
                 
-                moduleIntegrateBtn.disabled = selectedModules.length === 0;
+                // Simple validation check: Modules selected AND API URL present
+                const apiEntered = apiInput.value.length > 5;
+                
+                moduleIntegrateBtn.disabled = !(apiEntered && selectedModules.length > 0);
             }
         });
     });
 
+    apiInput.addEventListener('input', function() {
+        const currentModuleGroup = document.getElementById(`${selectedEnterpriseSystem}-modules`);
+        if (currentModuleGroup) {
+            const modulesSelected = Array.from(currentModuleGroup.querySelectorAll('input:checked')).length > 0;
+            const apiEntered = apiInput.value.length > 5;
+            moduleIntegrateBtn.disabled = !(apiEntered && modulesSelected);
+        }
+        apiStatus.textContent = '';
+        apiStatus.style.color = 'inherit';
+    });
+
     moduleIntegrateBtn.addEventListener('click', function() {
         if (selectedModules.length > 0) {
+            const api = apiInput.value;
+            if (!api || api.length < 5) {
+                apiStatus.textContent = 'A valid API connection URL is required.';
+                apiStatus.style.color = 'red';
+                return;
+            }
+
+            const existingIndex = integratedSystems.findIndex(sys => sys.system === selectedEnterpriseSystem);
+            
+            const systemObject = {
+                system: selectedEnterpriseSystem,
+                name: systemNameMap[selectedEnterpriseSystem],
+                modules: selectedModules,
+                apiUrl: api
+            };
+            
+            if (existingIndex !== -1) {
+                integratedSystems[existingIndex] = systemObject; // Overwrite/Update existing integration
+            } else {
+                integratedSystems.push(systemObject); // Add new integration
+            }
             
             // 1. Hide selection, show loading spinner
             moduleSelectionContainer.style.display = 'none';
             systemSelect.style.display = 'none';
             
-            const spinnerHtml = `<div class="system-loading" id="enterprise-loading-spinner"><div class="loading-spinner"></div><p>Integrating **${selectedEnterpriseSystem.toUpperCase()}** modules...</p></div>`;
+            const spinnerHtml = `<div class="system-loading" id="enterprise-loading-spinner"><div class="loading-spinner"></div><p>Integrating **${systemObject.name}** data...</p></div>`;
             enterpriseInputGroup.insertAdjacentHTML('beforeend', spinnerHtml);
 
             // Simulate a 2-second integration (visual-only)
             setTimeout(() => {
-                // 2. Remove loading
                 document.getElementById('enterprise-loading-spinner')?.remove();
-
-                // 3. Update state and show success preview
-                enterpriseModulesLoaded = true;
                 
-                integratedSummary.innerHTML = `**System:** ${selectedEnterpriseSystem.toUpperCase()}<br>**Modules:** ${selectedModules.join(', ')}`;
+                // 2. Update state and show success preview
+                updateIntegratedSystemsDisplay();
                 
-                enterpriseInputGroup.style.display = 'none'; // Hide the entire input group (dropdowns)
+                enterpriseInputGroup.style.display = 'none'; 
                 enterprisePreviewContainer.style.display = 'flex';
                 
+                // Re-enable process button
                 updateProcessButtonState();
             }, 2000); 
-        } else {
-            alert('Please select at least one module to integrate.');
         }
     });
 
-    // --- Reset Functionality for all cards ---
+    // --- Reset/Integrate Another Functionality ---
     document.querySelectorAll('.reset-upload-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             const systemName = e.target.getAttribute('data-system');
+            const action = e.target.getAttribute('data-action');
             
             if (systemName === 'engineering') {
-                // Reset Engineering state
+                // ... (Existing Engineering Reset Logic) ...
                 uploadedFile = null;
                 engineeringFileLoaded = false;
                 fileList.innerHTML = '';
-                fileElem.value = ''; // Clear file input
+                fileElem.value = ''; 
                 updateEngineeringCardState();
                 
                 engineeringInputGroup.style.display = 'flex';
@@ -334,24 +396,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 engineeringPreviewContainer.style.display = 'none';
 
             } else if (systemName === 'enterprise-systems') { 
-                // Reset Enterprise System state
-                enterpriseModulesLoaded = false;
-                selectedEnterpriseSystem = '';
-                selectedModules = [];
                 
-                // Reset UI
-                systemSelect.value = '';
-                systemSelect.style.display = 'block'; // Show dropdown again
-                moduleSelectionContainer.style.display = 'none';
-                enterprisePreviewContainer.style.display = 'none';
-                enterpriseInputGroup.style.display = 'block'; // Show input group container
+                if (action === 'reset-all') {
+                    // Fully reset all enterprise integration states
+                    integratedSystems = [];
+                    
+                    // Show initial state selection
+                    enterpriseInputGroup.style.display = 'block';
+                    enterprisePreviewContainer.style.display = 'none';
+                    systemSelect.style.display = 'block';
+                    systemSelect.value = ''; // Reset dropdown
+                    integratedSystemsList.innerHTML = '';
+                    
+                } else if (action === 'integrate-more') {
+                    // Reset only the selection fields, keeping existing integrations visible
+                    
+                    // Show initial state selection
+                    enterpriseInputGroup.style.display = 'block';
+                    systemSelect.style.display = 'block';
+                    systemSelect.value = ''; // Reset dropdown
+                }
                 
-                // Hide and uncheck all modules
+                // Common reset for current selection fields
                 document.querySelectorAll('.module-group').forEach(group => {
                     group.style.display = 'none';
                     group.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
                 });
+                moduleSelectionContainer.style.display = 'none';
                 moduleIntegrateBtn.disabled = true;
+                apiInput.value = '';
+                apiStatus.textContent = '';
+                updateIntegratedSystemsDisplay(); // Re-render the list (needed for 'reset-all')
             }
             updateProcessButtonState();
             resetStatus();

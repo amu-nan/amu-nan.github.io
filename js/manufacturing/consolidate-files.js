@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Enterprise System Dropdown and Module Selection Logic (FIXED) ---
+    // --- Enterprise System Dropdown and Module Selection Logic (FINAL FIXES) ---
     
     function updateApiPlaceholder(system) {
         let placeholder = 'e.g., https://api.mysystem.com/data';
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         integratedSystems.forEach(sys => {
             const li = document.createElement('li');
             
-            // FIX #2: Use <strong> instead of Markdown **
+            // Use <strong> for proper bolding
             li.innerHTML = `<i class="fa-solid fa-check-circle"></i> <strong>${sys.name}</strong> Integrated (${sys.modules.length} modules)`;
             ul.appendChild(li);
         });
@@ -309,9 +309,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 selectedModules = Array.from(currentModuleGroup.querySelectorAll('input:checked'))
                                        .map(input => input.value);
                 
-                const apiEntered = apiInput.value.length > 5;
+                // FIX: API is optional. Button enabled only if modules selected.
+                moduleIntegrateBtn.disabled = !(selectedModules.length > 0);
                 
-                moduleIntegrateBtn.disabled = !(apiEntered && selectedModules.length > 0);
+                apiStatus.textContent = ''; // Clear status on interaction
+                apiStatus.style.color = 'inherit';
             }
         });
     });
@@ -320,8 +322,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentModuleGroup = document.getElementById(`${selectedEnterpriseSystem}-modules`);
         if (currentModuleGroup) {
             const modulesSelected = Array.from(currentModuleGroup.querySelectorAll('input:checked')).length > 0;
-            const apiEntered = apiInput.value.length > 5;
-            moduleIntegrateBtn.disabled = !(apiEntered && modulesSelected);
+            
+            // FIX: Keep button enabled if modules selected, regardless of API input
+            moduleIntegrateBtn.disabled = !(modulesSelected);
         }
         apiStatus.textContent = '';
         apiStatus.style.color = 'inherit';
@@ -329,9 +332,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     moduleIntegrateBtn.addEventListener('click', function() {
         if (selectedModules.length > 0) {
-            const api = apiInput.value;
-            if (!api || api.length < 5) {
-                apiStatus.textContent = 'A valid API connection URL is required.';
+            const api = apiInput.value || 'N/A'; // API is optional
+            
+            // Basic validation if the user did input something in the API field
+            if (apiInput.value && apiInput.value.length < 5) {
+                apiStatus.textContent = 'API URL is too short. Please enter a valid URL or leave blank.';
                 apiStatus.style.color = 'red';
                 return;
             }
@@ -360,7 +365,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Simulate a 2-second integration
             setTimeout(() => {
-                // FIX #1: Remove loading spinner and immediately transition to PREVIEW state
                 document.getElementById('enterprise-loading-spinner')?.remove();
                 
                 // 2. Update state and show success preview
@@ -383,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const action = e.target.getAttribute('data-action');
             
             if (systemName === 'engineering') {
-                // ... (Engineering Reset Logic) ...
+                // Engineering Reset Logic
                 uploadedFile = null;
                 engineeringFileLoaded = false;
                 fileList.innerHTML = '';
@@ -397,10 +401,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (systemName === 'enterprise-systems') { 
                 
                 if (action === 'reset-all') {
-                    // Fully reset all enterprise integration states
                     integratedSystems = [];
-                    
-                    // Hide preview container, logic below handles showing dropdown
+                    // This will be handled by the common reset logic to show the dropdown
                     enterprisePreviewContainer.style.display = 'none';
                 } 
                 
@@ -420,7 +422,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 moduleIntegrateBtn.disabled = true;
                 apiInput.value = '';
                 apiStatus.textContent = '';
+                
                 updateIntegratedSystemsDisplay(); 
+                
+                // Ensure preview is visible if we have existing integrations and we are integrating more
+                if (action === 'integrate-more' && integratedSystems.length > 0) {
+                    enterprisePreviewContainer.style.display = 'flex';
+                }
             }
             updateProcessButtonState();
             resetStatus();

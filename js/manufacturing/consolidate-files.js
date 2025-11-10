@@ -208,8 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData();
         formData.append('file', uploadedFile);
-        // If the backend needed the Enterprise integration data, we would append it here:
-        // formData.append('integrated_systems', JSON.stringify(integratedSystems));
 
         try {
             const response = await fetch(backendEndpointUrl, {
@@ -244,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Enterprise System Dropdown and Module Selection Logic (NEW) ---
+    // --- Enterprise System Dropdown and Module Selection Logic (FIXED) ---
     
     function updateApiPlaceholder(system) {
         let placeholder = 'e.g., https://api.mysystem.com/data';
@@ -252,8 +250,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (system === 'crm') placeholder = 'e.g., https://api.salesforce.com/services';
         if (system === 'scm') placeholder = 'e.g., https://api.oracle.com/supplychain';
         apiInput.placeholder = placeholder;
-        apiStatus.textContent = ''; // Clear status
-        apiInput.value = '';        // Clear previous URL
+        apiStatus.textContent = ''; 
+        apiInput.value = '';        
     }
 
     function updateIntegratedSystemsDisplay() {
@@ -265,13 +263,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         integratedSystems.forEach(sys => {
             const li = document.createElement('li');
-            li.innerHTML = `<i class="fa-solid fa-check-circle"></i> **${sys.name}** Integrated (${sys.modules.length} modules)`;
+            
+            // FIX #2: Use <strong> instead of Markdown **
+            li.innerHTML = `<i class="fa-solid fa-check-circle"></i> <strong>${sys.name}</strong> Integrated (${sys.modules.length} modules)`;
             ul.appendChild(li);
         });
 
         integratedSystemsList.appendChild(ul);
         
-        // Show/Hide Reset All button based on integration count
         if (integratedSystems.length > 0) {
             resetAllBtn.style.display = 'inline-block';
             integrateMoreBtn.style.display = 'inline-block';
@@ -310,7 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 selectedModules = Array.from(currentModuleGroup.querySelectorAll('input:checked'))
                                        .map(input => input.value);
                 
-                // Simple validation check: Modules selected AND API URL present
                 const apiEntered = apiInput.value.length > 5;
                 
                 moduleIntegrateBtn.disabled = !(apiEntered && selectedModules.length > 0);
@@ -348,35 +346,36 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             if (existingIndex !== -1) {
-                integratedSystems[existingIndex] = systemObject; // Overwrite/Update existing integration
+                integratedSystems[existingIndex] = systemObject;
             } else {
-                integratedSystems.push(systemObject); // Add new integration
+                integratedSystems.push(systemObject);
             }
             
             // 1. Hide selection, show loading spinner
             moduleSelectionContainer.style.display = 'none';
             systemSelect.style.display = 'none';
             
-            const spinnerHtml = `<div class="system-loading" id="enterprise-loading-spinner"><div class="loading-spinner"></div><p>Integrating **${systemObject.name}** data...</p></div>`;
+            const spinnerHtml = `<div class="system-loading" id="enterprise-loading-spinner"><div class="loading-spinner"></div><p>Integrating <strong>${systemObject.name}</strong> data...</p></div>`;
             enterpriseInputGroup.insertAdjacentHTML('beforeend', spinnerHtml);
 
-            // Simulate a 2-second integration (visual-only)
+            // Simulate a 2-second integration
             setTimeout(() => {
+                // FIX #1: Remove loading spinner and immediately transition to PREVIEW state
                 document.getElementById('enterprise-loading-spinner')?.remove();
                 
                 // 2. Update state and show success preview
                 updateIntegratedSystemsDisplay();
                 
+                // HIDE the input group and SHOW the preview container
                 enterpriseInputGroup.style.display = 'none'; 
                 enterprisePreviewContainer.style.display = 'flex';
                 
-                // Re-enable process button
                 updateProcessButtonState();
             }, 2000); 
         }
     });
 
-    // --- Reset/Integrate Another Functionality ---
+    // --- Reset/Integrate Another Functionality (FIXED) ---
     document.querySelectorAll('.reset-upload-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
@@ -384,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const action = e.target.getAttribute('data-action');
             
             if (systemName === 'engineering') {
-                // ... (Existing Engineering Reset Logic) ...
+                // ... (Engineering Reset Logic) ...
                 uploadedFile = null;
                 engineeringFileLoaded = false;
                 fileList.innerHTML = '';
@@ -401,23 +400,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Fully reset all enterprise integration states
                     integratedSystems = [];
                     
-                    // Show initial state selection
-                    enterpriseInputGroup.style.display = 'block';
+                    // Hide preview container, logic below handles showing dropdown
                     enterprisePreviewContainer.style.display = 'none';
-                    systemSelect.style.display = 'block';
-                    systemSelect.value = ''; // Reset dropdown
-                    integratedSystemsList.innerHTML = '';
-                    
-                } else if (action === 'integrate-more') {
-                    // Reset only the selection fields, keeping existing integrations visible
-                    
-                    // Show initial state selection
-                    enterpriseInputGroup.style.display = 'block';
-                    systemSelect.style.display = 'block';
-                    systemSelect.value = ''; // Reset dropdown
-                }
+                } 
                 
-                // Common reset for current selection fields
+                // COMMON RESET (For 'Integrate More' and after 'Reset All')
+                
+                // Show initial state selection container
+                enterpriseInputGroup.style.display = 'flex'; 
+                systemSelect.style.display = 'block';
+                systemSelect.value = ''; // Reset dropdown
+                
+                // Hide module selection
                 document.querySelectorAll('.module-group').forEach(group => {
                     group.style.display = 'none';
                     group.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
@@ -426,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 moduleIntegrateBtn.disabled = true;
                 apiInput.value = '';
                 apiStatus.textContent = '';
-                updateIntegratedSystemsDisplay(); // Re-render the list (needed for 'reset-all')
+                updateIntegratedSystemsDisplay(); 
             }
             updateProcessButtonState();
             resetStatus();

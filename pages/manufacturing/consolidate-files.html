@@ -64,6 +64,13 @@
                             </select>
                             
                             <div id="module-selection-container" style="display:none;">
+                                
+                                <div class="system-input api-input-group" id="current-api-input">
+                                    <label for="system-api-url">Connect to API:</label>
+                                    <input type="url" id="system-api-url" placeholder="e.g., https://api.mysystem.com/data">
+                                    <p class="api-status" id="api-connect-status"></p>
+                                </div>
+                                
                                 <label class="module-label">Select Modules:</label>
                                 
                                 <div id="erp-modules" class="module-group" data-system-type="erp" style="display:none;">
@@ -94,8 +101,9 @@
 
                         <div class="image-preview-container" id="enterprise-preview-container" style="display:none;">
                             <img src="../../images/placeholder-enterprise.png" alt="Enterprise Data Loaded" class="preview-image">
-                            <p id="integrated-summary"></p>
-                            <button class="reset-upload-btn" data-system="enterprise-systems">Change Selection</button>
+                            <div id="integrated-systems-list"></div>
+                            <button class="reset-upload-btn integrate-more-btn" data-system="enterprise-systems" data-action="integrate-more">Integrate Another System</button>
+                            <button class="reset-upload-btn reset-all-btn" data-system="enterprise-systems" data-action="reset-all" style="display:none;">Reset All Integrations</button>
                         </div>
                     </div>
 

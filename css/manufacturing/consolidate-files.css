@@ -38,10 +38,11 @@
     border-radius: 15px;
     box-shadow: var(--shadow-medium);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
-    text-align: left;
+    /* FIX #3: Center content within the card */
+    text-align: center; 
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ensures content aligns nicely */
+    justify-content: space-between;
 }
 
 .option-card:hover {
@@ -72,6 +73,9 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    /* Ensure input group contents are left-aligned */
+    text-align: left;
+    width: 100%; 
 }
 
 .system-input {
@@ -214,7 +218,6 @@
     color: #fff;
     border-color: var(--primary-color);
 }
-/* Ensure reset buttons line up nicely */
 .image-preview-container > .reset-upload-btn[data-system="enterprise-systems"] {
     margin-top: 10px;
 }
@@ -312,6 +315,13 @@
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c3e50' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
+    max-width: 400px; /* Limit width for better centering effect */
+    margin: 0 auto; /* Center the select box */
+}
+
+/* Label for the dropdown */
+.system-input-group > label {
+    text-align: center;
 }
 
 /* API Status/Error Message */
@@ -319,7 +329,7 @@
     margin: 0;
     font-size: 0.9em;
     font-weight: 500;
-    color: #cc0000; /* Default error color */
+    color: #cc0000;
 }
 
 /* Container for module selection (to add separation) */
@@ -329,6 +339,7 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    text-align: left; /* Keep API and module labels left aligned */
 }
 
 /* Label for "Select Modules" */
@@ -388,7 +399,7 @@
     font-weight: 600;
 }
 
-/* NEW: Style for the list of integrated systems in the preview state */
+/* NEW/UPDATED STYLE: Integrated List Formatting */
 #integrated-systems-list {
     margin: 15px auto;
     width: 100%;
@@ -398,8 +409,8 @@
     list-style: none;
     padding: 0;
     text-align: left;
-    max-width: 300px;
-    margin: 10px auto;
+    max-width: 350px; 
+    margin: 10px auto; 
 }
 
 .integrated-list li {
@@ -407,10 +418,6 @@
     padding: 8px 0;
     border-bottom: 1px dashed #eee;
     color: var(--text-color);
-}
-
-.integrated-list li:last-child {
-    border-bottom: none;
 }
 
 .integrated-list li i {

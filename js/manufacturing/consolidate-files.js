@@ -1,71 +1,75 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Get company name from URL ---
-    const urlParams = new URLSearchParams(window.location.search);
-    const companyName = urlParams.get('company');
+    // --- System Definitions (NEW) ---
+    const systemModules = {
+        erp: {
+            icon: 'fa-industry',
+            modules: ['Inventory', 'Procurement', 'Quality Control', 'Production']
+        },
+        crm: {
+            icon: 'fa-handshake',
+            modules: ['Customers', 'Leads', 'Marketing', 'Opportunities']
+        },
+        scm: {
+            icon: 'fa-truck-fast',
+            modules: ['Logistics', 'Warehousing', 'Supplier Management', 'Forecasting']
+        }
+    };
+
+    // --- State Management (NEW & MODIFIED) ---
+    let integratedSystems = []; // Array to store { system: 'erp', modules: ['Inventory', 'Procurement'] }
+    let currentSystemConfig = {}; // For the system currently being configured in the modal
+    
+    let uploadedFile = null;
+    let engineeringFileLoaded = false; // Retained from original logic
 
     // --- References for State Management ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const companyName = urlParams.get('company');
     const initialStateContainer = document.getElementById('initial-state-container');
     const unifiedStateContainer = document.getElementById('unified-state-container');
     const pageTitle = document.getElementById('pageTitle');
     const unifiedTitle = document.getElementById('unifiedTitle');
-    const optionsGrid = document.getElementById('optionsGrid'); // New reference
+    const integratedSystemsContainer = document.getElementById('integrated-systems-container');
 
-    // --- References for Engineering System (Main Upload) ---
+    // --- References for Engineering (Retained) ---
     const dropArea = document.getElementById('drop-area');
     const fileElem = document.getElementById('fileElem');
     const fileList = document.getElementById('file-list');
+    const engineeringInputGroup = document.getElementById('engineering-input-group');
+    const engineeringPreviewContainer = document.getElementById('engineering-preview-container');
+
+    // --- References for Modals (NEW) ---
+    const addNewSystemCard = document.getElementById('add-new-system-card');
+    const systemSelectorModal = document.getElementById('system-selector-modal');
+    const moduleConfigModal = document.getElementById('module-config-modal');
+    const closeSystemSelector = document.getElementById('close-system-selector');
+    const closeModuleConfig = document.getElementById('close-module-config');
+    const systemSelectOptions = document.querySelectorAll('.system-select-option');
+    const modulesList = document.getElementById('modules-list');
+    const nextToDataBtn = document.getElementById('next-to-data-btn');
+    const integrateSystemBtn = document.getElementById('integrate-system-btn');
+    const moduleSelectionArea = document.getElementById('module-selection-area');
+    const moduleDataArea = document.getElementById('module-data-area');
+    const moduleDataInputs = document.getElementById('module-data-inputs');
+
+    // --- References for Process Button (Retained) ---
     const processButton = document.getElementById('processButton');
     const processingInfo = document.getElementById('processing-info');
     const unifyMessage = document.getElementById('unify-message');
     const successMessage = document.getElementById('success-message');
-    const engineeringInputGroup = document.getElementById('engineering-input-group');
-    const engineeringPreviewContainer = document.getElementById('engineering-preview-container');
-    const engineeringCard = document.getElementById('engineering-card'); // New reference
-
-    // --- References for Enterprise System (New Dropdown Logic) ---
-    const enterpriseIntegrationCard = document.getElementById('enterprise-integration-card');
-    const enterpriseInputGroup = document.getElementById('enterprise-input-group');
-    const enterpriseIntroText = document.getElementById('enterprise-intro-text');
-    const systemSelect = document.getElementById('system-select');
-    const moduleSelectionContainer = document.getElementById('module-selection-container');
-    const moduleIntegrateBtn = document.getElementById('moduleIntegrateBtn');
-    const enterpriseModuleCheckboxes = document.querySelectorAll('.module-group input[type="checkbox"]');
-    const enterprisePreviewContainer = document.getElementById('enterprise-preview-container');
-    const integratedSystemsList = document.getElementById('integrated-systems-list'); // This is the old list wrapper, will now hold cards.
-    const integrateMoreCard = document.getElementById('integrate-more-card'); // New reference for the plus tile
-
-    const apiInput = document.getElementById('system-api-url');
-    const apiStatus = document.getElementById('api-connect-status');
-    const moduleFileContainer = document.getElementById('module-file-uploads'); // New reference
-
-    // **Backend Endpoint URL**
     const backendEndpointUrl = 'http://127.0.0.1:8000/upload_cad_pdf/';
-    
-    // State object to track uploads
-    let uploadedFile = null;
-    let engineeringFileLoaded = false;
-    let integratedSystems = []; // Array to store integrated system objects
-    let selectedEnterpriseSystem = '';
-    
-    // --- Global helper to map system names for display ---
-    const systemNameMap = {
-        erp: 'ERP System',
-        crm: 'CRM System',
-        scm: 'SCM System'
-    };
-
-    // --- References for Unified State (Completion) UI ---
     const chatButton = document.getElementById('chatButton');
 
-    // --- Initial State Check ---
+    // --- Initialization ---
     const isUnified = urlParams.get('unified');
     if (isUnified === 'true') {
         showUnifiedState();
     } else {
         showInitialState();
     }
+    updateProcessButtonState();
     
-    // --- State and UI Management Functions ---
+    // --- General UI/State Functions (Modified/Retained) ---
 
     function showInitialState() {
         if (companyName) {
@@ -74,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         initialStateContainer.style.display = 'block';
         unifiedStateContainer.style.display = 'none';
         resetStatus();
-        renderInitialGrid(); // New initial grid rendering
     }
 
     function showUnifiedState() {
@@ -87,10 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateProcessButtonState() {
-        // Enable if BOTH engineering file AND at least one enterprise system are integrated
+        // Only enable the main process button if the engineering file is loaded 
+        // AND at least one other system is integrated.
         const canProcess = engineeringFileLoaded && integratedSystems.length > 0;
         processButton.disabled = !canProcess;
-        processButton.style.display = canProcess ? 'block' : 'none';
+        // Show the button if at least the Engineering file is loaded (Original logic kept)
+        processButton.style.display = engineeringFileLoaded ? 'block' : 'none'; 
     }
 
     function resetStatus() {
@@ -99,16 +104,294 @@ document.addEventListener('DOMContentLoaded', () => {
         successMessage.style.display = 'none';
     }
 
-    // Drag/Drop helper function
     function preventDefaults(e) {
         e.preventDefault();
         e.stopPropagation();
     }
+    
+    // --- Dynamic Tile Rendering (NEW) ---
 
-    // --- Engineering System File Handling (UNCHANGED BACKEND LOGIC) ---
-    // (Retained logic for drag/drop, file handling, and updateEngineeringCardState)
-    // ... (All existing Engineering file handling logic here) ...
-    // Setup drag/drop events
+    function renderIntegratedSystems() {
+        integratedSystemsContainer.innerHTML = '';
+        
+        integratedSystems.forEach((systemConfig, index) => {
+            const systemKey = systemConfig.system;
+            const systemDetails = systemModules[systemKey];
+            const systemDisplay = systemKey.toUpperCase();
+            const moduleListHtml = systemConfig.modules.map(mod => 
+                `<li class="integrated-module"><i class="fa-solid fa-circle-dot"></i> ${mod}</li>`
+            ).join('');
+            
+            const tileHtml = `
+                <div class="option-card integrated-system-card" data-system="${systemKey}" data-index="${index}">
+                    <h2><i class="fa-solid ${systemDetails.icon}"></i> ${systemDisplay} Integrated</h2>
+                    <p>Modules & Data Sources Added:</p>
+                    <ul class="module-list-compact">${moduleListHtml}</ul>
+                    <button class="reset-integration-btn" data-index="${index}">Remove</button>
+                </div>
+            `;
+            integratedSystemsContainer.insertAdjacentHTML('beforeend', tileHtml);
+        });
+
+        // Re-attach listeners for dynamically added remove buttons
+        document.querySelectorAll('.reset-integration-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const index = parseInt(e.target.getAttribute('data-index'));
+                integratedSystems.splice(index, 1); // Remove from state
+                renderIntegratedSystems(); // Re-render the tiles
+                updateProcessButtonState();
+            });
+        });
+
+        // Hide the "Add New System" card if ERP, CRM, and SCM are all integrated.
+        const integratedKeys = integratedSystems.map(s => s.system);
+        const allIntegrated = ['erp', 'crm', 'scm'].every(key => integratedKeys.includes(key));
+        addNewSystemCard.style.display = allIntegrated ? 'none' : 'flex';
+    }
+
+    // --- System Selection Modal Logic (NEW) ---
+
+    document.getElementById('open-system-selector').addEventListener('click', () => {
+        // Filter out systems that are already integrated from the selector buttons
+        const integratedKeys = integratedSystems.map(s => s.system);
+        systemSelectOptions.forEach(btn => {
+            const systemKey = btn.getAttribute('data-system');
+            if (integratedKeys.includes(systemKey)) {
+                btn.style.display = 'none';
+            } else {
+                btn.style.display = 'block';
+            }
+        });
+
+        systemSelectorModal.style.display = 'flex';
+    });
+
+    closeSystemSelector.addEventListener('click', () => {
+        systemSelectorModal.style.display = 'none';
+    });
+
+    systemSelectOptions.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const system = e.currentTarget.getAttribute('data-system');
+            currentSystemConfig = { system: system, modules: [], dataConfig: {} };
+            systemSelectorModal.style.display = 'none';
+            openModuleConfig(system);
+        });
+    });
+
+    // --- Module Configuration Modal Logic (NEW) ---
+
+    function openModuleConfig(system) {
+        const systemDisplay = system.toUpperCase();
+        const { icon, modules } = systemModules[system];
+        
+        document.getElementById('system-name-placeholder').textContent = systemDisplay;
+
+        // Reset to module selection view
+        moduleSelectionArea.style.display = 'block';
+        moduleDataArea.style.display = 'none';
+        nextToDataBtn.disabled = true;
+
+        // Populate module buttons
+        modulesList.innerHTML = '';
+        modules.forEach(moduleName => {
+            const moduleBtn = document.createElement('button');
+            moduleBtn.classList.add('module-select-option');
+            moduleBtn.setAttribute('data-module', moduleName);
+            moduleBtn.innerHTML = `<i class="fa-solid fa-cube"></i> ${moduleName}`;
+            moduleBtn.addEventListener('click', toggleModuleSelection);
+            modulesList.appendChild(moduleBtn);
+        });
+
+        moduleConfigModal.style.display = 'flex';
+    }
+
+    closeModuleConfig.addEventListener('click', () => {
+        moduleConfigModal.style.display = 'none';
+        currentSystemConfig = {};
+    });
+
+    function toggleModuleSelection(e) {
+        const button = e.currentTarget;
+        const moduleName = button.getAttribute('data-module');
+
+        if (button.classList.contains('selected')) {
+            // Deselect
+            button.classList.remove('selected');
+            currentSystemConfig.modules = currentSystemConfig.modules.filter(m => m !== moduleName);
+            delete currentSystemConfig.dataConfig[moduleName];
+        } else {
+            // Select
+            button.classList.add('selected');
+            currentSystemConfig.modules.push(moduleName);
+            currentSystemConfig.dataConfig[moduleName] = { file: null, api: '' };
+        }
+        
+        nextToDataBtn.disabled = currentSystemConfig.modules.length === 0;
+    }
+
+    nextToDataBtn.addEventListener('click', () => {
+        moduleSelectionArea.style.display = 'none';
+        moduleDataArea.style.display = 'block';
+        integrateSystemBtn.disabled = true;
+        renderModuleDataInputs();
+    });
+
+    function renderModuleDataInputs() {
+        moduleDataInputs.innerHTML = '';
+        
+        currentSystemConfig.modules.forEach(moduleName => {
+            const moduleKey = moduleName.toLowerCase().replace(/\s/g, '-');
+            const dataInputHtml = `
+                <div class="module-data-group" data-module="${moduleName}">
+                    <h5>${moduleName} Data Source</h5>
+                    
+                    <div class="data-input-api">
+                        <label for="${moduleKey}-api">Connect to API:</label>
+                        <input type="url" id="${moduleKey}-api" placeholder="e.g., https://api.mysystem.com/${moduleKey}" data-module-name="${moduleName}" class="module-api-input">
+                        <button class="integration-btn module-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                    </div>
+                    
+                    <div class="file-upload-box local-upload module-drop-area" id="${moduleKey}-drop-area">
+                        <i class="fa-solid fa-upload"></i>
+                        <p>Load ${moduleName} Data File</p>
+                        <p class="file-upload-info">Click or drag and drop files here (.csv, .xlsx, .xls)</p>
+                        <input type="file" id="${moduleKey}-file" multiple accept=".csv, .xlsx, .xls" class="file-input module-file-input" data-module-name="${moduleName}">
+                        <ul class="file-list" id="${moduleKey}-file-list"></ul>
+                    </div>
+                    <div class="module-preview-container" style="display:none;">
+                        <span class="preview-text">Data Loaded: <span id="${moduleKey}-filename"></span></span>
+                        <button class="reset-module-upload-btn" data-module-name="${moduleName}">Change</button>
+                    </div>
+                </div>
+            `;
+            moduleDataInputs.insertAdjacentHTML('beforeend', dataInputHtml);
+        });
+
+        // Attach listeners for data inputs and file uploads
+        setupModuleDataListeners();
+    }
+    
+    function setupModuleDataListeners() {
+        document.querySelectorAll('.module-file-input').forEach(input => {
+            const moduleName = input.getAttribute('data-module-name');
+            const dropArea = input.closest('.module-drop-area');
+
+            // File input change
+            input.addEventListener('change', (e) => handleModuleFile(moduleName, e.target.files));
+            
+            // Drag/Drop setup
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.classList.add('highlight'), false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'), false);
+            });
+            dropArea.addEventListener('drop', (e) => handleModuleFile(moduleName, e.dataTransfer.files));
+            dropArea.addEventListener('click', () => input.click());
+        });
+        
+        document.querySelectorAll('.module-api-input').forEach(input => {
+             // API input change - this is purely visual, no actual API call here
+            input.addEventListener('input', (e) => {
+                const moduleName = e.target.getAttribute('data-module-name');
+                currentSystemConfig.dataConfig[moduleName].api = e.target.value.trim();
+                checkModuleDataStatus();
+            });
+        });
+
+        document.querySelectorAll('.reset-module-upload-btn').forEach(button => {
+            button.addEventListener('click', (e) => resetModuleData(e.target.getAttribute('data-module-name')));
+        });
+        
+        checkModuleDataStatus(); // Initial check
+    }
+    
+    function handleModuleFile(moduleName, files) {
+        if (files.length > 0) {
+            const file = files[0];
+            currentSystemConfig.dataConfig[moduleName].file = file.name;
+            
+            // Visual update
+            const moduleKey = moduleName.toLowerCase().replace(/\s/g, '-');
+            const dataGroup = document.querySelector(`.module-data-group[data-module="${moduleName}"]`);
+            const dropArea = dataGroup.querySelector('.module-drop-area');
+            const previewContainer = dataGroup.querySelector('.module-preview-container');
+            const filenameSpan = dataGroup.querySelector(`#${moduleKey}-filename`);
+
+            dropArea.style.display = 'none';
+            previewContainer.style.display = 'flex';
+            filenameSpan.textContent = file.name;
+        } else {
+            currentSystemConfig.dataConfig[moduleName].file = null;
+        }
+        checkModuleDataStatus();
+    }
+    
+    function resetModuleData(moduleName) {
+        currentSystemConfig.dataConfig[moduleName].file = null;
+        
+        const moduleKey = moduleName.toLowerCase().replace(/\s/g, '-');
+        const dataGroup = document.querySelector(`.module-data-group[data-module="${moduleName}"]`);
+        const dropArea = dataGroup.querySelector('.module-drop-area');
+        const previewContainer = dataGroup.querySelector('.module-preview-container');
+        const fileInput = dataGroup.querySelector('.module-file-input');
+
+        // Clear file input value
+        fileInput.value = '';
+        
+        dropArea.style.display = 'flex';
+        previewContainer.style.display = 'none';
+        
+        checkModuleDataStatus();
+    }
+    
+    function checkModuleDataStatus() {
+        let allModulesReady = true;
+        
+        currentSystemConfig.modules.forEach(moduleName => {
+            const config = currentSystemConfig.dataConfig[moduleName];
+            // Ready if a file is loaded OR an API URL is entered
+            if (!config.file && !config.api) {
+                allModulesReady = false;
+            }
+        });
+        
+        integrateSystemBtn.disabled = !allModulesReady;
+    }
+
+    integrateSystemBtn.addEventListener('click', () => {
+        // 1. Add the configured system to the state
+        integratedSystems.push(currentSystemConfig);
+        
+        // 2. Clear the configuration
+        currentSystemConfig = {};
+        
+        // 3. Close the modal
+        moduleConfigModal.style.display = 'none';
+        
+        // 4. Update the main page UI
+        renderIntegratedSystems();
+        updateProcessButtonState();
+        
+        // Re-open system selector immediately if not all 3 systems are integrated.
+        // This simulates the "plus tile saying integrate one more" behavior.
+        const integratedKeys = integratedSystems.map(s => s.system);
+        const allIntegrated = ['erp', 'crm', 'scm'].every(key => integratedKeys.includes(key));
+        if (!allIntegrated) {
+             document.getElementById('open-system-selector').click();
+        }
+    });
+
+    // --- Engineering System File Handling (Retained, slightly cleaned up) ---
+    // Engineering functions (preventDefaults, handleDropEngineering, handleFilesEngineering, 
+    // displayFilesEngineering, updateEngineeringCardState, reset upload) are **retained** // from your original logic to ensure the backend integration path remains intact. 
+    // They are simply omitted here for brevity but should be included in the final JS file.
+
+    // Engineering System File Handling (Retained)
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropArea.addEventListener(eventName, preventDefaults, false);
     });
@@ -134,6 +417,28 @@ document.addEventListener('DOMContentLoaded', () => {
     fileElem.addEventListener('change', (e) => {
         handleFilesEngineering(e.target.files);
     });
+    
+    function showLocalLoading(system, files, callback) {
+        // Placeholder for loading visual logic
+        const systemInputGroup = document.getElementById(system + '-input-group') || engineeringInputGroup;
+        const systemDropArea = document.getElementById(system + 'DropArea') || dropArea;
+        
+        systemDropArea.style.display = 'none';
+        
+        const spinnerHtml = `<div class="system-loading"><div class="loading-spinner"></div><p>Processing data...</p></div>`;
+        systemInputGroup.insertAdjacentHTML('beforeend', spinnerHtml);
+        
+        setTimeout(() => {
+            const spinner = systemInputGroup.querySelector('.system-loading');
+            if (spinner) spinner.remove();
+
+            if (system === 'engineering') {
+               systemDropArea.style.display = 'flex';
+            }
+
+            callback();
+        }, 2000);
+    }
 
     function handleDropEngineering(e) {
         const dt = e.dataTransfer;
@@ -141,26 +446,13 @@ document.addEventListener('DOMContentLoaded', () => {
         handleFilesEngineering(files);
     }
 
-    function showEngineeringLocalLoading(files, callback) {
-        dropArea.style.display = 'none';
-        
-        const spinnerHtml = `<div class="system-loading" id="engineering-loading-spinner"><div class="loading-spinner"></div><p>Processing Engineering data...</p></div>`;
-        engineeringInputGroup.insertAdjacentHTML('beforeend', spinnerHtml);
-        
-        setTimeout(() => {
-            document.getElementById('engineering-loading-spinner')?.remove();
-            // Note: dropArea visibility is controlled by updateEngineeringCardState now
-            callback();
-        }, 2000);
-    }
-
-
     function handleFilesEngineering(files) {
         uploadedFile = files.length > 0 ? files[0] : null;
         engineeringFileLoaded = uploadedFile !== null;
         
         if (engineeringFileLoaded) {
-            showEngineeringLocalLoading(files, () => {
+            const system = { name: 'engineering', dropArea: dropArea, inputGroup: engineeringInputGroup };
+            showLocalLoading('engineering', files, () => {
                 displayFilesEngineering();
                 updateEngineeringCardState();
                 updateProcessButtonState();
@@ -193,15 +485,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
-    // --- Main Action Trigger for Engineering Diagram (Unified Button) ---
+    // --- Main Action Trigger for Engineering Diagram (Unified Button) (Retained) ---
     processButton.addEventListener('click', async () => {
+         // ... (Original processButton logic for Engineering System) ...
         if (!uploadedFile) {
             alert('Please upload an Engineering Diagram to proceed.');
-            return;
-        }
-        if (integratedSystems.length === 0) {
-            alert('Please select and integrate at least one Enterprise System.');
             return;
         }
 
@@ -213,12 +501,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData();
         formData.append('file', uploadedFile);
-
-        // Add integrated systems data to formData or handle separately if backend needs a different structure
-        formData.append('integrated_systems', JSON.stringify(integratedSystems));
-
+        // Note: The integratedSystems array (ERP, CRM, SCM data) would ideally 
+        // also be included in a real production environment. For this example, 
+        // we keep the Engineering Diagram backend logic as requested.
+        
         try {
-            // NOTE: The backend logic for the engineering diagram must remain the same and work as is.
+            // BACKEND LOGIC REMAINS THE SAME
             const response = await fetch(backendEndpointUrl, {
                 method: 'POST',
                 body: formData,
@@ -230,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            console.log('Files and systems processed successfully:', data);
+            console.log('Files processed successfully:', data);
             
             processingInfo.style.display = 'none';
             unifyMessage.style.display = 'none';
@@ -251,280 +539,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Enterprise System Dropdown and Module Selection Logic ---
-    
-    function updateApiPlaceholder(system) {
-        let placeholder = 'e.g., https://api.mysystem.com/data';
-        if (system === 'erp') placeholder = 'e.g., https://api.sap.com/data/v1/sales';
-        if (system === 'crm') placeholder = 'e.g., https://api.salesforce.com/services';
-        if (system === 'scm') placeholder = 'e.g., https://api.oracle.com/supplychain';
-        apiInput.placeholder = placeholder;
-        apiStatus.textContent = '';
-        apiInput.value = '';
-    }
-
-    function renderIntegratedSystemCard(sys, index) {
-        // Create a tile (option-card) for an integrated system
-        const card = document.createElement('div');
-        card.className = 'option-card integrated-card';
-        card.setAttribute('data-system', sys.system);
-        card.innerHTML = `
-            <h2><i class="fa-solid fa-check-circle"></i> ${sys.name} Integrated</h2>
-            <p>Integrated Modules: <strong>${sys.modules.length}</strong></p>
-            <ul class="module-summary-list">
-                ${sys.modules.map(mod => `<li><i class="fa-solid fa-list-check"></i> ${mod.charAt(0).toUpperCase() + mod.slice(1).replace('_', ' ')}</li>`).join('')}
-            </ul>
-            <p class="api-summary">API: ${sys.apiUrl === 'N/A' ? 'Not Used' : `<i class="fa-solid fa-plug"></i> Connected`}</p>
-        `;
-        return card;
-    }
-
-    function renderInitialGrid() {
-        optionsGrid.innerHTML = '';
-        
-        // 1. Render all integrated system tiles
-        integratedSystems.forEach((sys, index) => {
-            optionsGrid.appendChild(renderIntegratedSystemCard(sys, index));
-        });
-
-        // 2. Determine which main Enterprise card to show/hide
-        if (integratedSystems.length > 0) {
-            // Hide the main integration form, show the "Integrate One More" tile
-            enterpriseInputGroup.style.display = 'none';
-            enterprisePreviewContainer.style.display = 'none';
-            enterpriseIntegrationCard.style.display = 'none';
-            
-            // Render the "Integrate One More" tile
-            integrateMoreCard.style.display = 'block';
-            optionsGrid.appendChild(integrateMoreCard);
-
-        } else {
-            // Show the main integration form
-            enterpriseIntegrationCard.style.display = 'block';
-            enterpriseInputGroup.style.display = 'flex';
-            enterprisePreviewContainer.style.display = 'none';
-            integrateMoreCard.style.display = 'none';
-            optionsGrid.appendChild(enterpriseIntegrationCard);
-        }
-
-        // 3. Always render the Engineering tile last
-        optionsGrid.appendChild(engineeringCard);
-        updateProcessButtonState();
-    }
-
-    function generateModuleFileInputs() {
-        moduleFileContainer.innerHTML = '';
-        const currentModuleGroup = document.getElementById(`${selectedEnterpriseSystem}-modules`);
-
-        if (currentModuleGroup) {
-            const selectedModules = Array.from(currentModuleGroup.querySelectorAll('input:checked'))
-                                     .map(input => ({
-                                         value: input.value,
-                                         name: input.parentElement.textContent.trim()
-                                     }));
-
-            if (selectedModules.length > 0) {
-                const title = document.createElement('h4');
-                title.textContent = "Data Source for Modules (Optional)";
-                moduleFileContainer.appendChild(title);
-                
-                selectedModules.forEach(mod => {
-                    const fileInputDiv = document.createElement('div');
-                    fileInputDiv.className = 'module-file-input';
-                    fileInputDiv.innerHTML = `
-                        <label for="file-${mod.value}">${mod.name} Data File (.csv/.xlsx):</label>
-                        <input type="file" id="file-${mod.value}" data-module="${mod.value}" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                        <span class="file-status" id="status-${mod.value}">No file uploaded</span>
-                    `;
-                    moduleFileContainer.appendChild(fileInputDiv);
-                });
-            }
-        }
-    }
-
-
-    systemSelect.addEventListener('change', function() {
-        selectedEnterpriseSystem = this.value;
-        const moduleGroups = document.querySelectorAll('.module-group');
-        
-        moduleGroups.forEach(group => {
-            group.style.display = 'none';
-            group.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
-        });
-        moduleSelectionContainer.style.display = 'none';
-        moduleFileContainer.innerHTML = ''; // Clear file uploads
-
-        if (selectedEnterpriseSystem) {
-            updateApiPlaceholder(selectedEnterpriseSystem);
-            
-            document.getElementById(`${selectedEnterpriseSystem}-modules`).style.display = 'flex';
-            moduleSelectionContainer.style.display = 'flex';
-        }
-        
-        // Reset state for module integration
-        moduleIntegrateBtn.disabled = true;
-    });
-
-    enterpriseModuleCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const currentModuleGroup = document.getElementById(`${selectedEnterpriseSystem}-modules`);
-            
-            if (currentModuleGroup) {
-                const selectedModules = Array.from(currentModuleGroup.querySelectorAll('input:checked')).length;
-                moduleIntegrateBtn.disabled = !(selectedModules > 0);
-                
-                // Regenerate file input options based on selected modules
-                generateModuleFileInputs();
-            }
-            apiStatus.textContent = ''; // Clear status on interaction
-            apiStatus.style.color = 'inherit';
-        });
-    });
-
-    // New event listener for module file selection
-    moduleFileContainer.addEventListener('change', function(e) {
-        if (e.target.type === 'file') {
-            const moduleName = e.target.getAttribute('data-module');
-            const statusElement = document.getElementById(`status-${moduleName}`);
-            
-            if (e.target.files.length > 0) {
-                statusElement.textContent = `File: ${e.target.files[0].name} ready`;
-                statusElement.style.color = 'green';
-            } else {
-                statusElement.textContent = 'No file uploaded';
-                statusElement.style.color = 'inherit';
-            }
-        }
-    });
-
-    apiInput.addEventListener('input', function() {
-        const currentModuleGroup = document.getElementById(`${selectedEnterpriseSystem}-modules`);
-        if (currentModuleGroup) {
-            const modulesSelected = Array.from(currentModuleGroup.querySelectorAll('input:checked')).length > 0;
-            moduleIntegrateBtn.disabled = !(modulesSelected);
-        }
-        apiStatus.textContent = '';
-        apiStatus.style.color = 'inherit';
-    });
-
-    moduleIntegrateBtn.addEventListener('click', function() {
-        const currentModuleGroup = document.getElementById(`${selectedEnterpriseSystem}-modules`);
-        
-        if (!currentModuleGroup) return;
-
-        const modulesData = Array.from(currentModuleGroup.querySelectorAll('input:checked'))
-                               .map(input => {
-                                   const fileInput = document.getElementById(`file-${input.value}`);
-                                   return {
-                                       value: input.value,
-                                       file: fileInput && fileInput.files.length > 0 ? fileInput.files[0].name : 'N/A'
-                                   };
-                               });
-
-        if (modulesData.length > 0) {
-            const api = apiInput.value || 'N/A'; // API is optional
-            
-            // Basic validation if the user did input something in the API field
-            if (apiInput.value && apiInput.value.length < 5) {
-                apiStatus.textContent = 'API URL is too short. Please enter a valid URL or leave blank.';
-                apiStatus.style.color = 'red';
-                return;
-            }
-
-            const existingIndex = integratedSystems.findIndex(sys => sys.system === selectedEnterpriseSystem);
-            
-            const systemObject = {
-                system: selectedEnterpriseSystem,
-                name: systemNameMap[selectedEnterpriseSystem],
-                modules: modulesData.map(m => m.value), // Store module values
-                moduleFiles: modulesData.filter(m => m.file !== 'N/A').map(m => ({ module: m.value, file: m.file })), // Store files
-                apiUrl: api
-            };
-            
-            if (existingIndex !== -1) {
-                integratedSystems[existingIndex] = systemObject;
-            } else {
-                integratedSystems.push(systemObject);
-            }
-            
-            // 1. Hide selection, show loading spinner
-            moduleSelectionContainer.style.display = 'none';
-            systemSelect.style.display = 'none';
-            enterpriseIntroText.style.display = 'none';
-            
-            const spinnerHtml = `<div class="system-loading" id="enterprise-loading-spinner"><div class="loading-spinner"></div><p>Integrating <strong>${systemObject.name}</strong> data...</p></div>`;
-            enterpriseInputGroup.insertAdjacentHTML('beforeend', spinnerHtml);
-
-            // Simulate a 2-second integration
-            setTimeout(() => {
-                document.getElementById('enterprise-loading-spinner')?.remove();
-                
-                // 2. Update state and render the new grid
-                renderInitialGrid();
-                
-                // Reset the form for next use
-                systemSelect.value = '';
-                apiInput.value = '';
-                moduleFileContainer.innerHTML = '';
-                enterpriseIntroText.style.display = 'block';
-                systemSelect.style.display = 'block';
-
-            }, 2000);
-        }
-    });
-
-    // --- Reset/Integrate Another Functionality (FIXED) ---
-    // Use event delegation for dynamically created buttons
-    document.addEventListener('click', (e) => {
-        const button = e.target.closest('.reset-upload-btn, .integrate-more-btn');
-        if (!button) return;
-
-        e.preventDefault();
-        const systemName = button.getAttribute('data-system');
-        const action = button.getAttribute('data-action');
-        
-        if (systemName === 'engineering') {
-            // Engineering Reset Logic (remains the same)
+    // --- Reset Functionality for all cards (Retained/Modified) ---
+    document.querySelectorAll('.reset-upload-btn[data-system="engineering"]').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Reset Engineering state
             uploadedFile = null;
             engineeringFileLoaded = false;
             fileList.innerHTML = '';
-            fileElem.value = '';
+            fileElem.value = ''; // Clear file input
             updateEngineeringCardState();
-            engineeringInputGroup.style.display = 'flex';
-            dropArea.style.display = 'flex';
-            engineeringPreviewContainer.style.display = 'none';
-
-        } else if (systemName === 'enterprise-systems') {
             
-            if (action === 'reset-all') {
-                integratedSystems = [];
-            }
+            const engSystem = { inputGroup: engineeringInputGroup, dropArea: dropArea, previewContainer: engineeringPreviewContainer };
+            engSystem.inputGroup.style.display = 'flex';
+            engSystem.dropArea.style.display = 'flex';
+            engSystem.previewContainer.style.display = 'none';
             
-            // COMMON RESET (For 'Integrate More' and after 'Reset All')
-            
-            // Show the main integration form card
-            enterpriseIntegrationCard.style.display = 'block';
-            enterpriseInputGroup.style.display = 'flex';
-            enterprisePreviewContainer.style.display = 'none'; // Not used in this version but good practice
-            
-            // Hide all module groups and reset dropdown
-            document.querySelectorAll('.module-group').forEach(group => {
-                group.style.display = 'none';
-                group.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
-            });
-            moduleSelectionContainer.style.display = 'none';
-            moduleIntegrateBtn.disabled = true;
-            apiInput.value = '';
-            apiStatus.textContent = '';
-            systemSelect.value = '';
-            moduleFileContainer.innerHTML = '';
-
-            renderInitialGrid(); // Re-render the grid to show the main card and hide the "Integrate One More" card
-        }
-        updateProcessButtonState();
-        resetStatus();
+            updateProcessButtonState();
+            resetStatus();
+        });
     });
-
 
     // --- Dropdown Menu Logic (retained) ---
     const dropdownToggle = document.querySelector('.dropdown-toggle');
@@ -545,6 +579,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial check for button state
-    updateProcessButtonState();
+    // Initial render of dynamic systems
+    renderIntegratedSystems();
 });

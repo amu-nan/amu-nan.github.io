@@ -1,333 +1,431 @@
-/* Custom styles for the Consolidate Files page */
+and here is the css page "/* Custom styles for the Consolidate Files page */
 
 .page-container {
-    margin: 0 auto;
+    margin: 0 auto;
 }
 
 .consolidate-section {
-    text-align: center;
-    animation: fadeIn 1s ease-out;
+    text-align: center;
+    animation: fadeIn 1s ease-out;
 }
 
 .page-title {
-    font-size: 2.8rem;
-    font-weight: 800;
-    color: var(--primary-color);
-    margin-bottom: 10px;
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 10px;
 }
 
 .page-intro {
-    font-size: 1.2em;
-    max-width: 800px;
-    margin: 0 auto 50px;
-    color: var(--text-color);
-    line-height: 1.6;
+    font-size: 1.2em;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    color: var(--text-color);
+    line-height: 1.6;
 }
 
-/* Updated grid for the dynamic tiles */
+/* Updated grid for the two main cards */
 .options-grid {
-    display: grid;
-    /* Use a responsive grid for tiles, stacking on small screens */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px; 
-    max-width: 1200px; /* Increased max-width to accommodate multiple tiles horizontally */
-    margin: 0 auto 50px auto; 
-    align-items: stretch; /* Ensures all tiles stretch to the same height */
+    /* CHANGE: Max width and stack the cards vertically */
+    display: flex; /* Use flexbox for stacking */
+    flex-direction: column; /* Stack vertically */
+    align-items: center; /* Center the column */
+    max-width: 900px; /* Set a reasonable maximum width for the centered column */
+    margin: 0 auto 50px auto; /* Center the grid container itself */
+    gap: 30px; 
 }
 
-/* Base style for all cards/tiles */
 .option-card {
-    background: var(--secondary-bg-color);
-    padding: 30px; /* Reduced padding slightly for tile density */
-    border-radius: 15px;
-    box-shadow: var(--shadow-medium);
-    transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.3s;
-    text-align: center; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 350px; /* Set a minimum height for tiles to look uniform */
+    /* Ensure cards use the full width of the container */
+    width: 100%;
+    background: var(--secondary-bg-color);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-medium);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    /* FIX #3: Center content within the card */
+    text-align: center; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .option-card:hover {
-    transform: translateY(-5px); /* Reduced lift for less distraction */
-    box-shadow: var(--shadow-heavy);
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-heavy);
 }
 
 .option-card h2 {
-    font-size: 1.6em; /* Reduced heading size slightly */
-    font-weight: 700;
-    color: var(--accent-color);
-    text-align: center;
-    margin-bottom: 15px;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .option-card h2 i {
-    margin-right: 10px;
-    color: var(--primary-color);
+    margin-right: 10px;
+    color: var(--primary-color);
 }
 
 .option-card p {
-    font-size: 1em;
-    line-height: 1.5;
-    margin-bottom: 20px;
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 20px;
 }
-
-/* --- NEW STYLES: Add System and Integrated System Tiles --- */
-
-/* Style for the "Add System" tile (the + sign) */
-.add-system-card {
-    cursor: pointer;
-    background-color: #f7f7f7;
-    border: 2px dashed var(--primary-color);
-    color: var(--primary-color);
-    justify-content: center;
-}
-
-.add-system-card:hover {
-    background-color: #e8e8e8;
-    transform: none;
-    box-shadow: var(--shadow-medium);
-}
-
-.add-system-card h2 i {
-    font-size: 2em;
-    margin-bottom: 10px;
-    display: block;
-    color: var(--primary-color);
-}
-.add-system-card h2 {
-    color: var(--primary-color);
-    font-size: 1.8em;
-}
-.add-system-card p {
-    margin: 0;
-}
-
-/* Style for integrated system tiles */
-.integrated-system-tile {
-    background-color: #e6f7ff; /* Light blue background for confirmation */
-    border: 1px solid var(--primary-color);
-    text-align: left;
-    min-height: 350px;
-}
-.integrated-system-tile h2 {
-    color: var(--primary-color);
-}
-.integrated-system-tile h2 i {
-    color: #28a745; /* Checkmark icon color */
-}
-
-.integrated-details {
-    padding-top: 15px;
-    border-top: 1px solid #cceeff;
-    margin-top: auto; /* Push details to the bottom */
-}
-
-.integrated-details p {
-    font-size: 0.9em;
-    margin-bottom: 5px;
-}
-
-.integrated-modules-list {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.integrated-modules-list li {
-    background-color: #fff;
-    padding: 4px 10px;
-    border-radius: 15px;
-    font-size: 0.85em;
-    font-weight: 500;
-    border: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-}
-.integrated-modules-list li i {
-    color: #28a745;
-    font-size: 0.8em;
-    margin-right: 4px;
-}
-
-/* Style for the remove button */
-.reset-system-btn {
-    background-color: #ffcccc;
-    color: #cc0000;
-    border: 1px solid #cc0000;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.8em;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    font-weight: 500;
-    margin-top: 15px;
-    align-self: center; /* Center the button in the flex column */
-}
-
-.reset-system-btn:hover {
-    background-color: #cc0000;
-    color: #fff;
-}
-
-
-/* --- MODAL STYLES (New) --- */
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background-color: #fff;
-    padding: 35px;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
-    width: 90%;
-    text-align: center;
-    animation: slideIn 0.3s ease-out;
-}
-
-.modal-content h3 {
-    color: var(--primary-color);
-    font-size: 1.8em;
-    margin-bottom: 15px;
-}
-
-.modal-content p {
-    color: var(--text-color);
-    margin-bottom: 25px;
-}
-
-.modal-btn {
-    background-color: var(--primary-color);
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin: 10px 5px 0;
-    font-weight: 600;
-}
-
-.modal-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-.modal-btn:hover:not(:disabled) {
-    background-color: var(--accent-color);
-}
-
-.modal-close-btn {
-    background-color: #aaa;
-}
-
-.modal-close-btn:hover {
-    background-color: #888;
-}
-
-.modal-content .system-select {
-    max-width: 100%;
-}
-
-#modal-module-selection-container {
-    text-align: left;
-    padding: 15px 0 20px;
-    border-top: 1px solid #eee;
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Adjust module group within modal */
-#modal-module-selection-container .module-group {
-    justify-content: center;
-}
-
-/* Module File Upload Box Style */
-.module-file-upload {
-    background-color: #f7fff7;
-    border: 2px dashed #2c974b;
-    padding: 20px;
-    margin: 10px 0;
-}
-.module-file-upload i {
-    color: #2c974b;
-}
-
-/* File list display in module modal */
-#module-file-list li {
-    background-color: #e6ffe6;
-    color: #2c974b;
-    border: 1px solid #a3e0a3;
-}
-
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* --- EXISTING STYLES RETAINED/ADJUSTED --- */
 
 .system-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    text-align: left;
-    width: 100%; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* Ensure input group contents are left-aligned */
+    text-align: left;
+    width: 100%; 
 }
 
-/* Engineering tile specific adjustments (ensuring it works within the new grid) */
-#engineering-tile {
-    min-height: 350px;
+.system-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
+.system-input label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.system-input input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.integration-btn {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: not-allowed;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.integration-btn:hover {
+    background-color: #1a242f;
+}
+
+.integration-btn i {
+    margin-right: 8px;
+}
+
+/* File upload (Engineering) styles retained */
+.file-upload-box {
+    border: 2px dashed var(--accent-color);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    margin-top: 20px;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-upload-box.highlight {
+    background-color: #e6ffe6;
+    border-color: #2c974b;
+}
+
+.file-upload-box i {
+    color: var(--accent-color);
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.file-upload-box p {
+    margin: 5px 0;
+    font-weight: 500;
+}
+
+.file-upload-info {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0;
+    font-size: 0.9em;
+    width: 100%;
+}
+
+.file-list li {
+    background-color: #f0f0f0;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- VISUAL CONFIRMATION & RESET BUTTONS --- */
 .image-preview-container {
-    /* Ensure preview takes up space in engineering card */
-    flex-grow: 1;
-    min-height: 150px;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 100%;
+    box-sizing: border-box;
+    flex-grow: 1;
 }
 
 .preview-image {
-    max-width: 100%;
-    max-height: 150px;
+    max-width: 1000%;
+    max-height: 250px;
+    width: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
 }
 
-/* Media Query for Mobile (Stacking tiles) */
-@media (max-width: 768px) {
-    .options-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .module-group {
-        flex-direction: column;
-    }
-
-    .option-card {
-        min-height: 250px;
-    }
+.reset-upload-btn {
+    background-color: #ffffff;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    font-weight: 500;
 }
+
+.reset-upload-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+.image-preview-container > .reset-upload-btn[data-system="enterprise-systems"] {
+    margin-top: 10px;
+}
+
+
+/* --- MAIN PROCESS BUTTON & SPINNER --- */
+.process-button-container {
+    width: 100%;
+    text-align: center; 
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.process-button {
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    padding: 15px 30px; 
+    border-radius: 50px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 600;
+    display: block; 
+    margin: 0 auto; 
+}
+
+.process-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.processing-info {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.unify-message,
+.success-message,
+.upload-status {
+    margin-top: 15px;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1.1em;
+    display: none;
+}
+
+/* New temporary loading container for each system card */
+.system-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+    text-align: center;
+    min-height: 150px;
+    gap: 10px;
+}
+
+.system-loading p {
+    font-weight: 500;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+
+/* --- ENTERPRISE SYSTEM DROPDOWN AND MODULE SELECTION --- */
+
+/* Style for the main system selection dropdown */
+.system-select {
+    padding: 12px;
+    border: 1px solid var(--primary-color); 
+    border-radius: 8px;
+    font-size: 1em;
+    width: 100%; 
+    background-color: #fff; 
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c3e50' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    max-width: 400px; /* Limit width for better centering effect */
+    margin: 0 auto; /* Center the select box */
+}
+
+/* Label for the dropdown */
+.system-input-group > label {
+    text-align: center;
+}
+
+/* API Status/Error Message */
+.api-status {
+    margin: 0;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #cc0000;
+}
+
+/* Container for module selection (to add separation) */
+#module-selection-container {
+    padding-top: 15px;
+    border-top: 1px solid #eee; 
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left; /* Keep API and module labels left aligned */
+}
+
+/* Label for "Select Modules" */
+.module-label {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+/* Container for a specific system's module checkboxes */
+.module-group {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 15px; 
+    padding: 5px 0;
+}
+
+/* Style for individual checkbox labels (making them clickable blocks) */
+.module-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: var(--background-color); 
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-size: 0.95em;
+}
+
+.module-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--primary-color); 
+}
+
+/* Highlight modules when checked */
+.module-group label:has(input[type="checkbox"]:checked) {
+    background-color: var(--secondary-bg-color); 
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.module-group label:hover {
+    border-color: var(--accent-color);
+}
+
+/* Style for the new integration button, reusing existing button styles */
+#moduleIntegrateBtn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px 20px; 
+    font-weight: 600;
+}
+
+/* NEW/UPDATED STYLE: Integrated List Formatting */
+#integrated-systems-list {
+    margin: 15px auto;
+    width: 100%;
+}
+
+.integrated-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    max-width: 350px; 
+    margin: 10px auto; 
+}
+
+.integrated-list li {
+    font-size: 1em;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    color: var(--text-color);
+}
+
+.integrated-list li i {
+    color: #28a745;
+    margin-right: 8px;
+}"

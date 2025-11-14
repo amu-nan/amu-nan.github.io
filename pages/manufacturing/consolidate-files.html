@@ -48,96 +48,72 @@
                     Seamlessly ingest from various enterprise applications to create a single, unified source of truth.
                 </p>
 
-                <div class="options-grid" id="optionsGrid">
+                <div class="dynamic-systems-container" id="dynamic-systems-container">
                     
-                    <div class="option-card" id="enterprise-integration-card" data-system="enterprise-systems">
-                        <h2><i class="fa-solid fa-cloud"></i> Enterprise Systems Integration</h2>
-                        <p id="enterprise-intro-text">Select your system type and the specific modules for data consolidation.</p>
-
-                        <div class="system-input-group" id="enterprise-input-group">
-                            <label for="system-select">Select System Type:</label>
-                            <select id="system-select" class="system-select">
-                                <option value="">-- Select a System --</option>
-                                <option value="erp">ERP Systems</option>
-                                <option value="crm">CRM Systems</option>
-                                <option value="scm">SCM Systems</option>
-                            </select>
-                            
-                            <div id="module-selection-container" style="display:none;">
-                                
-                                <div class="system-input api-input-group" id="current-api-input">
-                                    <label for="system-api-url">Connect to API:</label>
-                                    <input type="url" id="system-api-url" placeholder="e.g., https://api.mysystem.com/data">
-                                    <p class="api-status" id="api-connect-status"></p>
-                                </div>
-                                
-                                <label class="module-label">Select Modules:</label>
-                                
-                                <div id="erp-modules" class="module-group" data-system-type="erp" style="display:none;">
-                                    <label><input type="checkbox" value="inventory"> Inventory</label>
-                                    <label><input type="checkbox" value="procurement"> Procurement</label>
-                                    <label><input type="checkbox" value="quality_control"> Quality Control</label>
-                                    <label><input type="checkbox" value="production"> Production</label>
-                                </div>
-
-                                <div id="crm-modules" class="module-group" data-system-type="crm" style="display:none;">
-                                    <label><input type="checkbox" value="customers"> Customers</label>
-                                    <label><input type="checkbox" value="leads"> Leads</label>
-                                    <label><input type="checkbox" value="marketing"> Marketing</label>
-                                    <label><input type="checkbox" value="opportunities"> Opportunities</label>
-                                </div>
-                                
-                                <div id="scm-modules" class="module-group" data-system-type="scm" style="display:none;">
-                                    <label><input type="checkbox" value="logistics"> Logistics</label>
-                                    <label><input type="checkbox" value="warehouse"> Warehouse Management</label>
-                                    <label><input type="checkbox" value="forecasting"> Demand Forecasting</label>
-                                </div>
-                                
-                                <div id="module-file-uploads" class="module-file-uploads-container">
-                                    </div>
-
-                                <button class="integration-btn module-integrate-btn" id="moduleIntegrateBtn" disabled>
-                                    <i class="fa-solid fa-puzzle-piece"></i> Integrate Modules
-                                </button>
-                            </div>
+                    <div id="integrated-systems-container" class="options-grid">
                         </div>
 
-                        <div class="image-preview-container" id="enterprise-preview-container" style="display:none;">
-                            <img src="../../images/placeholder-enterprise.png" alt="Enterprise Data Loaded" class="preview-image">
-                            <div id="integrated-systems-list">
+                    <div class="options-grid">
+                        <div class="option-card add-system-card" id="add-new-system-card">
+                            <h2><i class="fa-solid fa-plus-circle"></i> Integrate Enterprise System</h2>
+                            <p>Select an ERP, CRM, or SCM system to integrate.</p>
+                            <button class="select-system-btn" id="open-system-selector"><i class="fa-solid fa-link"></i> Begin Integration</button>
+                        </div>
+
+                        <div class="option-card" data-system="engineering">
+                            <h2><i class="fa-solid fa-layer-group"></i> Engineering systems</h2>
+                            <p>Integrate with your Engineering system.</p>
+                            <div class="system-input-group" id="engineering-input-group">
+                                <div class="system-input">
+                                    <label for="engineering-url">Connect to API:</label>
+                                    <input type="url" id="engineering-url" placeholder="e.g., https://api.autodesk.com/design">
+                                    <button class="integration-btn engineering-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
                                 </div>
-                            <button class="reset-upload-btn reset-all-btn" data-system="enterprise-systems" data-action="reset-all" style="display:none;">Reset All Integrations</button>
+                                <div class="file-upload-box local-upload" id="drop-area">
+                                    <i class="fa-solid fa-upload"></i>
+                                    <p>Load your Engineering Diagram</p>
+                                    <p class="file-upload-info">Click or drag and drop files here</p>
+                                    <input type="file" id="fileElem" accept=".pdf" class="file-input">
+                                </div>
+                                <div id="file-list"></div>
+                            </div>
+                            <div class="image-preview-container" id="engineering-preview-container" style="display:none;">
+                                <img src="../../images/placeholder-engineering.png" alt="Engineering Data Loaded" class="preview-image">
+                                <button class="reset-upload-btn" data-system="engineering">Change File</button>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="option-card add-new-card" id="integrate-more-card" style="display:none;">
-                        <h2><i class="fa-solid fa-plus-circle"></i> Integrate One More</h2>
-                        <p>Add another ERP, CRM, or SCM system to your data pool.</p>
-                        <button class="integration-btn integrate-more-btn" data-system="enterprise-systems" data-action="integrate-more">
-                            <i class="fa-solid fa-network-wired"></i> Add System
-                        </button>
-                    </div>
-
-                    <div class="option-card" data-system="engineering" id="engineering-card">
-                        <h2><i class="fa-solid fa-layer-group"></i> Engineering Diagrams</h2>
-                        <p>Integrate with your Engineering system or load diagrams.</p>
-                        <div class="system-input-group" id="engineering-input-group">
-                            <div class="system-input">
-                                <label for="engineering-url">Connect to API:</label>
-                                <input type="url" id="engineering-url" placeholder="e.g., https://api.autodesk.com/design">
-                                <button class="integration-btn engineering-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
-                            </div>
-                            <div class="file-upload-box local-upload" id="drop-area">
-                                <i class="fa-solid fa-upload"></i>
-                                <p>Load your Engineering Diagram</p>
-                                <p class="file-upload-info">Click or drag and drop files here</p>
-                                <input type="file" id="fileElem" accept=".pdf" class="file-input">
-                            </div>
-                            <div id="file-list"></div>
+                </div> 
+                
+                <div id="system-selector-modal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <span class="close-btn" id="close-system-selector">&times;</span>
+                        <h3>Select an Enterprise System</h3>
+                        <div class="system-selection-grid">
+                            <button class="system-select-option" data-system="erp"><i class="fa-solid fa-industry"></i> ERP</button>
+                            <button class="system-select-option" data-system="crm"><i class="fa-solid fa-handshake"></i> CRM</button>
+                            <button class="system-select-option" data-system="scm"><i class="fa-solid fa-truck-fast"></i> SCM</button>
                         </div>
-                        <div class="image-preview-container" id="engineering-preview-container" style="display:none;">
-                            <img src="../../images/placeholder-engineering.png" alt="Engineering Data Loaded" class="preview-image">
-                            <button class="reset-upload-btn" data-system="engineering">Change File</button>
+                    </div>
+                </div>
+
+                <div id="module-config-modal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <span class="close-btn" id="close-module-config">&times;</span>
+                        <h3 id="config-modal-title">Configure <span id="system-name-placeholder"></span> Modules</h3>
+                        
+                        <div id="module-selection-area">
+                            <h4>Select Modules:</h4>
+                            <div id="modules-list" class="module-selection-grid">
+                                </div>
+                            <button id="next-to-data-btn" class="continue-button" disabled><i class="fa-solid fa-arrow-right"></i> Next: Add Data</button>
+                        </div>
+                        
+                        <div id="module-data-area" style="display:none;">
+                            <h4>Data Sources for Selected Modules:</h4>
+                            <div id="module-data-inputs">
+                                </div>
+                            <button id="integrate-system-btn" class="process-button" disabled><i class="fa-solid fa-check-circle"></i> Integrate System</button>
                         </div>
                     </div>
                 </div>

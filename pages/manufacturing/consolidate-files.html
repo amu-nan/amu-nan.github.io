@@ -3,125 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Consolidation & Unification</title>
-    <link rel="stylesheet" href="app.css">
-    <link rel="stylesheet" href="consolidate-files.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Consolidate Your Data Sources</title>
+    <link rel="icon" type="image/png" href="../../images/Subject.png">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/manufacturing/consolidate-files.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="page-container">
-        <section class="consolidate-section">
-            <h1 class="page-title">Unify & Consolidate Files</h1>
-            <p class="page-intro">
-                Select your source files and integrated enterprise systems to create a consolidated and unified data asset for advanced analytics and reporting.
-            </p>
-
-            <div class="options-grid" id="options-grid">
-                
-                <div class="option-card" id="engineering-tile">
-                    <h2><i class="fas fa-upload"></i> Upload Engineering Files</h2>
-                    <p>Upload large proprietary files (e.g., CAD, project plans, sensor logs) directly from your local machine.</p>
-                    
-                    <div class="file-upload-box" id="file-upload-box">
-                        <input type="file" id="file-input" class="file-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.json,.xml" />
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Drag & drop files here, or **click to browse**</p>
-                        <p class="file-upload-info">Maximum 5 files, 50MB total.</p>
-                    </div>
-
-                    <div class="image-preview-container" style="display: none;">
-                        <ul class="file-list" id="file-list">
-                            </ul>
-                        <button class="reset-upload-btn" id="reset-upload-btn" data-system="engineering">Remove All</button>
-                    </div>
-
-                    <div class="upload-status" id="upload-status"></div>
-                </div>
-
-                <div class="option-card add-system-card" id="add-system-card">
-                    <h2><i class="fas fa-plus-circle"></i> Add Enterprise System</h2>
-                    <p>Connect and integrate data from additional enterprise platforms (CRM, ERP, etc.)</p>
-                </div>
-
-                </div>
-            
-            <hr>
-
-            <div class="process-button-container">
-                <button class="process-button" id="process-button" disabled>
-                    <i class="fas fa-cogs"></i> Start Unification Process
-                </button>
-            </div>
-
-            <div class="processing-info" id="processing-info">
-                <div class="loading-spinner"></div>
-                <p>Processing files and systems...</p>
-                <p class="unify-message" id="unify-message">Analyzing connections and preparing data model.</p>
-            </div>
-
-            <div class="success-message" id="success-message">
-                <i class="fas fa-check-circle"></i> Data Unification Complete!
-            </div>
-
-        </section>
-    </div>
-
-    <div id="system-modal" class="modal-overlay" style="display:none;">
-        <div class="modal-content">
-            <h3>Connect Enterprise System</h3>
-            <p>Select the enterprise system and the specific modules you wish to consolidate data from.</p>
-
-            <div class="system-input-group">
-                <label for="system-select">Choose System:</label>
-                <select id="system-select" class="system-select">
-                    <option value="" disabled selected>-- Select a System --</option>
-                    <option value="crm">CRM System (Salesforce)</option>
-                    <option value="erp">ERP System (SAP/Oracle)</option>
-                    <option value="plm">PLM System (Teamcenter)</option>
-                </select>
-                <p class="api-status" id="api-status" style="display:none;">API Connection Status: Error</p>
-            </div>
-            
-            <div id="modal-module-selection-container" style="display:none;">
-                <label class="module-label">Select Modules for Integration:</label>
-
-                <div class="module-group" data-system="crm" style="display:none;">
-                    <label><input type="checkbox" name="module-crm" value="accounts"> Accounts</label>
-                    <label><input type="checkbox" name="module-crm" value="opportunities"> Opportunities</label>
-                    <label><input type="checkbox" name="module-crm" value="contacts"> Contacts</label>
-                </div>
-                
-                <div class="module-group" data-system="erp" style="display:none;">
-                    <label><input type="checkbox" name="module-erp" value="finance"> Finance & GL</label>
-                    <label><input type="checkbox" name="module-erp" value="inventory"> Inventory</label>
-                    <label><input type="checkbox" name="module-erp" value="procurement"> Procurement</label>
-                </div>
-                
-                <div class="module-group" data-system="plm" style="display:none;">
-                    <label><input type="checkbox" name="module-plm" value="bom"> Bill of Materials (BOM)</label>
-                    <label><input type="checkbox" name="module-plm" value="documents"> Design Documents</label>
-                    <label><input type="checkbox" name="module-plm" value="changes"> Change Management</label>
-                </div>
-                
-                <div class="module-file-upload file-upload-box" id="plm-file-upload-box" style="display:none;">
-                    <input type="file" id="plm-file-input" class="file-input" accept=".xml,.txt" />
-                    <i class="fas fa-file-export"></i>
-                    <p>Upload System Export File (for PLM demo)</p>
-                    <ul class="file-list" id="module-file-list"></ul>
-                </div>
-
-            </div>
-
-            <button id="moduleIntegrateBtn" class="modal-btn" disabled>
-                <i class="fas fa-link"></i> Integrate System
-            </button>
-            <button id="modal-close-btn" class="modal-btn modal-close-btn">
-                Close
-            </button>
+    <header>
+        <div class="logo-container">
+            <a href="../../index.html">
+                <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            </a>
+            <span class="tagline">Ride the wave of efficiency.</span>
         </div>
-    </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle hamburger-icon" aria-label="Services Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html"><i class="fa-solid fa-industry"></i> Manufacturing</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-hospital"></i> Healthcare</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-sack-dollar"></i> Banking & Finance</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-store"></i> Retail</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-graduation-cap"></i> Education</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-satellite-dish"></i> Telecom, Media & Technology(TMT)</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
 
-    <script src="consolidate-files.js"></script>
+    <main class="page-container">
+        <section class="consolidate-section">
+            <div id="initial-state-container">
+                <h1 class="page-title" id="pageTitle">Unify Your Data Sources</h1>
+                <p class="page-intro">
+                    Seamlessly ingest from various enterprise applications to create a single, unified source of truth.
+                </p>
+
+                <div class="options-grid" id="optionsGrid">
+                    
+                    <div class="option-card" id="enterprise-integration-card" data-system="enterprise-systems">
+                        <h2><i class="fa-solid fa-cloud"></i> Enterprise Systems Integration</h2>
+                        <p id="enterprise-intro-text">Select your system type and the specific modules for data consolidation.</p>
+
+                        <div class="system-input-group" id="enterprise-input-group">
+                            <label for="system-select">Select System Type:</label>
+                            <select id="system-select" class="system-select">
+                                <option value="">-- Select a System --</option>
+                                <option value="erp">ERP Systems</option>
+                                <option value="crm">CRM Systems</option>
+                                <option value="scm">SCM Systems</option>
+                            </select>
+                            
+                            <div id="module-selection-container" style="display:none;">
+                                
+                                <div class="system-input api-input-group" id="current-api-input">
+                                    <label for="system-api-url">Connect to API:</label>
+                                    <input type="url" id="system-api-url" placeholder="e.g., https://api.mysystem.com/data">
+                                    <p class="api-status" id="api-connect-status"></p>
+                                </div>
+                                
+                                <label class="module-label">Select Modules:</label>
+                                
+                                <div id="erp-modules" class="module-group" data-system-type="erp" style="display:none;">
+                                    <label><input type="checkbox" value="inventory"> Inventory</label>
+                                    <label><input type="checkbox" value="procurement"> Procurement</label>
+                                    <label><input type="checkbox" value="quality_control"> Quality Control</label>
+                                    <label><input type="checkbox" value="production"> Production</label>
+                                </div>
+
+                                <div id="crm-modules" class="module-group" data-system-type="crm" style="display:none;">
+                                    <label><input type="checkbox" value="customers"> Customers</label>
+                                    <label><input type="checkbox" value="leads"> Leads</label>
+                                    <label><input type="checkbox" value="marketing"> Marketing</label>
+                                    <label><input type="checkbox" value="opportunities"> Opportunities</label>
+                                </div>
+                                
+                                <div id="scm-modules" class="module-group" data-system-type="scm" style="display:none;">
+                                    <label><input type="checkbox" value="logistics"> Logistics</label>
+                                    <label><input type="checkbox" value="warehouse"> Warehouse Management</label>
+                                    <label><input type="checkbox" value="forecasting"> Demand Forecasting</label>
+                                </div>
+                                
+                                <div id="module-file-uploads" class="module-file-uploads-container">
+                                    </div>
+
+                                <button class="integration-btn module-integrate-btn" id="moduleIntegrateBtn" disabled>
+                                    <i class="fa-solid fa-puzzle-piece"></i> Integrate Modules
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="image-preview-container" id="enterprise-preview-container" style="display:none;">
+                            <img src="../../images/placeholder-enterprise.png" alt="Enterprise Data Loaded" class="preview-image">
+                            <div id="integrated-systems-list">
+                                </div>
+                            <button class="reset-upload-btn reset-all-btn" data-system="enterprise-systems" data-action="reset-all" style="display:none;">Reset All Integrations</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card add-new-card" id="integrate-more-card" style="display:none;">
+                        <h2><i class="fa-solid fa-plus-circle"></i> Integrate One More</h2>
+                        <p>Add another ERP, CRM, or SCM system to your data pool.</p>
+                        <button class="integration-btn integrate-more-btn" data-system="enterprise-systems" data-action="integrate-more">
+                            <i class="fa-solid fa-network-wired"></i> Add System
+                        </button>
+                    </div>
+
+                    <div class="option-card" data-system="engineering" id="engineering-card">
+                        <h2><i class="fa-solid fa-layer-group"></i> Engineering Diagrams</h2>
+                        <p>Integrate with your Engineering system or load diagrams.</p>
+                        <div class="system-input-group" id="engineering-input-group">
+                            <div class="system-input">
+                                <label for="engineering-url">Connect to API:</label>
+                                <input type="url" id="engineering-url" placeholder="e.g., https://api.autodesk.com/design">
+                                <button class="integration-btn engineering-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                            </div>
+                            <div class="file-upload-box local-upload" id="drop-area">
+                                <i class="fa-solid fa-upload"></i>
+                                <p>Load your Engineering Diagram</p>
+                                <p class="file-upload-info">Click or drag and drop files here</p>
+                                <input type="file" id="fileElem" accept=".pdf" class="file-input">
+                            </div>
+                            <div id="file-list"></div>
+                        </div>
+                        <div class="image-preview-container" id="engineering-preview-container" style="display:none;">
+                            <img src="../../images/placeholder-engineering.png" alt="Engineering Data Loaded" class="preview-image">
+                            <button class="reset-upload-btn" data-system="engineering">Change File</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="process-button-container" class="process-button-container">
+                    <button id="processButton" class="process-button" disabled style="display:none;">Load & Unify All Data</button>
+                </div>
+
+                <div id="processing-info" class="processing-info">
+                    <div class="loading-spinner"></div>
+                </div>
+                <p id="unify-message" class="unify-message"></p>
+                <p id="success-message" class="success-message"></p>
+            </div>
+
+            <div id="unified-state-container" class="unified-state-container" style="display:none;">
+                <h1 class="page-title" id="unifiedTitle">Your Data is Unified Now.</h1>
+                <p class="page-intro">
+                    Insights unlocked. Answers delivered.
+                </p>
+                <div class="completion-container" id="completion-buttons-wrapper">
+                    <a href="conversation-ai.html" class="continue-button demo-button" id="chatButton">
+                        <i class="fa-solid fa-comment-dots"></i> Explore with RIA
+                    </a>
+                    <a href="http://127.0.0.1:8000/xforia-coast/dashboard/" target="_self" class="continue-button demo-button view-dashboard">
+                        <i class="fa-solid fa-chart-line"></i> Insights
+                    </a>
+                </div>
+            </div>
+            
+            <div class="bottom-nav">
+                <a href="#" class="demo-button back-button" onclick="history.back(); return false;">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+    </footer>
+
+    <script src="../../js/manufacturing/consolidate-files.js"></script>
 </body>
 </html>

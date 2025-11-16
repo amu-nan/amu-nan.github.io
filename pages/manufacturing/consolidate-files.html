@@ -3,292 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consolidate Files & System Integration</title>
+    <title>File Consolidation Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="consolidate-files.css">
-    
-    <style>
-        :root {
-            --primary-color: #2c3e50; /* Dark Blue */
-            --accent-color: #3498db; /* Bright Blue */
-            --text-color: #333;
-            --secondary-bg-color: #ffffff;
-            --background-color: #f7f9fb;
-            --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-heavy: 0 8px 20px rgba(0, 0, 0, 0.15);
-            --success-color: #28a745;
-        }
-        /* ADDED MODAL SCROLLING FIX CLASS (MUST BE IN CSS) */
-        .modal-inner-content {
-            max-height: 70vh; 
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-    </style>
-    
 </head>
-<body style="background-color: var(--background-color);">
+<body>
 
-    <div class="page-container">
+    <main class="page-container">
         <section class="consolidate-section">
-            
-            <h1 class="page-title">Data Unification & File Consolidation</h1>
+            <h1 class="page-title">File Consolidation Center</h1>
             <p class="page-intro">
-                Select and configure your source systems (ERP, CRM) and upload any necessary engineering diagrams. All data will be processed in a single consolidated operation.
+                Select a source system to begin consolidating files and documents into the central repository. You can choose to integrate via enterprise systems or upload engineering diagrams directly.
             </p>
 
-            <div class="dynamic-systems-container">
-                
-                <div id="integrated-systems-container">
+            <div id="view-container">
+
+                <div id="main-selection-view">
+                    <div id="main-options-grid">
+
+                        <div class="main-option-card" id="card-enterprise-systems">
+                            <h2><i class="fas fa-city"></i> Enterprise Systems</h2>
+                            <p>Connect to existing ERP/CRM systems (e.g., SAP, Salesforce) to consolidate customer, vendor, and finance-related documents automatically based on selected modules.</p>
+                            <button id="begin-enterprise-integration">Start Module Selection</button>
+                        </div>
+                        
+                        <div class="main-option-card" id="card-engineering-diagrams">
+                            <h2><i class="fas fa-pencil-ruler"></i> Engineering Diagrams</h2>
+                            <p>Upload large technical diagrams and schematics directly from your local machine. Files are analyzed and tagged before consolidation.</p>
+                            <button id="begin-engineering-integration">Start File Upload</button>
+                        </div>
                     </div>
+                </div> <div id="enterprise-modules-section" style="display: none;">
+                    <button class="back-to-main-btn" data-target="main-selection-view"><i class="fas fa-chevron-left"></i> Back to Main</button>
+                    <h2>Select Modules for Data Consolidation</h2>
+                    <div class="system-module-grid">
+                        
+                        <div class="module-card" data-module-id="finance">
+                            <h3><i class="fas fa-chart-line"></i> Financial Documents</h3>
+                            <p>Consolidate invoices, budget reports, and quarterly statements from your accounting system.</p>
+                            <div class="module-actions">
+                                <button class="integrate-module-btn" data-system-type="enterprise-systems">Integrate Module</button>
+                                <div class="module-status" style="display: none;">Ready for Processing.</div>
+                            </div>
+                        </div>
 
-                <div class="option-card add-system-card" id="openSystemModalBtn">
-                    <h2><i class="fas fa-plus-circle"></i> Add New System</h2>
-                    <p>Connect your Enterprise systems (ERP, CRM, SCM) via API keys or direct file uploads.</p>
-                    <button class="select-system-btn">Configure New System</button>
-                </div>
-                
-                <div class="option-card" data-system="engineering-files">
-                    <h2><i class="fas fa-cogs"></i> Engineering Diagrams</h2>
-                    <p>Upload your CAD files, flowcharts, or other technical specifications for analysis.</p>
+                        <div class="module-card" data-module-id="inventory">
+                            <h3><i class="fas fa-warehouse"></i> Inventory Management</h3>
+                            <p>Transfer product sheets, stock manifests, and warehouse management records.</p>
+                            <div class="module-actions">
+                                <button class="integrate-module-btn" data-system-type="enterprise-systems">Integrate Module</button>
+                                <div class="module-status" style="display: none;">Ready for Processing.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="module-card" data-module-id="sales">
+                            <h3><i class="fas fa-handshake"></i> Sales & CRM Data</h3>
+                            <p>Retrieve customer agreements, lead sheets, and contract records from the CRM system.</p>
+                            <div class="module-actions">
+                                <button class="integrate-module-btn" data-system-type="enterprise-systems">Integrate Module</button>
+                                <div class="module-status" style="display: none;">Ready for Processing.</div>
+                            </div>
+                        </div>
 
-                    <div class="file-upload-box" id="dropZone">
-                        <input type="file" id="engineeringFileInput" class="file-input" multiple accept=".pdf,.dwg,.jpg,.png">
-                        <i class="fas fa-file-upload"></i>
-                        <p>Drag & drop files here, or click to browse</p>
-                        <p class="file-upload-info">Max 10 files, PDF/DWG/Images accepted</p>
+                        <div class="module-card" data-module-id="hr">
+                            <h3><i class="fas fa-users"></i> Human Resources</h3>
+                            <p>Consolidate employee handbooks, training manuals, and internal policy documents.</p>
+                            <div class="module-actions">
+                                <button class="integrate-module-btn" data-system-type="enterprise-systems">Integrate Module</button>
+                                <div class="module-status" style="display: none;">Ready for Processing.</div>
+                            </div>
+                        </div>
+
                     </div>
+                </div> <div id="engineering-diagram-section" style="display: none;">
+                    <button class="back-to-main-btn" data-target="main-selection-view"><i class="fas fa-chevron-left"></i> Back to Main</button>
+                    
+                    <div class="main-option-card option-card">
+                        <h2>Upload Technical Diagrams</h2>
+                        <div class="system-input-group">
+                            
+                            <div class="file-upload-box" id="file-upload-box-engineering">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag and drop your files here</p>
+                                <p class="file-upload-info">or click to browse. Max size: 50MB.</p>
+                                <input type="file" id="file-input-engineering" class="file-input" multiple accept=".pdf,.dwg,.dxf,.tiff">
+                            </div>
 
-                    <div id="engineering-preview-area" style="display: none;">
-                        <ul class="file-list" id="engineering-file-list"></ul>
-                        <button class="reset-upload-btn" id="resetEngineeringUpload">Clear Files</button>
+                            <div id="file-list-container-engineering" style="display: none;">
+                                <h3>Uploaded Files:</h3>
+                                <ul class="file-list" id="file-list-engineering">
+                                    </ul>
+                                <button class="reset-upload-btn" data-system="engineering-diagrams">Clear Files</button>
+                            </div>
+                            
+                            <div class="system-input">
+                                <label for="project-id-engineering">Project ID Tag</label>
+                                <input type="text" id="project-id-engineering" placeholder="Enter associated project ID (e.g., PRJ-2024-001)">
+                            </div>
+                        </div>
+                        
                     </div>
-                </div>
-
-            </div>
-
-            <div class="process-button-container">
-                <button class="process-button" id="consolidateProcessBtn" disabled>
-                    <i class="fas fa-sync-alt"></i> Run Consolidated Process
+                </div> </div> <div class="process-button-container">
+                <button class="process-button" id="start-consolidation-btn" disabled>
+                    Start Consolidation Process
                 </button>
-                <div class="processing-info" id="processingStatus">
+
+                <div class="processing-info">
                     <div class="loading-spinner"></div>
-                    <p class="upload-status">Processing data...</p>
+                    <p>Processing files, please wait...</p>
                 </div>
+                
+                <p class="unify-message" id="unify-message">Waiting for module/file integration...</p>
+                <p class="success-message" id="success-message">🎉 Consolidation Complete! Files are now available in the central repository.</p>
             </div>
 
         </section>
-    </div>
+    </main>
 
-    <div id="systemConfigModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" id="closeSystemModal">&times;</span>
-            <h3>Connect Enterprise System</h3>
-
-            <div class="modal-inner-content">
-                
-                <div id="system-type-step">
-                    <h4>1. Choose System Category</h4>
-                    <div class="system-selection-grid">
-                        <div class="system-select-option" data-system-type="ERP">
-                            <i class="fas fa-industry"></i> ERP (e.g., SAP, Oracle)
-                        </div>
-                        <div class="system-select-option" data-system-type="CRM">
-                            <i class="fas fa-users"></i> CRM (e.g., Salesforce, Hubspot)
-                        </div>
-                        <div class="system-select-option" data-system-type="SCM">
-                            <i class="fas fa-truck-moving"></i> SCM (Supply Chain)
-                        </div>
-                    </div>
-                </div>
-
-                <div id="module-selection-step" style="display:none;">
-                    <h4>2. Select Modules to Integrate (<span id="selectedSystemName"></span>)</h4>
-                    <p class="api-status" id="api-status-message" style="display:none;">Error: API key is invalid.</p>
-                    
-                    <div class="system-input-group">
-                        <label for="module-select-api">API Key / System Identifier:</label>
-                        <input type="text" id="module-select-api" placeholder="Enter System API Key or URL">
-                    </div>
-
-                    <div id="module-selection-container">
-                        <p class="module-label">Available Modules (Select one or more):</p>
-                        
-                        <div class="module-group" id="module-group-container">
-                            <label class="module-select-option"><input type="checkbox" name="module" value="erp-inventory"><i class="fas fa-warehouse"></i> Inventory</label>
-                            <label class="module-select-option"><input type="checkbox" name="module" value="erp-financials"><i class="fas fa-dollar-sign"></i> Financials</label>
-                            <label class="module-select-option"><input type="checkbox" name="module" value="erp-purchasing"><i class="fas fa-shopping-cart"></i> Purchasing</label>
-                            <label class="module-select-option"><input type="checkbox" name="module" value="crm-leads"><i class="fas fa-headset"></i> Sales Leads</label>
-                            <label class="module-select-option"><input type="checkbox" name="module" value="crm-marketing"><i class="fas fa-bullhorn"></i> Marketing Data</label>
-                            <label class="module-select-option"><input type="checkbox" name="module" value="scm-logistics"><i class="fas fa-route"></i> Logistics</label>
-                            <label class="module-select-option"><input type="checkbox" name="module" value="scm-production"><i class="fas fa-tools"></i> Production</label>
-                            </div>
-                    </div>
-                    
-                    <button class="integration-btn" id="integrateSystemBtn" disabled>
-                        <i class="fas fa-check-circle"></i> Integrate System
-                    </button>
-                </div>
-
-            </div> </div>
-    </div>
-    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
-
-    <script>
-        // --- MODAL INTERACTION LOGIC ---
-        const modal = document.getElementById('systemConfigModal');
-        const openBtn = document.getElementById('openSystemModalBtn');
-        const closeBtn = document.getElementById('closeSystemModal');
-        const systemSelectOptions = document.querySelectorAll('.system-select-option');
-        const integrateBtn = document.getElementById('integrateSystemBtn');
-        const moduleCheckboxes = document.querySelectorAll('#module-group-container input[type="checkbox"]');
-        const selectedSystemName = document.getElementById('selectedSystemName');
-        const moduleSelectionStep = document.getElementById('module-selection-step');
-        const systemTypeStep = document.getElementById('system-type-step');
-
-        let currentSystemType = '';
-
-        // Open Modal
-        openBtn.onclick = () => {
-            modal.style.display = 'flex';
-            // Reset modal state on open
-            systemTypeStep.style.display = 'block';
-            moduleSelectionStep.style.display = 'none';
-        }
-
-        // Close Modal
-        closeBtn.onclick = () => {
-            modal.style.display = 'none';
-        }
-
-        window.onclick = (event) => {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-
-        // Step 1: System Selection Handler
-        systemSelectOptions.forEach(option => {
-            option.onclick = () => {
-                currentSystemType = option.getAttribute('data-system-type');
-                selectedSystemName.textContent = currentSystemType;
-
-                // Move to step 2 (Module selection)
-                systemTypeStep.style.display = 'none';
-                moduleSelectionStep.style.display = 'block';
-                
-                // You would add logic here to filter modules based on currentSystemType
-            }
-        });
-
-        // Step 2: Enable Integrate button when at least one module is selected
-        const updateIntegrateButtonState = () => {
-            const checkedModules = document.querySelectorAll('#module-group-container input[type="checkbox"]:checked');
-            integrateBtn.disabled = checkedModules.length === 0;
-        }
-
-        moduleCheckboxes.forEach(checkbox => {
-            checkbox.onchange = updateIntegrateButtonState;
-        });
-
-        // --- DUMMY INTEGRATION/FILE UPLOAD LOGIC ---
-        
-        // This is where you would handle the actual integration and add the card
-        integrateBtn.onclick = () => {
-            const apiKey = document.getElementById('module-select-api').value;
-            const selectedModules = Array.from(document.querySelectorAll('#module-group-container input[type="checkbox"]:checked')).map(cb => cb.value);
-            
-            if (!apiKey) {
-                alert("Please enter a System API Key/Identifier.");
-                return;
-            }
-
-            // In a real application, you would make an API call here to validate and connect.
-            console.log(`Integrating ${currentSystemType} with API Key: ${apiKey} and modules: ${selectedModules.join(', ')}`);
-            
-            // DUMMY: Simulate success and add the integrated card
-            const integratedContainer = document.getElementById('integrated-systems-container');
-            const moduleHtml = selectedModules.map(mod => 
-                `<li class="integrated-module"><i class="fas fa-check"></i> ${mod.split('-')[1].toUpperCase()}</li>`
-            ).join('');
-
-            const newCard = document.createElement('div');
-            newCard.className = 'option-card integrated-system-card';
-            newCard.innerHTML = `
-                <h2><i class="fas fa-link"></i> ${currentSystemType} - Custom System</h2>
-                <p>Status: **Connected**. Key: ${apiKey.substring(0, 4)}...</p>
-                <ul class="module-list-compact">${moduleHtml}</ul>
-                <button class="reset-integration-btn" data-api-key="${apiKey}">Reset</button>
-            `;
-            integratedContainer.appendChild(newCard);
-            
-            // Close modal and check process button status
-            modal.style.display = 'none';
-            checkProcessButtonReadiness();
-        }
-
-        // --- ENGINEERING FILE UPLOAD LOGIC ---
-        const engineeringFileInput = document.getElementById('engineeringFileInput');
-        const engineeringFileList = document.getElementById('engineering-file-list');
-        const engineeringPreviewArea = document.getElementById('engineering-preview-area');
-        const resetEngineeringUpload = document.getElementById('resetEngineeringUpload');
-        
-        engineeringFileInput.onchange = (e) => {
-            handleFileUpload(e.target.files);
-        }
-
-        function handleFileUpload(files) {
-            engineeringFileList.innerHTML = ''; // Clear existing
-            if (files.length > 0) {
-                for (const file of files) {
-                    const li = document.createElement('li');
-                    li.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
-                    engineeringFileList.appendChild(li);
-                }
-                engineeringPreviewArea.style.display = 'block';
-            } else {
-                engineeringPreviewArea.style.display = 'none';
-            }
-            checkProcessButtonReadiness();
-        }
-
-        resetEngineeringUpload.onclick = () => {
-            engineeringFileInput.value = '';
-            handleFileUpload([]);
-        }
-
-        // --- CONSOLIDATED PROCESS LOGIC ---
-        const processButton = document.getElementById('consolidateProcessBtn');
-
-        function checkProcessButtonReadiness() {
-            const integratedSystems = document.querySelectorAll('.integrated-system-card').length > 0;
-            const engineeringFiles = engineeringFileInput.files.length > 0;
-            
-            // Enable the button if EITHER an enterprise system is integrated OR an engineering file is uploaded.
-            processButton.disabled = !(integratedSystems || engineeringFiles);
-        }
-
-        // Main button click handler (Triggers all 7+ uploads)
-        processButton.onclick = async () => {
-            if (processButton.disabled) return;
-
-            // DUMMY: Start processing animation
-            document.getElementById('processingStatus').style.display = 'block';
-            processButton.textContent = "Processing...";
-            processButton.disabled = true;
-
-            // In a real app, this is where you'd call the 7 Supabase functions 
-            // and the one engineering file function sequentially or in parallel.
-            
-            await new Promise(resolve => setTimeout(resolve, 3000)); // Simulate API call time
-
-            // DUMMY: End processing animation
-            document.getElementById('processingStatus').style.display = 'none';
-            processButton.textContent = "Processing Complete!";
-        }
-        
-        // Initial check on load
-        checkProcessButtonReadiness();
-
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

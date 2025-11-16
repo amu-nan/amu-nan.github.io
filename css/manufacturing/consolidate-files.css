@@ -221,6 +221,16 @@
     position: relative;
     animation: slideInTop 0.4s ease-out;
     text-align: left;
+    display: flex; /* Use flex to manage inner content */
+    flex-direction: column;
+}
+
+/* FIX: Add this class to make the inner modal content scrollable */
+.modal-inner-content {
+    max-height: 70vh; /* Max height to trigger scroll */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 10px; /* Space for the scrollbar */
+    padding-top: 10px; /* Add some separation */
 }
 
 .modal-content h3 {
@@ -239,6 +249,7 @@
     top: 10px;
     right: 20px;
     cursor: pointer;
+    z-index: 1001; /* Ensure close button is above scrolling content */
 }
 
 .close-btn:hover,
@@ -282,6 +293,11 @@
     transition: background-color 0.3s, border-color 0.3s;
     text-align: center;
 }
+.system-select-option.selected {
+    border-color: var(--primary-color);
+    background-color: #f0f0ff;
+}
+
 
 .system-select-option i {
     font-size: 1.5em;
@@ -438,6 +454,9 @@
     }
     .modal-content {
         padding: 20px;
+    }
+    .system-selection-grid {
+        flex-direction: column;
     }
 }
 
@@ -604,9 +623,12 @@
 
 /* --- MAIN PROCESS BUTTON & SPINNER --- */
 .process-button-container {
+    /* Use a clear visual separation for the single master button */
+    border-top: 2px solid var(--accent-color); 
+    padding-top: 30px;
     width: 100%;
     text-align: center; 
-    margin-top: 20px;
+    margin-top: 40px;
     margin-bottom: 50px;
 }
 
@@ -622,11 +644,13 @@
     font-weight: 600;
     display: block; 
     margin: 0 auto; 
+    min-width: 300px; /* Make it wide for emphasis */
 }
 
 .process-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+    opacity: 0.7;
 }
 
 .processing-info {

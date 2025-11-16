@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const erpModules = document.getElementById('erp-modules');
     const crmModules = document.getElementById('crm-modules');
     const enterpriseProcessBtn = document.getElementById('enterprise-process-btn');
+    const moduleCountSpan = document.getElementById('module-count');
+
+    // --- References for Progress Tracker ---
+    const progressSteps = document.querySelectorAll('.progress-step');
 
     // **Backend Endpoint URLs**
     const ENGINEERING_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';

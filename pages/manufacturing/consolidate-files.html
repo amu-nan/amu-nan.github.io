@@ -69,11 +69,24 @@
                 <div class="integration-tiles">
                     <!-- Enterprise Systems Tile -->
                     <div class="integration-tile" data-type="enterprise">
-                        <div class="tile-header">
+                        <div class="tile-icon-badge">
                             <i class="fa-solid fa-building"></i>
-                            <h2>Enterprise Systems</h2>
                         </div>
-                        <p class="tile-description">Integrate data from ERP and CRM systems</p>
+                        <div class="tile-header">
+                            <h2>Enterprise Systems</h2>
+                            <span class="tile-badge">ERP & CRM</span>
+                        </div>
+                        <p class="tile-description">Connect your business operations data from ERP and CRM platforms</p>
+                        <div class="tile-stats">
+                            <div class="stat-item">
+                                <i class="fa-solid fa-database"></i>
+                                <span>Multiple Modules</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Real-time Sync</span>
+                            </div>
+                        </div>
                         <button class="begin-integration-btn" data-type="enterprise">
                             <i class="fa-solid fa-plug"></i> Begin Integration
                         </button>
@@ -81,11 +94,24 @@
 
                     <!-- Engineering Systems Tile -->
                     <div class="integration-tile" data-type="engineering">
-                        <div class="tile-header">
+                        <div class="tile-icon-badge engineering">
                             <i class="fa-solid fa-layer-group"></i>
-                            <h2>Engineering Systems</h2>
                         </div>
-                        <p class="tile-description">Upload engineering diagrams and CAD files</p>
+                        <div class="tile-header">
+                            <h2>Engineering Systems</h2>
+                            <span class="tile-badge engineering">CAD & Diagrams</span>
+                        </div>
+                        <p class="tile-description">Upload technical drawings and engineering documentation</p>
+                        <div class="tile-stats">
+                            <div class="stat-item">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                <span>PDF Support</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span>Auto-Analysis</span>
+                            </div>
+                        </div>
                         <button class="begin-integration-btn" data-type="engineering">
                             <i class="fa-solid fa-plug"></i> Begin Integration
                         </button>
@@ -94,7 +120,12 @@
 
                 <!-- Enterprise Systems Integration Panel -->
                 <div id="enterprise-panel" class="integration-panel" style="display:none;">
-                    <h2 class="panel-title">Select Enterprise System</h2>
+                    <button class="panel-back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Selection
+                    </button>
+                    
+                    <h2 class="panel-title">Configure Enterprise Integration</h2>
+                    <p class="panel-subtitle">Select your system and upload module data files</p>
                     
                     <div class="system-selector">
                         <button class="system-btn active" data-system="erp">
@@ -107,11 +138,18 @@
 
                     <!-- ERP Modules -->
                     <div id="erp-modules" class="modules-container">
-                        <h3 class="modules-title">ERP Modules</h3>
+                        <h3 class="modules-title">
+                            <i class="fa-solid fa-industry"></i> ERP System Modules
+                        </h3>
+                        <p class="modules-description">Upload data files for each module to integrate with your ERP system</p>
                         <div class="modules-grid">
                             <div class="module-card" data-module="inventory">
+                                <div class="module-status" data-status="pending">
+                                    <i class="fa-solid fa-circle"></i>
+                                </div>
                                 <i class="fa-solid fa-boxes-stacked"></i>
-                                <h4>Inventory</h4>
+                                <h4>Inventory Management</h4>
+                                <p class="module-description">Stock levels, warehouse data</p>
                                 <div class="module-upload">
                                     <input type="file" id="erp-inventory-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="erp-inventory-file" class="upload-label">
@@ -122,8 +160,12 @@
                             </div>
 
                             <div class="module-card" data-module="procurement">
+                                <div class="module-status" data-status="pending">
+                                    <i class="fa-solid fa-circle"></i>
+                                </div>
                                 <i class="fa-solid fa-cart-shopping"></i>
                                 <h4>Procurement</h4>
+                                <p class="module-description">Purchase orders, suppliers</p>
                                 <div class="module-upload">
                                     <input type="file" id="erp-procurement-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="erp-procurement-file" class="upload-label">
@@ -134,8 +176,12 @@
                             </div>
 
                             <div class="module-card" data-module="quality">
+                                <div class="module-status" data-status="pending">
+                                    <i class="fa-solid fa-circle"></i>
+                                </div>
                                 <i class="fa-solid fa-certificate"></i>
                                 <h4>Quality Control</h4>
+                                <p class="module-description">Inspections, compliance data</p>
                                 <div class="module-upload">
                                     <input type="file" id="erp-quality-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="erp-quality-file" class="upload-label">
@@ -146,8 +192,12 @@
                             </div>
 
                             <div class="module-card" data-module="production">
+                                <div class="module-status" data-status="pending">
+                                    <i class="fa-solid fa-circle"></i>
+                                </div>
                                 <i class="fa-solid fa-gears"></i>
                                 <h4>Production</h4>
+                                <p class="module-description">Manufacturing schedules, output</p>
                                 <div class="module-upload">
                                     <input type="file" id="erp-production-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="erp-production-file" class="upload-label">
@@ -161,11 +211,18 @@
 
                     <!-- CRM Modules -->
                     <div id="crm-modules" class="modules-container" style="display:none;">
-                        <h3 class="modules-title">CRM Modules</h3>
+                        <h3 class="modules-title">
+                            <i class="fa-solid fa-handshake"></i> CRM System Modules
+                        </h3>
+                        <p class="modules-description">Upload data files for each module to integrate with your CRM system</p>
                         <div class="modules-grid">
                             <div class="module-card" data-module="customers">
+                                <div class="module-status" data-status="pending">
+                                    <i class="fa-solid fa-circle"></i>
+                                </div>
                                 <i class="fa-solid fa-users"></i>
                                 <h4>Customers</h4>
+                                <p class="module-description">Customer profiles, history</p>
                                 <div class="module-upload">
                                     <input type="file" id="crm-customers-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="crm-customers-file" class="upload-label">
@@ -176,8 +233,12 @@
                             </div>
 
                             <div class="module-card" data-module="leads">
+                                <div class="module-status" data-status="pending">
+                                    <i class="fa-solid fa-circle"></i>
+                                </div>
                                 <i class="fa-solid fa-user-plus"></i>
                                 <h4>Leads</h4>
+                                <p class="module-description">Prospects, pipeline data</p>
                                 <div class="module-upload">
                                     <input type="file" id="crm-leads-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="crm-leads-file" class="upload-label">
@@ -188,8 +249,12 @@
                             </div>
 
                             <div class="module-card" data-module="marketing">
+                                <div class="module-status" data-status="pending">
+                                    <i class="fa-solid fa-circle"></i>
+                                </div>
                                 <i class="fa-solid fa-bullhorn"></i>
                                 <h4>Marketing</h4>
+                                <p class="module-description">Campaigns, analytics</p>
                                 <div class="module-upload">
                                     <input type="file" id="crm-marketing-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="crm-marketing-file" class="upload-label">
@@ -200,8 +265,12 @@
                             </div>
 
                             <div class="module-card" data-module="opportunities">
+                                <div class="module-status" data-status="pending">
+                                    <i class="fa-solid fa-circle"></i>
+                                </div>
                                 <i class="fa-solid fa-handshake-angle"></i>
                                 <h4>Opportunities</h4>
+                                <p class="module-description">Deals, forecasts</p>
                                 <div class="module-upload">
                                     <input type="file" id="crm-opportunities-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="crm-opportunities-file" class="upload-label">
@@ -214,14 +283,23 @@
                     </div>
 
                     <div class="panel-actions">
-                        <button class="cancel-btn">Cancel</button>
-                        <button id="enterprise-process-btn" class="process-btn" disabled>Process Data</button>
+                        <button class="cancel-btn">
+                            <i class="fa-solid fa-times"></i> Cancel
+                        </button>
+                        <button id="enterprise-process-btn" class="process-btn" disabled>
+                            <i class="fa-solid fa-check"></i> Process Data (<span id="module-count">0</span> modules)
+                        </button>
                     </div>
                 </div>
 
                 <!-- Engineering Systems Integration Panel -->
                 <div id="engineering-panel" class="integration-panel" style="display:none;">
+                    <button class="panel-back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Selection
+                    </button>
+                    
                     <h2 class="panel-title">Upload Engineering Diagram</h2>
+                    <p class="panel-subtitle">Upload your CAD files or technical drawings in PDF format</p>
                     
                     <div class="file-upload-box" id="drop-area">
                         <i class="fa-solid fa-upload"></i>
@@ -232,8 +310,12 @@
                     <div id="file-list"></div>
 
                     <div class="panel-actions">
-                        <button class="cancel-btn">Cancel</button>
-                        <button id="engineering-process-btn" class="process-btn" disabled>Process Diagram</button>
+                        <button class="cancel-btn">
+                            <i class="fa-solid fa-times"></i> Cancel
+                        </button>
+                        <button id="engineering-process-btn" class="process-btn" disabled>
+                            <i class="fa-solid fa-check"></i> Process Diagram
+                        </button>
                     </div>
                 </div>
 
@@ -242,6 +324,59 @@
                 </div>
                 <p id="unify-message" class="unify-message"></p>
                 <p id="success-message" class="success-message"></p>
+
+                <!-- Integration Summary Panel -->
+                <div id="integration-summary" class="integration-summary" style="display:none;">
+                    <h2 class="summary-title">Integration Summary</h2>
+                    <p class="summary-subtitle">Review your integrated systems before unifying the data</p>
+                    
+                    <div class="summary-cards">
+                        <div class="summary-card" id="enterprise-summary" style="display:none;">
+                            <div class="summary-header">
+                                <i class="fa-solid fa-building"></i>
+                                <h3>Enterprise Systems</h3>
+                                <span class="summary-badge" id="enterprise-badge">Integrated</span>
+                            </div>
+                            <div class="summary-details" id="enterprise-details"></div>
+                            <button class="modify-btn" data-type="enterprise">
+                                <i class="fa-solid fa-edit"></i> Modify
+                            </button>
+                        </div>
+
+                        <div class="summary-card" id="engineering-summary" style="display:none;">
+                            <div class="summary-header">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <h3>Engineering Systems</h3>
+                                <span class="summary-badge engineering" id="engineering-badge">Integrated</span>
+                            </div>
+                            <div class="summary-details" id="engineering-details"></div>
+                            <button class="modify-btn" data-type="engineering">
+                                <i class="fa-solid fa-edit"></i> Modify
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="add-more-section">
+                        <p class="add-more-text">Need to integrate more systems?</p>
+                        <div class="add-more-buttons">
+                            <button class="add-more-btn" data-type="enterprise" id="add-enterprise-btn">
+                                <i class="fa-solid fa-plus"></i> Add Enterprise System
+                            </button>
+                            <button class="add-more-btn" data-type="engineering" id="add-engineering-btn">
+                                <i class="fa-solid fa-plus"></i> Add Engineering Diagram
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="summary-actions">
+                        <button class="cancel-summary-btn">
+                            <i class="fa-solid fa-arrow-left"></i> Start Over
+                        </button>
+                        <button id="unify-all-btn" class="unify-all-btn">
+                            <i class="fa-solid fa-database"></i> Unify All Data
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div id="unified-state-container" class="unified-state-container" style="display:none;">

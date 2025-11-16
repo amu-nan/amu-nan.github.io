@@ -3,123 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Consolidation Tool</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>File Consolidation Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="consolidate-files.css">
 </head>
 <body>
 
-    <main class="page-container">
+    <div class="page-container">
         <section class="consolidate-section">
-            <h1 class="page-title">File Consolidation Center</h1>
+            <h1 class="page-title"><i class="fas fa-layer-group"></i> Unify Your Data Sources</h1>
             <p class="page-intro">
-                Select a source system to begin consolidating files and documents into the central repository. You can choose to integrate via enterprise systems or upload engineering diagrams directly.
+                Select the data sources you wish to consolidate. You can connect to Enterprise Systems (ERP/CRM) and/or upload Engineering Diagrams.
             </p>
 
-            <div id="view-container">
-
-                <div id="main-selection-view">
-                    <div id="main-options-grid">
-
-                        <div class="main-option-card" id="card-enterprise-systems">
-                            <h2><i class="fas fa-city"></i> Enterprise Systems</h2>
-                            <p>Connect to existing ERP/CRM systems (e.g., SAP, Salesforce) to consolidate customer, vendor, and finance-related documents automatically based on selected modules.</p>
-                            <button id="begin-enterprise-integration">Start Module Selection</button>
-                        </div>
-                        
-                        <div class="main-option-card" id="card-engineering-diagrams">
-                            <h2><i class="fas fa-pencil-ruler"></i> Engineering Diagrams</h2>
-                            <p>Upload large technical diagrams and schematics directly from your local machine. Files are analyzed and tagged before consolidation.</p>
-                            <button id="begin-engineering-integration">Start File Upload</button>
-                        </div>
-                    </div>
-                </div> <div id="enterprise-modules-section" style="display: none;">
-                    <button class="back-to-main-btn" data-target="main-selection-view"><i class="fas fa-chevron-left"></i> Back to Main</button>
-                    <h2>Select Modules for Data Consolidation</h2>
-                    <div class="system-module-grid">
-                        
-                        <div class="module-card" data-module-id="finance">
-                            <h3><i class="fas fa-chart-line"></i> Financial Documents</h3>
-                            <p>Consolidate invoices, budget reports, and quarterly statements from your accounting system.</p>
-                            <div class="module-actions">
-                                <button class="integrate-module-btn" data-system-type="enterprise-systems">Integrate Module</button>
-                                <div class="module-status" style="display: none;">Ready for Processing.</div>
-                            </div>
-                        </div>
-
-                        <div class="module-card" data-module-id="inventory">
-                            <h3><i class="fas fa-warehouse"></i> Inventory Management</h3>
-                            <p>Transfer product sheets, stock manifests, and warehouse management records.</p>
-                            <div class="module-actions">
-                                <button class="integrate-module-btn" data-system-type="enterprise-systems">Integrate Module</button>
-                                <div class="module-status" style="display: none;">Ready for Processing.</div>
-                            </div>
-                        </div>
-                        
-                        <div class="module-card" data-module-id="sales">
-                            <h3><i class="fas fa-handshake"></i> Sales & CRM Data</h3>
-                            <p>Retrieve customer agreements, lead sheets, and contract records from the CRM system.</p>
-                            <div class="module-actions">
-                                <button class="integrate-module-btn" data-system-type="enterprise-systems">Integrate Module</button>
-                                <div class="module-status" style="display: none;">Ready for Processing.</div>
-                            </div>
-                        </div>
-
-                        <div class="module-card" data-module-id="hr">
-                            <h3><i class="fas fa-users"></i> Human Resources</h3>
-                            <p>Consolidate employee handbooks, training manuals, and internal policy documents.</p>
-                            <div class="module-actions">
-                                <button class="integrate-module-btn" data-system-type="enterprise-systems">Integrate Module</button>
-                                <div class="module-status" style="display: none;">Ready for Processing.</div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> <div id="engineering-diagram-section" style="display: none;">
-                    <button class="back-to-main-btn" data-target="main-selection-view"><i class="fas fa-chevron-left"></i> Back to Main</button>
-                    
-                    <div class="main-option-card option-card">
-                        <h2>Upload Technical Diagrams</h2>
-                        <div class="system-input-group">
-                            
-                            <div class="file-upload-box" id="file-upload-box-engineering">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Drag and drop your files here</p>
-                                <p class="file-upload-info">or click to browse. Max size: 50MB.</p>
-                                <input type="file" id="file-input-engineering" class="file-input" multiple accept=".pdf,.dwg,.dxf,.tiff">
-                            </div>
-
-                            <div id="file-list-container-engineering" style="display: none;">
-                                <h3>Uploaded Files:</h3>
-                                <ul class="file-list" id="file-list-engineering">
-                                    </ul>
-                                <button class="reset-upload-btn" data-system="engineering-diagrams">Clear Files</button>
-                            </div>
-                            
-                            <div class="system-input">
-                                <label for="project-id-engineering">Project ID Tag</label>
-                                <input type="text" id="project-id-engineering" placeholder="Enter associated project ID (e.g., PRJ-2024-001)">
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div> </div> <div class="process-button-container">
-                <button class="process-button" id="start-consolidation-btn" disabled>
-                    Start Consolidation Process
-                </button>
-
-                <div class="processing-info">
-                    <div class="loading-spinner"></div>
-                    <p>Processing files, please wait...</p>
-                </div>
+            <div id="main-options-grid">
                 
-                <p class="unify-message" id="unify-message">Waiting for module/file integration...</p>
-                <p class="success-message" id="success-message">🎉 Consolidation Complete! Files are now available in the central repository.</p>
+                <div class="main-option-card" data-system-type="enterprise">
+                    <h2><i class="fas fa-building"></i> Enterprise Systems</h2>
+                    <p>Integrate data from your Enterprise Resource Planning (ERP) and Customer Relationship Management (CRM) modules like Inventory, Leads, etc.</p>
+                    <button id="begin-enterprise-integration">Select Modules</button>
+                    <div id="integrated-systems-list" style="display:none;">
+                        <ul id="enterprise-integrated-list" class="integrated-list"></ul>
+                    </div>
+                </div>
+
+                <div class="main-option-card" data-system-type="engineering">
+                    <h2><i class="fas fa-cogs"></i> Engineering Diagrams</h2>
+                    <p>Upload proprietary engineering files (e.g., CAD, technical drawings) for consolidation with other system data.</p>
+                    <button id="begin-engineering-integration">Upload Files</button>
+                    <div id="engineering-upload-status" class="upload-status" style="display:none;">
+                        <p>Upload Status: <span id="engineering-upload-count">0</span> files ready.</p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div id="enterprise-modules-section" style="display:none;">
+                <button class="back-to-main-btn"><i class="fas fa-arrow-left"></i> Back to Main Selection</button>
+
+                <h2>Select Modules for Integration</h2>
+
+                <div class="system-module-grid" id="enterprise-module-grid">
+                    
+                    <div class="module-card" data-module="inventory">
+                        <h3><i class="fas fa-warehouse"></i> Inventory Management</h3>
+                        <p>Pull stock levels, location data, and item classifications from your Inventory module.</p>
+                        <button class="integrate-module-btn" data-module-id="inventory">Integrate</button>
+                        <div class="module-preview-container" style="display:none;">
+                            <p class="module-success"><i class="fas fa-check-circle"></i> Inventory Data Ready</p>
+                            <button class="reset-module-btn" data-module-id="inventory">Remove Integration</button>
+                        </div>
+                    </div>
+
+                    <div class="module-card" data-module="leads">
+                        <h3><i class="fas fa-user-tie"></i> Sales Leads</h3>
+                        <p>Gather customer lead information, status updates, and contact details from the CRM.</p>
+                        <button class="integrate-module-btn" data-module-id="leads">Integrate</button>
+                        <div class="module-preview-container" style="display:none;">
+                            <p class="module-success"><i class="fas fa-check-circle"></i> Leads Data Ready</p>
+                            <button class="reset-module-btn" data-module-id="leads">Remove Integration</button>
+                        </div>
+                    </div>
+
+                    <div class="module-card" data-module="accounts">
+                        <h3><i class="fas fa-file-invoice-dollar"></i> Financial Accounts</h3>
+                        <p>Retrieve financial statements, ledger entries, and transactional records from the ERP.</p>
+                        <button class="integrate-module-btn" data-module-id="accounts">Integrate</button>
+                        <div class="module-preview-container" style="display:none;">
+                            <p class="module-success"><i class="fas fa-check-circle"></i> Accounts Data Ready</p>
+                            <button class="reset-module-btn" data-module-id="accounts">Remove Integration</button>
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
 
-        </section>
-    </main>
+            <div id="engineering-diagram-section" style="display:none;">
+                <button class="back-to-main-btn"><i class="fas fa-arrow-left"></i> Back to Main Selection</button>
 
-    <script src="app.js"></script>
+                <div class="option-card" id="engineering-upload-card">
+                    <h2><i class="fas fa-upload"></i> Upload Engineering Diagrams</h2>
+                    <p>Drag and drop your files here or click to browse. Supported formats: .dwg, .pdf, .stp.</p>
+                    
+                    <div class="file-upload-box" id="file-upload-box">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & Drop Files Here</p>
+                        <p class="file-upload-info">(Max 10 files, up to 50MB each)</p>
+                        <input type="file" id="file-input" class="file-input" multiple accept=".dwg,.pdf,.stp">
+                    </div>
+
+                    <ul class="file-list" id="uploaded-file-list">
+                        </ul>
+                    
+                    <button id="reset-engineering-upload" class="reset-upload-btn" style="display:none;">Clear All Uploads</button>
+                </div>
+            </div>
+
+
+            <div class="process-button-container">
+                <button class="process-button" id="start-consolidation-btn" disabled>
+                    <i class="fas fa-angle-double-right"></i> Start Consolidation (0 Sources Ready)
+                </button>
+
+                <div id="processing-info" class="processing-info">
+                    <div class="loading-spinner"></div>
+                    <p>Processing files and integrating systems...</p>
+                </div>
+                
+                <p id="unify-message" class="unify-message"><i class="fas fa-sync-alt fa-spin"></i> Unifying data streams...</p>
+                <p id="success-message" class="success-message"><i class="fas fa-check-circle"></i> Consolidation Complete! Data is ready for analysis.</p>
+            </div>
+            
+        </section>
+    </div>
+
+    <script src="consolidate-files.js"></script>
 </body>
 </html>

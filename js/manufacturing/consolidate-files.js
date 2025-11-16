@@ -1,262 +1,236 @@
-// --- MODAL INTERACTION LOGIC ---
-const modal = document.getElementById('systemConfigModal');
-const openBtn = document.getElementById('openSystemModalBtn');
-const closeBtn = document.getElementById('closeSystemModal');
-const systemSelectOptions = document.querySelectorAll('.system-select-option');
-const integrateBtn = document.getElementById('integrateSystemBtn');
-const moduleCheckboxes = document.querySelectorAll('#module-group-container input[type="checkbox"]');
-const selectedSystemName = document.getElementById('selectedSystemName');
-const moduleSelectionStep = document.getElementById('module-selection-step');
-const systemTypeStep = document.getElementById('system-type-step');
+document.addEventListener('DOMContentLoaded', () => {
+    // --- DOM ELEMENT REFERENCES ---
+    const mainOptionsGrid = document.getElementById('main-options-grid');
+    const enterpriseModulesSection = document.getElementById('enterprise-modules-section');
+    const engineeringDiagramSection = document.getElementById('engineering-diagram-section');
+    const backToMainButtons = document.querySelectorAll('.back-to-main-btn');
 
-let currentSystemType = '';
-
-/**
- * Opens the system configuration modal and resets its state.
- */
-openBtn.onclick = () => {
-    modal.style.display = 'flex';
-    // Reset modal state on open
-    systemTypeStep.style.display = 'block';
-    moduleSelectionStep.style.display = 'none';
-    integrateBtn.disabled = true;
-    document.getElementById('module-select-api').value = '';
-    moduleCheckboxes.forEach(cb => cb.checked = false);
-}
-
-/**
- * Closes the system configuration modal.
- */
-closeBtn.onclick = () => {
-    modal.style.display = 'none';
-}
-
-/**
- * Closes the modal when clicking outside of it.
- */
-window.onclick = (event) => {
-    if (event.target == modal) {
-        modal.style.display = 'none';
-    }
-}
-
-// Step 1: System Selection Handler
-systemSelectOptions.forEach(option => {
-    option.onclick = () => {
-        // Remove 'selected' class from all options
-        systemSelectOptions.forEach(opt => opt.classList.remove('selected'));
-        // Add 'selected' class to the clicked option
-        option.classList.add('selected');
-        
-        currentSystemType = option.getAttribute('data-system-type');
-        selectedSystemName.textContent = currentSystemType;
-
-        // Move to step 2 (Module selection)
-        systemTypeStep.style.display = 'none';
-        moduleSelectionStep.style.display = 'block';
-        
-        // NOTE: In a real app, you would fetch and filter modules based on 'currentSystemType' here.
-        // For this example, all modules are shown.
-    }
-});
-
-// Step 2: Enable Integrate button when at least one module is selected
-const updateIntegrateButtonState = () => {
-    const checkedModules = document.querySelectorAll('#module-group-container input[type="checkbox"]:checked');
-    integrateBtn.disabled = checkedModules.length === 0;
-}
-
-moduleCheckboxes.forEach(checkbox => {
-    checkbox.onchange = updateIntegrateButtonState;
-});
-
-// --- DUMMY INTEGRATION LOGIC ---
-
-/**
- * Simulates system integration and adds a new integrated card to the UI.
- */
-integrateBtn.onclick = () => {
-    const apiKey = document.getElementById('module-select-api').value.trim();
-    const selectedModules = Array.from(document.querySelectorAll('#module-group-container input[type="checkbox"]:checked')).map(cb => cb.value);
+    // Enterprise System Buttons
+    const beginEnterpriseBtn = document.getElementById('begin-enterprise-integration');
+    const moduleCards = document.querySelectorAll('.module-card');
+    const integrateModuleBtns = document.querySelectorAll('.integrate-module-btn');
+    const resetModuleBtns = document.querySelectorAll('.reset-module-btn');
+    const enterpriseIntegratedList = document.getElementById('enterprise-integrated-list');
     
-    if (!apiKey) {
-        alert("Please enter a System API Key/Identifier.");
-        return;
-    }
+    // Engineering Upload Elements
+    const beginEngineeringBtn = document.getElementById('begin-engineering-integration');
+    const fileUploadBox = document.getElementById('file-upload-box');
+    const fileInput = document.getElementById('file-input');
+    const uploadedFileList = document.getElementById('uploaded-file-list');
+    const resetEngineeringUploadBtn = document.getElementById('reset-engineering-upload');
+    const engineeringUploadStatus = document.getElementById('engineering-upload-status');
+    const engineeringUploadCount = document.getElementById('engineering-upload-count');
 
-    console.log(`Integrating ${currentSystemType} with API Key: ${apiKey} and modules: ${selectedModules.join(', ')}`);
-    
-    // DUMMY: Simulate success and add the integrated card
-    const integratedContainer = document.getElementById('integrated-systems-container');
-    const moduleHtml = selectedModules.map(mod => {
-        // Convert 'erp-inventory' to 'Inventory' for display
-        const displayMod = mod.split('-').length > 1 ? mod.split('-')[1].charAt(0).toUpperCase() + mod.split('-')[1].slice(1) : mod;
-        return `<li class="integrated-module"><i class="fas fa-check"></i> ${displayMod}</li>`;
-    }).join('');
+    // Global Process Button
+    const startConsolidationBtn = document.getElementById('start-consolidation-btn');
 
-    const newCard = document.createElement('div');
-    newCard.className = 'option-card integrated-system-card';
-    newCard.setAttribute('data-system-type', currentSystemType);
-    newCard.setAttribute('data-api-key', apiKey); // Store data for later processing
-    newCard.setAttribute('data-modules', selectedModules.join(',')); // Store modules for later processing
+    // --- STATE VARIABLES ---
+    let integratedModules = new Set();
+    let uploadedFiles = [];
 
-    newCard.innerHTML = `
-        <h2><i class="fas fa-link"></i> ${currentSystemType} - Connected</h2>
-        <p>Modules integrated: ${selectedModules.length}. Key: ${apiKey.substring(0, 4)}...</p>
-        <ul class="module-list-compact">${moduleHtml}</ul>
-        <button class="reset-integration-btn">Reset Integration</button>
-    `;
-    integratedContainer.appendChild(newCard);
-    
-    // Add event listener to the new reset button
-    newCard.querySelector('.reset-integration-btn').onclick = function() {
-        newCard.remove();
-        checkProcessButtonReadiness();
-    };
+    // --- NAVIGATION LOGIC ---
 
-    // Close modal and check process button status
-    modal.style.display = 'none';
-    checkProcessButtonReadiness();
-}
+    /**
+     * Switches the view between the main grid and a sub-section.
+     * @param {HTMLElement} targetSection - The section to show (e.g., enterpriseModulesSection).
+     */
+    function showSection(targetSection) {
+        // Hide all major sections
+        mainOptionsGrid.style.display = 'none';
+        enterpriseModulesSection.style.display = 'none';
+        engineeringDiagramSection.style.display = 'none';
 
-// --- ENGINEERING FILE UPLOAD LOGIC ---
-const engineeringFileInput = document.getElementById('engineeringFileInput');
-const engineeringFileList = document.getElementById('engineering-file-list');
-const engineeringPreviewArea = document.getElementById('engineering-preview-area');
-const resetEngineeringUpload = document.getElementById('resetEngineeringUpload');
-const dropZone = document.getElementById('dropZone');
-
-engineeringFileInput.onchange = (e) => {
-    handleFileUpload(e.target.files);
-}
-
-/**
- * Handles the file list display for the engineering card.
- * @param {FileList} files - The list of files to display.
- */
-function handleFileUpload(files) {
-    engineeringFileList.innerHTML = ''; // Clear existing
-    if (files.length > 0) {
-        for (const file of files) {
-            const li = document.createElement('li');
-            li.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
-            engineeringFileList.appendChild(li);
+        // Show the target section
+        if (targetSection) {
+            targetSection.style.display = 'block';
+        } else {
+            // If target is null, show the main grid
+            mainOptionsGrid.style.display = 'grid';
         }
-        engineeringPreviewArea.style.display = 'block';
-        dropZone.style.display = 'none';
-    } else {
-        engineeringPreviewArea.style.display = 'none';
-        dropZone.style.display = 'flex'; // Show drop zone if no files
     }
-    checkProcessButtonReadiness();
-}
 
-resetEngineeringUpload.onclick = () => {
-    engineeringFileInput.value = ''; // Clear the input field
-    handleFileUpload([]); // Clear the list
-}
-
-// --- Drag and Drop Handlers ---
-dropZone.addEventListener('click', () => engineeringFileInput.click());
-dropZone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropZone.classList.add('highlight');
-});
-dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('highlight');
-});
-dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropZone.classList.remove('highlight');
-    if (e.dataTransfer.files.length) {
-        engineeringFileInput.files = e.dataTransfer.files;
-        handleFileUpload(e.dataTransfer.files);
-    }
-});
-
-
-// --- CONSOLIDATED PROCESS LOGIC ---
-const processButton = document.getElementById('consolidateProcessBtn');
-const processingStatus = document.getElementById('processingStatus');
-
-/**
- * Checks if any system is integrated or any file is uploaded and updates the main button state.
- */
-function checkProcessButtonReadiness() {
-    const integratedSystems = document.querySelectorAll('.integrated-system-card').length > 0;
-    const engineeringFiles = engineeringFileInput.files.length > 0;
+    // Event listeners for section switching
+    beginEnterpriseBtn.addEventListener('click', () => showSection(enterpriseModulesSection));
+    beginEngineeringBtn.addEventListener('click', () => showSection(engineeringDiagramSection));
     
-    // Enable the button if EITHER an enterprise system is integrated OR an engineering file is uploaded.
-    processButton.disabled = !(integratedSystems || engineeringFiles);
-    
-    // Reset button text after a process is potentially complete or disabled
-    if (!processButton.disabled) {
-        processButton.textContent = "Run Consolidated Process";
-    }
-}
+    backToMainButtons.forEach(btn => {
+        btn.addEventListener('click', () => showSection(null));
+    });
 
-/**
- * Main button click handler (Triggers all uploads and processes).
- */
-processButton.onclick = async () => {
-    if (processButton.disabled) return;
 
-    // 1. Collect all integrated systems data
-    const systemCards = document.querySelectorAll('.integrated-system-card');
-    const integratedData = Array.from(systemCards).map(card => ({
-        type: card.getAttribute('data-system-type'),
-        apiKey: card.getAttribute('data-api-key'),
-        modules: card.getAttribute('data-modules').split(','),
-        // NOTE: This array contains the 7 potential upload targets
-    }));
+    // --- CONSOLIDATION STATUS UPDATE ---
 
-    // 2. Collect engineering files
-    const engineeringFiles = engineeringFileInput.files;
+    /**
+     * Updates the main process button based on the current state.
+     */
+    function updateConsolidationStatus() {
+        const sourceCount = integratedModules.size + (uploadedFiles.length > 0 ? 1 : 0);
 
-    if (integratedData.length === 0 && engineeringFiles.length === 0) {
-        alert("Please integrate at least one system or upload an engineering file.");
-        return;
+        startConsolidationBtn.textContent = `Start Consolidation (${sourceCount} Sources Ready)`;
+        startConsolidationBtn.disabled = sourceCount === 0;
+
+        // Update the visual status on the engineering tile
+        engineeringUploadStatus.style.display = uploadedFiles.length > 0 ? 'block' : 'none';
+        engineeringUploadCount.textContent = uploadedFiles.length;
     }
 
-    // Start processing animation
-    processingStatus.style.display = 'block';
-    processButton.textContent = "Processing Data...";
-    processButton.disabled = true;
+    // --- ENTERPRISE MODULE LOGIC ---
 
-    console.log("Starting Consolidated Process...");
-    console.log("Enterprise Data to process:", integratedData);
-    console.log("Engineering Files count:", engineeringFiles.length);
+    function renderIntegratedModules() {
+        enterpriseIntegratedList.innerHTML = '';
+        if (integratedModules.size === 0) {
+            document.getElementById('integrated-systems-list').style.display = 'none';
+            beginEnterpriseBtn.textContent = 'Select Modules';
+            return;
+        }
 
-    // --- REAL BACKEND INTEGRATION LOGIC GOES HERE ---
-    
-    // In a real application, you would iterate through integratedData and engineeringFiles
-    // and make the 7+ distinct Supabase POST calls using the keys/files.
-    // Example: 
-    /*
-    const uploadPromises = [];
-    integratedData.forEach(data => {
-        data.modules.forEach(moduleName => {
-            // Find the correct FUNCTION_URL for this moduleName (e.g., crm-marketing -> marketing-upload)
-            // uploadPromises.push(fetch(FUNCTION_URL_MAP[moduleName], ...));
+        integratedModules.forEach(moduleId => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<i class="fas fa-check-circle"></i> ${moduleId.charAt(0).toUpperCase() + moduleId.slice(1)} Module`;
+            enterpriseIntegratedList.appendChild(listItem);
+        });
+
+        document.getElementById('integrated-systems-list').style.display = 'block';
+        beginEnterpriseBtn.textContent = `Integrated (${integratedModules.size})`;
+    }
+
+    // Handle Module Integration Button Click
+    integrateModuleBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const moduleId = e.target.dataset.moduleId;
+            integratedModules.add(moduleId);
+            e.target.style.display = 'none';
+            e.target.nextElementSibling.style.display = 'flex'; // Show preview container
+            updateConsolidationStatus();
+            renderIntegratedModules();
         });
     });
-    // uploadPromises.push(fetch(ENGINEERING_UPLOAD_URL, ...));
-    
-    // await Promise.all(uploadPromises);
-    */
 
-    // DUMMY: Simulate API call time
-    await new Promise(resolve => setTimeout(resolve, 4000)); 
+    // Handle Module Reset Button Click
+    resetModuleBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const moduleId = e.target.dataset.moduleId;
+            integratedModules.delete(moduleId);
+            const integrateBtn = e.target.closest('.module-card').querySelector('.integrate-module-btn');
+            
+            integrateBtn.style.display = 'block';
+            e.target.closest('.module-preview-container').style.display = 'none';
 
-    // DUMMY: End processing animation
-    processingStatus.style.display = 'none';
-    processButton.textContent = "✅ Processing Complete!";
-    
-    // After a successful run, you might clear the file input and disable the button again
-    // engineeringFileInput.value = '';
-    // handleFileUpload([]);
-    // checkProcessButtonReadiness(); 
-}
+            updateConsolidationStatus();
+            renderIntegratedModules();
+        });
+    });
 
-// Initial check on load
-checkProcessButtonReadiness();
+    // --- ENGINEERING UPLOAD LOGIC ---
+
+    function handleFiles(files) {
+        // Simple file validation (e.g., max 10 files)
+        if (uploadedFiles.length + files.length > 10) {
+            alert("Maximum 10 files allowed for upload.");
+            return;
+        }
+
+        for (const file of files) {
+            // Simple type check (though 'accept' handles most of this)
+            if (file.name.match(/\.(dwg|pdf|stp)$/i)) {
+                uploadedFiles.push(file);
+            } else {
+                alert(`File type not supported: ${file.name}`);
+            }
+        }
+        renderUploadedFiles();
+        updateConsolidationStatus();
+    }
+
+    function renderUploadedFiles() {
+        uploadedFileList.innerHTML = '';
+        if (uploadedFiles.length === 0) {
+            fileUploadBox.style.display = 'flex';
+            resetEngineeringUploadBtn.style.display = 'none';
+        } else {
+            fileUploadBox.style.display = 'none';
+            resetEngineeringUploadBtn.style.display = 'block';
+            uploadedFiles.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                uploadedFileList.appendChild(listItem);
+            });
+        }
+    }
+
+    // Click to open file dialog
+    fileUploadBox.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Handle file selection
+    fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+        // Clear input value to allow selecting same file again
+        fileInput.value = ''; 
+    });
+
+    // Drag and Drop handlers
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        fileUploadBox.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    fileUploadBox.addEventListener('dragenter', () => fileUploadBox.classList.add('highlight'), false);
+    fileUploadBox.addEventListener('dragover', () => fileUploadBox.classList.add('highlight'), false);
+    fileUploadBox.addEventListener('dragleave', () => fileUploadBox.classList.remove('highlight'), false);
+    fileUploadBox.addEventListener('drop', (e) => {
+        fileUploadBox.classList.remove('highlight');
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+    }, false);
+
+    // Reset Uploads
+    resetEngineeringUploadBtn.addEventListener('click', () => {
+        uploadedFiles = [];
+        renderUploadedFiles();
+        updateConsolidationStatus();
+    });
+
+
+    // --- MAIN CONSOLIDATION PROCESS ---
+
+    startConsolidationBtn.addEventListener('click', () => {
+        if (startConsolidationBtn.disabled) return;
+
+        // Gather final data summary
+        const dataSummary = {
+            integratedModules: Array.from(integratedModules),
+            uploadedFileNames: uploadedFiles.map(file => file.name),
+            totalFiles: uploadedFiles.length
+        };
+
+        console.log('Starting Consolidation with Data:', dataSummary);
+
+        // Visual feedback for processing
+        startConsolidationBtn.style.display = 'none';
+        document.getElementById('processing-info').style.display = 'block';
+
+        // Simulate a network request/processing delay
+        setTimeout(() => {
+            document.getElementById('processing-info').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+
+            // Log the success and the consolidated data
+            console.log("Consolidation successful!");
+            
+            // In a real application, you would now offer a download link or move to an analysis page.
+
+        }, 3000); // 3-second delay
+    });
+
+    // --- INITIALIZATION ---
+    renderUploadedFiles(); // Ensure initial state is correct
+    renderIntegratedModules(); // Ensure initial state is correct
+    updateConsolidationStatus(); // Set initial button state
+});

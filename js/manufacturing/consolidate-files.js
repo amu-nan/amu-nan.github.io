@@ -37,11 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- References for Integration Summary ---
     const integrationSummary = document.getElementById('integration-summary');
-    const enterpriseSummaryCard = document.getElementById('enterprise-summary');
+    const erpSummaryCard = document.getElementById('erp-summary');
+    const crmSummaryCard = document.getElementById('crm-summary');
     const engineeringSummaryCard = document.getElementById('engineering-summary');
-    const enterpriseDetails = document.getElementById('enterprise-details');
+    const erpDetails = document.getElementById('erp-details');
+    const crmDetails = document.getElementById('crm-details');
     const engineeringDetails = document.getElementById('engineering-details');
-    const addEnterpriseBtn = document.getElementById('add-enterprise-btn');
+    const addErpBtn = document.getElementById('add-erp-btn');
+    const addCrmBtn = document.getElementById('add-crm-btn');
     const addEngineeringBtn = document.getElementById('add-engineering-btn');
     const unifyAllBtn = document.getElementById('unify-all-btn');
     const cancelSummaryBtn = document.querySelector('.cancel-summary-btn');
@@ -139,6 +142,16 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Show appropriate panel
             if (type === 'enterprise') {
+                // If ERP already integrated, switch to CRM view, otherwise show ERP
+                if (integratedSystems.erp && !integratedSystems.crm) {
+                    currentEnterpriseSystem = 'crm';
+                    systemBtns.forEach(b => b.classList.remove('active'));
+                    document.querySelector('[data-system="crm"]').classList.add('active');
+                    erpModules.style.display = 'none';
+                    crmModules.style.display = 'block';
+                } else {
+                    currentEnterpriseSystem = 'erp';
+                }
                 enterprisePanel.style.display = 'block';
             } else if (type === 'engineering') {
                 engineeringPanel.style.display = 'block';
@@ -156,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             engineeringPanel.style.display = 'none';
             
             // Check if anything has been integrated already
-            if (integratedSystems.enterprise || integratedSystems.engineering) {
+            if (integratedSystems.erp || integratedSystems.crm || integratedSystems.engineering) {
                 // Go back to summary if something is already integrated
                 showIntegrationSummary();
             } else {
@@ -177,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             engineeringPanel.style.display = 'none';
             
             // Check if anything has been integrated already
-            if (integratedSystems.enterprise || integratedSystems.engineering) {
+            if (integratedSystems.erp || integratedSystems.crm || integratedSystems.engineering) {
                 // Go back to summary if something is already integrated
                 showIntegrationSummary();
             } else {
@@ -293,10 +306,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Mark as integrated
-        integratedSystems.enterprise = true;
-        enterpriseSystemType = currentEnterpriseSystem;
-        enterpriseModuleCount = filesToUpload.length;
+        // Mark current system as integrated
+        if (currentEnterpriseSystem === 'erp') {
+            integratedSystems.erp = true;
+            erpModuleCount = filesToUpload.length;
+        } else if (currentEnterpriseSystem === 'crm') {
+            integratedSystems.crm = true;
+            crmModuleCount = filesToUpload.length;
+        }
 
         // Hide panel and show summary
         enterprisePanel.style.display = 'none';
@@ -438,18 +455,30 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show summary panel
         integrationSummary.style.display = 'block';
         
-        // Update enterprise summary if integrated
-        if (integratedSystems.enterprise) {
-            enterpriseSummaryCard.style.display = 'block';
-            const systemName = enterpriseSystemType.toUpperCase();
-            enterpriseDetails.innerHTML = `
+        // Update ERP summary if integrated
+        if (integratedSystems.erp) {
+            erpSummaryCard.style.display = 'block';
+            erpDetails.innerHTML = `
                 <div class="summary-detail-item">
                     <i class="fa-solid fa-check"></i>
-                    <span>${systemName} System - ${enterpriseModuleCount} module(s) integrated</span>
+                    <span>ERP System - ${erpModuleCount} module(s) integrated</span>
                 </div>
             `;
         } else {
-            enterpriseSummaryCard.style.display = 'none';
+            erpSummaryCard.style.display = 'none';
+        }
+        
+        // Update CRM summary if integrated
+        if (integratedSystems.crm) {
+            crmSummaryCard.style.display = 'block';
+            crmDetails.innerHTML = `
+                <div class="summary-detail-item">
+                    <i class="fa-solid fa-check"></i>
+                    <span>CRM System - ${crmModuleCount} module(s) integrated</span>
+                </div>
+            `;
+        } else {
+            crmSummaryCard.style.display = 'none';
         }
         
         // Update engineering summary if integrated
@@ -466,10 +495,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Update button text based on what's integrated
-        if (integratedSystems.enterprise) {
-            addEnterpriseBtn.innerHTML = '<i class="fa-solid fa-edit"></i> Modify Enterprise System';
+        if (integratedSystems.erp) {
+            addErpBtn.innerHTML = '<i class="fa-solid fa-edit"></i> Modify ERP System';
         } else {
-            addEnterpriseBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Enterprise System';
+            addErpBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add ERP System';
+        }
+        
+        if (integratedSystems.crm) {
+            addCrmBtn.innerHTML = '<i class="fa-solid fa-edit"></i> Modify CRM System';
+        } else {
+            addCrmBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add CRM System';
         }
         
         if (integratedSystems.engineering) {
@@ -479,9 +514,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Add more enterprise system button
-    addEnterpriseBtn.addEventListener('click', () => {
+    // Add more ERP system button
+    addErpBtn.addEventListener('click', () => {
         integrationSummary.style.display = 'none';
+        currentEnterpriseSystem = 'erp';
+        // Switch to ERP view
+        systemBtns.forEach(b => b.classList.remove('active'));
+        document.querySelector('[data-system="erp"]').classList.add('active');
+        erpModules.style.display = 'block';
+        crmModules.style.display = 'none';
+        enterprisePanel.style.display = 'block';
+    });
+
+    // Add more CRM system button
+    addCrmBtn.addEventListener('click', () => {
+        integrationSummary.style.display = 'none';
+        currentEnterpriseSystem = 'crm';
+        // Switch to CRM view
+        systemBtns.forEach(b => b.classList.remove('active'));
+        document.querySelector('[data-system="crm"]').classList.add('active');
+        erpModules.style.display = 'none';
+        crmModules.style.display = 'block';
         enterprisePanel.style.display = 'block';
     });
 
@@ -497,7 +550,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const type = e.target.closest('.modify-btn').getAttribute('data-type');
             integrationSummary.style.display = 'none';
             
-            if (type === 'enterprise') {
+            if (type === 'erp') {
+                currentEnterpriseSystem = 'erp';
+                systemBtns.forEach(b => b.classList.remove('active'));
+                document.querySelector('[data-system="erp"]').classList.add('active');
+                erpModules.style.display = 'block';
+                crmModules.style.display = 'none';
+                enterprisePanel.style.display = 'block';
+            } else if (type === 'crm') {
+                currentEnterpriseSystem = 'crm';
+                systemBtns.forEach(b => b.classList.remove('active'));
+                document.querySelector('[data-system="crm"]').classList.add('active');
+                erpModules.style.display = 'none';
+                crmModules.style.display = 'block';
                 enterprisePanel.style.display = 'block';
             } else if (type === 'engineering') {
                 engineeringPanel.style.display = 'block';
@@ -508,9 +573,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cancel summary - start over
     cancelSummaryBtn.addEventListener('click', () => {
         // Reset all state
-        integratedSystems = { enterprise: false, engineering: false };
-        enterpriseSystemType = null;
-        enterpriseModuleCount = 0;
+        integratedSystems = { erp: false, crm: false, engineering: false };
+        erpModuleCount = 0;
+        crmModuleCount = 0;
         uploadedFile = null;
         enterpriseModuleFiles = {
             erp: { inventory: null, procurement: null, quality: null, production: null },
@@ -541,7 +606,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Reset UI
         integrationSummary.style.display = 'none';
-        enterpriseSummaryCard.style.display = 'none';
+        erpSummaryCard.style.display = 'none';
+        crmSummaryCard.style.display = 'none';
         engineeringSummaryCard.style.display = 'none';
         document.querySelector('.integration-tiles').style.display = 'grid';
         
@@ -551,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Unify All Data button - BACKEND PROCESSING HAPPENS HERE
     unifyAllBtn.addEventListener('click', async () => {
-        if (!integratedSystems.enterprise && !integratedSystems.engineering) {
+        if (!integratedSystems.erp && !integratedSystems.crm && !integratedSystems.engineering) {
             alert('Please integrate at least one system before unifying.');
             return;
         }
@@ -567,30 +633,32 @@ document.addEventListener('DOMContentLoaded', () => {
         successMessage.style.display = 'none';
 
         try {
-            // Process enterprise data if available
-            if (integratedSystems.enterprise) {
-                const currentModules = enterpriseModuleFiles[enterpriseSystemType];
-                const filesToUpload = Object.entries(currentModules).filter(([_, file]) => file !== null);
+            // Process ERP data if available
+            if (integratedSystems.erp) {
+                const erpModules = enterpriseModuleFiles.erp;
+                const erpFilesToUpload = Object.entries(erpModules).filter(([_, file]) => file !== null);
                 
-                const uploadPromises = filesToUpload.map(([module, file]) => {
-                    return simulateEnterpriseUpload(enterpriseSystemType, module, file);
+                const erpUploadPromises = erpFilesToUpload.map(([module, file]) => {
+                    return simulateEnterpriseUpload('erp', module, file);
                 });
                 
-                await Promise.all(uploadPromises);
+                await Promise.all(erpUploadPromises);
             }
 
-            // Process engineering data if available
-            // FOR GITHUB PAGES: Simulated upload (replace with actual backend when available)
-            if (integratedSystems.engineering && uploadedFile) {
-                // Simulate engineering upload
-                await new Promise((resolve) => {
-                    setTimeout(() => {
-                        console.log('Engineering file processed (simulated):', uploadedFile.name);
-                        resolve({ success: true, file: uploadedFile.name });
-                    }, 1500);
+            // Process CRM data if available
+            if (integratedSystems.crm) {
+                const crmModules = enterpriseModuleFiles.crm;
+                const crmFilesToUpload = Object.entries(crmModules).filter(([_, file]) => file !== null);
+                
+                const crmUploadPromises = crmFilesToUpload.map(([module, file]) => {
+                    return simulateEnterpriseUpload('crm', module, file);
                 });
                 
-                /* UNCOMMENT THIS SECTION WHEN BACKEND IS AVAILABLE:
+                await Promise.all(crmUploadPromises);
+            }
+
+            // Process engineering data if available - ORIGINAL BACKEND LOGIC
+            if (integratedSystems.engineering && uploadedFile) {
                 const formData = new FormData();
                 formData.append('file', uploadedFile);
 
@@ -606,7 +674,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const data = await response.json();
                 console.log('Engineering file processed successfully:', data);
-                */
             }
 
             processingInfo.style.display = 'none';

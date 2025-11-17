@@ -175,11 +175,15 @@ document.addEventListener('DOMContentLoaded', () => {
             enterprisePanel.style.display = 'none';
             engineeringPanel.style.display = 'none';
             
-            // Show tiles again
-            document.querySelector('.integration-tiles').style.display = 'grid';
-            
-            // Reset progress
-            updateProgressStep(1);
+            // Check if anything has been integrated already
+            if (integratedSystems.enterprise || integratedSystems.engineering) {
+                // Go back to summary if something is already integrated
+                showIntegrationSummary();
+            } else {
+                // Go back to tiles if nothing is integrated yet
+                document.querySelector('.integration-tiles').style.display = 'grid';
+                updateProgressStep(1);
+            }
             
             resetStatus();
         });
@@ -422,8 +426,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Integration Summary Functions ---
     function showIntegrationSummary() {
-        // Hide tiles
+        // Hide tiles and panels
         document.querySelector('.integration-tiles').style.display = 'none';
+        enterprisePanel.style.display = 'none';
+        engineeringPanel.style.display = 'none';
         
         // Update progress
         updateProgressStep(2);
@@ -441,8 +447,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span>${systemName} System - ${enterpriseModuleCount} module(s) integrated</span>
                 </div>
             `;
-            addEnterpriseBtn.disabled = true;
-            addEnterpriseBtn.textContent = 'Enterprise System Added';
+        } else {
+            enterpriseSummaryCard.style.display = 'none';
         }
         
         // Update engineering summary if integrated
@@ -454,8 +460,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span>${uploadedFile.name}</span>
                 </div>
             `;
-            addEngineeringBtn.disabled = true;
-            addEngineeringBtn.textContent = 'Engineering Diagram Added';
+        } else {
+            engineeringSummaryCard.style.display = 'none';
+        }
+        
+        // Update button text based on what's integrated
+        if (integratedSystems.enterprise) {
+            addEnterpriseBtn.innerHTML = '<i class="fa-solid fa-edit"></i> Modify Enterprise System';
+        } else {
+            addEnterpriseBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Enterprise System';
+        }
+        
+        if (integratedSystems.engineering) {
+            addEngineeringBtn.innerHTML = '<i class="fa-solid fa-edit"></i> Modify Engineering Diagram';
+        } else {
+            addEngineeringBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Engineering Diagram';
         }
     }
 
@@ -497,15 +516,33 @@ document.addEventListener('DOMContentLoaded', () => {
             crm: { customers: null, leads: null, marketing: null, opportunities: null }
         };
         
+        // Reset module status indicators
+        document.querySelectorAll('.module-status').forEach(status => {
+            status.setAttribute('data-status', 'pending');
+        });
+        
+        // Reset upload labels and status messages
+        document.querySelectorAll('.upload-label').forEach(label => {
+            label.innerHTML = '<i class="fa-solid fa-upload"></i> Upload File';
+            label.style.backgroundColor = '#3498db';
+        });
+        document.querySelectorAll('.upload-status').forEach(status => {
+            status.style.display = 'none';
+            status.innerHTML = '';
+        });
+        
+        // Reset file inputs
+        document.querySelectorAll('.module-upload .file-input').forEach(input => {
+            input.value = '';
+        });
+        fileElem.value = '';
+        fileList.innerHTML = '';
+        
         // Reset UI
         integrationSummary.style.display = 'none';
         enterpriseSummaryCard.style.display = 'none';
         engineeringSummaryCard.style.display = 'none';
         document.querySelector('.integration-tiles').style.display = 'grid';
-        addEnterpriseBtn.disabled = false;
-        addEnterpriseBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Enterprise System';
-        addEngineeringBtn.disabled = false;
-        addEngineeringBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Engineering Diagram';
         
         // Reset progress
         updateProgressStep(1);
@@ -541,8 +578,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 await Promise.all(uploadPromises);
             }
 
-            // Process engineering data if available - BACKEND LOGIC REMAINS THE SAME
+            // Process engineering data if available
+            // FOR GITHUB PAGES: Simulated upload (replace with actual backend when available)
             if (integratedSystems.engineering && uploadedFile) {
+                // Simulate engineering upload
+                await new Promise((resolve) => {
+                    setTimeout(() => {
+                        console.log('Engineering file processed (simulated):', uploadedFile.name);
+                        resolve({ success: true, file: uploadedFile.name });
+                    }, 1500);
+                });
+                
+                /* UNCOMMENT THIS SECTION WHEN BACKEND IS AVAILABLE:
                 const formData = new FormData();
                 formData.append('file', uploadedFile);
 
@@ -558,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const data = await response.json();
                 console.log('Engineering file processed successfully:', data);
+                */
             }
 
             processingInfo.style.display = 'none';

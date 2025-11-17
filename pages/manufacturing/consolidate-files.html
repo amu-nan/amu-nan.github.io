@@ -74,9 +74,9 @@
                         </div>
                         <div class="tile-header">
                             <h2>Enterprise Systems</h2>
-                            <span class="tile-badge">ERP & CRM</span>
+                            <span class="tile-badge">ERP-CRM-SCM</span>
                         </div>
-                        <p class="tile-description">Connect your business operations data from ERP and CRM platforms</p>
+                        <p class="tile-description">Connect your production, inventory, sales, and service operations data across your internal systems.</p>
                         <div class="tile-stats">
                             <div class="stat-item">
                                 <i class="fa-solid fa-database"></i>
@@ -101,7 +101,7 @@
                             <h2>Engineering Systems</h2>
                             <span class="tile-badge engineering">CAD & Diagrams</span>
                         </div>
-                        <p class="tile-description">Upload technical drawings and engineering documentation</p>
+                        <p class="tile-description">Upload engineering drawings, schematics, and related documentation.</p>
                         <div class="tile-stats">
                             <div class="stat-item">
                                 <i class="fa-solid fa-file-pdf"></i>
@@ -173,24 +173,14 @@
                                 <h4>Procurement</h4>
                                 <p class="module-description">Purchase orders, suppliers</p>
                                 <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="erp-procurement-url">Connect to API:</label>
+                                        <input type="url" id="erp-procurement-url" placeholder="e.g., https://api.erp.com/procurement">
+                                        <button class="integration-btn erp-procurement-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
                                     <input type="file" id="erp-procurement-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="erp-procurement-file" class="upload-label">
-                                        <i class="fa-solid fa-upload"></i> Upload File
-                                    </label>
-                                    <p class="upload-status"></p>
-                                </div>
-                            </div>
-
-                            <div class="module-card" data-module="quality">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
-                                <i class="fa-solid fa-certificate"></i>
-                                <h4>Quality Control</h4>
-                                <p class="module-description">Inspections, compliance data</p>
-                                <div class="module-upload">
-                                    <input type="file" id="erp-quality-file" accept=".csv,.xlsx,.xls" class="file-input">
-                                    <label for="erp-quality-file" class="upload-label">
                                         <i class="fa-solid fa-upload"></i> Upload File
                                     </label>
                                     <p class="upload-status"></p>
@@ -205,6 +195,12 @@
                                 <h4>Production</h4>
                                 <p class="module-description">Manufacturing schedules, output</p>
                                 <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="erp-production-url">Connect to API:</label>
+                                        <input type="url" id="erp-production-url" placeholder="e.g., https://api.erp.com/production">
+                                        <button class="integration-btn erp-production-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
                                     <input type="file" id="erp-production-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="erp-production-file" class="upload-label">
                                         <i class="fa-solid fa-upload"></i> Upload File
@@ -230,6 +226,12 @@
                                 <h4>Customers</h4>
                                 <p class="module-description">Customer profiles, history</p>
                                 <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="crm-customers-url">Connect to API:</label>
+                                        <input type="url" id="crm-customers-url" placeholder="e.g., https://api.crm.com/customers">
+                                        <button class="integration-btn crm-customers-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
                                     <input type="file" id="crm-customers-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="crm-customers-file" class="upload-label">
                                         <i class="fa-solid fa-upload"></i> Upload File
@@ -246,6 +248,12 @@
                                 <h4>Leads</h4>
                                 <p class="module-description">Prospects, pipeline data</p>
                                 <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="crm-leads-url">Connect to API:</label>
+                                        <input type="url" id="crm-leads-url" placeholder="e.g., https://api.crm.com/leads">
+                                        <button class="integration-btn crm-leads-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
                                     <input type="file" id="crm-leads-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="crm-leads-file" class="upload-label">
                                         <i class="fa-solid fa-upload"></i> Upload File
@@ -262,6 +270,12 @@
                                 <h4>Marketing</h4>
                                 <p class="module-description">Campaigns, analytics</p>
                                 <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="crm-marketing-url">Connect to API:</label>
+                                        <input type="url" id="crm-marketing-url" placeholder="e.g., https://api.crm.com/marketing">
+                                        <button class="integration-btn crm-marketing-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
                                     <input type="file" id="crm-marketing-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="crm-marketing-file" class="upload-label">
                                         <i class="fa-solid fa-upload"></i> Upload File
@@ -278,6 +292,12 @@
                                 <h4>Opportunities</h4>
                                 <p class="module-description">Deals, forecasts</p>
                                 <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="crm-opportunities-url">Connect to API:</label>
+                                        <input type="url" id="crm-opportunities-url" placeholder="e.g., https://api.crm.com/opportunities">
+                                        <button class="integration-btn crm-opportunities-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
                                     <input type="file" id="crm-opportunities-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="crm-opportunities-file" class="upload-label">
                                         <i class="fa-solid fa-upload"></i> Upload File
@@ -307,13 +327,21 @@
                     <h2 class="panel-title">Upload Engineering Diagram</h2>
                     <p class="panel-subtitle">Upload your CAD files or technical drawings in PDF format</p>
                     
-                    <div class="file-upload-box" id="drop-area">
+                    <div class="system-input-group" id="engineering-input-group">
+                        <div class="system-input">
+                            <label for="engineering-url">Connect to API:</label>
+                            <input type="url" id="engineering-url" placeholder="e.g., https://api.autodesk.com/design">
+                            <button class="integration-btn engineering-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                        </div>
+                        <div class="or-divider">OR</div>
+                        <div class="file-upload-box" id="drop-area">
                         <i class="fa-solid fa-upload"></i>
                         <p>Load your Engineering Diagram</p>
                         <p class="file-upload-info">Click or drag and drop PDF files here</p>
                         <input type="file" id="fileElem" accept=".pdf" class="file-input">
                     </div>
                     <div id="file-list"></div>
+                    </div>
 
                     <div class="panel-actions">
                         <button class="cancel-btn">

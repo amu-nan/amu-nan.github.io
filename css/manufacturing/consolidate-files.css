@@ -133,7 +133,7 @@
 }
 
 .tile-icon-badge.engineering i {
-    color: #e91e63;
+    color: #3498db;
 }
 
 .tile-header {
@@ -159,7 +159,7 @@
 
 .tile-badge.engineering {
     background: #fce4ec;
-    color: #e91e63;
+    color: #3498db;
 }
 
 .tile-description {
@@ -796,7 +796,7 @@
 }
 
 .summary-badge.engineering {
-    background: #e91e63;
+    background: #27ae60;
 }
 
 .summary-details {

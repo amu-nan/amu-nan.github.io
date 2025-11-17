@@ -633,7 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
         successMessage.style.display = 'none';
 
         try {
-            // Process ERP data if available
+            // Process ERP data if available (simulated for now)
             if (integratedSystems.erp) {
                 const erpModules = enterpriseModuleFiles.erp;
                 const erpFilesToUpload = Object.entries(erpModules).filter(([_, file]) => file !== null);
@@ -645,7 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 await Promise.all(erpUploadPromises);
             }
 
-            // Process CRM data if available
+            // Process CRM data if available (simulated for now)
             if (integratedSystems.crm) {
                 const crmModules = enterpriseModuleFiles.crm;
                 const crmFilesToUpload = Object.entries(crmModules).filter(([_, file]) => file !== null);
@@ -658,6 +658,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Process engineering data if available - ORIGINAL BACKEND LOGIC
+            // THIS MUST SUCCEED BEFORE PROCEEDING TO NEXT PAGE
             if (integratedSystems.engineering && uploadedFile) {
                 const formData = new FormData();
                 formData.append('file', uploadedFile);
@@ -669,13 +670,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!response.ok) {
                     const text = await response.text();
-                    throw new Error(`Network response was not ok: ${text}`);
+                    throw new Error(`Engineering diagram upload failed: ${text}`);
                 }
 
                 const data = await response.json();
                 console.log('Engineering file processed successfully:', data);
+            } else if (integratedSystems.engineering && !uploadedFile) {
+                throw new Error('Engineering system marked as integrated but no file found');
             }
 
+            // Only proceed here if all backend calls succeeded
             processingInfo.style.display = 'none';
             unifyMessage.style.display = 'none';
 

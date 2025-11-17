@@ -151,6 +151,12 @@
                                 <h4>Inventory Management</h4>
                                 <p class="module-description">Stock levels, warehouse data</p>
                                 <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="erp-inventory-url">Connect to API:</label>
+                                        <input type="url" id="erp-inventory-url" placeholder="e.g., https://api.erp.com/inventory">
+                                        <button class="integration-btn erp-inventory-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
                                     <input type="file" id="erp-inventory-file" accept=".csv,.xlsx,.xls" class="file-input">
                                     <label for="erp-inventory-file" class="upload-label">
                                         <i class="fa-solid fa-upload"></i> Upload File
@@ -331,14 +337,26 @@
                     <p class="summary-subtitle">Review your integrated systems before unifying the data</p>
                     
                     <div class="summary-cards">
-                        <div class="summary-card" id="enterprise-summary" style="display:none;">
+                        <div class="summary-card" id="erp-summary" style="display:none;">
                             <div class="summary-header">
-                                <i class="fa-solid fa-building"></i>
-                                <h3>Enterprise Systems</h3>
-                                <span class="summary-badge" id="enterprise-badge">Integrated</span>
+                                <i class="fa-solid fa-industry"></i>
+                                <h3>ERP System</h3>
+                                <span class="summary-badge">Integrated</span>
                             </div>
-                            <div class="summary-details" id="enterprise-details"></div>
-                            <button class="modify-btn" data-type="enterprise">
+                            <div class="summary-details" id="erp-details"></div>
+                            <button class="modify-btn" data-type="erp">
+                                <i class="fa-solid fa-edit"></i> Modify
+                            </button>
+                        </div>
+
+                        <div class="summary-card" id="crm-summary" style="display:none;">
+                            <div class="summary-header">
+                                <i class="fa-solid fa-handshake"></i>
+                                <h3>CRM System</h3>
+                                <span class="summary-badge">Integrated</span>
+                            </div>
+                            <div class="summary-details" id="crm-details"></div>
+                            <button class="modify-btn" data-type="crm">
                                 <i class="fa-solid fa-edit"></i> Modify
                             </button>
                         </div>
@@ -347,7 +365,7 @@
                             <div class="summary-header">
                                 <i class="fa-solid fa-layer-group"></i>
                                 <h3>Engineering Systems</h3>
-                                <span class="summary-badge engineering" id="engineering-badge">Integrated</span>
+                                <span class="summary-badge engineering">Integrated</span>
                             </div>
                             <div class="summary-details" id="engineering-details"></div>
                             <button class="modify-btn" data-type="engineering">
@@ -357,13 +375,16 @@
                     </div>
 
                     <div class="add-more-section">
-                        <p class="add-more-text">Need to integrate more systems?</p>
+                        <p class="add-more-text">Want to integrate more systems before unifying?</p>
                         <div class="add-more-buttons">
-                            <button class="add-more-btn" data-type="enterprise" id="add-enterprise-btn">
-                                <i class="fa-solid fa-plus"></i> Add Enterprise System
+                            <button class="add-more-btn" data-type="erp" id="add-erp-btn">
+                                <i class="fa-solid fa-plus"></i> Add/Modify ERP System
+                            </button>
+                            <button class="add-more-btn" data-type="crm" id="add-crm-btn">
+                                <i class="fa-solid fa-plus"></i> Add/Modify CRM System
                             </button>
                             <button class="add-more-btn" data-type="engineering" id="add-engineering-btn">
-                                <i class="fa-solid fa-plus"></i> Add Engineering Diagram
+                                <i class="fa-solid fa-plus"></i> Add/Modify Engineering Diagram
                             </button>
                         </div>
                     </div>

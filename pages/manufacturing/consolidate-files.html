@@ -1,411 +1,584 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consolidate Your Data Sources</title>
-    <link rel="icon" type="image/png" href="../../images/Subject.png">
-    <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/manufacturing/consolidate-files.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Get company name from URL ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const companyName = urlParams.get('company');
 
-    <header>
-        <div class="logo-container">
-            <a href="../../index.html">
-                <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
-            </a>
-            <span class="tagline">Ride the wave of efficiency.</span>
-        </div>
-        <div class="menu-container">
-            <nav class="main-nav">
-                <div class="dropdown">
-                    <button class="nav-button dropdown-toggle hamburger-icon" aria-label="Services Menu">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a href="xforia-manufacturing.html"><i class="fa-solid fa-industry"></i> Manufacturing</a>
-                        <a href="#" class="coming-soon"><i class="fa-solid fa-hospital"></i> Healthcare</a>
-                        <a href="#" class="coming-soon"><i class="fa-solid fa-sack-dollar"></i> Banking & Finance</a>
-                        <a href="#" class="coming-soon"><i class="fa-solid fa-store"></i> Retail</a>
-                        <a href="#" class="coming-soon"><i class="fa-solid fa-graduation-cap"></i> Education</a>
-                        <a href="#" class="coming-soon"><i class="fa-solid fa-satellite-dish"></i> Telecom, Media & Technology(TMT)</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>
+    // --- References for State Management ---
+    const initialStateContainer = document.getElementById('initial-state-container');
+    const unifiedStateContainer = document.getElementById('unified-state-container');
+    const pageTitle = document.getElementById('pageTitle');
+    const unifiedTitle = document.getElementById('unifiedTitle');
 
-    <main class="page-container">
-        <section class="consolidate-section">
-            <div id="initial-state-container">
-                <h1 class="page-title" id="pageTitle">Unify Your Data Sources</h1>
-                <p class="page-intro">
-                    Seamlessly ingest from various enterprise applications to create a single, unified source of truth.
-                </p>
+    // --- References for Integration Tiles and Panels ---
+    const integrationTiles = document.querySelectorAll('.integration-tile');
+    const beginIntegrationBtns = document.querySelectorAll('.begin-integration-btn');
+    const enterprisePanel = document.getElementById('enterprise-panel');
+    const engineeringPanel = document.getElementById('engineering-panel');
+    const cancelBtns = document.querySelectorAll('.cancel-btn');
 
-                <!-- Progress Indicator -->
-                <div class="progress-tracker">
-                    <div class="progress-step active" data-step="1">
-                        <div class="step-number">1</div>
-                        <div class="step-label">Select Systems</div>
-                    </div>
-                    <div class="progress-line"></div>
-                    <div class="progress-step" data-step="2">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Upload Data</div>
-                    </div>
-                    <div class="progress-line"></div>
-                    <div class="progress-step" data-step="3">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Unify & Analyze</div>
-                    </div>
-                </div>
+    // --- References for Engineering System ---
+    const dropArea = document.getElementById('drop-area');
+    const fileElem = document.getElementById('fileElem');
+    const fileList = document.getElementById('file-list');
+    const engineeringProcessBtn = document.getElementById('engineering-process-btn');
+    const processingInfo = document.getElementById('processing-info');
+    const unifyMessage = document.getElementById('unify-message');
+    const successMessage = document.getElementById('success-message');
 
-                <div class="integration-tiles">
-                    <!-- Enterprise Systems Tile -->
-                    <div class="integration-tile" data-type="enterprise">
-                        <div class="tile-icon-badge">
-                            <i class="fa-solid fa-building"></i>
-                        </div>
-                        <div class="tile-header">
-                            <h2>Enterprise Systems</h2>
-                            <span class="tile-badge">ERP & CRM</span>
-                        </div>
-                        <p class="tile-description">Connect your business operations data from ERP and CRM platforms</p>
-                        <div class="tile-stats">
-                            <div class="stat-item">
-                                <i class="fa-solid fa-database"></i>
-                                <span>Multiple Modules</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fa-solid fa-check-circle"></i>
-                                <span>Real-time Sync</span>
-                            </div>
-                        </div>
-                        <button class="begin-integration-btn" data-type="enterprise">
-                            <i class="fa-solid fa-plug"></i> Begin Integration
-                        </button>
-                    </div>
+    // --- References for Enterprise System ---
+    const systemBtns = document.querySelectorAll('.system-btn');
+    const erpModules = document.getElementById('erp-modules');
+    const crmModules = document.getElementById('crm-modules');
+    const enterpriseProcessBtn = document.getElementById('enterprise-process-btn');
+    const moduleCountSpan = document.getElementById('module-count');
 
-                    <!-- Engineering Systems Tile -->
-                    <div class="integration-tile" data-type="engineering">
-                        <div class="tile-icon-badge engineering">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </div>
-                        <div class="tile-header">
-                            <h2>Engineering Systems</h2>
-                            <span class="tile-badge engineering">CAD & Diagrams</span>
-                        </div>
-                        <p class="tile-description">Upload technical drawings and engineering documentation</p>
-                        <div class="tile-stats">
-                            <div class="stat-item">
-                                <i class="fa-solid fa-file-pdf"></i>
-                                <span>PDF Support</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fa-solid fa-chart-line"></i>
-                                <span>Auto-Analysis</span>
-                            </div>
-                        </div>
-                        <button class="begin-integration-btn" data-type="engineering">
-                            <i class="fa-solid fa-plug"></i> Begin Integration
-                        </button>
-                    </div>
-                </div>
+    // --- References for Progress Tracker ---
+    const progressSteps = document.querySelectorAll('.progress-step');
 
-                <!-- Enterprise Systems Integration Panel -->
-                <div id="enterprise-panel" class="integration-panel" style="display:none;">
-                    <button class="panel-back-btn">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Selection
-                    </button>
-                    
-                    <h2 class="panel-title">Configure Enterprise Integration</h2>
-                    <p class="panel-subtitle">Select your system and upload module data files</p>
-                    
-                    <div class="system-selector">
-                        <button class="system-btn active" data-system="erp">
-                            <i class="fa-solid fa-industry"></i> ERP
-                        </button>
-                        <button class="system-btn" data-system="crm">
-                            <i class="fa-solid fa-handshake"></i> CRM
-                        </button>
-                    </div>
+    // --- References for Integration Summary ---
+    const integrationSummary = document.getElementById('integration-summary');
+    const enterpriseSummaryCard = document.getElementById('enterprise-summary');
+    const engineeringSummaryCard = document.getElementById('engineering-summary');
+    const enterpriseDetails = document.getElementById('enterprise-details');
+    const engineeringDetails = document.getElementById('engineering-details');
+    const addEnterpriseBtn = document.getElementById('add-enterprise-btn');
+    const addEngineeringBtn = document.getElementById('add-engineering-btn');
+    const unifyAllBtn = document.getElementById('unify-all-btn');
+    const cancelSummaryBtn = document.querySelector('.cancel-summary-btn');
 
-                    <!-- ERP Modules -->
-                    <div id="erp-modules" class="modules-container">
-                        <h3 class="modules-title">
-                            <i class="fa-solid fa-industry"></i> ERP System Modules
-                        </h3>
-                        <p class="modules-description">Upload data files for each module to integrate with your ERP system</p>
-                        <div class="modules-grid">
-                            <div class="module-card" data-module="inventory">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
-                                <i class="fa-solid fa-boxes-stacked"></i>
-                                <h4>Inventory Management</h4>
-                                <p class="module-description">Stock levels, warehouse data</p>
-                                <div class="module-upload">
-                                    <input type="file" id="erp-inventory-file" accept=".csv,.xlsx,.xls" class="file-input">
-                                    <label for="erp-inventory-file" class="upload-label">
-                                        <i class="fa-solid fa-upload"></i> Upload File
-                                    </label>
-                                    <p class="upload-status"></p>
-                                </div>
-                            </div>
+    // **Backend Endpoint URLs**
+    const ENGINEERING_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
+    
+    // Supabase endpoints for enterprise modules (placeholders for now)
+    const ENTERPRISE_ENDPOINTS = {
+        erp: {
+            inventory: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/erp-inventory-upload',
+            procurement: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/erp-procurement-upload',
+            quality: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/erp-quality-upload',
+            production: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/erp-production-upload'
+        },
+        crm: {
+            customers: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/crm-customers-upload',
+            leads: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/crm-leads-upload',
+            marketing: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/crm-marketing-upload',
+            opportunities: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/crm-opportunities-upload'
+        }
+    };
 
-                            <div class="module-card" data-module="procurement">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
-                                <i class="fa-solid fa-cart-shopping"></i>
-                                <h4>Procurement</h4>
-                                <p class="module-description">Purchase orders, suppliers</p>
-                                <div class="module-upload">
-                                    <input type="file" id="erp-procurement-file" accept=".csv,.xlsx,.xls" class="file-input">
-                                    <label for="erp-procurement-file" class="upload-label">
-                                        <i class="fa-solid fa-upload"></i> Upload File
-                                    </label>
-                                    <p class="upload-status"></p>
-                                </div>
-                            </div>
+    const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYXNmcGthenJlYmF0amhkaGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMxMDYsImV4cCI6MjA3ODUyOTEwNn0.F18jn7ug3VD1g05NMxxa9Dp9YnSZycge4ekyb94GyYc";
 
-                            <div class="module-card" data-module="quality">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
-                                <i class="fa-solid fa-certificate"></i>
-                                <h4>Quality Control</h4>
-                                <p class="module-description">Inspections, compliance data</p>
-                                <div class="module-upload">
-                                    <input type="file" id="erp-quality-file" accept=".csv,.xlsx,.xls" class="file-input">
-                                    <label for="erp-quality-file" class="upload-label">
-                                        <i class="fa-solid fa-upload"></i> Upload File
-                                    </label>
-                                    <p class="upload-status"></p>
-                                </div>
-                            </div>
+    // State object to track uploads
+    let uploadedFile = null;
+    let currentEnterpriseSystem = 'erp';
+    let enterpriseModuleFiles = {
+        erp: { inventory: null, procurement: null, quality: null, production: null },
+        crm: { customers: null, leads: null, marketing: null, opportunities: null }
+    };
+    
+    // Track what's been integrated
+    let integratedSystems = {
+        enterprise: false,
+        engineering: false
+    };
+    let enterpriseSystemType = null; // 'erp' or 'crm'
+    let enterpriseModuleCount = 0;
 
-                            <div class="module-card" data-module="production">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
-                                <i class="fa-solid fa-gears"></i>
-                                <h4>Production</h4>
-                                <p class="module-description">Manufacturing schedules, output</p>
-                                <div class="module-upload">
-                                    <input type="file" id="erp-production-file" accept=".csv,.xlsx,.xls" class="file-input">
-                                    <label for="erp-production-file" class="upload-label">
-                                        <i class="fa-solid fa-upload"></i> Upload File
-                                    </label>
-                                    <p class="upload-status"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    // --- References for Unified State (Completion) UI ---
+    const chatButton = document.getElementById('chatButton');
 
-                    <!-- CRM Modules -->
-                    <div id="crm-modules" class="modules-container" style="display:none;">
-                        <h3 class="modules-title">
-                            <i class="fa-solid fa-handshake"></i> CRM System Modules
-                        </h3>
-                        <p class="modules-description">Upload data files for each module to integrate with your CRM system</p>
-                        <div class="modules-grid">
-                            <div class="module-card" data-module="customers">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
-                                <i class="fa-solid fa-users"></i>
-                                <h4>Customers</h4>
-                                <p class="module-description">Customer profiles, history</p>
-                                <div class="module-upload">
-                                    <input type="file" id="crm-customers-file" accept=".csv,.xlsx,.xls" class="file-input">
-                                    <label for="crm-customers-file" class="upload-label">
-                                        <i class="fa-solid fa-upload"></i> Upload File
-                                    </label>
-                                    <p class="upload-status"></p>
-                                </div>
-                            </div>
+    // --- Check for URL parameter to determine UI state on page load ---
+    const isUnified = urlParams.get('unified');
+    if (isUnified === 'true') {
+        showUnifiedState();
+    } else {
+        showInitialState();
+    }
 
-                            <div class="module-card" data-module="leads">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
-                                <i class="fa-solid fa-user-plus"></i>
-                                <h4>Leads</h4>
-                                <p class="module-description">Prospects, pipeline data</p>
-                                <div class="module-upload">
-                                    <input type="file" id="crm-leads-file" accept=".csv,.xlsx,.xls" class="file-input">
-                                    <label for="crm-leads-file" class="upload-label">
-                                        <i class="fa-solid fa-upload"></i> Upload File
-                                    </label>
-                                    <p class="upload-status"></p>
-                                </div>
-                            </div>
+    // --- State and UI Management Functions ---
 
-                            <div class="module-card" data-module="marketing">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
-                                <i class="fa-solid fa-bullhorn"></i>
-                                <h4>Marketing</h4>
-                                <p class="module-description">Campaigns, analytics</p>
-                                <div class="module-upload">
-                                    <input type="file" id="crm-marketing-file" accept=".csv,.xlsx,.xls" class="file-input">
-                                    <label for="crm-marketing-file" class="upload-label">
-                                        <i class="fa-solid fa-upload"></i> Upload File
-                                    </label>
-                                    <p class="upload-status"></p>
-                                </div>
-                            </div>
+    function showInitialState() {
+        if (companyName) {
+            pageTitle.textContent = `Unify Data for ${companyName}`;
+        }
+        initialStateContainer.style.display = 'block';
+        unifiedStateContainer.style.display = 'none';
+        resetStatus();
+    }
 
-                            <div class="module-card" data-module="opportunities">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
-                                <i class="fa-solid fa-handshake-angle"></i>
-                                <h4>Opportunities</h4>
-                                <p class="module-description">Deals, forecasts</p>
-                                <div class="module-upload">
-                                    <input type="file" id="crm-opportunities-file" accept=".csv,.xlsx,.xls" class="file-input">
-                                    <label for="crm-opportunities-file" class="upload-label">
-                                        <i class="fa-solid fa-upload"></i> Upload File
-                                    </label>
-                                    <p class="upload-status"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    function showUnifiedState() {
+        if (companyName) {
+            unifiedTitle.textContent = `${companyName}'s Data is Unified`;
+        }
+        initialStateContainer.style.display = 'none';
+        unifiedStateContainer.style.display = 'block';
+        chatButton.href = `conversation-ai.html?company=${encodeURIComponent(companyName)}`;
+    }
 
-                    <div class="panel-actions">
-                        <button class="cancel-btn">
-                            <i class="fa-solid fa-times"></i> Cancel
-                        </button>
-                        <button id="enterprise-process-btn" class="process-btn" disabled>
-                            <i class="fa-solid fa-check"></i> Process Data (<span id="module-count">0</span> modules)
-                        </button>
-                    </div>
-                </div>
+    function resetStatus() {
+        processingInfo.style.display = 'none';
+        unifyMessage.style.display = 'none';
+        successMessage.style.display = 'none';
+    }
 
-                <!-- Engineering Systems Integration Panel -->
-                <div id="engineering-panel" class="integration-panel" style="display:none;">
-                    <button class="panel-back-btn">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Selection
-                    </button>
-                    
-                    <h2 class="panel-title">Upload Engineering Diagram</h2>
-                    <p class="panel-subtitle">Upload your CAD files or technical drawings in PDF format</p>
-                    
-                    <div class="file-upload-box" id="drop-area">
-                        <i class="fa-solid fa-upload"></i>
-                        <p>Load your Engineering Diagram</p>
-                        <p class="file-upload-info">Click or drag and drop PDF files here</p>
-                        <input type="file" id="fileElem" accept=".pdf" class="file-input">
-                    </div>
-                    <div id="file-list"></div>
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
 
-                    <div class="panel-actions">
-                        <button class="cancel-btn">
-                            <i class="fa-solid fa-times"></i> Cancel
-                        </button>
-                        <button id="engineering-process-btn" class="process-btn" disabled>
-                            <i class="fa-solid fa-check"></i> Process Diagram
-                        </button>
-                    </div>
-                </div>
-
-                <div id="processing-info" class="processing-info">
-                    <div class="loading-spinner"></div>
-                </div>
-                <p id="unify-message" class="unify-message"></p>
-                <p id="success-message" class="success-message"></p>
-
-                <!-- Integration Summary Panel -->
-                <div id="integration-summary" class="integration-summary" style="display:none;">
-                    <h2 class="summary-title">Integration Summary</h2>
-                    <p class="summary-subtitle">Review your integrated systems before unifying the data</p>
-                    
-                    <div class="summary-cards">
-                        <div class="summary-card" id="enterprise-summary" style="display:none;">
-                            <div class="summary-header">
-                                <i class="fa-solid fa-building"></i>
-                                <h3>Enterprise Systems</h3>
-                                <span class="summary-badge" id="enterprise-badge">Integrated</span>
-                            </div>
-                            <div class="summary-details" id="enterprise-details"></div>
-                            <button class="modify-btn" data-type="enterprise">
-                                <i class="fa-solid fa-edit"></i> Modify
-                            </button>
-                        </div>
-
-                        <div class="summary-card" id="engineering-summary" style="display:none;">
-                            <div class="summary-header">
-                                <i class="fa-solid fa-layer-group"></i>
-                                <h3>Engineering Systems</h3>
-                                <span class="summary-badge engineering" id="engineering-badge">Integrated</span>
-                            </div>
-                            <div class="summary-details" id="engineering-details"></div>
-                            <button class="modify-btn" data-type="engineering">
-                                <i class="fa-solid fa-edit"></i> Modify
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="add-more-section">
-                        <p class="add-more-text">Need to integrate more systems?</p>
-                        <div class="add-more-buttons">
-                            <button class="add-more-btn" data-type="enterprise" id="add-enterprise-btn">
-                                <i class="fa-solid fa-plus"></i> Add Enterprise System
-                            </button>
-                            <button class="add-more-btn" data-type="engineering" id="add-engineering-btn">
-                                <i class="fa-solid fa-plus"></i> Add Engineering Diagram
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="summary-actions">
-                        <button class="cancel-summary-btn">
-                            <i class="fa-solid fa-arrow-left"></i> Start Over
-                        </button>
-                        <button id="unify-all-btn" class="unify-all-btn">
-                            <i class="fa-solid fa-database"></i> Unify All Data
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="unified-state-container" class="unified-state-container" style="display:none;">
-                <h1 class="page-title" id="unifiedTitle">Your Data is Unified Now.</h1>
-                <p class="page-intro">
-                    Insights unlocked. Answers delivered.
-                </p>
-                <div class="completion-container" id="completion-buttons-wrapper">
-                    <a href="conversation-ai.html" class="continue-button demo-button" id="chatButton">
-                        <i class="fa-solid fa-comment-dots"></i> Explore with RIA
-                    </a>
-                    <a href="http://127.0.0.1:8000/xforia-coast/dashboard/" target="_self" class="continue-button demo-button view-dashboard">
-                        <i class="fa-solid fa-chart-line"></i> Insights
-                    </a>
-                </div>
-            </div>
+    // --- Integration Tile Click Handlers ---
+    beginIntegrationBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.getAttribute('data-type');
             
-            <div class="bottom-nav">
-                <a href="#" class="demo-button back-button" onclick="history.back(); return false;">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </a>
-            </div>
-        </section>
-    </main>
+            // Hide tiles
+            document.querySelector('.integration-tiles').style.display = 'none';
+            
+            // Update progress tracker
+            updateProgressStep(2);
+            
+            // Show appropriate panel
+            if (type === 'enterprise') {
+                enterprisePanel.style.display = 'block';
+            } else if (type === 'engineering') {
+                engineeringPanel.style.display = 'block';
+            }
+            
+            resetStatus();
+        });
+    });
 
-    <footer>
-        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
-    </footer>
+    // --- Panel Back Button Handlers ---
+    document.querySelectorAll('.panel-back-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Hide all panels
+            enterprisePanel.style.display = 'none';
+            engineeringPanel.style.display = 'none';
+            
+            // Check if anything has been integrated already
+            if (integratedSystems.enterprise || integratedSystems.engineering) {
+                // Go back to summary if something is already integrated
+                showIntegrationSummary();
+            } else {
+                // Go back to tiles if nothing is integrated yet
+                document.querySelector('.integration-tiles').style.display = 'grid';
+                updateProgressStep(1);
+            }
+            
+            resetStatus();
+        });
+    });
 
-    <script src="../../js/manufacturing/consolidate-files.js"></script>
-</body>
-</html>
+    // --- Cancel Button Handlers ---
+    cancelBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Hide all panels
+            enterprisePanel.style.display = 'none';
+            engineeringPanel.style.display = 'none';
+            
+            // Show tiles again
+            document.querySelector('.integration-tiles').style.display = 'grid';
+            
+            // Reset progress
+            updateProgressStep(1);
+            
+            resetStatus();
+        });
+    });
+
+    // --- Progress Tracker Update Function ---
+    function updateProgressStep(step) {
+        progressSteps.forEach((stepEl, index) => {
+            const stepNumber = index + 1;
+            stepEl.classList.remove('active', 'completed');
+            
+            if (stepNumber < step) {
+                stepEl.classList.add('completed');
+            } else if (stepNumber === step) {
+                stepEl.classList.add('active');
+            }
+        });
+    }
+
+    // --- Enterprise System Selector ---
+    systemBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update active state
+            systemBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Get selected system
+            currentEnterpriseSystem = btn.getAttribute('data-system');
+            
+            // Show/hide appropriate modules
+            if (currentEnterpriseSystem === 'erp') {
+                erpModules.style.display = 'block';
+                crmModules.style.display = 'none';
+            } else {
+                erpModules.style.display = 'none';
+                crmModules.style.display = 'block';
+            }
+            
+            updateEnterpriseProcessBtn();
+        });
+    });
+
+    // --- Enterprise Module File Upload Handlers ---
+    function setupModuleUpload(system, module) {
+        const fileInput = document.getElementById(`${system}-${module}-file`);
+        const uploadLabel = fileInput.nextElementSibling;
+        const statusEl = uploadLabel.nextElementSibling;
+        const moduleCard = fileInput.closest('.module-card');
+        const moduleStatus = moduleCard.querySelector('.module-status');
+        
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                enterpriseModuleFiles[system][module] = file;
+                
+                // Update module status to uploading
+                moduleStatus.setAttribute('data-status', 'uploading');
+                
+                // Show loading state
+                statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+                statusEl.style.color = '#3498db';
+                statusEl.style.display = 'block';
+                
+                // Simulate processing (2 seconds)
+                setTimeout(() => {
+                    moduleStatus.setAttribute('data-status', 'complete');
+                    statusEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> File loaded successfully';
+                    statusEl.style.color = '#27ae60';
+                    uploadLabel.innerHTML = `<i class="fa-solid fa-check"></i> ${file.name}`;
+                    uploadLabel.style.backgroundColor = '#27ae60';
+                    
+                    updateEnterpriseProcessBtn();
+                }, 2000);
+            }
+        });
+    }
+
+    // Setup all module uploads
+    ['inventory', 'procurement', 'quality', 'production'].forEach(module => {
+        setupModuleUpload('erp', module);
+    });
+    ['customers', 'leads', 'marketing', 'opportunities'].forEach(module => {
+        setupModuleUpload('crm', module);
+    });
+
+    function updateEnterpriseProcessBtn() {
+        const currentModules = enterpriseModuleFiles[currentEnterpriseSystem];
+        const filesArray = Object.values(currentModules).filter(file => file !== null);
+        const hasAnyFile = filesArray.length > 0;
+        
+        enterpriseProcessBtn.disabled = !hasAnyFile;
+        
+        // Update module count
+        if (moduleCountSpan) {
+            moduleCountSpan.textContent = filesArray.length;
+        }
+    }
+
+    // --- Enterprise Data Processing ---
+    enterpriseProcessBtn.addEventListener('click', async () => {
+        const currentModules = enterpriseModuleFiles[currentEnterpriseSystem];
+        const filesToUpload = Object.entries(currentModules).filter(([_, file]) => file !== null);
+        
+        if (filesToUpload.length === 0) {
+            alert('Please upload at least one module file.');
+            return;
+        }
+
+        // Mark as integrated
+        integratedSystems.enterprise = true;
+        enterpriseSystemType = currentEnterpriseSystem;
+        enterpriseModuleCount = filesToUpload.length;
+
+        // Hide panel and show summary
+        enterprisePanel.style.display = 'none';
+        showIntegrationSummary();
+    });
+
+    // Simulated upload function (replace with actual fetch when backend is ready)
+    async function simulateEnterpriseUpload(system, module, file) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                console.log(`Uploaded ${system}/${module}:`, file.name);
+                resolve({ success: true, system, module, file: file.name });
+            }, 1000);
+        });
+    }
+
+    // Function for actual enterprise upload (use when backend is ready)
+    async function uploadEnterpriseFile(system, module, file) {
+        const endpoint = ENTERPRISE_ENDPOINTS[system][module];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${ANON_KEY}`,
+                'apikey': ANON_KEY,
+            },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const text = await response.text();
+            throw new Error(`Upload failed for ${system}/${module}: ${text}`);
+        }
+
+        return await response.json();
+    }
+
+    // --- Engineering System File Handling ---
+
+    // Setup drag/drop events
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => {
+            dropArea.classList.add('highlight');
+        }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => {
+            dropArea.classList.remove('highlight');
+        }, false);
+    });
+
+    dropArea.addEventListener('click', () => {
+        fileElem.click();
+    });
+
+    dropArea.addEventListener('drop', handleDropEngineering, false);
+
+    fileElem.addEventListener('change', (e) => {
+        handleFilesEngineering(e.target.files);
+    });
+
+    function handleDropEngineering(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFilesEngineering(files);
+    }
+
+    function handleFilesEngineering(files) {
+        uploadedFile = files.length > 0 ? files[0] : null;
+        displayFilesEngineering();
+        updateEngineeringProcessBtn();
+        resetStatus();
+    }
+
+    function displayFilesEngineering() {
+        fileList.innerHTML = '';
+        if (uploadedFile) {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="file-name"><i class="fa-solid fa-file-pdf"></i> ${uploadedFile.name} Loaded</span>`;
+            fileList.appendChild(li);
+        }
+    }
+
+    function updateEngineeringProcessBtn() {
+        engineeringProcessBtn.disabled = !uploadedFile;
+    }
+
+    // --- Engineering Diagram Processing (Original Backend Logic) ---
+    engineeringProcessBtn.addEventListener('click', async () => {
+        if (!uploadedFile) {
+            alert('Please upload an Engineering Diagram to proceed.');
+            return;
+        }
+
+        // Mark as integrated
+        integratedSystems.engineering = true;
+
+        // Hide panel and show summary
+        engineeringPanel.style.display = 'none';
+        showIntegrationSummary();
+    });
+
+    // --- Dropdown Menu Logic (retained) ---
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (dropdownToggle && dropdownMenu) {
+        dropdownToggle.addEventListener('click', function(event) {
+            event.preventDefault();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    }
+
+    // --- Integration Summary Functions ---
+    function showIntegrationSummary() {
+        // Hide tiles
+        document.querySelector('.integration-tiles').style.display = 'none';
+        
+        // Update progress
+        updateProgressStep(2);
+        
+        // Show summary panel
+        integrationSummary.style.display = 'block';
+        
+        // Update enterprise summary if integrated
+        if (integratedSystems.enterprise) {
+            enterpriseSummaryCard.style.display = 'block';
+            const systemName = enterpriseSystemType.toUpperCase();
+            enterpriseDetails.innerHTML = `
+                <div class="summary-detail-item">
+                    <i class="fa-solid fa-check"></i>
+                    <span>${systemName} System - ${enterpriseModuleCount} module(s) integrated</span>
+                </div>
+            `;
+            addEnterpriseBtn.disabled = true;
+            addEnterpriseBtn.textContent = 'Enterprise System Added';
+        }
+        
+        // Update engineering summary if integrated
+        if (integratedSystems.engineering) {
+            engineeringSummaryCard.style.display = 'block';
+            engineeringDetails.innerHTML = `
+                <div class="summary-detail-item">
+                    <i class="fa-solid fa-check"></i>
+                    <span>${uploadedFile.name}</span>
+                </div>
+            `;
+            addEngineeringBtn.disabled = true;
+            addEngineeringBtn.textContent = 'Engineering Diagram Added';
+        }
+    }
+
+    // Add more enterprise system button
+    addEnterpriseBtn.addEventListener('click', () => {
+        integrationSummary.style.display = 'none';
+        enterprisePanel.style.display = 'block';
+    });
+
+    // Add more engineering system button
+    addEngineeringBtn.addEventListener('click', () => {
+        integrationSummary.style.display = 'none';
+        engineeringPanel.style.display = 'block';
+    });
+
+    // Modify buttons
+    document.querySelectorAll('.modify-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const type = e.target.closest('.modify-btn').getAttribute('data-type');
+            integrationSummary.style.display = 'none';
+            
+            if (type === 'enterprise') {
+                enterprisePanel.style.display = 'block';
+            } else if (type === 'engineering') {
+                engineeringPanel.style.display = 'block';
+            }
+        });
+    });
+
+    // Cancel summary - start over
+    cancelSummaryBtn.addEventListener('click', () => {
+        // Reset all state
+        integratedSystems = { enterprise: false, engineering: false };
+        enterpriseSystemType = null;
+        enterpriseModuleCount = 0;
+        uploadedFile = null;
+        enterpriseModuleFiles = {
+            erp: { inventory: null, procurement: null, quality: null, production: null },
+            crm: { customers: null, leads: null, marketing: null, opportunities: null }
+        };
+        
+        // Reset UI
+        integrationSummary.style.display = 'none';
+        enterpriseSummaryCard.style.display = 'none';
+        engineeringSummaryCard.style.display = 'none';
+        document.querySelector('.integration-tiles').style.display = 'grid';
+        addEnterpriseBtn.disabled = false;
+        addEnterpriseBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Enterprise System';
+        addEngineeringBtn.disabled = false;
+        addEngineeringBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Engineering Diagram';
+        
+        // Reset progress
+        updateProgressStep(1);
+    });
+
+    // Unify All Data button - BACKEND PROCESSING HAPPENS HERE
+    unifyAllBtn.addEventListener('click', async () => {
+        if (!integratedSystems.enterprise && !integratedSystems.engineering) {
+            alert('Please integrate at least one system before unifying.');
+            return;
+        }
+
+        // Update progress to step 3
+        updateProgressStep(3);
+
+        // Hide summary and show processing
+        integrationSummary.style.display = 'none';
+        processingInfo.style.display = 'block';
+        unifyMessage.style.display = 'block';
+        unifyMessage.textContent = `Now unifying all data for ${companyName || 'your company'}... this may take a moment.`;
+        successMessage.style.display = 'none';
+
+        try {
+            // Process enterprise data if available
+            if (integratedSystems.enterprise) {
+                const currentModules = enterpriseModuleFiles[enterpriseSystemType];
+                const filesToUpload = Object.entries(currentModules).filter(([_, file]) => file !== null);
+                
+                const uploadPromises = filesToUpload.map(([module, file]) => {
+                    return simulateEnterpriseUpload(enterpriseSystemType, module, file);
+                });
+                
+                await Promise.all(uploadPromises);
+            }
+
+            // Process engineering data if available - BACKEND LOGIC REMAINS THE SAME
+            if (integratedSystems.engineering && uploadedFile) {
+                const formData = new FormData();
+                formData.append('file', uploadedFile);
+
+                const response = await fetch(ENGINEERING_ENDPOINT, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`Network response was not ok: ${text}`);
+                }
+
+                const data = await response.json();
+                console.log('Engineering file processed successfully:', data);
+            }
+
+            processingInfo.style.display = 'none';
+            unifyMessage.style.display = 'none';
+
+            // Show unified state on success
+            showUnifiedState();
+
+            // Append a URL parameter to the current page to preserve the state
+            const newUrl = `${window.location.pathname}?company=${encodeURIComponent(companyName)}&unified=true`;
+            history.pushState({}, '', newUrl);
+
+        } catch (error) {
+            console.error('Upload error:', error);
+            processingInfo.style.display = 'none';
+            unifyMessage.style.display = 'none';
+            successMessage.textContent = `Error: ${error.message}`;
+            successMessage.style.color = 'red';
+            successMessage.style.display = 'block';
+            integrationSummary.style.display = 'block';
+            updateProgressStep(2);
+        }
+    });
+});

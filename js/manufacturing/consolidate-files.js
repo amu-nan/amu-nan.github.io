@@ -77,11 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Track what's been integrated
     let integratedSystems = {
-        enterprise: false,
+        erp: false,
+        crm: false,
         engineering: false
     };
-    let enterpriseSystemType = null; // 'erp' or 'crm'
-    let enterpriseModuleCount = 0;
+    let erpModuleCount = 0;
+    let crmModuleCount = 0;
 
     // --- References for Unified State (Completion) UI ---
     const chatButton = document.getElementById('chatButton');

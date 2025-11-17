@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let uploadedFile = null;
     let currentEnterpriseSystem = 'erp';
     let enterpriseModuleFiles = {
-        erp: { inventory: null, procurement: null, quality: null, production: null },
+        erp: { inventory: null, procurement: null, production: null },
         crm: { customers: null, leads: null, marketing: null, opportunities: null }
     };
     
@@ -243,10 +243,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Enterprise Module File Upload Handlers ---
     function setupModuleUpload(system, module) {
         const fileInput = document.getElementById(`${system}-${module}-file`);
-        const uploadLabel = fileInput.nextElementSibling;
-        const statusEl = uploadLabel.nextElementSibling;
+        if (!fileInput) {
+            console.error(`File input not found for ${system}-${module}`);
+            return;
+        }
+        
         const moduleCard = fileInput.closest('.module-card');
+        if (!moduleCard) {
+            console.error(`Module card not found for ${system}-${module}`);
+            return;
+        }
+        
+        const uploadLabel = moduleCard.querySelector('.upload-label');
+        const statusEl = moduleCard.querySelector('.upload-status');
         const moduleStatus = moduleCard.querySelector('.module-status');
+        
+        if (!uploadLabel || !statusEl || !moduleStatus) {
+            console.error(`Missing elements for ${system}-${module}`);
+            return;
+        }
         
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -276,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Setup all module uploads
-    ['inventory', 'procurement', 'quality', 'production'].forEach(module => {
+    ['inventory', 'procurement', 'production'].forEach(module => {
         setupModuleUpload('erp', module);
     });
     ['customers', 'leads', 'marketing', 'opportunities'].forEach(module => {
@@ -578,7 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
         crmModuleCount = 0;
         uploadedFile = null;
         enterpriseModuleFiles = {
-            erp: { inventory: null, procurement: null, quality: null, production: null },
+            erp: { inventory: null, procurement: null, production: null },
             crm: { customers: null, leads: null, marketing: null, opportunities: null }
         };
         

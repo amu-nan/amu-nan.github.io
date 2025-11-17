@@ -25,6 +25,7 @@
     justify-content: center;
     font-weight: 600;
     font-size: 16px;
+    font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
 }
 
@@ -42,6 +43,7 @@
     font-size: 13px;
     color: #7f8c8d;
     font-weight: 500;
+    font-family: 'Poppins', sans-serif;
 }
 
 .progress-step.active .step-label {
@@ -62,6 +64,25 @@
 .progress-step.active ~ .progress-line,
 .progress-step.completed ~ .progress-line {
     background: #3498db;
+}
+
+/* Page Title and Intro */
+.page-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.page-intro {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 16px;
+    margin: 0 auto 20px;
+    max-width: 700px;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Integration Tiles - Main Layout */

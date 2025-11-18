@@ -1,5 +1,5 @@
 // RBAC Setup Page JavaScript
-
+  
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize dropdown menu logic (from existing page)
     initializeDropdown();

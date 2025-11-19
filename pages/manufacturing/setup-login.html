@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Role - Xforia for Manufacturing</title>
+    <link rel="icon" type="image/png" href="../../images/Subject.png">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/manufacturing/setup-login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <a href="../../index.html">
+                <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            </a>
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+    </header>
+
+    <main class="login-page">
+        <!-- Role Selection View -->
+        <div class="role-selection-container" id="roleSelectionView">
+            <div class="login-header">
+                <div class="success-icon">
+                    <i class="fa-solid fa-check-circle"></i>
+                </div>
+                <h1 class="login-title">Setup Complete!</h1>
+                <p class="login-subtitle" id="companyGreeting">Select your role to continue</p>
+            </div>
+
+            <div class="roles-selection-grid">
+                <!-- Administrator Role - ACTIVE -->
+                <div class="role-selection-card active" data-role="administrator">
+                    <div class="role-card-icon">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h3 class="role-card-title">Administrator</h3>
+                    <p class="role-card-description">Full system access and configuration</p>
+                    <button class="select-role-btn">
+                        <i class="fa-solid fa-arrow-right"></i> Select Role
+                    </button>
+                </div>
+
+                <!-- Product Owner Role - INACTIVE -->
+                <div class="role-selection-card inactive" data-role="product-owner">
+                    <div class="role-card-icon">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <h3 class="role-card-title">Product Owner</h3>
+                    <p class="role-card-description">Strategic oversight and analytics</p>
+                    <span class="inactive-badge">Coming Soon</span>
+                </div>
+
+                <!-- Manager Role - INACTIVE -->
+                <div class="role-selection-card inactive" data-role="manager">
+                    <div class="role-card-icon">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <h3 class="role-card-title">Manager</h3>
+                    <p class="role-card-description">Team management and workflows</p>
+                    <span class="inactive-badge">Coming Soon</span>
+                </div>
+
+                <!-- Analyst Role - INACTIVE -->
+                <div class="role-selection-card inactive" data-role="analyst">
+                    <div class="role-card-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3 class="role-card-title">Analyst</h3>
+                    <p class="role-card-description">Data analysis and reporting</p>
+                    <span class="inactive-badge">Coming Soon</span>
+                </div>
+
+                <!-- User Role - INACTIVE -->
+                <div class="role-selection-card inactive" data-role="user">
+                    <div class="role-card-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3 class="role-card-title">User</h3>
+                    <p class="role-card-description">Basic access and tasks</p>
+                    <span class="inactive-badge">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Form View (shown after role selection) -->
+        <div class="login-container" id="loginFormView" style="display: none;">
+            <div class="login-header">
+                <h1 class="login-title">Administrator Login</h1>
+                <p class="login-subtitle" id="roleSubtitle">Sign in to access your dashboard</p>
+            </div>
+
+            <div class="login-card">
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="username" class="form-label">
+                            <i class="fa-solid fa-user"></i> Username
+                        </label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            class="form-input" 
+                            placeholder="Enter: Xforia"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">
+                            <i class="fa-solid fa-lock"></i> Password
+                        </label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="form-input" 
+                                placeholder="Enter: Xforia"
+                                required
+                            >
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-hint-text">
+                        <i class="fa-solid fa-info-circle"></i>
+                        Demo credentials: <strong>Xforia</strong> / <strong>Xforia</strong>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        Sign In <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <button class="back-to-roles-btn" id="backToRoles">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Role Selection
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get company name from localStorage
+            const setupConfig = JSON.parse(localStorage.getItem('xforiaSetupConfig') || '{}');
+            const companyName = setupConfig.companyName || 'Your Organization';
+            
+            document.getElementById('companyGreeting').textContent = 
+                `Welcome to ${companyName}! Select your role to continue`;
+
+            const roleSelectionView = document.getElementById('roleSelectionView');
+            const loginFormView = document.getElementById('loginFormView');
+
+            // Handle role selection
+            document.querySelectorAll('.role-selection-card.active .select-role-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const roleCard = this.closest('.role-selection-card');
+                    const roleName = roleCard.getAttribute('data-role');
+                    
+                    // Hide role selection, show login form
+                    roleSelectionView.style.display = 'none';
+                    loginFormView.style.display = 'block';
+                    
+                    // Update login header based on role
+                    const roleTitles = {
+                        'administrator': 'Administrator',
+                        'product-owner': 'Product Owner',
+                        'manager': 'Manager',
+                        'analyst': 'Analyst',
+                        'user': 'User'
+                    };
+                    
+                    document.querySelector('#loginFormView .login-title').textContent = 
+                        `${roleTitles[roleName]} Login`;
+                });
+            });
+
+            // Back to roles button
+            document.getElementById('backToRoles').addEventListener('click', function() {
+                loginFormView.style.display = 'none';
+                roleSelectionView.style.display = 'block';
+            });
+
+            // Password toggle
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+
+            // Form submission with validation
+            const loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                
+                // Simple authentication check
+                if (username === 'Xforia' && password === 'Xforia') {
+                    // Show loading state
+                    const loginButton = loginForm.querySelector('.login-button');
+                    const originalText = loginButton.innerHTML;
+                    loginButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...';
+                    loginButton.disabled = true;
+
+                    // Simulate authentication delay
+                    setTimeout(() => {
+                        // Redirect to consolidate-files page
+                        window.location.href = `consolidate-files.html?company=${encodeURIComponent(companyName)}`;
+                    }, 1000);
+                } else {
+                    // Show error message
+                    alert('Invalid credentials. Please use:\nUsername: Xforia\nPassword: Xforia');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

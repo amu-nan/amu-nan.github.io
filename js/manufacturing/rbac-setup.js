@@ -88,34 +88,10 @@ document.addEventListener('DOMContentLoaded', function() {
         nextBtn.style.display = currentStep === totalSteps ? 'none' : 'flex';
         completeBtn.style.display = currentStep === totalSteps ? 'flex' : 'none';
 
-        // Update header text based on step
-        updateHeaderText();
-
         // If on review step, populate review section
         if (currentStep === 5) {
             populateReview();
         }
-    }
-
-    function updateHeaderText() {
-        const titles = {
-            1: `Welcome, ${companyName}!`,
-            2: 'Network & Integration',
-            3: 'Security & Compliance',
-            4: 'Role-Based Access Control',
-            5: 'Ready to Launch!'
-        };
-
-        const subtitles = {
-            1: "Let's configure your manufacturing intelligence platform",
-            2: 'Configure system integration and notifications',
-            3: 'Set up security protocols and compliance requirements',
-            4: 'Define user roles and permissions',
-            5: 'Review your configuration and complete setup'
-        };
-
-        document.getElementById('setupTitle').innerHTML = titles[currentStep].replace(companyName, `<span>${companyName}</span>`);
-        document.getElementById('setupSubtitle').textContent = subtitles[currentStep];
     }
 
     function validateCurrentStep() {
@@ -383,9 +359,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Role toggle functionality
     document.querySelectorAll('.role-checkbox').forEach(checkbox => {
-        // Skip disabled checkboxes (the 5 core roles)
-        if (checkbox.disabled) return;
-
         checkbox.addEventListener('change', function() {
             const roleCard = this.closest('.role-card');
             const roleBadge = roleCard.querySelector('.role-badge');

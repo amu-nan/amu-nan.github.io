@@ -72,20 +72,17 @@
 
         <!-- Setup Form Container -->
         <div class="setup-container">
-            <div class="setup-header">
-                <h1 class="setup-title" id="setupTitle">Welcome, <span id="companyNameDisplay"></span>!</h1>
-                <p class="setup-subtitle" id="setupSubtitle">Let's configure your manufacturing intelligence platform</p>
-            </div>
+            <!-- Header is now shown dynamically per step, not here -->
 
             <!-- Step 1: Enterprise Systems -->
             <div class="setup-step active" id="step1">
+                <div class="setup-header">
+                    <h1 class="setup-title">Welcome, <span id="companyNameDisplay"></span>!</h1>
+                    <p class="setup-subtitle">Let's configure your manufacturing intelligence platform</p>
+                </div>
                 <div class="step-content">
                     <h2 class="step-heading">Select Your Enterprise Systems</h2>
                     <p class="step-description">Choose the systems you currently use and indicate which ones handle the most data</p>
-                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
-                        <i class="fa-solid fa-info-circle" style="color: #3498db; margin-right: 8px;"></i>
-                        <strong>Tip:</strong> Select at least one system from the dropdown menus below to continue
-                    </div>
 
                     <div class="systems-grid">
                         <!-- ERP System -->
@@ -198,6 +195,10 @@
 
             <!-- Step 2: Network & Integration -->
             <div class="setup-step" id="step2">
+                <div class="setup-header">
+                    <h1 class="setup-title">Network & Integration</h1>
+                    <p class="setup-subtitle">Configure system integration and notifications</p>
+                </div>
                 <div class="step-content">
                     <h2 class="step-heading">Network & Integration Settings</h2>
                     <p class="step-description">Configure network integration and email notification settings</p>
@@ -306,6 +307,10 @@
 
             <!-- Step 3: Security & Compliance -->
             <div class="setup-step" id="step3">
+                <div class="setup-header">
+                    <h1 class="setup-title">Security & Compliance</h1>
+                    <p class="setup-subtitle">Set up security protocols and compliance requirements</p>
+                </div>
                 <div class="step-content">
                     <h2 class="step-heading">Security & Compliance Settings</h2>
                     <p class="step-description">Configure audit trails and data retention policies for regulatory compliance</p>
@@ -423,6 +428,10 @@
 
             <!-- Step 4: Role Setup -->
             <div class="setup-step" id="step4">
+                <div class="setup-header">
+                    <h1 class="setup-title">Role-Based Access Control</h1>
+                    <p class="setup-subtitle">Define user roles and permissions</p>
+                </div>
                 <div class="step-content">
                     <h2 class="step-heading">Define User Roles & Permissions</h2>
                     <p class="step-description">Select which roles your organization will use and review their access levels</p>
@@ -439,7 +448,7 @@
                                     <span class="role-badge active-badge">Active</span>
                                 </div>
                                 <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <input type="checkbox" class="role-checkbox" checked>
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>
@@ -477,7 +486,7 @@
                                     <span class="role-badge active-badge">Active</span>
                                 </div>
                                 <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <input type="checkbox" class="role-checkbox" checked>
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>
@@ -515,7 +524,7 @@
                                     <span class="role-badge active-badge">Active</span>
                                 </div>
                                 <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <input type="checkbox" class="role-checkbox" checked>
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>
@@ -553,7 +562,7 @@
                                     <span class="role-badge active-badge">Active</span>
                                 </div>
                                 <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <input type="checkbox" class="role-checkbox" checked>
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>
@@ -591,7 +600,7 @@
                                     <span class="role-badge active-badge">Active</span>
                                 </div>
                                 <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <input type="checkbox" class="role-checkbox" checked>
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>
@@ -698,6 +707,10 @@
 
             <!-- Step 5: Review & Confirm -->
             <div class="setup-step" id="step5">
+                <div class="setup-header">
+                    <h1 class="setup-title">Ready to Launch!</h1>
+                    <p class="setup-subtitle">Review your configuration and complete setup</p>
+                </div>
                 <div class="step-content">
                     <h2 class="step-heading">Review Your Configuration</h2>
                     <p class="step-description">Please review your settings before completing the setup</p>

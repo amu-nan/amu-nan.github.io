@@ -115,14 +115,14 @@
             // New logic for the Company Name and Button
             const companyNameInput = document.getElementById('companyNameInput');
             const powerMyManufacturingButton = document.getElementById('powerMyManufacturingButton');
-
+            
             powerMyManufacturingButton.addEventListener('click', function(event) {
                 event.preventDefault();
                 const companyName = companyNameInput.value.trim();
                 
                 if (companyName) {
-                    // Redirect to the consolidate page with the company name as a query parameter
-                    window.location.href = `consolidate-files.html?company=${encodeURIComponent(companyName)}`;
+                    // CHANGED THIS LINE - now goes to rbac-setup.html instead
+                    window.location.href = `rbac-setup.html?company=${encodeURIComponent(companyName)}`;
                 } else {
                     alert('Please enter your company name to proceed.');
                 }

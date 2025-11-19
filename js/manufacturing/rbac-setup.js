@@ -119,40 +119,39 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function validateCurrentStep() {
+        console.log('Validating step:', currentStep); // Debug log
+        
         switch (currentStep) {
             case 1:
                 // Check if at least one system is selected
                 const systems = ['erpSystem', 'crmSystem', 'scmSystem', 'mesSystem', 'plmSystem'];
-                const hasSelection = systems.some(id => document.getElementById(id).value !== '');
+                const hasSelection = systems.some(id => {
+                    const element = document.getElementById(id);
+                    const value = element ? element.value : '';
+                    console.log(`${id}:`, value); // Debug log
+                    return value !== '';
+                });
                 
                 if (!hasSelection) {
-                    alert('Please select at least one enterprise system to continue.');
+                    alert('Please select at least one enterprise system from the dropdowns to continue.');
                     return false;
                 }
+                console.log('Step 1 validation passed'); // Debug log
                 return true;
 
             case 2:
-                // Validate SMTP configuration if email notifications are important
-                const smtpServer = document.getElementById('smtpServer').value.trim();
-                const senderEmail = document.getElementById('senderEmail').value.trim();
-                
-                if (smtpServer && !senderEmail) {
-                    alert('Please provide a sender email address for SMTP configuration.');
-                    return false;
-                }
-                
-                if (senderEmail && !isValidEmail(senderEmail)) {
-                    alert('Please provide a valid sender email address.');
-                    return false;
-                }
+                // Step 2 is now optional - no required fields
+                console.log('Step 2 validation passed (optional)'); // Debug log
                 return true;
 
             case 3:
                 // Security step - always valid but we'll save the data
+                console.log('Step 3 validation passed'); // Debug log
                 return true;
 
             case 4:
                 // Role step - always valid (5 roles are active by default)
+                console.log('Step 4 validation passed'); // Debug log
                 return true;
 
             default:

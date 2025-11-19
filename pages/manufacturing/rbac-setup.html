@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup - Xforia for Manufacturing</title>
+    <title>Organization Setup - Xforia for Manufacturing</title>
     <link rel="icon" type="image/png" href="../../images/Subject.png">
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/manufacturing/rbac-setup.css">
@@ -49,19 +49,19 @@
             <div class="progress-steps">
                 <div class="progress-step active" data-step="1">
                     <div class="step-circle">1</div>
-                    <span class="step-label">Systems</span>
+                    <span class="step-label">Enterprise Systems</span>
                 </div>
                 <div class="progress-step" data-step="2">
                     <div class="step-circle">2</div>
-                    <span class="step-label">Integration</span>
+                    <span class="step-label">Network & Integration</span>
                 </div>
                 <div class="progress-step" data-step="3">
                     <div class="step-circle">3</div>
-                    <span class="step-label">Security</span>
+                    <span class="step-label">Security & Compliance</span>
                 </div>
                 <div class="progress-step" data-step="4">
                     <div class="step-circle">4</div>
-                    <span class="step-label">Roles</span>
+                    <span class="step-label">Role Setup</span>
                 </div>
                 <div class="progress-step" data-step="5">
                     <div class="step-circle">5</div>
@@ -70,964 +70,675 @@
             </div>
         </div>
 
-        <!-- Welcome Section -->
-        <div class="welcome-section" id="welcomeSection">
-            <h1 class="setup-headline">Welcome to Xforia COAST, <span id="companyNameDisplay"></span>!</h1>
-            <p class="setup-subheadline">Let's configure your manufacturing intelligence platform. This setup will take about 5 minutes.</p>
-        </div>
+        <!-- Setup Form Container -->
+        <div class="setup-container">
+            <div class="setup-header">
+                <h1 class="setup-title" id="setupTitle">Welcome, <span id="companyNameDisplay"></span>!</h1>
+                <p class="setup-subtitle" id="setupSubtitle">Let's configure your manufacturing intelligence platform</p>
+            </div>
 
-        <!-- Step 1: Organization Profile & Enterprise Systems -->
-        <div class="setup-step active" id="step1">
-            <div class="step-content">
-                <h2 class="step-title"><i class="fa-solid fa-building"></i> Organization Profile & Enterprise Systems</h2>
-                <p class="step-description">Tell us about your organization and the systems you use</p>
+            <!-- Step 1: Enterprise Systems -->
+            <div class="setup-step active" id="step1">
+                <div class="step-content">
+                    <h2 class="step-heading">Select Your Enterprise Systems</h2>
+                    <p class="step-description">Choose the systems you currently use and indicate which ones handle the most data</p>
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+                        <i class="fa-solid fa-info-circle" style="color: #3498db; margin-right: 8px;"></i>
+                        <strong>Tip:</strong> Select at least one system from the dropdown menus below to continue
+                    </div>
 
-                <div class="form-group">
-                    <label for="industrySubsector">Industry Sub-Sector</label>
-                    <select id="industrySubsector" required>
-                        <option value="">Select your industry focus</option>
-                        <option value="automotive">Automotive Manufacturing</option>
-                        <option value="aerospace">Aerospace & Defense</option>
-                        <option value="electronics">Electronics & Semiconductors</option>
-                        <option value="pharmaceutical">Pharmaceutical & Life Sciences</option>
-                        <option value="food-beverage">Food & Beverage</option>
-                        <option value="chemicals">Chemicals & Materials</option>
-                        <option value="metals">Metals & Mining</option>
-                        <option value="consumer-goods">Consumer Goods</option>
-                        <option value="industrial-equipment">Industrial Equipment</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
+                    <div class="systems-grid">
+                        <!-- ERP System -->
+                        <div class="system-card">
+                            <div class="system-header">
+                                <i class="fa-solid fa-database"></i>
+                                <h3>ERP System</h3>
+                            </div>
+                            <select class="system-select" id="erpSystem" data-system="erp">
+                                <option value="">Select ERP</option>
+                                <option value="sap">SAP ERP</option>
+                                <option value="oracle">Oracle ERP Cloud</option>
+                                <option value="microsoft">Microsoft Dynamics 365</option>
+                                <option value="infor">Infor CloudSuite</option>
+                                <option value="epicor">Epicor ERP</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label class="heavy-usage-label">
+                                <input type="checkbox" class="heavy-checkbox" data-system="erp">
+                                <span>Heavy Usage (Primary System)</span>
+                            </label>
+                        </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="employeeCount">Number of Employees</label>
-                        <select id="employeeCount" required>
-                            <option value="">Select range</option>
-                            <option value="1-50">1-50</option>
-                            <option value="51-200">51-200</option>
-                            <option value="201-500">201-500</option>
-                            <option value="501-1000">501-1,000</option>
-                            <option value="1001-5000">1,001-5,000</option>
-                            <option value="5001+">5,000+</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="facilityCount">Number of Facilities</label>
-                        <input type="number" id="facilityCount" placeholder="e.g., 3" min="1" required>
-                    </div>
-                </div>
+                        <!-- CRM System -->
+                        <div class="system-card">
+                            <div class="system-header">
+                                <i class="fa-solid fa-users"></i>
+                                <h3>CRM System</h3>
+                            </div>
+                            <select class="system-select" id="crmSystem" data-system="crm">
+                                <option value="">Select CRM</option>
+                                <option value="salesforce">Salesforce</option>
+                                <option value="microsoft">Microsoft Dynamics CRM</option>
+                                <option value="oracle">Oracle CRM</option>
+                                <option value="sap">SAP CRM</option>
+                                <option value="hubspot">HubSpot</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label class="heavy-usage-label">
+                                <input type="checkbox" class="heavy-checkbox" data-system="crm">
+                                <span>Heavy Usage (Primary System)</span>
+                            </label>
+                        </div>
 
-                <div class="section-divider">
-                    <h3><i class="fa-solid fa-network-wired"></i> Enterprise Systems Integration</h3>
-                    <p class="section-subtitle">Select the systems you use and indicate which one processes the most data</p>
-                </div>
+                        <!-- SCM System -->
+                        <div class="system-card">
+                            <div class="system-header">
+                                <i class="fa-solid fa-truck"></i>
+                                <h3>SCM System</h3>
+                            </div>
+                            <select class="system-select" id="scmSystem" data-system="scm">
+                                <option value="">Select SCM</option>
+                                <option value="sap">SAP SCM</option>
+                                <option value="oracle">Oracle SCM Cloud</option>
+                                <option value="blueyonder">Blue Yonder</option>
+                                <option value="kinaxis">Kinaxis RapidResponse</option>
+                                <option value="infor">Infor SCM</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label class="heavy-usage-label">
+                                <input type="checkbox" class="heavy-checkbox" data-system="scm">
+                                <span>Heavy Usage (Primary System)</span>
+                            </label>
+                        </div>
 
-                <!-- ERP System -->
-                <div class="system-group">
-                    <div class="system-header">
-                        <input type="checkbox" id="erpEnabled" class="system-checkbox">
-                        <label for="erpEnabled" class="system-label">
-                            <i class="fa-solid fa-database"></i>
-                            <span class="system-name">ERP (Enterprise Resource Planning)</span>
-                        </label>
-                        <span class="tooltip-icon" title="Manages core business processes like finance, HR, and supply chain">
-                            <i class="fa-solid fa-circle-info"></i>
-                        </span>
-                    </div>
-                    <div class="system-details" id="erpDetails" style="display: none;">
-                        <select id="erpVendor" class="vendor-select">
-                            <option value="">Select ERP System</option>
-                            <option value="sap">SAP (S/4HANA, ECC)</option>
-                            <option value="oracle">Oracle (EBS, Cloud ERP)</option>
-                            <option value="microsoft">Microsoft Dynamics 365</option>
-                            <option value="infor">Infor CloudSuite</option>
-                            <option value="epicor">Epicor ERP</option>
-                            <option value="ifs">IFS Applications</option>
-                            <option value="netsuite">NetSuite</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <label class="heavy-usage-label">
-                            <input type="radio" name="heavySystem" value="erp">
-                            <span>Primary/Heavy Usage System</span>
-                        </label>
-                    </div>
-                </div>
+                        <!-- MES System -->
+                        <div class="system-card">
+                            <div class="system-header">
+                                <i class="fa-solid fa-industry"></i>
+                                <h3>MES System</h3>
+                            </div>
+                            <select class="system-select" id="mesSystem" data-system="mes">
+                                <option value="">Select MES</option>
+                                <option value="siemens">Siemens Opcenter</option>
+                                <option value="rockwell">Rockwell FactoryTalk</option>
+                                <option value="ge">GE Digital Proficy</option>
+                                <option value="dassault">Dassault DELMIA</option>
+                                <option value="apriso">DELMIA Apriso</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label class="heavy-usage-label">
+                                <input type="checkbox" class="heavy-checkbox" data-system="mes">
+                                <span>Heavy Usage (Primary System)</span>
+                            </label>
+                        </div>
 
-                <!-- CRM System -->
-                <div class="system-group">
-                    <div class="system-header">
-                        <input type="checkbox" id="crmEnabled" class="system-checkbox">
-                        <label for="crmEnabled" class="system-label">
-                            <i class="fa-solid fa-users"></i>
-                            <span class="system-name">CRM (Customer Relationship Management)</span>
-                        </label>
-                        <span class="tooltip-icon" title="Manages customer interactions, sales, and service">
-                            <i class="fa-solid fa-circle-info"></i>
-                        </span>
-                    </div>
-                    <div class="system-details" id="crmDetails" style="display: none;">
-                        <select id="crmVendor" class="vendor-select">
-                            <option value="">Select CRM System</option>
-                            <option value="salesforce">Salesforce</option>
-                            <option value="microsoft-dynamics">Microsoft Dynamics 365 CRM</option>
-                            <option value="sap-crm">SAP Customer Experience</option>
-                            <option value="oracle-crm">Oracle CRM</option>
-                            <option value="hubspot">HubSpot</option>
-                            <option value="zoho">Zoho CRM</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <label class="heavy-usage-label">
-                            <input type="radio" name="heavySystem" value="crm">
-                            <span>Primary/Heavy Usage System</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- SCM System -->
-                <div class="system-group">
-                    <div class="system-header">
-                        <input type="checkbox" id="scmEnabled" class="system-checkbox">
-                        <label for="scmEnabled" class="system-label">
-                            <i class="fa-solid fa-truck-fast"></i>
-                            <span class="system-name">SCM (Supply Chain Management)</span>
-                        </label>
-                        <span class="tooltip-icon" title="Optimizes supply chain operations from procurement to delivery">
-                            <i class="fa-solid fa-circle-info"></i>
-                        </span>
-                    </div>
-                    <div class="system-details" id="scmDetails" style="display: none;">
-                        <select id="scmVendor" class="vendor-select">
-                            <option value="">Select SCM System</option>
-                            <option value="sap-scm">SAP SCM / IBP</option>
-                            <option value="oracle-scm">Oracle SCM Cloud</option>
-                            <option value="blue-yonder">Blue Yonder (JDA)</option>
-                            <option value="kinaxis">Kinaxis RapidResponse</option>
-                            <option value="manhattan">Manhattan Associates</option>
-                            <option value="infor-scm">Infor SCM</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <label class="heavy-usage-label">
-                            <input type="radio" name="heavySystem" value="scm">
-                            <span>Primary/Heavy Usage System</span>
-                        </label>
+                        <!-- PLM System -->
+                        <div class="system-card">
+                            <div class="system-header">
+                                <i class="fa-solid fa-cubes"></i>
+                                <h3>PLM System</h3>
+                            </div>
+                            <select class="system-select" id="plmSystem" data-system="plm">
+                                <option value="">Select PLM</option>
+                                <option value="siemens">Siemens Teamcenter</option>
+                                <option value="ptc">PTC Windchill</option>
+                                <option value="dassault">Dassault ENOVIA</option>
+                                <option value="oracle">Oracle Agile PLM</option>
+                                <option value="arena">Arena PLM</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label class="heavy-usage-label">
+                                <input type="checkbox" class="heavy-checkbox" data-system="plm">
+                                <span>Heavy Usage (Primary System)</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- MES System -->
-                <div class="system-group">
-                    <div class="system-header">
-                        <input type="checkbox" id="mesEnabled" class="system-checkbox">
-                        <label for="mesEnabled" class="system-label">
-                            <i class="fa-solid fa-industry"></i>
-                            <span class="system-name">MES (Manufacturing Execution System)</span>
-                        </label>
-                        <span class="tooltip-icon" title="Tracks and manages production floor operations in real-time">
-                            <i class="fa-solid fa-circle-info"></i>
-                        </span>
-                    </div>
-                    <div class="system-details" id="mesDetails" style="display: none;">
-                        <select id="mesVendor" class="vendor-select">
-                            <option value="">Select MES System</option>
-                            <option value="siemens-opcenter">Siemens Opcenter</option>
-                            <option value="ge-proficy">GE Digital Proficy</option>
-                            <option value="rockwell">Rockwell FactoryTalk</option>
-                            <option value="aveva">AVEVA MES</option>
-                            <option value="dassault">Dassault DELMIA</option>
-                            <option value="sap-me">SAP Manufacturing Execution</option>
-                            <option value="plex">Plex MES</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <label class="heavy-usage-label">
-                            <input type="radio" name="heavySystem" value="mes">
-                            <span>Primary/Heavy Usage System</span>
-                        </label>
+            <!-- Step 2: Network & Integration -->
+            <div class="setup-step" id="step2">
+                <div class="step-content">
+                    <h2 class="step-heading">Network & Integration Settings</h2>
+                    <p class="step-description">Configure network integration and email notification settings</p>
+
+                    <div class="config-section">
+                        <div class="config-card">
+                            <div class="config-header">
+                                <i class="fa-solid fa-network-wired"></i>
+                                <h3>Windows Network Integration</h3>
+                            </div>
+                            <div class="config-body">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        NetBIOS Domain Name
+                                        <span class="info-tooltip" title="Your Windows network domain name for Single Sign-On integration">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </span>
+                                    </label>
+                                    <input type="text" id="netbiosDomain" class="form-input" placeholder="e.g., MANUFACTURING-CORP">
+                                    <small class="form-hint">Leave blank if not using Windows Active Directory</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Deployment Type</label>
+                                    <select id="deploymentType" class="form-input">
+                                        <option value="cloud">Cloud Hosted</option>
+                                        <option value="onpremise">On-Premise</option>
+                                        <option value="hybrid">Hybrid</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-card">
+                            <div class="config-header">
+                                <i class="fa-solid fa-envelope"></i>
+                                <h3>SMTP Email Configuration</h3>
+                            </div>
+                            <div class="config-body">
+                                <div class="form-group">
+                                    <label class="form-label">SMTP Server Address</label>
+                                    <input type="text" id="smtpServer" class="form-input" placeholder="smtp.company.com">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Port</label>
+                                        <input type="number" id="smtpPort" class="form-input" placeholder="587" value="587">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Encryption</label>
+                                        <select id="smtpEncryption" class="form-input">
+                                            <option value="tls">TLS (Port 587)</option>
+                                            <option value="ssl">SSL (Port 465)</option>
+                                            <option value="none">None</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Sender Email Address</label>
+                                    <input type="email" id="senderEmail" class="form-input" placeholder="noreply@company.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="smtpAuth">
+                                        <span>Requires Authentication</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-card">
+                            <div class="config-header">
+                                <i class="fa-solid fa-code-branch"></i>
+                                <h3>Product Version & Updates</h3>
+                            </div>
+                            <div class="config-body">
+                                <div class="form-group">
+                                    <label class="form-label">Current Version</label>
+                                    <input type="text" class="form-input" value="Xforia COAST v2.1.0" disabled>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Update Preference</label>
+                                    <select id="updatePreference" class="form-input">
+                                        <option value="automatic">Automatic Updates</option>
+                                        <option value="manual">Manual Updates</option>
+                                        <option value="notify">Notify Only</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="betaFeatures">
+                                        <span>Opt-in to Beta Features</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- PLM System -->
-                <div class="system-group">
-                    <div class="system-header">
-                        <input type="checkbox" id="plmEnabled" class="system-checkbox">
-                        <label for="plmEnabled" class="system-label">
-                            <i class="fa-solid fa-pencil-ruler"></i>
-                            <span class="system-name">PLM (Product Lifecycle Management)</span>
-                        </label>
-                        <span class="tooltip-icon" title="Manages product data throughout the entire lifecycle">
-                            <i class="fa-solid fa-circle-info"></i>
-                        </span>
-                    </div>
-                    <div class="system-details" id="plmDetails" style="display: none;">
-                        <select id="plmVendor" class="vendor-select">
-                            <option value="">Select PLM System</option>
-                            <option value="siemens-teamcenter">Siemens Teamcenter</option>
-                            <option value="ptc-windchill">PTC Windchill</option>
-                            <option value="dassault-3dexperience">Dassault 3DEXPERIENCE</option>
-                            <option value="oracle-agile">Oracle Agile PLM</option>
-                            <option value="sap-plm">SAP PLM</option>
-                            <option value="autodesk-fusion">Autodesk Fusion Lifecycle</option>
-                            <option value="arena">Arena PLM</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <label class="heavy-usage-label">
-                            <input type="radio" name="heavySystem" value="plm">
-                            <span>Primary/Heavy Usage System</span>
-                        </label>
+            <!-- Step 3: Security & Compliance -->
+            <div class="setup-step" id="step3">
+                <div class="step-content">
+                    <h2 class="step-heading">Security & Compliance Settings</h2>
+                    <p class="step-description">Configure audit trails and data retention policies for regulatory compliance</p>
+
+                    <div class="config-section">
+                        <div class="config-card">
+                            <div class="config-header">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <h3>Audit Trail Configuration</h3>
+                            </div>
+                            <div class="config-body">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Audit Log Retention Period
+                                        <span class="info-tooltip" title="How long to keep audit logs for compliance">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </span>
+                                    </label>
+                                    <select id="auditRetention" class="form-input">
+                                        <option value="30">30 Days</option>
+                                        <option value="90" selected>90 Days</option>
+                                        <option value="180">180 Days</option>
+                                        <option value="365">1 Year</option>
+                                        <option value="730">2 Years</option>
+                                        <option value="1825">5 Years</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Events to Log</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="audit-event" value="login" checked>
+                                            <span>User Login/Logout</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="audit-event" value="data-access" checked>
+                                            <span>Data Access</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="audit-event" value="data-modification" checked>
+                                            <span>Data Modifications</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="audit-event" value="data-export" checked>
+                                            <span>Data Exports</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="audit-event" value="config-changes" checked>
+                                            <span>Configuration Changes</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="audit-event" value="role-changes">
+                                            <span>Role & Permission Changes</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="alertOnSuspicious">
+                                        <span>Alert on Suspicious Activity</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-card">
+                            <div class="config-header">
+                                <i class="fa-solid fa-certificate"></i>
+                                <h3>Compliance & Certifications</h3>
+                            </div>
+                            <div class="config-body">
+                                <div class="form-group">
+                                    <label class="form-label">Required Compliance Standards</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="compliance-standard" value="iso9001">
+                                            <span>ISO 9001 (Quality Management)</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="compliance-standard" value="iso27001">
+                                            <span>ISO 27001 (Information Security)</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="compliance-standard" value="fda">
+                                            <span>FDA 21 CFR Part 11</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="compliance-standard" value="gdpr">
+                                            <span>GDPR Compliance</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" class="compliance-standard" value="soc2">
+                                            <span>SOC 2 Type II</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Data Residency Requirement</label>
+                                    <select id="dataResidency" class="form-input">
+                                        <option value="none">No Restriction</option>
+                                        <option value="us">United States</option>
+                                        <option value="eu">European Union</option>
+                                        <option value="uk">United Kingdom</option>
+                                        <option value="apac">Asia Pacific</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- Step 4: Role Setup -->
+            <div class="setup-step" id="step4">
+                <div class="step-content">
+                    <h2 class="step-heading">Define User Roles & Permissions</h2>
+                    <p class="step-description">Select which roles your organization will use and review their access levels</p>
+
+                    <div class="roles-grid">
+                        <!-- Administrator Role -->
+                        <div class="role-card active" data-role="administrator">
+                            <div class="role-header">
+                                <div class="role-icon">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                </div>
+                                <div class="role-info">
+                                    <h3>Administrator</h3>
+                                    <span class="role-badge active-badge">Active</span>
+                                </div>
+                                <label class="role-toggle">
+                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="role-body">
+                                <p class="role-description">Full system access with user management and configuration capabilities</p>
+                                <div class="permissions-list">
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>All system configuration</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>User & role management</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Full data access</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Security & audit controls</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product Owner Role -->
+                        <div class="role-card active" data-role="product-owner">
+                            <div class="role-header">
+                                <div class="role-icon">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <div class="role-info">
+                                    <h3>Product Owner</h3>
+                                    <span class="role-badge active-badge">Active</span>
+                                </div>
+                                <label class="role-toggle">
+                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="role-body">
+                                <p class="role-description">Strategic oversight with cross-functional data visibility and product roadmap access</p>
+                                <div class="permissions-list">
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Cross-functional dashboards</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Strategic analytics</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Product roadmap visibility</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Budget & resource data</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manager Role -->
+                        <div class="role-card active" data-role="manager">
+                            <div class="role-header">
+                                <div class="role-icon">
+                                    <i class="fa-solid fa-user-gear"></i>
+                                </div>
+                                <div class="role-info">
+                                    <h3>Manager</h3>
+                                    <span class="role-badge active-badge">Active</span>
+                                </div>
+                                <label class="role-toggle">
+                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="role-body">
+                                <p class="role-description">Team management with operational dashboards and approval workflow capabilities</p>
+                                <div class="permissions-list">
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Team dashboards</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Approval workflows</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Team performance metrics</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Resource allocation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Analyst Role -->
+                        <div class="role-card active" data-role="analyst">
+                            <div class="role-header">
+                                <div class="role-icon">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                </div>
+                                <div class="role-info">
+                                    <h3>Analyst</h3>
+                                    <span class="role-badge active-badge">Active</span>
+                                </div>
+                                <label class="role-toggle">
+                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="role-body">
+                                <p class="role-description">Advanced data analysis tools with reporting capabilities and read-access to modules</p>
+                                <div class="permissions-list">
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Data analysis tools</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Report generation</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Read-access to all modules</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Data export capabilities</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Role -->
+                        <div class="role-card active" data-role="user">
+                            <div class="role-header">
+                                <div class="role-icon">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <div class="role-info">
+                                    <h3>User</h3>
+                                    <span class="role-badge active-badge">Active</span>
+                                </div>
+                                <label class="role-toggle">
+                                    <input type="checkbox" class="role-checkbox" checked disabled>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="role-body">
+                                <p class="role-description">Basic access with assigned tasks and limited data views for day-to-day operations</p>
+                                <div class="permissions-list">
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Assigned tasks</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Personal dashboards</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Limited data entry</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Basic reporting</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Roles (Inactive by default) -->
+                        <div class="role-card" data-role="engineer">
+                            <div class="role-header">
+                                <div class="role-icon">
+                                    <i class="fa-solid fa-helmet-safety"></i>
+                                </div>
+                                <div class="role-info">
+                                    <h3>Engineer</h3>
+                                    <span class="role-badge">Inactive</span>
+                                </div>
+                                <label class="role-toggle">
+                                    <input type="checkbox" class="role-checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="role-body">
+                                <p class="role-description">Engineering-focused access with CAD integration and technical documentation</p>
+                                <div class="permissions-list">
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>CAD file access</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Technical documentation</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Design change management</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>BOM access</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="role-card" data-role="quality">
+                            <div class="role-header">
+                                <div class="role-icon">
+                                    <i class="fa-solid fa-clipboard-check"></i>
+                                </div>
+                                <div class="role-info">
+                                    <h3>Quality Manager</h3>
+                                    <span class="role-badge">Inactive</span>
+                                </div>
+                                <label class="role-toggle">
+                                    <input type="checkbox" class="role-checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="role-body">
+                                <p class="role-description">Quality control and compliance management with audit capabilities</p>
+                                <div class="permissions-list">
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Quality metrics</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Compliance tracking</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Inspection workflows</span>
+                                    </div>
+                                    <div class="permission-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Non-conformance reports</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Review & Confirm -->
+            <div class="setup-step" id="step5">
+                <div class="step-content">
+                    <h2 class="step-heading">Review Your Configuration</h2>
+                    <p class="step-description">Please review your settings before completing the setup</p>
+
+                    <div class="review-container">
+                        <div class="review-section">
+                            <h3 class="review-title"><i class="fa-solid fa-database"></i> Enterprise Systems</h3>
+                            <div id="reviewSystems" class="review-content"></div>
+                        </div>
+
+                        <div class="review-section">
+                            <h3 class="review-title"><i class="fa-solid fa-network-wired"></i> Network & Integration</h3>
+                            <div id="reviewNetwork" class="review-content"></div>
+                        </div>
+
+                        <div class="review-section">
+                            <h3 class="review-title"><i class="fa-solid fa-shield-halved"></i> Security & Compliance</h3>
+                            <div id="reviewSecurity" class="review-content"></div>
+                        </div>
+
+                        <div class="review-section">
+                            <h3 class="review-title"><i class="fa-solid fa-users-gear"></i> Active Roles</h3>
+                            <div id="reviewRoles" class="review-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button class="nav-btn secondary-btn" id="prevBtn" style="display: none;">
+                    <i class="fa-solid fa-arrow-left"></i> Previous
+                </button>
+                <button class="nav-btn primary-btn" id="nextBtn">
+                    Next <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <button class="nav-btn primary-btn" id="completeBtn" style="display: none;">
+                    Complete Setup <i class="fa-solid fa-check"></i>
+                </button>
             </div>
         </div>
-
-        <!-- Step 2: Network & Integration Settings -->
-        <div class="setup-step" id="step2">
-            <div class="step-content">
-                <h2 class="step-title"><i class="fa-solid fa-server"></i> Network & Integration Settings</h2>
-                <p class="step-description">Configure network and communication settings for seamless integration</p>
-
-                <div class="info-card">
-                    <i class="fa-solid fa-lightbulb"></i>
-                    <div>
-                        <strong>Why we need this:</strong> These settings enable secure communication between Xforia and your enterprise systems, ensuring automated notifications and network authentication work properly.
-                    </div>
-                </div>
-
-                <!-- NetBIOS Configuration -->
-                <div class="section-divider">
-                    <h3><i class="fa-solid fa-network-wired"></i> Windows Network Integration (Optional)</h3>
-                    <p class="section-subtitle">Enable Single Sign-On (SSO) for Windows domain users</p>
-                </div>
-
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="netbiosEnabled">
-                        <span>Enable Windows Network Integration (NetBIOS)</span>
-                    </label>
-                    <p class="help-text">Check this if your organization uses Windows Active Directory and you want to enable SSO</p>
-                </div>
-
-                <div id="netbiosConfig" style="display: none;">
-                    <div class="form-group">
-                        <label for="netbiosDomain">NetBIOS Domain Name</label>
-                        <input type="text" id="netbiosDomain" placeholder="e.g., MANUFACTURING-CORP" class="uppercase-input">
-                        <p class="help-text">Your Windows domain name (usually in UPPERCASE)</p>
-                    </div>
-                    <div class="form-group">
-                        <label for="adServer">Active Directory Server</label>
-                        <input type="text" id="adServer" placeholder="e.g., ad.yourcompany.com">
-                        <p class="help-text">Your Active Directory server address (optional)</p>
-                    </div>
-                </div>
-
-                <!-- SMTP Configuration -->
-                <div class="section-divider">
-                    <h3><i class="fa-solid fa-envelope"></i> Email Notification Settings (SMTP)</h3>
-                    <p class="section-subtitle">Configure email for system alerts, reports, and notifications</p>
-                </div>
-
-                <div class="form-group">
-                    <label for="smtpServer">SMTP Server Address <span class="required">*</span></label>
-                    <input type="text" id="smtpServer" placeholder="e.g., smtp.gmail.com or mail.yourcompany.com" required>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="smtpPort">SMTP Port <span class="required">*</span></label>
-                        <select id="smtpPort" required>
-                            <option value="">Select port</option>
-                            <option value="587">587 (TLS - Recommended)</option>
-                            <option value="465">465 (SSL)</option>
-                            <option value="25">25 (Unencrypted)</option>
-                            <option value="2525">2525 (Alternative)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="smtpEncryption">Encryption <span class="required">*</span></label>
-                        <select id="smtpEncryption" required>
-                            <option value="">Select encryption</option>
-                            <option value="tls">TLS (Recommended)</option>
-                            <option value="ssl">SSL</option>
-                            <option value="none">None</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="smtpUsername">SMTP Username <span class="required">*</span></label>
-                    <input type="text" id="smtpUsername" placeholder="e.g., notifications@yourcompany.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="smtpPassword">SMTP Password <span class="required">*</span></label>
-                    <input type="password" id="smtpPassword" placeholder="Enter SMTP password" required>
-                    <p class="help-text"><i class="fa-solid fa-lock"></i> Your password is encrypted and stored securely</p>
-                </div>
-
-                <div class="form-group">
-                    <label for="senderEmail">Sender Email Address <span class="required">*</span></label>
-                    <input type="email" id="senderEmail" placeholder="e.g., xforia-alerts@yourcompany.com" required>
-                    <p class="help-text">This email will appear as the sender for all system notifications</p>
-                </div>
-
-                <!-- Product Version -->
-                <div class="section-divider">
-                    <h3><i class="fa-solid fa-code-branch"></i> Product Configuration</h3>
-                </div>
-
-                <div class="version-info-card">
-                    <div class="version-badge">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Xforia COAST v2.5.1</span>
-                    </div>
-                    <p>Latest stable release with enhanced AI capabilities</p>
-                </div>
-
-                <div class="form-group">
-                    <label for="deploymentType">Deployment Type <span class="required">*</span></label>
-                    <select id="deploymentType" required>
-                        <option value="">Select deployment</option>
-                        <option value="cloud">Cloud (Hosted by Xforia)</option>
-                        <option value="on-premise">On-Premise (Self-Hosted)</option>
-                        <option value="hybrid">Hybrid (Cloud + On-Premise)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="updatePreference">Update Preferences <span class="required">*</span></label>
-                    <select id="updatePreference" required>
-                        <option value="">Select preference</option>
-                        <option value="automatic">Automatic Updates (Recommended)</option>
-                        <option value="scheduled">Scheduled Maintenance Windows</option>
-                        <option value="manual">Manual Updates Only</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="betaFeatures">
-                        <span>Opt-in to Beta Features</span>
-                    </label>
-                    <p class="help-text">Get early access to new features and AI enhancements</p>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Step 3: Security & Compliance -->
-        <div class="setup-step" id="step3">
-            <div class="step-content">
-                <h2 class="step-title"><i class="fa-solid fa-shield-halved"></i> Security & Compliance</h2>
-                <p class="step-description">Configure audit trail, data retention, and compliance settings</p>
-
-                <div class="info-card security-card">
-                    <i class="fa-solid fa-lock"></i>
-                    <div>
-                        <strong>Compliance Ready:</strong> Xforia COAST is designed to meet ISO 27001, SOC 2, and manufacturing-specific regulatory requirements including FDA 21 CFR Part 11 and IATF 16949.
-                    </div>
-                </div>
-
-                <!-- Audit Trail Configuration -->
-                <div class="section-divider">
-                    <h3><i class="fa-solid fa-list-check"></i> Audit Trail Configuration</h3>
-                    <p class="section-subtitle">Track system access and data modifications for compliance</p>
-                </div>
-
-                <div class="form-group">
-                    <label>Audit Trail Level <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="auditLevel" value="basic" required>
-                            <div class="radio-content">
-                                <strong>Basic</strong>
-                                <p>Login/logout events and critical system changes</p>
-                            </div>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="auditLevel" value="standard" checked required>
-                            <div class="radio-content">
-                                <strong>Standard (Recommended)</strong>
-                                <p>All data access, modifications, and user actions</p>
-                            </div>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="auditLevel" value="comprehensive" required>
-                            <div class="radio-content">
-                                <strong>Comprehensive</strong>
-                                <p>Detailed tracking including API calls and system queries</p>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="auditRetention">Audit Log Retention Period <span class="required">*</span></label>
-                    <select id="auditRetention" required>
-                        <option value="">Select retention period</option>
-                        <option value="90">90 Days</option>
-                        <option value="180">180 Days</option>
-                        <option value="365">1 Year</option>
-                        <option value="1095">3 Years (Recommended for compliance)</option>
-                        <option value="2555">7 Years (Maximum)</option>
-                    </select>
-                    <p class="help-text">FDA and ISO standards typically require 3-7 years of audit logs</p>
-                </div>
-
-                <div class="form-group">
-                    <label>Activities to Log</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="logDataAccess" checked disabled>
-                            <span>Data Access & Viewing</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="logDataModification" checked disabled>
-                            <span>Data Modifications & Deletions</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="logDataExport" checked>
-                            <span>Data Exports & Downloads</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="logUserManagement" checked>
-                            <span>User Management Activities</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="logSystemConfig" checked>
-                            <span>System Configuration Changes</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="logAIInteractions">
-                            <span>AI Chatbot Interactions</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Security Alerts -->
-                <div class="section-divider">
-                    <h3><i class="fa-solid fa-bell"></i> Security Alerts</h3>
-                    <p class="section-subtitle">Configure notifications for suspicious activities</p>
-                </div>
-
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="alertMultipleFailedLogins" checked>
-                        <span>Alert on Multiple Failed Login Attempts</span>
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label for="failedLoginThreshold">Failed Login Threshold</label>
-                    <select id="failedLoginThreshold">
-                        <option value="3">3 attempts</option>
-                        <option value="5" selected>5 attempts</option>
-                        <option value="10">10 attempts</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="alertUnusualAccess" checked>
-                        <span>Alert on Unusual Access Patterns</span>
-                    </label>
-                    <p class="help-text">Notify when users access data outside their normal patterns</p>
-                </div>
-
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="alertBulkExport" checked>
-                        <span>Alert on Bulk Data Exports</span>
-                    </label>
-                </div>
-
-                <!-- Data Retention -->
-                <div class="section-divider">
-                    <h3><i class="fa-solid fa-database"></i> Data Retention Policies</h3>
-                </div>
-
-                <div class="form-group">
-                    <label for="dataRetention">Operational Data Retention <span class="required">*</span></label>
-                    <select id="dataRetention" required>
-                        <option value="">Select retention period</option>
-                        <option value="180">6 Months</option>
-                        <option value="365">1 Year</option>
-                        <option value="730">2 Years</option>
-                        <option value="1825">5 Years (Recommended)</option>
-                        <option value="3650">10 Years</option>
-                    </select>
-                </div>
-
-                <!-- Compliance Certifications -->
-                <div class="section-divider">
-                    <h3><i class="fa-solid fa-certificate"></i> Compliance Requirements</h3>
-                    <p class="section-subtitle">Select applicable regulatory standards</p>
-                </div>
-
-                <div class="checkbox-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="complianceISO27001">
-                        <span>ISO 27001 (Information Security)</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="complianceISO9001">
-                        <span>ISO 9001 (Quality Management)</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="complianceIATF">
-                        <span>IATF 16949 (Automotive Quality)</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="complianceFDA">
-                        <span>FDA 21 CFR Part 11 (Pharmaceutical)</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="complianceSOC2">
-                        <span>SOC 2 Type II</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="complianceGDPR">
-                        <span>GDPR (Data Privacy - EU)</span>
-                    </label>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Step 4: Role-Based Access Control -->
-        <div class="setup-step" id="step4">
-            <div class="step-content">
-                <h2 class="step-title"><i class="fa-solid fa-users-gear"></i> Role-Based Access Control (RBAC)</h2>
-                <p class="step-description">Define user roles and their access permissions</p>
-
-                <div class="info-card">
-                    <i class="fa-solid fa-info-circle"></i>
-                    <div>
-                        <strong>Default Roles:</strong> We've configured 5 standard roles for manufacturing organizations. You can customize permissions later in the admin panel.
-                    </div>
-                </div>
-
-                <!-- Roles Grid -->
-                <div class="roles-grid">
-                    <!-- Administrator Role -->
-                    <div class="role-card">
-                        <div class="role-header">
-                            <div class="role-icon admin-icon">
-                                <i class="fa-solid fa-user-shield"></i>
-                            </div>
-                            <div class="role-info">
-                                <h3>Administrator</h3>
-                                <span class="role-badge active-badge">Active</span>
-                            </div>
-                        </div>
-                        <p class="role-description">Full system access including user management, system configuration, and all data modules.</p>
-                        <div class="permissions-list">
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Full System Configuration</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>User & Role Management</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>All Data Access (Read/Write/Delete)</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Audit Log Access</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Integration Management</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product Owner Role -->
-                    <div class="role-card">
-                        <div class="role-header">
-                            <div class="role-icon owner-icon">
-                                <i class="fa-solid fa-crown"></i>
-                            </div>
-                            <div class="role-info">
-                                <h3>Product Owner</h3>
-                                <span class="role-badge active-badge">Active</span>
-                            </div>
-                        </div>
-                        <p class="role-description">Strategic oversight with cross-functional data visibility and product roadmap access.</p>
-                        <div class="permissions-list">
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Cross-Functional Dashboards</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Strategic Analytics & Reports</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>All Module Read Access</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Product Roadmap Management</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Vendor & Supplier Analytics</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Manager Role -->
-                    <div class="role-card">
-                        <div class="role-header">
-                            <div class="role-icon manager-icon">
-                                <i class="fa-solid fa-user-tie"></i>
-                            </div>
-                            <div class="role-info">
-                                <h3>Manager</h3>
-                                <span class="role-badge active-badge">Active</span>
-                            </div>
-                        </div>
-                        <p class="role-description">Team management, operational dashboards, and approval workflows for their department.</p>
-                        <div class="permissions-list">
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Department Dashboards</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Team Performance Metrics</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Approval Workflows</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Department Data (Read/Write)</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Report Generation</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Analyst Role -->
-                    <div class="role-card">
-                        <div class="role-header">
-                            <div class="role-icon analyst-icon">
-                                <i class="fa-solid fa-chart-line"></i>
-                            </div>
-                            <div class="role-info">
-                                <h3>Analyst</h3>
-                                <span class="role-badge active-badge">Active</span>
-                            </div>
-                        </div>
-                        <p class="role-description">Data analysis tools, advanced reporting, and read access to most data modules.</p>
-                        <div class="permissions-list">
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Advanced Analytics Tools</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Custom Report Builder</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Most Modules (Read Access)</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Data Export Capabilities</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>AI Chatbot (Full Access)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- User Role -->
-                    <div class="role-card">
-                        <div class="role-header">
-                            <div class="role-icon user-icon">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
-                            <div class="role-info">
-                                <h3>User</h3>
-                                <span class="role-badge active-badge">Active</span>
-                            </div>
-                        </div>
-                        <p class="role-description">Basic access for daily operations, assigned tasks, and limited data views.</p>
-                        <div class="permissions-list">
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Personal Dashboard</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Assigned Tasks & Workflows</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Limited Module Access (Read)</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>AI Chatbot (Basic Queries)</span>
-                            </div>
-                            <div class="permission-item">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Standard Reports (View Only)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Additional Roles (Inactive) -->
-                    <div class="role-card inactive-card">
-                        <div class="role-header">
-                            <div class="role-icon auditor-icon">
-                                <i class="fa-solid fa-clipboard-check"></i>
-                            </div>
-                            <div class="role-info">
-                                <h3>Auditor</h3>
-                                <span class="role-badge inactive-badge">Inactive</span>
-                            </div>
-                        </div>
-                        <p class="role-description">Read-only access to audit logs and compliance reports.</p>
-                        <button class="activate-role-btn" data-role="auditor">Activate Role</button>
-                    </div>
-
-                    <div class="role-card inactive-card">
-                        <div class="role-header">
-                            <div class="role-icon guest-icon">
-                                <i class="fa-solid fa-eye"></i>
-                            </div>
-                            <div class="role-info">
-                                <h3>Guest/Viewer</h3>
-                                <span class="role-badge inactive-badge">Inactive</span>
-                            </div>
-                        </div>
-                        <p class="role-description">Read-only access for external stakeholders and visitors.</p>
-                        <button class="activate-role-btn" data-role="guest">Activate Role</button>
-                    </div>
-                </div>
-
-                <div class="permissions-matrix-section">
-                    <h3><i class="fa-solid fa-table"></i> Permissions Matrix Overview</h3>
-                    <div class="matrix-container">
-                        <table class="permissions-matrix">
-                            <thead>
-                                <tr>
-                                    <th>Permission</th>
-                                    <th>Admin</th>
-                                    <th>Owner</th>
-                                    <th>Manager</th>
-                                    <th>Analyst</th>
-                                    <th>User</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>System Configuration</td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>User Management</td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                    <td><i class="fa-solid fa-minus access-partial"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>ERP Data (Write)</td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>ERP Data (Read)</td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-minus access-partial"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>CRM Data Access</td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-minus access-partial"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>MES/Production Data</td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-minus access-partial"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>Advanced Analytics</td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>Data Export</td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>Audit Logs</td>
-                                    <td><i class="fa-solid fa-check access-full"></i></td>
-                                    <td><i class="fa-solid fa-minus access-partial"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                    <td><i class="fa-solid fa-xmark access-none"></i></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <p class="matrix-legend">
-                        <span><i class="fa-solid fa-check access-full"></i> Full Access</span>
-                        <span><i class="fa-solid fa-minus access-partial"></i> Partial Access</span>
-                        <span><i class="fa-solid fa-xmark access-none"></i> No Access</span>
-                    </p>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Step 5: Review & Confirm -->
-        <div class="setup-step" id="step5">
-            <div class="step-content">
-                <h2 class="step-title"><i class="fa-solid fa-clipboard-check"></i> Review Your Configuration</h2>
-                <p class="step-description">Please review all settings before completing setup</p>
-
-                <div class="review-section">
-                    <h3><i class="fa-solid fa-building"></i> Organization Details</h3>
-                    <div class="review-grid">
-                        <div class="review-item">
-                            <span class="review-label">Company Name:</span>
-                            <span class="review-value" id="reviewCompanyName"></span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">Industry:</span>
-                            <span class="review-value" id="reviewIndustry"></span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">Employees:</span>
-                            <span class="review-value" id="reviewEmployees"></span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">Facilities:</span>
-                            <span class="review-value" id="reviewFacilities"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="review-section">
-                    <h3><i class="fa-solid fa-network-wired"></i> Enterprise Systems</h3>
-                    <div id="reviewSystems"></div>
-                </div>
-
-                <div class="review-section">
-                    <h3><i class="fa-solid fa-server"></i> Integration Settings</h3>
-                    <div class="review-grid">
-                        <div class="review-item">
-                            <span class="review-label">NetBIOS Integration:</span>
-                            <span class="review-value" id="reviewNetBIOS"></span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">SMTP Server:</span>
-                            <span class="review-value" id="reviewSMTP"></span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">Deployment Type:</span>
-                            <span class="review-value" id="reviewDeployment"></span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">Product Version:</span>
-                            <span class="review-value">Xforia COAST v2.5.1</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="review-section">
-                    <h3><i class="fa-solid fa-shield-halved"></i> Security & Compliance</h3>
-                    <div class="review-grid">
-                        <div class="review-item">
-                            <span class="review-label">Audit Level:</span>
-                            <span class="review-value" id="reviewAuditLevel"></span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">Audit Retention:</span>
-                            <span class="review-value" id="reviewAuditRetention"></span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">Data Retention:</span>
-                            <span class="review-value" id="reviewDataRetention"></span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">Compliance Standards:</span>
-                            <span class="review-value" id="reviewCompliance"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="review-section">
-                    <h3><i class="fa-solid fa-users-gear"></i> Active Roles</h3>
-                    <div class="active-roles-list">
-                        <div class="role-badge-item"><i class="fa-solid fa-user-shield"></i> Administrator</div>
-                        <div class="role-badge-item"><i class="fa-solid fa-crown"></i> Product Owner</div>
-                        <div class="role-badge-item"><i class="fa-solid fa-user-tie"></i> Manager</div>
-                        <div class="role-badge-item"><i class="fa-solid fa-chart-line"></i> Analyst</div>
-                        <div class="role-badge-item"><i class="fa-solid fa-user"></i> User</div>
-                    </div>
-                </div>
-
-                <div class="terms-section">
-                    <label class="checkbox-label large-checkbox">
-                        <input type="checkbox" id="acceptTerms" required>
-                        <span>I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a></span>
-                    </label>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Navigation Buttons -->
-        <div class="navigation-buttons">
-            <button class="nav-btn btn-secondary" id="prevBtn" style="display: none;">
-                <i class="fa-solid fa-arrow-left"></i> Previous
-            </button>
-            <button class="nav-btn btn-primary" id="nextBtn">
-                Next <i class="fa-solid fa-arrow-right"></i>
-            </button>
-            <button class="nav-btn btn-success" id="completeBtn" style="display: none;">
-                <i class="fa-solid fa-check"></i> Complete Setup
-            </button>
-        </div>
-
     </main>
 
     <footer>

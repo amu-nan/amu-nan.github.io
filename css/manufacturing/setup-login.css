@@ -3,7 +3,7 @@
 :root {
     --primary-color: #0d1b2a;
     --secondary-color: #1b263b;
-    --accent-color: #38b000;
+    --accent-color: #3498db;  /* Changed to blue */
     --text-color: #4a4a4a;
     --light-text-color: #e0e1dd;
     --bg-color: #f8f9fa;
@@ -65,7 +65,7 @@ main.login-page {
     width: 80px;
     height: 80px;
     margin: 0 auto 1rem;
-    background: linear-gradient(135deg, var(--accent-color), #2c974b);
+    background: linear-gradient(135deg, var(--success-color), #2c974b);  /* Green for success */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -127,7 +127,7 @@ main.login-page {
 
 .role-selection-card.active:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(56, 176, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);  /* Blue shadow */
 }
 
 .role-selection-card.inactive {
@@ -139,7 +139,7 @@ main.login-page {
     width: 80px;
     height: 80px;
     margin: 0 auto 1.5rem;
-    background: linear-gradient(135deg, rgba(56, 176, 0, 0.1), rgba(44, 151, 75, 0.1));
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.1));  /* Light blue */
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -147,7 +147,7 @@ main.login-page {
 }
 
 .role-selection-card.active .role-card-icon {
-    background: linear-gradient(135deg, var(--accent-color), #2c974b);
+    background: linear-gradient(135deg, var(--accent-color), #2980b9);  /* Blue gradient */
 }
 
 .role-card-icon i {
@@ -192,9 +192,9 @@ main.login-page {
 }
 
 .select-role-btn:hover {
-    background-color: #2c974b;
+    background-color: #2980b9;  /* Darker blue */
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(56, 176, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);  /* Blue shadow */
 }
 
 .inactive-badge {
@@ -261,7 +261,7 @@ main.login-page {
 .form-input:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 4px rgba(56, 176, 0, 0.1);
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);  /* Blue focus shadow */
 }
 
 .password-input-wrapper {
@@ -325,7 +325,7 @@ main.login-page {
 }
 
 .login-button:hover {
-    background-color: #2c974b;
+    background-color: #2980b9;  /* Darker blue */
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }

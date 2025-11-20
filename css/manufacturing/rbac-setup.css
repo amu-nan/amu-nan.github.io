@@ -4,7 +4,7 @@
 :root {
     --primary-color: #0d1b2a;
     --secondary-color: #1b263b;
-    --accent-color: #38b000;
+    --accent-color: #3498db;  /* Changed from green to blue */
     --text-color: #4a4a4a;
     --light-text-color: #e0e1dd;
     --bg-color: #f8f9fa;
@@ -13,7 +13,7 @@
     --shadow-medium: 0 5px 15px rgba(0,0,0,0.1);
     --footer-bg-color: #203731;
     --footer-text-color: #ffffff;
-    --success-color: #38b000;
+    --success-color: #27ae60;
     --warning-color: #ff9500;
     --error-color: #dc3545;
 }
@@ -98,11 +98,11 @@ main.rbac-setup-page {
 .progress-step.active .step-circle {
     background-color: var(--accent-color);
     color: white;
-    box-shadow: 0 4px 12px rgba(56, 176, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);  /* Blue shadow */
 }
 
 .progress-step.completed .step-circle {
-    background-color: var(--accent-color);
+    background-color: var(--success-color);  /* Green for completed */
     color: white;
 }
 
@@ -145,7 +145,7 @@ main.rbac-setup-page {
 }
 
 .setup-title span {
-    color: var(--accent-color);
+    color: black;
 }
 
 .setup-subtitle {
@@ -348,6 +348,7 @@ main.rbac-setup-page {
 .form-input:focus {
     outline: none;
     border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);  /* Blue focus shadow */
 }
 
 .form-input:disabled {
@@ -405,7 +406,7 @@ main.rbac-setup-page {
 
 .role-card.active {
     border-color: var(--accent-color);
-    box-shadow: 0 5px 20px rgba(56, 176, 0, 0.15);
+    box-shadow: 0 5px 20px rgba(52, 152, 219, 0.15);  /* Blue shadow */
 }
 
 .role-card:hover {
@@ -425,7 +426,7 @@ main.rbac-setup-page {
 .role-icon {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, var(--accent-color), #2c974b);
+    background: linear-gradient(135deg, var(--accent-color), #2980b9);  /* Blue gradient */
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -459,7 +460,7 @@ main.rbac-setup-page {
 }
 
 .role-badge.active-badge {
-    background-color: rgba(56, 176, 0, 0.1);
+    background-color: rgba(52, 152, 219, 0.1);  /* Blue background */
     color: var(--accent-color);
 }
 
@@ -605,7 +606,7 @@ input:disabled + .toggle-slider {
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 500;
-    background-color: rgba(56, 176, 0, 0.1);
+    background-color: rgba(52, 152, 219, 0.1);  /* Blue background */
     color: var(--accent-color);
     margin-right: 0.5rem;
 }
@@ -641,7 +642,7 @@ input:disabled + .toggle-slider {
 }
 
 .primary-btn:hover {
-    background-color: #2c974b;
+    background-color: #2980b9;  /* Darker blue on hover */
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }

@@ -52,23 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // **Backend Endpoint URLs**
     const ENGINEERING_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
     
-    // Supabase endpoints for enterprise modules (placeholders for now)
+    // Real backend endpoints for enterprise modules
     const ENTERPRISE_ENDPOINTS = {
         erp: {
-            inventory: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/erp-inventory-upload',
-            procurement: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/erp-procurement-upload',
-            quality: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/erp-quality-upload',
-            production: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/erp-production-upload'
+            inventory: 'http://127.0.0.1:8000/upload_inventory_excel/',
+            procurement: 'http://127.0.0.1:8000/upload_procurement_excel/',
+            production: 'http://127.0.0.1:8000/upload_production_excel/'
         },
         crm: {
-            customers: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/crm-customers-upload',
-            leads: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/crm-leads-upload',
-            marketing: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/crm-marketing-upload',
-            opportunities: 'https://aqasfpkazrebatjhdhig.supabase.co/functions/v1/crm-opportunities-upload'
+            customers: 'http://127.0.0.1:8000/upload_customers_excel/',
+            leads: 'http://127.0.0.1:8000/upload_leads_excel/',
+            marketing: 'http://127.0.0.1:8000/upload_marketing_excel/',
+            opportunities: 'http://127.0.0.1:8000/upload_opportunity_excel/'
         }
     };
-
-    const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYXNmcGthenJlYmF0amhkaGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMxMDYsImV4cCI6MjA3ODUyOTEwNn0.F18jn7ug3VD1g05NMxxa9Dp9YnSZycge4ekyb94GyYc";
 
     // State object to track uploads
     let uploadedFile = null;
@@ -256,9 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const uploadLabel = moduleCard.querySelector('.upload-label');
         const statusEl = moduleCard.querySelector('.upload-status');
-        const moduleStatus = moduleCard.querySelector('.module-status');
         
-        if (!uploadLabel || !statusEl || !moduleStatus) {
+        if (!uploadLabel || !statusEl) {
             console.error(`Missing elements for ${system}-${module}`);
             return;
         }
@@ -268,9 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (file) {
                 enterpriseModuleFiles[system][module] = file;
                 
-                // Update module status to uploading
-                moduleStatus.setAttribute('data-status', 'uploading');
-                
                 // Show loading state
                 statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
                 statusEl.style.color = '#3498db';
@@ -278,7 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Simulate processing (2 seconds)
                 setTimeout(() => {
-                    moduleStatus.setAttribute('data-status', 'complete');
                     statusEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> File loaded successfully';
                     statusEl.style.color = '#27ae60';
                     uploadLabel.innerHTML = `<i class="fa-solid fa-check"></i> ${file.name}`;
@@ -290,11 +282,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Setup all module uploads
+    // Setup all module uploads - must happen after DOM is ready
+    console.log('Setting up module uploads...');
     ['inventory', 'procurement', 'production'].forEach(module => {
+        console.log(`Setting up ERP ${module}`);
         setupModuleUpload('erp', module);
     });
     ['customers', 'leads', 'marketing', 'opportunities'].forEach(module => {
+        console.log(`Setting up CRM ${module}`);
         setupModuleUpload('crm', module);
     });
 
@@ -303,13 +298,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const filesArray = Object.values(currentModules).filter(file => file !== null);
         const hasAnyFile = filesArray.length > 0;
         
-        enterpriseProcessBtn.disabled = !hasAnyFile;
+        if (enterpriseProcessBtn) {
+            enterpriseProcessBtn.disabled = !hasAnyFile;
+        }
         
         // Update module count
         if (moduleCountSpan) {
             moduleCountSpan.textContent = filesArray.length;
         }
     }
+    
+    // Initialize button state
+    updateEnterpriseProcessBtn();
+    updateEngineeringProcessBtn();
 
     // --- Enterprise Data Processing ---
     enterpriseProcessBtn.addEventListener('click', async () => {
@@ -345,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Function for actual enterprise upload (use when backend is ready)
+    // Function for actual enterprise upload to backend
     async function uploadEnterpriseFile(system, module, file) {
         const endpoint = ENTERPRISE_ENDPOINTS[system][module];
         const formData = new FormData();
@@ -353,10 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const response = await fetch(endpoint, {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${ANON_KEY}`,
-                'apikey': ANON_KEY,
-            },
             body: formData,
         });
 
@@ -371,31 +368,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Engineering System File Handling ---
 
     // Setup drag/drop events
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, preventDefaults, false);
-    });
+    if (dropArea) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
 
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropArea.addEventListener(eventName, () => {
-            dropArea.classList.add('highlight');
-        }, false);
-    });
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.add('highlight');
+            }, false);
+        });
 
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, () => {
-            dropArea.classList.remove('highlight');
-        }, false);
-    });
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.remove('highlight');
+            }, false);
+        });
 
-    dropArea.addEventListener('click', () => {
-        fileElem.click();
-    });
+        dropArea.addEventListener('click', () => {
+            fileElem.click();
+        });
 
-    dropArea.addEventListener('drop', handleDropEngineering, false);
+        dropArea.addEventListener('drop', handleDropEngineering, false);
+    }
 
-    fileElem.addEventListener('change', (e) => {
-        handleFilesEngineering(e.target.files);
-    });
+    if (fileElem) {
+        fileElem.addEventListener('change', (e) => {
+            handleFilesEngineering(e.target.files);
+        });
+    }
 
     function handleDropEngineering(e) {
         const dt = e.dataTransfer;
@@ -411,16 +412,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayFilesEngineering() {
-        fileList.innerHTML = '';
-        if (uploadedFile) {
-            const li = document.createElement('li');
-            li.innerHTML = `<span class="file-name"><i class="fa-solid fa-file-pdf"></i> ${uploadedFile.name} Loaded</span>`;
-            fileList.appendChild(li);
+        if (fileList) {
+            fileList.innerHTML = '';
+            if (uploadedFile) {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="file-name"><i class="fa-solid fa-file-pdf"></i> ${uploadedFile.name} Loaded</span>`;
+                fileList.appendChild(li);
+            }
         }
     }
 
     function updateEngineeringProcessBtn() {
-        engineeringProcessBtn.disabled = !uploadedFile;
+        if (engineeringProcessBtn) {
+            engineeringProcessBtn.disabled = !uploadedFile;
+        }
     }
 
     // --- Engineering Diagram Processing (Original Backend Logic) ---
@@ -597,11 +602,6 @@ document.addEventListener('DOMContentLoaded', () => {
             crm: { customers: null, leads: null, marketing: null, opportunities: null }
         };
         
-        // Reset module status indicators
-        document.querySelectorAll('.module-status').forEach(status => {
-            status.setAttribute('data-status', 'pending');
-        });
-        
         // Reset upload labels and status messages
         document.querySelectorAll('.upload-label').forEach(label => {
             label.innerHTML = '<i class="fa-solid fa-upload"></i> Upload File';
@@ -616,8 +616,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.module-upload .file-input').forEach(input => {
             input.value = '';
         });
-        fileElem.value = '';
-        fileList.innerHTML = '';
+        if (fileElem) fileElem.value = '';
+        if (fileList) fileList.innerHTML = '';
         
         // Reset UI
         integrationSummary.style.display = 'none';
@@ -648,28 +648,30 @@ document.addEventListener('DOMContentLoaded', () => {
         successMessage.style.display = 'none';
 
         try {
-            // Process ERP data if available (simulated for now)
+            // Process ERP data if available - ACTUAL BACKEND CALLS
             if (integratedSystems.erp) {
                 const erpModules = enterpriseModuleFiles.erp;
                 const erpFilesToUpload = Object.entries(erpModules).filter(([_, file]) => file !== null);
                 
                 const erpUploadPromises = erpFilesToUpload.map(([module, file]) => {
-                    return simulateEnterpriseUpload('erp', module, file);
+                    return uploadEnterpriseFile('erp', module, file);
                 });
                 
                 await Promise.all(erpUploadPromises);
+                console.log('ERP modules uploaded successfully');
             }
 
-            // Process CRM data if available (simulated for now)
+            // Process CRM data if available - ACTUAL BACKEND CALLS
             if (integratedSystems.crm) {
                 const crmModules = enterpriseModuleFiles.crm;
                 const crmFilesToUpload = Object.entries(crmModules).filter(([_, file]) => file !== null);
                 
                 const crmUploadPromises = crmFilesToUpload.map(([module, file]) => {
-                    return simulateEnterpriseUpload('crm', module, file);
+                    return uploadEnterpriseFile('crm', module, file);
                 });
                 
                 await Promise.all(crmUploadPromises);
+                console.log('CRM modules uploaded successfully');
             }
 
             // Process engineering data if available - ORIGINAL BACKEND LOGIC

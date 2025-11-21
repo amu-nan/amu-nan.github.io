@@ -658,7 +658,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 await Promise.all(erpUploadPromises);
-                console.log('ERP modules uploaded successfully');
+                console.log('ERP modules uploaded successfully to Supabase');
             }
 
             // Process CRM data if available - ACTUAL BACKEND CALLS
@@ -671,11 +671,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 await Promise.all(crmUploadPromises);
-                console.log('CRM modules uploaded successfully');
+                console.log('CRM modules uploaded successfully to Supabase');
             }
 
-            // Process engineering data if available - ORIGINAL BACKEND LOGIC
-            // THIS MUST SUCCEED BEFORE PROCEEDING TO NEXT PAGE
+            // TEMPORARILY COMMENTED OUT - Engineering diagram backend
+            // Uncomment this section when engineering backend is running
+            /*
             if (integratedSystems.engineering && uploadedFile) {
                 const formData = new FormData();
                 formData.append('file', uploadedFile);
@@ -694,6 +695,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Engineering file processed successfully:', data);
             } else if (integratedSystems.engineering && !uploadedFile) {
                 throw new Error('Engineering system marked as integrated but no file found');
+            }
+            */
+
+            // If engineering is integrated, just log it (no actual upload for now)
+            if (integratedSystems.engineering && uploadedFile) {
+                console.log('Engineering diagram ready (backend commented out):', uploadedFile.name);
             }
 
             // Only proceed here if all backend calls succeeded

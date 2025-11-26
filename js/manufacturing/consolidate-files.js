@@ -538,7 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
             erpDetails.innerHTML = `
                 <div class="summary-detail-item">
                     <i class="fa-solid fa-check"></i>
-                    <span>ERP System - ${erpModuleCount} module(s) integrated</span>
+                    <span>ERP App - ${erpModuleCount} module(s) integrated</span>
                 </div>
             `;
         } else {
@@ -551,7 +551,7 @@ document.addEventListener('DOMContentLoaded', () => {
             crmDetails.innerHTML = `
                 <div class="summary-detail-item">
                     <i class="fa-solid fa-check"></i>
-                    <span>CRM System - ${crmModuleCount} module(s) integrated</span>
+                    <span>CRM App - ${crmModuleCount} module(s) integrated</span>
                 </div>
             `;
         } else {
@@ -588,15 +588,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update button text based on what's integrated
         if (integratedSystems.erp) {
-            addErpBtn.innerHTML = '<i class="fa-solid fa-edit"></i> Modify ERP System';
+            addErpBtn.innerHTML = '<i class="fa-solid fa-edit"></i> Modify ERP App';
         } else {
-            addErpBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add ERP System';
+            addErpBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add ERP App';
         }
         
         if (integratedSystems.crm) {
-            addCrmBtn.innerHTML = '<i class="fa-solid fa-edit"></i> Modify CRM System';
+            addCrmBtn.innerHTML = '<i class="fa-solid fa-edit"></i> Modify CRM App';
         } else {
-            addCrmBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add CRM System';
+            addCrmBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add CRM App';
         }
         
         if (integratedSystems.engineering) {

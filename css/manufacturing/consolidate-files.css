@@ -68,18 +68,18 @@
 
 /* Page Title and Intro */
 .page-title {
-    font-size: 2.8rem;
-    font-weight: 800;
-    color: black;
-    margin-bottom: 0.5rem;
+    font-size: 32px;
+    font-weight: 600;
+    color: #2c3e50;
     text-align: center;
+    margin-bottom: 15px;
     font-family: 'Poppins', sans-serif;
 }
 
 .page-intro {
     text-align: center;
-    color: var(--text-color);;
-    font-size: 1.2rem;
+    color: #7f8c8d;
+    font-size: 16px;
     margin: 0 auto 20px;
     max-width: 700px;
     font-family: 'Poppins', sans-serif;
@@ -124,7 +124,7 @@
 }
 
 .tile-icon-badge.engineering {
-    background: #e3f2fd;
+    background: #fce4ec;
 }
 
 .tile-icon-badge i {
@@ -133,7 +133,7 @@
 }
 
 .tile-icon-badge.engineering i {
-    color: #3498db;
+    color: #e91e63;
 }
 
 .tile-header {
@@ -145,6 +145,7 @@
     font-size: 22px;
     font-weight: 600;
     margin: 0 0 8px 0;
+    font-family: 'Poppins', sans-serif;
 }
 
 .tile-badge {
@@ -155,11 +156,12 @@
     border-radius: 12px;
     font-size: 12px;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
 }
 
 .tile-badge.engineering {
-    background: #e3f2fd;
-    color: #3498db;
+    background: #fce4ec;
+    color: #e91e63;
 }
 
 .tile-description {
@@ -167,6 +169,7 @@
     font-size: 14px;
     margin: 15px 0 20px;
     line-height: 1.5;
+    font-family: 'Poppins', sans-serif;
 }
 
 .tile-stats {
@@ -182,6 +185,7 @@
     gap: 6px;
     color: #7f8c8d;
     font-size: 13px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .stat-item i {
@@ -252,6 +256,7 @@
     margin-bottom: 8px;
     text-align: center;
     margin-top: 30px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .panel-subtitle {
@@ -259,6 +264,7 @@
     color: #7f8c8d;
     font-size: 14px;
     margin-bottom: 30px;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* System Selector */
@@ -297,6 +303,19 @@
     background: #3498db;
     color: white;
     border-color: #3498db;
+}
+
+.system-btn.disabled {
+    background: #ecf0f1;
+    color: #bdc3c7;
+    border-color: #ecf0f1;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.system-btn.disabled:hover {
+    background: #ecf0f1;
+    border-color: #ecf0f1;
 }
 
 /* Modules Container */
@@ -688,6 +707,7 @@
 .back-button {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     padding: 12px 24px;
     background: #ecf0f1;
@@ -695,11 +715,16 @@
     text-decoration: none;
     border-radius: 6px;
     font-weight: 500;
+    font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
 }
 
 .back-button:hover {
     background: #d5dbdb;
+}
+
+.back-button i {
+    font-size: 14px;
 }
 
 /* Responsive Design */
@@ -709,6 +734,10 @@
     }
     
     .modules-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .engineering-uploads-grid {
         grid-template-columns: 1fr;
     }
     
@@ -793,10 +822,7 @@
     border-radius: 12px;
     font-size: 12px;
     font-weight: 600;
-}
-
-.summary-badge.engineering {
-    background: #27ae60;
+    font-family: 'Poppins', sans-serif;
 }
 
 .summary-details {

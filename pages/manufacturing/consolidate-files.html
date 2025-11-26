@@ -74,9 +74,9 @@
                         </div>
                         <div class="tile-header">
                             <h2>Enterprise Systems</h2>
-                            <span class="tile-badge">ERP-CRM-SCM</span>
+                            <span class="tile-badge">ERP & CRM</span>
                         </div>
-                        <p class="tile-description">Connect your production, inventory, sales, and service operations data across your internal systems.</p>
+                        <p class="tile-description">Connect your business operations data from ERP and CRM platforms</p>
                         <div class="tile-stats">
                             <div class="stat-item">
                                 <i class="fa-solid fa-database"></i>
@@ -101,7 +101,7 @@
                             <h2>Engineering Systems</h2>
                             <span class="tile-badge engineering">CAD & Diagrams</span>
                         </div>
-                        <p class="tile-description">Upload engineering drawings, schematics, and related documentation.</p>
+                        <p class="tile-description">Upload technical drawings and engineering documentation</p>
                         <div class="tile-stats">
                             <div class="stat-item">
                                 <i class="fa-solid fa-file-pdf"></i>
@@ -144,9 +144,6 @@
                         <p class="modules-description">Upload data files for each module to integrate with your ERP system</p>
                         <div class="modules-grid">
                             <div class="module-card" data-module="inventory">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
                                 <i class="fa-solid fa-boxes-stacked"></i>
                                 <h4>Inventory Management</h4>
                                 <p class="module-description">Stock levels, warehouse data</p>
@@ -166,9 +163,6 @@
                             </div>
 
                             <div class="module-card" data-module="procurement">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
                                 <i class="fa-solid fa-cart-shopping"></i>
                                 <h4>Procurement</h4>
                                 <p class="module-description">Purchase orders, suppliers</p>
@@ -188,9 +182,6 @@
                             </div>
 
                             <div class="module-card" data-module="production">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
                                 <i class="fa-solid fa-gears"></i>
                                 <h4>Production</h4>
                                 <p class="module-description">Manufacturing schedules, output</p>
@@ -219,9 +210,6 @@
                         <p class="modules-description">Upload data files for each module to integrate with your CRM system</p>
                         <div class="modules-grid">
                             <div class="module-card" data-module="customers">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
                                 <i class="fa-solid fa-users"></i>
                                 <h4>Customers</h4>
                                 <p class="module-description">Customer profiles, history</p>
@@ -241,9 +229,6 @@
                             </div>
 
                             <div class="module-card" data-module="leads">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
                                 <i class="fa-solid fa-user-plus"></i>
                                 <h4>Leads</h4>
                                 <p class="module-description">Prospects, pipeline data</p>
@@ -263,9 +248,6 @@
                             </div>
 
                             <div class="module-card" data-module="marketing">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
                                 <i class="fa-solid fa-bullhorn"></i>
                                 <h4>Marketing</h4>
                                 <p class="module-description">Campaigns, analytics</p>
@@ -285,9 +267,6 @@
                             </div>
 
                             <div class="module-card" data-module="opportunities">
-                                <div class="module-status" data-status="pending">
-                                    <i class="fa-solid fa-circle"></i>
-                                </div>
                                 <i class="fa-solid fa-handshake-angle"></i>
                                 <h4>Opportunities</h4>
                                 <p class="module-description">Deals, forecasts</p>
@@ -324,23 +303,57 @@
                         <i class="fa-solid fa-arrow-left"></i> Back to Selection
                     </button>
                     
-                    <h2 class="panel-title">Upload Engineering Diagram</h2>
-                    <p class="panel-subtitle">Upload your CAD files or technical drawings in PDF format</p>
+                    <h2 class="panel-title">Upload Engineering Documents</h2>
+                    <p class="panel-subtitle">Upload your CAD diagrams and technical documentation</p>
                     
-                    <div class="system-input-group" id="engineering-input-group">
-                        <div class="system-input">
-                            <label for="engineering-url">Connect to API:</label>
-                            <input type="url" id="engineering-url" placeholder="e.g., https://api.autodesk.com/design">
-                            <button class="integration-btn engineering-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                    <div class="engineering-uploads-grid">
+                        <!-- CAD Diagrams Section -->
+                        <div class="engineering-upload-section">
+                            <h3 class="upload-section-title">
+                                <i class="fa-solid fa-drafting-compass"></i> CAD Diagrams
+                            </h3>
+                            <p class="upload-section-description">Upload engineering drawings and CAD files</p>
+                            
+                            <div class="system-input-group">
+                                <div class="system-input">
+                                    <label for="cad-url">Connect to API:</label>
+                                    <input type="url" id="cad-url" placeholder="e.g., https://api.autodesk.com/design">
+                                    <button class="integration-btn cad-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                </div>
+                                <div class="or-divider">OR</div>
+                                <div class="file-upload-box" id="cad-drop-area">
+                                    <i class="fa-solid fa-upload"></i>
+                                    <p>Upload CAD Diagram</p>
+                                    <p class="file-upload-info">Click or drag and drop PDF files here</p>
+                                    <input type="file" id="cadFileElem" accept=".pdf" class="file-input">
+                                </div>
+                                <div id="cad-file-list"></div>
+                            </div>
                         </div>
-                        <div class="or-divider">OR</div>
-                        <div class="file-upload-box" id="drop-area">
-                        <i class="fa-solid fa-upload"></i>
-                        <p>Load your Engineering Diagram</p>
-                        <p class="file-upload-info">Click or drag and drop PDF files here</p>
-                        <input type="file" id="fileElem" accept=".pdf" class="file-input">
-                    </div>
-                    <div id="file-list"></div>
+
+                        <!-- User Manuals/Documentation Section -->
+                        <div class="engineering-upload-section">
+                            <h3 class="upload-section-title">
+                                <i class="fa-solid fa-book"></i> User Manuals & Documentation
+                            </h3>
+                            <p class="upload-section-description">Upload user manuals, technical docs, and guides</p>
+                            
+                            <div class="system-input-group">
+                                <div class="system-input">
+                                    <label for="manual-url">Connect to API:</label>
+                                    <input type="url" id="manual-url" placeholder="e.g., https://api.docs.com/manuals">
+                                    <button class="integration-btn manual-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                </div>
+                                <div class="or-divider">OR</div>
+                                <div class="file-upload-box" id="manual-drop-area">
+                                    <i class="fa-solid fa-upload"></i>
+                                    <p>Upload Documentation</p>
+                                    <p class="file-upload-info">Click or drag and drop PDF files here</p>
+                                    <input type="file" id="manualFileElem" accept=".pdf" class="file-input">
+                                </div>
+                                <div id="manual-file-list"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="panel-actions">
@@ -348,7 +361,7 @@
                             <i class="fa-solid fa-times"></i> Cancel
                         </button>
                         <button id="engineering-process-btn" class="process-btn" disabled>
-                            <i class="fa-solid fa-check"></i> Process Diagram
+                            <i class="fa-solid fa-check"></i> Process Documents
                         </button>
                     </div>
                 </div>
@@ -437,7 +450,7 @@
                     <a href="conversation-ai.html" class="continue-button demo-button" id="chatButton">
                         <i class="fa-solid fa-comment-dots"></i> Explore with RIA
                     </a>
-                    <a href="https://xforia-coast-dashboard.netlify.app/" target="_self" class="continue-button demo-button view-dashboard">
+                    <a href="http://127.0.0.1:8000/xforia-coast/dashboard/" target="_self" class="continue-button demo-button view-dashboard">
                         <i class="fa-solid fa-chart-line"></i> Insights
                     </a>
                 </div>

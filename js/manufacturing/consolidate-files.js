@@ -17,9 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtns = document.querySelectorAll('.cancel-btn');
 
     // --- References for Engineering System ---
-    const dropArea = document.getElementById('drop-area');
-    const fileElem = document.getElementById('fileElem');
-    const fileList = document.getElementById('file-list');
+    const cadDropArea = document.getElementById('cad-drop-area');
+    const cadFileElem = document.getElementById('cadFileElem');
+    const cadFileList = document.getElementById('cad-file-list');
+    
+    const manualDropArea = document.getElementById('manual-drop-area');
+    const manualFileElem = document.getElementById('manualFileElem');
+    const manualFileList = document.getElementById('manual-file-list');
+    
     const engineeringProcessBtn = document.getElementById('engineering-process-btn');
     const processingInfo = document.getElementById('processing-info');
     const unifyMessage = document.getElementById('unify-message');
@@ -50,7 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelSummaryBtn = document.querySelector('.cancel-summary-btn');
 
     // **Backend Endpoint URLs**
-    const ENGINEERING_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
+    const CAD_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
+    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_manual_pdf/'; // Add this endpoint to your backend
     
     // Real backend endpoints for enterprise modules
     const ENTERPRISE_ENDPOINTS = {
@@ -68,7 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // State object to track uploads
-    let uploadedFile = null;
+    let uploadedCadFile = null;
+    let uploadedManualFile = null;
     let currentEnterpriseSystem = 'erp';
     let enterpriseModuleFiles = {
         erp: { inventory: null, procurement: null, production: null },
@@ -367,71 +374,121 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Engineering System File Handling ---
 
-    // Setup drag/drop events
-    if (dropArea) {
+    // Setup CAD diagram upload
+    if (cadDropArea) {
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false);
+            cadDropArea.addEventListener(eventName, preventDefaults, false);
         });
 
         ['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, () => {
-                dropArea.classList.add('highlight');
+            cadDropArea.addEventListener(eventName, () => {
+                cadDropArea.classList.add('highlight');
             }, false);
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, () => {
-                dropArea.classList.remove('highlight');
+            cadDropArea.addEventListener(eventName, () => {
+                cadDropArea.classList.remove('highlight');
             }, false);
         });
 
-        dropArea.addEventListener('click', () => {
-            fileElem.click();
+        cadDropArea.addEventListener('click', () => {
+            cadFileElem.click();
         });
 
-        dropArea.addEventListener('drop', handleDropEngineering, false);
+        cadDropArea.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            handleCadFiles(files);
+        }, false);
     }
 
-    if (fileElem) {
-        fileElem.addEventListener('change', (e) => {
-            handleFilesEngineering(e.target.files);
+    if (cadFileElem) {
+        cadFileElem.addEventListener('change', (e) => {
+            handleCadFiles(e.target.files);
         });
     }
 
-    function handleDropEngineering(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        handleFilesEngineering(files);
+    // Setup Manual upload
+    if (manualDropArea) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            manualDropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            manualDropArea.addEventListener(eventName, () => {
+                manualDropArea.classList.add('highlight');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            manualDropArea.addEventListener(eventName, () => {
+                manualDropArea.classList.remove('highlight');
+            }, false);
+        });
+
+        manualDropArea.addEventListener('click', () => {
+            manualFileElem.click();
+        });
+
+        manualDropArea.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            handleManualFiles(files);
+        }, false);
     }
 
-    function handleFilesEngineering(files) {
-        uploadedFile = files.length > 0 ? files[0] : null;
-        displayFilesEngineering();
+    if (manualFileElem) {
+        manualFileElem.addEventListener('change', (e) => {
+            handleManualFiles(e.target.files);
+        });
+    }
+
+    function handleCadFiles(files) {
+        uploadedCadFile = files.length > 0 ? files[0] : null;
+        displayCadFiles();
         updateEngineeringProcessBtn();
         resetStatus();
     }
 
-    function displayFilesEngineering() {
-        if (fileList) {
-            fileList.innerHTML = '';
-            if (uploadedFile) {
+    function handleManualFiles(files) {
+        uploadedManualFile = files.length > 0 ? files[0] : null;
+        displayManualFiles();
+        updateEngineeringProcessBtn();
+        resetStatus();
+    }
+
+    function displayCadFiles() {
+        if (cadFileList) {
+            cadFileList.innerHTML = '';
+            if (uploadedCadFile) {
                 const li = document.createElement('li');
-                li.innerHTML = `<span class="file-name"><i class="fa-solid fa-file-pdf"></i> ${uploadedFile.name} Loaded</span>`;
-                fileList.appendChild(li);
+                li.innerHTML = `<span class="file-name"><i class="fa-solid fa-file-pdf"></i> ${uploadedCadFile.name} Loaded</span>`;
+                cadFileList.appendChild(li);
+            }
+        }
+    }
+
+    function displayManualFiles() {
+        if (manualFileList) {
+            manualFileList.innerHTML = '';
+            if (uploadedManualFile) {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="file-name"><i class="fa-solid fa-file-pdf"></i> ${uploadedManualFile.name} Loaded</span>`;
+                manualFileList.appendChild(li);
             }
         }
     }
 
     function updateEngineeringProcessBtn() {
         if (engineeringProcessBtn) {
-            engineeringProcessBtn.disabled = !uploadedFile;
+            // Enable button if either CAD or Manual file is uploaded
+            engineeringProcessBtn.disabled = !uploadedCadFile && !uploadedManualFile;
         }
     }
 
     // --- Engineering Diagram Processing (Original Backend Logic) ---
     engineeringProcessBtn.addEventListener('click', async () => {
-        if (!uploadedFile) {
-            alert('Please upload an Engineering Diagram to proceed.');
+        if (!uploadedCadFile && !uploadedManualFile) {
+            alert('Please upload at least one document to proceed.');
             return;
         }
 
@@ -504,12 +561,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update engineering summary if integrated
         if (integratedSystems.engineering) {
             engineeringSummaryCard.style.display = 'block';
-            engineeringDetails.innerHTML = `
-                <div class="summary-detail-item">
-                    <i class="fa-solid fa-check"></i>
-                    <span>${uploadedFile.name}</span>
-                </div>
-            `;
+            let engineeringDetailsHtml = '';
+            
+            if (uploadedCadFile) {
+                engineeringDetailsHtml += `
+                    <div class="summary-detail-item">
+                        <i class="fa-solid fa-check"></i>
+                        <span>CAD: ${uploadedCadFile.name}</span>
+                    </div>
+                `;
+            }
+            
+            if (uploadedManualFile) {
+                engineeringDetailsHtml += `
+                    <div class="summary-detail-item">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Manual: ${uploadedManualFile.name}</span>
+                    </div>
+                `;
+            }
+            
+            engineeringDetails.innerHTML = engineeringDetailsHtml;
         } else {
             engineeringSummaryCard.style.display = 'none';
         }
@@ -596,7 +668,8 @@ document.addEventListener('DOMContentLoaded', () => {
         integratedSystems = { erp: false, crm: false, engineering: false };
         erpModuleCount = 0;
         crmModuleCount = 0;
-        uploadedFile = null;
+        uploadedCadFile = null;
+        uploadedManualFile = null;
         enterpriseModuleFiles = {
             erp: { inventory: null, procurement: null, production: null },
             crm: { customers: null, leads: null, marketing: null, opportunities: null }
@@ -616,8 +689,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.module-upload .file-input').forEach(input => {
             input.value = '';
         });
-        if (fileElem) fileElem.value = '';
-        if (fileList) fileList.innerHTML = '';
+        if (cadFileElem) cadFileElem.value = '';
+        if (manualFileElem) manualFileElem.value = '';
+        if (cadFileList) cadFileList.innerHTML = '';
+        if (manualFileList) manualFileList.innerHTML = '';
         
         // Reset UI
         integrationSummary.style.display = 'none';
@@ -677,30 +752,53 @@ document.addEventListener('DOMContentLoaded', () => {
             // TEMPORARILY COMMENTED OUT - Engineering diagram backend
             // Uncomment this section when engineering backend is running
             /*
-            if (integratedSystems.engineering && uploadedFile) {
-                const formData = new FormData();
-                formData.append('file', uploadedFile);
+            // Upload CAD diagram if available
+            if (integratedSystems.engineering && uploadedCadFile) {
+                const cadFormData = new FormData();
+                cadFormData.append('file', uploadedCadFile);
 
-                const response = await fetch(ENGINEERING_ENDPOINT, {
+                const cadResponse = await fetch(CAD_ENDPOINT, {
                     method: 'POST',
-                    body: formData,
+                    body: cadFormData,
                 });
 
-                if (!response.ok) {
-                    const text = await response.text();
-                    throw new Error(`Engineering diagram upload failed: ${text}`);
+                if (!cadResponse.ok) {
+                    const text = await cadResponse.text();
+                    throw new Error(`CAD diagram upload failed: ${text}`);
                 }
 
-                const data = await response.json();
-                console.log('Engineering file processed successfully:', data);
-            } else if (integratedSystems.engineering && !uploadedFile) {
-                throw new Error('Engineering system marked as integrated but no file found');
+                const cadData = await cadResponse.json();
+                console.log('CAD file processed successfully:', cadData);
+            }
+
+            // Upload Manual/Documentation if available
+            if (integratedSystems.engineering && uploadedManualFile) {
+                const manualFormData = new FormData();
+                manualFormData.append('file', uploadedManualFile);
+
+                const manualResponse = await fetch(MANUAL_ENDPOINT, {
+                    method: 'POST',
+                    body: manualFormData,
+                });
+
+                if (!manualResponse.ok) {
+                    const text = await manualResponse.text();
+                    throw new Error(`Manual upload failed: ${text}`);
+                }
+
+                const manualData = await manualResponse.json();
+                console.log('Manual file processed successfully:', manualData);
             }
             */
 
             // If engineering is integrated, just log it (no actual upload for now)
-            if (integratedSystems.engineering && uploadedFile) {
-                console.log('Engineering diagram ready (backend commented out):', uploadedFile.name);
+            if (integratedSystems.engineering) {
+                if (uploadedCadFile) {
+                    console.log('CAD diagram ready (backend commented out):', uploadedCadFile.name);
+                }
+                if (uploadedManualFile) {
+                    console.log('Manual ready (backend commented out):', uploadedManualFile.name);
+                }
             }
 
             // Only proceed here if all backend calls succeeded

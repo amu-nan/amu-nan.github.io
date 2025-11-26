@@ -134,14 +134,23 @@
                         <button class="system-btn" data-system="crm">
                             <i class="fa-solid fa-handshake"></i> CRM
                         </button>
+                        <button class="system-btn disabled" data-system="plm" disabled>
+                            <i class="fa-solid fa-cubes"></i> PLM
+                        </button>
+                        <button class="system-btn disabled" data-system="mes" disabled>
+                            <i class="fa-solid fa-cogs"></i> MES
+                        </button>
+                        <button class="system-btn disabled" data-system="scm" disabled>
+                            <i class="fa-solid fa-truck"></i> SCM
+                        </button>
                     </div>
 
                     <!-- ERP Modules -->
                     <div id="erp-modules" class="modules-container">
                         <h3 class="modules-title">
-                            <i class="fa-solid fa-industry"></i> ERP System Modules
+                            <i class="fa-solid fa-industry"></i> ERP App Modules
                         </h3>
-                        <p class="modules-description">Upload data files for each module to integrate with your ERP system</p>
+                        <p class="modules-description">Upload data files for each module to integrate with your ERP app</p>
                         <div class="modules-grid">
                             <div class="module-card" data-module="inventory">
                                 <i class="fa-solid fa-boxes-stacked"></i>
@@ -205,9 +214,9 @@
                     <!-- CRM Modules -->
                     <div id="crm-modules" class="modules-container" style="display:none;">
                         <h3 class="modules-title">
-                            <i class="fa-solid fa-handshake"></i> CRM System Modules
+                            <i class="fa-solid fa-handshake"></i> CRM App Modules
                         </h3>
-                        <p class="modules-description">Upload data files for each module to integrate with your CRM system</p>
+                        <p class="modules-description">Upload data files for each module to integrate with your CRM app</p>
                         <div class="modules-grid">
                             <div class="module-card" data-module="customers">
                                 <i class="fa-solid fa-users"></i>
@@ -381,7 +390,7 @@
                         <div class="summary-card" id="erp-summary" style="display:none;">
                             <div class="summary-header">
                                 <i class="fa-solid fa-industry"></i>
-                                <h3>ERP System</h3>
+                                <h3>ERP App</h3>
                                 <span class="summary-badge">Integrated</span>
                             </div>
                             <div class="summary-details" id="erp-details"></div>
@@ -393,7 +402,7 @@
                         <div class="summary-card" id="crm-summary" style="display:none;">
                             <div class="summary-header">
                                 <i class="fa-solid fa-handshake"></i>
-                                <h3>CRM System</h3>
+                                <h3>CRM App</h3>
                                 <span class="summary-badge">Integrated</span>
                             </div>
                             <div class="summary-details" id="crm-details"></div>
@@ -406,7 +415,7 @@
                             <div class="summary-header">
                                 <i class="fa-solid fa-layer-group"></i>
                                 <h3>Engineering Systems</h3>
-                                <span class="summary-badge engineering">Integrated</span>
+                                <span class="summary-badge">Integrated</span>
                             </div>
                             <div class="summary-details" id="engineering-details"></div>
                             <button class="modify-btn" data-type="engineering">
@@ -416,13 +425,13 @@
                     </div>
 
                     <div class="add-more-section">
-                        <p class="add-more-text">Want to integrate more systems before unifying?</p>
+                        <p class="add-more-text">Want to integrate more apps before unifying?</p>
                         <div class="add-more-buttons">
                             <button class="add-more-btn" data-type="erp" id="add-erp-btn">
-                                <i class="fa-solid fa-plus"></i> Add/Modify ERP System
+                                <i class="fa-solid fa-plus"></i> Add/Modify ERP App
                             </button>
                             <button class="add-more-btn" data-type="crm" id="add-crm-btn">
-                                <i class="fa-solid fa-plus"></i> Add/Modify CRM System
+                                <i class="fa-solid fa-plus"></i> Add/Modify CRM App
                             </button>
                             <button class="add-more-btn" data-type="engineering" id="add-engineering-btn">
                                 <i class="fa-solid fa-plus"></i> Add/Modify Engineering Diagram

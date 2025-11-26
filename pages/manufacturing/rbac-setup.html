@@ -11,6 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JavaScript Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -49,7 +52,7 @@
             <div class="progress-steps">
                 <div class="progress-step active" data-step="1">
                     <div class="step-circle">1</div>
-                    <span class="step-label">Enterprise Systems</span>
+                    <span class="step-label">Enterprise Apps</span>
                 </div>
                 <div class="progress-step" data-step="2">
                     <div class="step-circle">2</div>
@@ -74,11 +77,11 @@
         <div class="setup-container">
             <!-- Header is now shown dynamically per step, not here -->
 
-            <!-- Step 1: Enterprise Systems -->
+            <!-- Step 1: Enterprise Apps -->
             <div class="setup-step active" id="step1">
                 <div class="setup-header">
                     <h1 class="setup-title">Welcome, <span id="companyNameDisplay"></span>!</h1>
-                    <p class="setup-subtitle">Let's configure your manufacturing intelligence platform. Choose the systems you currently use and indicate which ones handle the most data.</p>
+                    <p class="setup-subtitle">Let's configure your manufacturing intelligence platform. Choose the enterprise apps you currently use.</p>
                 </div>
                 <div class="step-content">
                     <div class="systems-grid">
@@ -97,10 +100,6 @@
                                 <option value="epicor">Epicor ERP</option>
                                 <option value="other">Other</option>
                             </select>
-                            <label class="heavy-usage-label">
-                                <input type="checkbox" class="heavy-checkbox" data-system="erp">
-                                <span>Heavy Usage (Primary System)</span>
-                            </label>
                         </div>
 
                         <!-- CRM System -->
@@ -118,19 +117,15 @@
                                 <option value="hubspot">HubSpot</option>
                                 <option value="other">Other</option>
                             </select>
-                            <label class="heavy-usage-label">
-                                <input type="checkbox" class="heavy-checkbox" data-system="crm">
-                                <span>Heavy Usage (Primary System)</span>
-                            </label>
                         </div>
 
                         <!-- SCM System -->
-                        <div class="system-card">
+                        <div class="system-card" style="opacity: 0.5; pointer-events: none;">
                             <div class="system-header">
                                 <i class="fa-solid fa-truck"></i>
-                                <h3>SCM System</h3>
+                                <h3>SCM System <span style="font-size: 0.8em; color: #888;">(Coming Soon)</span></h3>
                             </div>
-                            <select class="system-select" id="scmSystem" data-system="scm">
+                            <select class="system-select" id="scmSystem" data-system="scm" disabled>
                                 <option value="">Select SCM</option>
                                 <option value="sap">SAP SCM</option>
                                 <option value="oracle">Oracle SCM Cloud</option>
@@ -139,19 +134,15 @@
                                 <option value="infor">Infor SCM</option>
                                 <option value="other">Other</option>
                             </select>
-                            <label class="heavy-usage-label">
-                                <input type="checkbox" class="heavy-checkbox" data-system="scm">
-                                <span>Heavy Usage (Primary System)</span>
-                            </label>
                         </div>
 
                         <!-- MES System -->
-                        <div class="system-card">
+                        <div class="system-card" style="opacity: 0.5; pointer-events: none;">
                             <div class="system-header">
                                 <i class="fa-solid fa-industry"></i>
-                                <h3>MES System</h3>
+                                <h3>MES System <span style="font-size: 0.8em; color: #888;">(Coming Soon)</span></h3>
                             </div>
-                            <select class="system-select" id="mesSystem" data-system="mes">
+                            <select class="system-select" id="mesSystem" data-system="mes" disabled>
                                 <option value="">Select MES</option>
                                 <option value="siemens">Siemens Opcenter</option>
                                 <option value="rockwell">Rockwell FactoryTalk</option>
@@ -160,19 +151,15 @@
                                 <option value="apriso">DELMIA Apriso</option>
                                 <option value="other">Other</option>
                             </select>
-                            <label class="heavy-usage-label">
-                                <input type="checkbox" class="heavy-checkbox" data-system="mes">
-                                <span>Heavy Usage (Primary System)</span>
-                            </label>
                         </div>
 
                         <!-- PLM System -->
-                        <div class="system-card">
+                        <div class="system-card" style="opacity: 0.5; pointer-events: none;">
                             <div class="system-header">
                                 <i class="fa-solid fa-cubes"></i>
-                                <h3>PLM System</h3>
+                                <h3>PLM System <span style="font-size: 0.8em; color: #888;">(Coming Soon)</span></h3>
                             </div>
-                            <select class="system-select" id="plmSystem" data-system="plm">
+                            <select class="system-select" id="plmSystem" data-system="plm" disabled>
                                 <option value="">Select PLM</option>
                                 <option value="siemens">Siemens Teamcenter</option>
                                 <option value="ptc">PTC Windchill</option>
@@ -181,10 +168,6 @@
                                 <option value="arena">Arena PLM</option>
                                 <option value="other">Other</option>
                             </select>
-                            <label class="heavy-usage-label">
-                                <input type="checkbox" class="heavy-checkbox" data-system="plm">
-                                <span>Heavy Usage (Primary System)</span>
-                            </label>
                         </div>
                     </div>
                 </div>
@@ -342,16 +325,16 @@
                                             <span>Data Access</span>
                                         </label>
                                         <label class="checkbox-label">
-                                            <input type="checkbox" class="audit-event" value="data-modification" checked>
-                                            <span>Data Modifications</span>
+                                            <input type="checkbox" class="audit-event" value="module-dataset-modification" checked>
+                                            <span>Module/Dataset Modification</span>
                                         </label>
                                         <label class="checkbox-label">
                                             <input type="checkbox" class="audit-event" value="data-export" checked>
                                             <span>Data Exports</span>
                                         </label>
                                         <label class="checkbox-label">
-                                            <input type="checkbox" class="audit-event" value="config-changes" checked>
-                                            <span>Configuration Changes</span>
+                                            <input type="checkbox" class="audit-event" value="system-configurations" checked>
+                                            <span>System Configurations</span>
                                         </label>
                                         <label class="checkbox-label">
                                             <input type="checkbox" class="audit-event" value="role-changes">
@@ -702,7 +685,7 @@
                 <div class="step-content">
                     <div class="review-container">
                         <div class="review-section">
-                            <h3 class="review-title"><i class="fa-solid fa-database"></i> Enterprise Systems</h3>
+                            <h3 class="review-title"><i class="fa-solid fa-database"></i> Enterprise Apps</h3>
                             <div id="reviewSystems" class="review-content"></div>
                         </div>
 
@@ -743,6 +726,9 @@
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
 
+    <!-- Supabase JavaScript Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Custom JavaScript -->
     <script src="../../js/manufacturing/rbac-setup.js"></script>
 </body>
 </html>

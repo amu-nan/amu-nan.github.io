@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **Backend Endpoint URLs**
     const CAD_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
-    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_user_manual/'; 
+    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_manual_pdf/'; // Add this endpoint to your backend
     
     // Real backend endpoints for enterprise modules
     const ENTERPRISE_ENDPOINTS = {
@@ -535,7 +535,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update ERP summary if integrated
         if (integratedSystems.erp) {
             erpSummaryCard.style.display = 'block';
-            erpDetails.innerHTML = `
+            
+            // Get list of modules with files
+            const erpModules = enterpriseModuleFiles.erp;
+            const erpModulesWithFiles = Object.entries(erpModules)
+                .filter(([_, file]) => file !== null)
+                .map(([module, file]) => {
+                    const moduleName = module.charAt(0).toUpperCase() + module.slice(1);
+                    return `
+                        <div class="summary-detail-item">
+                            <i class="fa-solid fa-check"></i>
+                            <span>${moduleName}: ${file.name}</span>
+                        </div>
+                    `;
+                })
+                .join('');
+            
+            erpDetails.innerHTML = erpModulesWithFiles || `
                 <div class="summary-detail-item">
                     <i class="fa-solid fa-check"></i>
                     <span>ERP App - ${erpModuleCount} module(s) integrated</span>
@@ -548,7 +564,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update CRM summary if integrated
         if (integratedSystems.crm) {
             crmSummaryCard.style.display = 'block';
-            crmDetails.innerHTML = `
+            
+            // Get list of modules with files
+            const crmModules = enterpriseModuleFiles.crm;
+            const crmModulesWithFiles = Object.entries(crmModules)
+                .filter(([_, file]) => file !== null)
+                .map(([module, file]) => {
+                    const moduleName = module.charAt(0).toUpperCase() + module.slice(1);
+                    return `
+                        <div class="summary-detail-item">
+                            <i class="fa-solid fa-check"></i>
+                            <span>${moduleName}: ${file.name}</span>
+                        </div>
+                    `;
+                })
+                .join('');
+            
+            crmDetails.innerHTML = crmModulesWithFiles || `
                 <div class="summary-detail-item">
                     <i class="fa-solid fa-check"></i>
                     <span>CRM App - ${crmModuleCount} module(s) integrated</span>

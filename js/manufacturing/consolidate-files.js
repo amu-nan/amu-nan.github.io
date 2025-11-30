@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **Backend Endpoint URLs**
     const CAD_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
-    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_manual_pdf/'; // Add this endpoint to your backend
+    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_manual_pdf/';
     
     // Real backend endpoints for enterprise modules
     const ENTERPRISE_ENDPOINTS = {
@@ -786,55 +786,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('CRM modules uploaded successfully to Supabase');
             }
 
-            // TEMPORARILY COMMENTED OUT - Engineering diagram backend
-            // Uncomment this section when engineering backend is running
-            /*
-            // Upload CAD diagram if available
-            if (integratedSystems.engineering && uploadedCadFile) {
-                const cadFormData = new FormData();
-                cadFormData.append('file', uploadedCadFile);
-
-                const cadResponse = await fetch(CAD_ENDPOINT, {
-                    method: 'POST',
-                    body: cadFormData,
-                });
-
-                if (!cadResponse.ok) {
-                    const text = await cadResponse.text();
-                    throw new Error(`CAD diagram upload failed: ${text}`);
-                }
-
-                const cadData = await cadResponse.json();
-                console.log('CAD file processed successfully:', cadData);
-            }
-
-            // Upload Manual/Documentation if available
-            if (integratedSystems.engineering && uploadedManualFile) {
-                const manualFormData = new FormData();
-                manualFormData.append('file', uploadedManualFile);
-
-                const manualResponse = await fetch(MANUAL_ENDPOINT, {
-                    method: 'POST',
-                    body: manualFormData,
-                });
-
-                if (!manualResponse.ok) {
-                    const text = await manualResponse.text();
-                    throw new Error(`Manual upload failed: ${text}`);
-                }
-
-                const manualData = await manualResponse.json();
-                console.log('Manual file processed successfully:', manualData);
-            }
-            */
-
-            // If engineering is integrated, just log it (no actual upload for now)
+            // Process engineering data if available - ACTUAL BACKEND CALLS
             if (integratedSystems.engineering) {
+                // Upload CAD diagram if available
                 if (uploadedCadFile) {
-                    console.log('CAD diagram ready (backend commented out):', uploadedCadFile.name);
+                    const cadFormData = new FormData();
+                    cadFormData.append('file', uploadedCadFile);
+
+                    const cadResponse = await fetch(CAD_ENDPOINT, {
+                        method: 'POST',
+                        body: cadFormData,
+                    });
+
+                    if (!cadResponse.ok) {
+                        const text = await cadResponse.text();
+                        throw new Error(`CAD diagram upload failed: ${text}`);
+                    }
+
+                    const cadData = await cadResponse.json();
+                    console.log('CAD file processed successfully:', cadData);
                 }
+
+                // Upload Manual/Documentation if available
                 if (uploadedManualFile) {
-                    console.log('Manual ready (backend commented out):', uploadedManualFile.name);
+                    const manualFormData = new FormData();
+                    manualFormData.append('file', uploadedManualFile);
+
+                    const manualResponse = await fetch(MANUAL_ENDPOINT, {
+                        method: 'POST',
+                        body: manualFormData,
+                    });
+
+                    if (!manualResponse.ok) {
+                        const text = await manualResponse.text();
+                        throw new Error(`Manual upload failed: ${text}`);
+                    }
+
+                    const manualData = await manualResponse.json();
+                    console.log('Manual file processed successfully:', manualData);
                 }
             }
 

@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Supabase client
     if (typeof window.supabase !== 'undefined') {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('✅ Supabase connected');
+        console.log('Supabase connected');
     } else {
-        console.error('❌ Supabase library not loaded. Make sure you have the script tag in your HTML.');
+        console.error('Supabase library not loaded. Make sure you have the script tag in your HTML.');
         alert('Error: Supabase library not loaded. Please refresh the page.');
         return;
     }
@@ -158,7 +158,10 @@ document.addEventListener('DOMContentLoaded', function() {
         setupConfig.erpVendor = erpSelect && erpSelect.value ? erpSelect.value : null;
         setupConfig.crmVendor = crmSelect && crmSelect.value ? crmSelect.value : null;
 
-        console.log('✓ Enterprise apps saved');
+        console.log('✓ Enterprise apps saved:', setupConfig.erpVendor, setupConfig.crmVendor);
+        
+        // Also save to localStorage for persistence across page issues
+        localStorage.setItem('rbac_setup_config', JSON.stringify(setupConfig));
     }
 
     function saveNetworkIntegrationData() {
@@ -173,7 +176,8 @@ document.addEventListener('DOMContentLoaded', function() {
         setupConfig.updatePreference = document.getElementById('updatePreference')?.value || 'automatic';
         setupConfig.betaFeaturesEnabled = document.getElementById('betaFeatures')?.checked || false;
 
-        console.log('✓ Network integration saved');
+        console.log('✓ Network integration saved:', setupConfig.deploymentType);
+        localStorage.setItem('rbac_setup_config', JSON.stringify(setupConfig));
     }
 
     function saveSecurityComplianceData() {
@@ -186,7 +190,8 @@ document.addEventListener('DOMContentLoaded', function() {
         setupConfig.complianceStandards = complianceStandards;
         setupConfig.dataResidency = document.getElementById('dataResidency')?.value || 'none';
 
-        console.log('✓ Security compliance saved');
+        console.log('✓ Security compliance saved:', auditEvents.length, 'events,', complianceStandards.length, 'standards');
+        localStorage.setItem('rbac_setup_config', JSON.stringify(setupConfig));
     }
 
     function saveRolesData() {
@@ -206,7 +211,8 @@ document.addEventListener('DOMContentLoaded', function() {
         setupConfig.rolesActive = rolesActive;
         setupConfig.rolesInactive = rolesInactive;
 
-        console.log('✓ Roles saved');
+        console.log('✓ Roles saved:', rolesActive.length, 'active,', rolesInactive.length, 'inactive');
+        localStorage.setItem('rbac_setup_config', JSON.stringify(setupConfig));
     }
 
     // ============================================
@@ -215,7 +221,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function populateReview() {
         const reviewContent = document.getElementById('reviewContent');
-        if (!reviewContent) return;
+        
+        // Debug logging
+        console.log('Populating review...');
+        console.log('Review element found:', !!reviewContent);
+        console.log('Current config:', setupConfig);
+        
+        if (!reviewContent) {
+            console.error('reviewContent element not found!');
+            return;
+        }
 
         let html = '';
 
@@ -258,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         html += `<div class="review-item">
             <span class="review-label">Deployment:</span>
-            <span class="review-value">${setupConfig.deploymentType}</span>
+            <span class="review-value">${setupConfig.deploymentType || 'Cloud'}</span>
         </div>`;
         
         if (setupConfig.smtpServer) {
@@ -277,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         html += `<div class="review-item">
             <span class="review-label">Audit Retention:</span>
-            <span class="review-value">${setupConfig.auditRetentionDays} days</span>
+            <span class="review-value">${setupConfig.auditRetentionDays || 90} days</span>
         </div>`;
         
         if (setupConfig.auditEventsToLog && setupConfig.auditEventsToLog.length > 0) {
@@ -311,6 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
         html += '</div></div>';
 
         reviewContent.innerHTML = html;
+        console.log('Review populated successfully');
     }
 
     // ============================================
@@ -318,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
 
     async function completeSetup() {
-        console.log('📤 Saving to Supabase...', setupConfig);
+        console.log('Saving to Supabase...', setupConfig);
 
         try {
             // Show loading
@@ -351,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setup_completed_at: new Date().toISOString()
             };
 
-            console.log('📊 Data prepared for database:', dbData);
+            console.log('Data prepared for database:', dbData);
 
             // Insert into Supabase
             const { data, error } = await supabase
@@ -360,11 +376,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 .select();
 
             if (error) {
-                console.error('❌ Supabase error:', error);
+                console.error('Supabase error:', error);
                 throw new Error(error.message);
             }
 
-            console.log('✅ Saved to database:', data);
+            console.log('Saved to database:', data);
 
             // Get the inserted organization ID
             const organizationId = data[0].id;
@@ -373,23 +389,13 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('organizationId', organizationId);
             localStorage.setItem('companyName', setupConfig.companyName);
 
-            // Success!
-            alert(`✅ Setup completed successfully!
-
-Organization ID: ${organizationId}
-Company: ${setupConfig.companyName}
-
-Your data has been saved to the database.
-
-You will now be redirected to the login page.`);
-
-            // Redirect
+            // Redirect directly (no alert)
             window.location.href = 'setup-login.html';
 
         } catch (error) {
-            console.error('❌ Error:', error);
+            console.error('Error:', error);
             
-            alert(`❌ Error saving setup:
+            alert(`Error saving setup:
 
 ${error.message}
 

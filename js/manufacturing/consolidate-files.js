@@ -303,15 +303,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateEnterpriseProcessBtn() {
         const currentModules = enterpriseModuleFiles[currentEnterpriseSystem];
         const filesArray = Object.values(currentModules).filter(file => file !== null);
-        const hasAnyFile = filesArray.length > 0;
+        const totalModules = Object.keys(currentModules).length;
+        
+        // All modules must have files uploaded
+        const allModulesUploaded = filesArray.length === totalModules;
         
         if (enterpriseProcessBtn) {
-            enterpriseProcessBtn.disabled = !hasAnyFile;
+            enterpriseProcessBtn.disabled = !allModulesUploaded;
         }
         
         // Update module count
         if (moduleCountSpan) {
-            moduleCountSpan.textContent = filesArray.length;
+            moduleCountSpan.textContent = `${filesArray.length}/${totalModules}`;
         }
     }
     
@@ -323,9 +326,11 @@ document.addEventListener('DOMContentLoaded', () => {
     enterpriseProcessBtn.addEventListener('click', async () => {
         const currentModules = enterpriseModuleFiles[currentEnterpriseSystem];
         const filesToUpload = Object.entries(currentModules).filter(([_, file]) => file !== null);
+        const totalModules = Object.keys(currentModules).length;
         
-        if (filesToUpload.length === 0) {
-            alert('Please upload at least one module file.');
+        // Validate all modules have files
+        if (filesToUpload.length !== totalModules) {
+            alert(`Please upload files for all ${totalModules} modules before proceeding.`);
             return;
         }
 

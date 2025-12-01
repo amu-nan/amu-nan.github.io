@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Supabase client
     if (typeof window.supabase !== 'undefined') {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('Supabase connected');
+        console.log('✅ Supabase connected');
     } else {
-        console.error('Supabase library not loaded. Make sure you have the script tag in your HTML.');
+        console.error('❌ Supabase library not loaded. Make sure you have the script tag in your HTML.');
         alert('Error: Supabase library not loaded. Please refresh the page.');
         return;
     }
@@ -35,6 +35,144 @@ document.addEventListener('DOMContentLoaded', function() {
     const setupConfig = {
         companyName: companyName
     };
+
+    // ============================================
+    // RESTORE FROM CACHE (if exists)
+    // ============================================
+    
+    function restoreFromCache() {
+        const cached = localStorage.getItem('rbac_setup_config');
+        if (cached) {
+            try {
+                const cachedConfig = JSON.parse(cached);
+                // Merge cached data into setupConfig
+                Object.assign(setupConfig, cachedConfig);
+                console.log('✅ Restored from cache:', setupConfig);
+                
+                // Restore form fields after a brief delay to ensure DOM is ready
+                setTimeout(restoreFormFields, 100);
+                return true;
+            } catch (e) {
+                console.error('Error restoring cache:', e);
+                return false;
+            }
+        }
+        return false;
+    }
+
+    function restoreFormFields() {
+        console.log('🔄 Restoring form fields...');
+        
+        // Step 1: Enterprise Apps
+        if (setupConfig.erpVendor) {
+            const erpSelect = document.getElementById('erpSystem');
+            if (erpSelect) erpSelect.value = setupConfig.erpVendor;
+        }
+        if (setupConfig.crmVendor) {
+            const crmSelect = document.getElementById('crmSystem');
+            if (crmSelect) crmSelect.value = setupConfig.crmVendor;
+        }
+
+        // Step 2: Network & Integration
+        if (setupConfig.netbiosDomain) {
+            const netbios = document.getElementById('netbiosDomain');
+            if (netbios) netbios.value = setupConfig.netbiosDomain;
+        }
+        if (setupConfig.deploymentType) {
+            const deployment = document.getElementById('deploymentType');
+            if (deployment) deployment.value = setupConfig.deploymentType;
+        }
+        if (setupConfig.smtpServer) {
+            const smtp = document.getElementById('smtpServer');
+            if (smtp) smtp.value = setupConfig.smtpServer;
+        }
+        if (setupConfig.smtpPort) {
+            const port = document.getElementById('smtpPort');
+            if (port) port.value = setupConfig.smtpPort;
+        }
+        if (setupConfig.smtpEncryption) {
+            const encryption = document.getElementById('smtpEncryption');
+            if (encryption) encryption.value = setupConfig.smtpEncryption;
+        }
+        if (setupConfig.smtpSenderEmail) {
+            const sender = document.getElementById('senderEmail');
+            if (sender) sender.value = setupConfig.smtpSenderEmail;
+        }
+        if (setupConfig.smtpRequiresAuth !== undefined) {
+            const auth = document.getElementById('smtpAuth');
+            if (auth) auth.checked = setupConfig.smtpRequiresAuth;
+        }
+        if (setupConfig.updatePreference) {
+            const update = document.getElementById('updatePreference');
+            if (update) update.value = setupConfig.updatePreference;
+        }
+        if (setupConfig.betaFeaturesEnabled !== undefined) {
+            const beta = document.getElementById('betaFeatures');
+            if (beta) beta.checked = setupConfig.betaFeaturesEnabled;
+        }
+
+        // Step 3: Security & Compliance
+        if (setupConfig.auditRetentionDays) {
+            const retention = document.getElementById('auditRetention');
+            if (retention) retention.value = setupConfig.auditRetentionDays;
+        }
+        if (setupConfig.auditEventsToLog && setupConfig.auditEventsToLog.length > 0) {
+            setupConfig.auditEventsToLog.forEach(event => {
+                const checkbox = document.querySelector(`.audit-event[value="${event}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+        if (setupConfig.alertOnSuspiciousActivity !== undefined) {
+            const alert = document.getElementById('alertOnSuspicious');
+            if (alert) alert.checked = setupConfig.alertOnSuspiciousActivity;
+        }
+        if (setupConfig.complianceStandards && setupConfig.complianceStandards.length > 0) {
+            setupConfig.complianceStandards.forEach(standard => {
+                const checkbox = document.querySelector(`.compliance-standard[value="${standard}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+        if (setupConfig.dataResidency) {
+            const residency = document.getElementById('dataResidency');
+            if (residency) residency.value = setupConfig.dataResidency;
+        }
+
+        // Step 4: Roles
+        if (setupConfig.rolesActive && setupConfig.rolesActive.length > 0) {
+            setupConfig.rolesActive.forEach(role => {
+                const checkbox = document.getElementById(`role-${role}`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+        if (setupConfig.rolesInactive && setupConfig.rolesInactive.length > 0) {
+            setupConfig.rolesInactive.forEach(role => {
+                const checkbox = document.getElementById(`role-${role}`);
+                if (checkbox) checkbox.checked = false;
+            });
+        }
+
+        console.log('✅ All form fields restored from cache');
+    }
+
+    // Try to restore from cache on page load
+    const hasCache = restoreFromCache();
+    if (hasCache) {
+        console.log('💾 Form data restored from previous session');
+    }
+
+    // ============================================
+    // CLEAR CACHE FUNCTION (for manual reset)
+    // ============================================
+    
+    window.clearRBACCache = function() {
+        localStorage.removeItem('rbac_setup_config');
+        console.log('🗑️ RBAC setup cache cleared');
+        alert('Form data cleared. Page will reload.');
+        window.location.reload();
+    };
+    
+    // Make it available in console for debugging
+    console.log('💡 To clear form cache, run: clearRBACCache()');
 
     // Multi-step form management
     let currentStep = 1;
@@ -220,17 +358,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
 
     function populateReview() {
-        const reviewContent = document.getElementById('reviewContent');
+        // Try multiple possible IDs for the review container
+        let reviewContent = document.getElementById('reviewContent') 
+                         || document.getElementById('review-content')
+                         || document.getElementById('reviewSection')
+                         || document.getElementById('review-section')
+                         || document.querySelector('.review-content')
+                         || document.querySelector('#step5 .step-content');
         
         // Debug logging
-        console.log('Populating review...');
+        console.log('📋 Populating review...');
         console.log('Review element found:', !!reviewContent);
         console.log('Current config:', setupConfig);
         
         if (!reviewContent) {
-            console.error('reviewContent element not found!');
+            console.error('❌ reviewContent element not found!');
+            console.error('Available elements in step5:', document.querySelectorAll('#step5 *'));
             return;
         }
+        
+        console.log('✅ Using element:', reviewContent.id || reviewContent.className);
 
         let html = '';
 
@@ -326,7 +473,7 @@ document.addEventListener('DOMContentLoaded', function() {
         html += '</div></div>';
 
         reviewContent.innerHTML = html;
-        console.log('Review populated successfully');
+        console.log('✅ Review populated successfully');
     }
 
     // ============================================
@@ -334,7 +481,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
 
     async function completeSetup() {
-        console.log('Saving to Supabase...', setupConfig);
+        console.log('📤 Saving to Supabase...', setupConfig);
 
         try {
             // Show loading
@@ -367,7 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setup_completed_at: new Date().toISOString()
             };
 
-            console.log('Data prepared for database:', dbData);
+            console.log('📊 Data prepared for database:', dbData);
 
             // Insert into Supabase
             const { data, error } = await supabase
@@ -376,11 +523,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 .select();
 
             if (error) {
-                console.error('Supabase error:', error);
+                console.error('❌ Supabase error:', error);
                 throw new Error(error.message);
             }
 
-            console.log('Saved to database:', data);
+            console.log('✅ Saved to database:', data);
 
             // Get the inserted organization ID
             const organizationId = data[0].id;
@@ -389,13 +536,17 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('organizationId', organizationId);
             localStorage.setItem('companyName', setupConfig.companyName);
 
+            // Clear the setup cache since we're done
+            localStorage.removeItem('rbac_setup_config');
+            console.log('🗑️ Setup cache cleared after successful submission');
+
             // Redirect directly (no alert)
             window.location.href = 'setup-login.html';
 
         } catch (error) {
-            console.error('Error:', error);
+            console.error('❌ Error:', error);
             
-            alert(`Error saving setup:
+            alert(`❌ Error saving setup:
 
 ${error.message}
 

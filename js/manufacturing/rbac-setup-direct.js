@@ -67,6 +67,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const cached = localStorage.getItem('rbac_setup_config');
         const cachedCompany = localStorage.getItem('rbac_cached_company');
         
+        console.log('🔍 Cache check:');
+        console.log('  Current company:', companyName);
+        console.log('  Cached company:', cachedCompany);
+        console.log('  Has cached data:', !!cached);
+        
         // Check if we're setting up a DIFFERENT company
         if (cachedCompany && cachedCompany !== companyName) {
             console.log('🆕 New company detected - clearing old cache');
@@ -77,49 +82,66 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        // Same company - restore cache if exists
+        // Same company or no cached company - try to restore cache if exists
         if (cached) {
             try {
                 const cachedConfig = JSON.parse(cached);
+                console.log('📦 Cached config:', cachedConfig);
                 
-                // Double-check company name matches
-                if (cachedConfig.companyName === companyName) {
+                // If company matches OR there's no company check yet, restore
+                if (!cachedConfig.companyName || cachedConfig.companyName === companyName) {
                     // Merge cached data into setupConfig
                     Object.assign(setupConfig, cachedConfig);
                     console.log('✅ Restored from cache for:', companyName);
+                    console.log('   ERP:', setupConfig.erpVendor);
+                    console.log('   CRM:', setupConfig.crmVendor);
                     
                     // Restore form fields after a brief delay to ensure DOM is ready
-                    setTimeout(restoreFormFields, 100);
+                    setTimeout(restoreFormFields, 200);
                     return true;
                 } else {
                     // Company mismatch - clear cache
                     console.log('🆕 Company mismatch - clearing cache');
+                    console.log(`   Cached: ${cachedConfig.companyName}`);
+                    console.log(`   Current: ${companyName}`);
                     localStorage.removeItem('rbac_setup_config');
                     localStorage.setItem('rbac_cached_company', companyName);
                     return false;
                 }
             } catch (e) {
-                console.error('Error restoring cache:', e);
+                console.error('❌ Error restoring cache:', e);
                 return false;
             }
         }
         
         // No cache - store current company for future checks
+        console.log('ℹ️ No cache found - storing company name');
         localStorage.setItem('rbac_cached_company', companyName);
         return false;
     }
 
     function restoreFormFields() {
         console.log('🔄 Restoring form fields...');
+        console.log('   setupConfig:', setupConfig);
         
         // Step 1: Enterprise Apps
         if (setupConfig.erpVendor) {
             const erpSelect = document.getElementById('erpSystem');
-            if (erpSelect) erpSelect.value = setupConfig.erpVendor;
+            console.log('   ERP element:', erpSelect);
+            console.log('   Setting ERP to:', setupConfig.erpVendor);
+            if (erpSelect) {
+                erpSelect.value = setupConfig.erpVendor;
+                console.log('   ✓ ERP set to:', erpSelect.value);
+            }
         }
         if (setupConfig.crmVendor) {
             const crmSelect = document.getElementById('crmSystem');
-            if (crmSelect) crmSelect.value = setupConfig.crmVendor;
+            console.log('   CRM element:', crmSelect);
+            console.log('   Setting CRM to:', setupConfig.crmVendor);
+            if (crmSelect) {
+                crmSelect.value = setupConfig.crmVendor;
+                console.log('   ✓ CRM set to:', crmSelect.value);
+            }
         }
 
         // Step 2: Network & Integration
@@ -637,17 +659,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Mark setup as completed (prevents navigation warnings)
             localStorage.setItem('rbac_setup_completed', 'true');
 
-            // Clear the setup cache since we're done
-            localStorage.removeItem('rbac_setup_config');
-            console.log('🗑️ Setup cache cleared after successful submission');
+            // DON'T clear the cache - keep it so users can edit their setup
+            // Cache will only be cleared if user clicks "Restart Setup"
+            console.log('✅ Setup cache preserved for editing');
 
             // Redirect directly (no alert)
             window.location.href = 'setup-login.html';
 
         } catch (error) {
-            console.error('❌ Error:', error);
+            console.error(' Error:', error);
             
-            alert(`❌ Error saving setup:
+            alert(` Error saving setup:
 
 ${error.message}
 

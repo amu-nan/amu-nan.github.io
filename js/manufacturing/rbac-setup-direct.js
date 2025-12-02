@@ -189,13 +189,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Step 4: Roles
         if (setupConfig.rolesActive && setupConfig.rolesActive.length > 0) {
             setupConfig.rolesActive.forEach(role => {
-                const checkbox = document.getElementById(`role-${role}`);
+                const roleCard = document.querySelector(`.role-card[data-role="${role}"]`);
+                const checkbox = roleCard ? roleCard.querySelector('.role-checkbox') : null;
                 if (checkbox) checkbox.checked = true;
             });
         }
         if (setupConfig.rolesInactive && setupConfig.rolesInactive.length > 0) {
             setupConfig.rolesInactive.forEach(role => {
-                const checkbox = document.getElementById(`role-${role}`);
+                const roleCard = document.querySelector(`.role-card[data-role="${role}"]`);
+                const checkbox = roleCard ? roleCard.querySelector('.role-checkbox') : null;
                 if (checkbox) checkbox.checked = false;
             });
         }
@@ -251,6 +253,10 @@ document.addEventListener('DOMContentLoaded', function() {
     nextBtn.addEventListener('click', () => navigateStep(1));
     prevBtn.addEventListener('click', () => navigateStep(-1));
     completeBtn.addEventListener('click', completeSetup);
+
+    // Reset complete button state (in case user navigated back)
+    completeBtn.disabled = false;
+    completeBtn.innerHTML = '<i class="fa-solid fa-check"></i> Complete Setup';
 
     updateStepDisplay();
 
@@ -425,7 +431,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const rolesInactive = [];
         
         allRoles.forEach(role => {
-            const checkbox = document.getElementById(`role-${role}`);
+            // Find checkbox by searching within the role card
+            const roleCard = document.querySelector(`.role-card[data-role="${role}"]`);
+            const checkbox = roleCard ? roleCard.querySelector('.role-checkbox') : null;
+            
             if (checkbox && checkbox.checked) {
                 rolesActive.push(role);
             } else {
@@ -437,6 +446,8 @@ document.addEventListener('DOMContentLoaded', function() {
         setupConfig.rolesInactive = rolesInactive;
 
         console.log('✓ Roles saved:', rolesActive.length, 'active,', rolesInactive.length, 'inactive');
+        console.log('  Active:', rolesActive);
+        console.log('  Inactive:', rolesInactive);
         localStorage.setItem('rbac_setup_config', JSON.stringify(setupConfig));
     }
 

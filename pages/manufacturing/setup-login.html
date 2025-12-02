@@ -11,6 +11,57 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Styles for the setup action buttons */
+        .setup-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .setup-action-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .edit-setup-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .edit-setup-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .restart-setup-btn {
+            background: #6b7280;
+            color: white;
+        }
+
+        .restart-setup-btn:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+        }
+
+        .setup-actions-hint {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -87,6 +138,19 @@
                     <span class="inactive-badge">Coming Soon</span>
                 </div>
             </div>
+
+            <!-- Setup Action Buttons -->
+            <div class="setup-actions">
+                <button class="setup-action-btn edit-setup-btn" id="editSetupBtn">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Edit Setup
+                </button>
+                <button class="setup-action-btn restart-setup-btn" id="restartSetupBtn">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    Restart Setup
+                </button>
+            </div>
+            <p class="setup-actions-hint">Need to make changes or start over?</p>
         </div>
 
         <!-- Login Form View (shown after role selection) -->
@@ -147,9 +211,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Get company name from localStorage
+            // Get company name from localStorage (check both keys for compatibility)
+            const rbacConfig = JSON.parse(localStorage.getItem('rbac_setup_config') || '{}');
             const setupConfig = JSON.parse(localStorage.getItem('xforiaSetupConfig') || '{}');
-            const companyName = setupConfig.companyName || 'Your Organization';
+            const companyName = rbacConfig.companyName || setupConfig.companyName || 
+                              localStorage.getItem('companyName') || 'Your Organization';
             
             document.getElementById('companyGreeting').textContent = 
                 `Welcome to ${companyName}! Select your role to continue`;
@@ -181,32 +247,34 @@
                 });
             });
 
-            // Back to roles button - shows options to edit or restart setup
+            // Back to role selection (from login form)
             document.getElementById('backToRoles').addEventListener('click', function() {
-                // Create custom dialog with options
-                const choice = confirm(
-                    'What would you like to do?\n\n' +
-                    'Click OK to EDIT your setup (go back to review page)\n' +
-                    'Click Cancel to RESTART setup from beginning'
-                );
-                
-                if (choice) {
-                    // OK = Edit Setup (go back to RBAC setup - review page)
-                    window.history.back();
-                } else {
-                    // Cancel = Restart Setup
-                    if (confirm('This will clear all your setup data and start fresh. Continue?')) {
-                        // Clear all caches
-                        localStorage.removeItem('rbac_setup_config');
-                        localStorage.removeItem('rbac_cached_company');
-                        localStorage.removeItem('rbac_setup_completed');
-                        localStorage.removeItem('xforiaSetupConfig');  // Legacy
-                        localStorage.removeItem('organizationId');
-                        localStorage.removeItem('companyName');
-                        
-                        // Redirect to manufacturing page to enter company name again
-                        window.location.href = 'xforia-manufacturing.html';
-                    }
+                // Simply show role selection again
+                loginFormView.style.display = 'none';
+                roleSelectionView.style.display = 'block';
+            });
+
+            // Edit Setup button - goes to RBAC setup page with cached data
+            document.getElementById('editSetupBtn').addEventListener('click', function() {
+                // Go to RBAC setup page - data will be restored from cache
+                window.location.href = `rbac-setup.html?company=${encodeURIComponent(companyName)}`;
+            });
+
+            // Restart Setup button - clears everything and starts fresh
+            document.getElementById('restartSetupBtn').addEventListener('click', function() {
+                if (confirm('This will clear all your setup data and start fresh. Continue?')) {
+                    // Clear all caches
+                    localStorage.removeItem('rbac_setup_config');
+                    localStorage.removeItem('rbac_cached_company');
+                    localStorage.removeItem('rbac_setup_completed');
+                    localStorage.removeItem('xforiaSetupConfig');
+                    localStorage.removeItem('organizationId');
+                    localStorage.removeItem('companyName');
+                    
+                    console.log('✓ All caches cleared');
+                    
+                    // Redirect to manufacturing page to enter company name again
+                    window.location.href = 'xforia-manufacturing.html';
                 }
             });
 
@@ -246,7 +314,7 @@
                     }, 1000);
                 } else {
                     // Show simple error message
-                    alert('Invalid credentials');
+                    alert('Invalid credentials. Please use:\nUsername: Xforia\nPassword: Xforia');
                 }
             });
         });

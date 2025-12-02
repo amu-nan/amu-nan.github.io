@@ -181,10 +181,33 @@
                 });
             });
 
-            // Back to roles button - allows going back to RBAC setup with cached data
+            // Back to roles button - shows options to edit or restart setup
             document.getElementById('backToRoles').addEventListener('click', function() {
-                // Simply go back to RBAC setup page - data is cached!
-                window.history.back();
+                // Create custom dialog with options
+                const choice = confirm(
+                    'What would you like to do?\n\n' +
+                    'Click OK to EDIT your setup (go back to review page)\n' +
+                    'Click Cancel to RESTART setup from beginning'
+                );
+                
+                if (choice) {
+                    // OK = Edit Setup (go back to RBAC setup - review page)
+                    window.history.back();
+                } else {
+                    // Cancel = Restart Setup
+                    if (confirm('This will clear all your setup data and start fresh. Continue?')) {
+                        // Clear all caches
+                        localStorage.removeItem('rbac_setup_config');
+                        localStorage.removeItem('rbac_cached_company');
+                        localStorage.removeItem('rbac_setup_completed');
+                        localStorage.removeItem('xforiaSetupConfig');  // Legacy
+                        localStorage.removeItem('organizationId');
+                        localStorage.removeItem('companyName');
+                        
+                        // Redirect to manufacturing page to enter company name again
+                        window.location.href = 'xforia-manufacturing.html';
+                    }
+                }
             });
 
             // Password toggle

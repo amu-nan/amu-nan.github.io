@@ -2,6 +2,29 @@
 // This version talks directly to Supabase from the browser
 
 // ============================================
+// FORCE DISABLE ALL NAVIGATION WARNINGS
+// ============================================
+(function() {
+    // Immediately disable any beforeunload
+    window.onbeforeunload = null;
+    
+    // Prevent any script from adding beforeunload
+    Object.defineProperty(window, 'onbeforeunload', {
+        configurable: true,
+        get: function() { return null; },
+        set: function() { /* Do nothing - block setting */ }
+    });
+    
+    // Remove all existing beforeunload listeners
+    window.addEventListener('beforeunload', function(e) {
+        e.stopImmediatePropagation();
+        delete e['returnValue'];
+    }, true);
+    
+    console.log('🔓 All navigation warnings disabled');
+})();
+
+// ============================================
 // SUPABASE CONFIGURATION
 // ============================================
 
@@ -42,21 +65,47 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function restoreFromCache() {
         const cached = localStorage.getItem('rbac_setup_config');
+        const cachedCompany = localStorage.getItem('rbac_cached_company');
+        
+        // Check if we're setting up a DIFFERENT company
+        if (cachedCompany && cachedCompany !== companyName) {
+            console.log('🆕 New company detected - clearing old cache');
+            console.log(`   Old: ${cachedCompany}`);
+            console.log(`   New: ${companyName}`);
+            localStorage.removeItem('rbac_setup_config');
+            localStorage.setItem('rbac_cached_company', companyName);
+            return false;
+        }
+        
+        // Same company - restore cache if exists
         if (cached) {
             try {
                 const cachedConfig = JSON.parse(cached);
-                // Merge cached data into setupConfig
-                Object.assign(setupConfig, cachedConfig);
-                console.log('✅ Restored from cache:', setupConfig);
                 
-                // Restore form fields after a brief delay to ensure DOM is ready
-                setTimeout(restoreFormFields, 100);
-                return true;
+                // Double-check company name matches
+                if (cachedConfig.companyName === companyName) {
+                    // Merge cached data into setupConfig
+                    Object.assign(setupConfig, cachedConfig);
+                    console.log('✅ Restored from cache for:', companyName);
+                    
+                    // Restore form fields after a brief delay to ensure DOM is ready
+                    setTimeout(restoreFormFields, 100);
+                    return true;
+                } else {
+                    // Company mismatch - clear cache
+                    console.log('🆕 Company mismatch - clearing cache');
+                    localStorage.removeItem('rbac_setup_config');
+                    localStorage.setItem('rbac_cached_company', companyName);
+                    return false;
+                }
             } catch (e) {
                 console.error('Error restoring cache:', e);
                 return false;
             }
         }
+        
+        // No cache - store current company for future checks
+        localStorage.setItem('rbac_cached_company', companyName);
         return false;
     }
 
@@ -174,7 +223,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Make it available in console for debugging
     console.log('💡 To clear form cache, run: clearRBACCache()');
 
-    // Multi-step form management
+    // ============================================
+    // NAVIGATION HANDLING
+    // ============================================
+    
+    // Check if setup was already completed
+    const setupAlreadyCompleted = localStorage.getItem('rbac_setup_completed') === 'true';
+    
+    if (setupAlreadyCompleted) {
+        console.log('✅ Setup already completed - navigation unrestricted');
+    }
+    
+    // Disable any existing beforeunload warnings
+    // This allows users to navigate freely with caching
+    window.removeEventListener('beforeunload', () => {});
+    
+    // Override any beforeunload that might exist
+    window.onbeforeunload = null;
     let currentStep = 1;
     const totalSteps = 5;
 
@@ -188,6 +253,28 @@ document.addEventListener('DOMContentLoaded', function() {
     completeBtn.addEventListener('click', completeSetup);
 
     updateStepDisplay();
+
+    // ============================================
+    // ROLE TOGGLE HANDLERS (Step 4)
+    // ============================================
+    
+    // Handle role card toggle interactions
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('role-checkbox')) {
+            const roleCard = e.target.closest('.role-card');
+            const roleBadge = roleCard.querySelector('.role-badge');
+            
+            if (e.target.checked) {
+                roleCard.classList.add('active');
+                roleBadge.textContent = 'Active';
+                roleBadge.classList.add('active-badge');
+            } else {
+                roleCard.classList.remove('active');
+                roleBadge.textContent = 'Inactive';
+                roleBadge.classList.remove('active-badge');
+            }
+        }
+    });
 
     // ============================================
     // NAVIGATION FUNCTIONS
@@ -535,6 +622,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Store in localStorage
             localStorage.setItem('organizationId', organizationId);
             localStorage.setItem('companyName', setupConfig.companyName);
+
+            // Mark setup as completed (prevents navigation warnings)
+            localStorage.setItem('rbac_setup_completed', 'true');
 
             // Clear the setup cache since we're done
             localStorage.removeItem('rbac_setup_config');

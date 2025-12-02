@@ -21,7 +21,7 @@
         delete e['returnValue'];
     }, true);
     
-    console.log('🔓 All navigation warnings disabled');
+    console.log('All navigation warnings disabled');
 })();
 
 // ============================================
@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Supabase client
     if (typeof window.supabase !== 'undefined') {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('✅ Supabase connected');
+        console.log('Supabase connected');
     } else {
-        console.error('❌ Supabase library not loaded. Make sure you have the script tag in your HTML.');
+        console.error('Supabase library not loaded. Make sure you have the script tag in your HTML.');
         alert('Error: Supabase library not loaded. Please refresh the page.');
         return;
     }
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Check if we're setting up a DIFFERENT company
         if (cachedCompany && cachedCompany !== companyName) {
-            console.log('🆕 New company detected - clearing old cache');
+            console.log('New company detected - clearing old cache');
             console.log(`   Old: ${cachedCompany}`);
             console.log(`   New: ${companyName}`);
             localStorage.removeItem('rbac_setup_config');
@@ -86,14 +86,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (cachedConfig.companyName === companyName) {
                     // Merge cached data into setupConfig
                     Object.assign(setupConfig, cachedConfig);
-                    console.log('✅ Restored from cache for:', companyName);
+                    console.log('Restored from cache for:', companyName);
                     
                     // Restore form fields after a brief delay to ensure DOM is ready
                     setTimeout(restoreFormFields, 100);
                     return true;
                 } else {
                     // Company mismatch - clear cache
-                    console.log('🆕 Company mismatch - clearing cache');
+                    console.log('Company mismatch - clearing cache');
                     localStorage.removeItem('rbac_setup_config');
                     localStorage.setItem('rbac_cached_company', companyName);
                     return false;
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function restoreFormFields() {
-        console.log('🔄 Restoring form fields...');
+        console.log('Restoring form fields...');
         
         // Step 1: Enterprise Apps
         if (setupConfig.erpVendor) {
@@ -202,13 +202,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        console.log('✅ All form fields restored from cache');
+        console.log('All form fields restored from cache');
     }
 
     // Try to restore from cache on page load
     const hasCache = restoreFromCache();
     if (hasCache) {
-        console.log('💾 Form data restored from previous session');
+        console.log('Form data restored from previous session');
     }
 
     // ============================================
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     // Make it available in console for debugging
-    console.log('💡 To clear form cache, run: clearRBACCache()');
+    console.log('To clear form cache, run: clearRBACCache()');
 
     // ============================================
     // NAVIGATION HANDLING
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const setupAlreadyCompleted = localStorage.getItem('rbac_setup_completed') === 'true';
     
     if (setupAlreadyCompleted) {
-        console.log('✅ Setup already completed - navigation unrestricted');
+        console.log('Setup already completed - navigation unrestricted');
     }
     
     // Disable any existing beforeunload warnings
@@ -465,17 +465,17 @@ document.addEventListener('DOMContentLoaded', function() {
                          || document.querySelector('#step5 .step-content');
         
         // Debug logging
-        console.log('📋 Populating review...');
+        console.log('Populating review...');
         console.log('Review element found:', !!reviewContent);
         console.log('Current config:', setupConfig);
         
         if (!reviewContent) {
-            console.error('❌ reviewContent element not found!');
+            console.error('reviewContent element not found!');
             console.error('Available elements in step5:', document.querySelectorAll('#step5 *'));
             return;
         }
         
-        console.log('✅ Using element:', reviewContent.id || reviewContent.className);
+        console.log('Using element:', reviewContent.id || reviewContent.className);
 
         let html = '';
 
@@ -571,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function() {
         html += '</div></div>';
 
         reviewContent.innerHTML = html;
-        console.log('✅ Review populated successfully');
+        console.log('Review populated successfully');
     }
 
     // ============================================
@@ -579,7 +579,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
 
     async function completeSetup() {
-        console.log('📤 Saving to Supabase...', setupConfig);
+        console.log('Saving to Supabase...', setupConfig);
 
         try {
             // Show loading
@@ -612,7 +612,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setup_completed_at: new Date().toISOString()
             };
 
-            console.log('📊 Data prepared for database:', dbData);
+            console.log('Data prepared for database:', dbData);
 
             // Insert into Supabase
             const { data, error } = await supabase
@@ -621,11 +621,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 .select();
 
             if (error) {
-                console.error('❌ Supabase error:', error);
+                console.error('Supabase error:', error);
                 throw new Error(error.message);
             }
 
-            console.log('✅ Saved to database:', data);
+            console.log('Saved to database:', data);
 
             // Get the inserted organization ID
             const organizationId = data[0].id;
@@ -645,9 +645,9 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'setup-login.html';
 
         } catch (error) {
-            console.error('❌ Error:', error);
+            console.error('Error:', error);
             
-            alert(`❌ Error saving setup:
+            alert(`Error saving setup:
 
 ${error.message}
 

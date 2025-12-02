@@ -181,15 +181,10 @@
                 });
             });
 
-            // Back to roles button
+            // Back to roles button - allows going back to RBAC setup with cached data
             document.getElementById('backToRoles').addEventListener('click', function() {
-                // Reset the entire setup - go back to xforia-manufacturing page
-                if (confirm('Going back will reset your setup. Are you sure?')) {
-                    // Clear localStorage
-                    localStorage.removeItem('xforiaSetupConfig');
-                    // Redirect back to manufacturing page
-                    window.location.href = 'xforia-manufacturing.html';
-                }
+                // Simply go back to RBAC setup page - data is cached!
+                window.history.back();
             });
 
             // Password toggle

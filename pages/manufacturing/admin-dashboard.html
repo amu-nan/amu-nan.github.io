@@ -192,7 +192,7 @@
                 </a>
 
                 <!-- Manage Users -->
-                <a href="#" class="action-card" id="manageUsersCard">
+                <a href="user-management.html" class="nav-card">
                     <div class="card-header">
                         <div class="card-icon orange">
                             <i class="fa-solid fa-users-gear"></i>
@@ -265,11 +265,11 @@
             if (rbacConfig.crmVendor) systemCount++;
             document.getElementById('systemCount').textContent = systemCount;
 
-            // Manage Users card - coming soon
-            document.getElementById('manageUsersCard').addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('User Management feature coming in Phase 3!\n\nYou\'ll be able to:\n• Create new users\n• Assign roles\n• Manage permissions\n• View user activity');
-            });
+            // // Manage Users card - coming soon
+            // document.getElementById('manageUsersCard').addEventListener('click', function(e) {
+            //     e.preventDefault();
+            //     alert('User Management feature coming in Phase 3!\n\nYou\'ll be able to:\n• Create new users\n• Assign roles\n• Manage permissions\n• View user activity');
+            // });
 
             // Logout functionality
             document.getElementById('logoutBtn').addEventListener('click', function() {

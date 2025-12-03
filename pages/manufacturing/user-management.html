@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Xforia COAST</title>
+    <link rel="icon" type="image/png" href="../../images/Subject.png">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/manufacturing/user-management.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JavaScript Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <a href="../../index.html">
+                <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            </a>
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle hamburger-icon" aria-label="Services Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html"><i class="fa-solid fa-industry"></i> Manufacturing</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-hospital"></i> Healthcare</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-sack-dollar"></i> Banking & Finance</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-store"></i> Retail</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-graduation-cap"></i> Education</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-satellite-dish"></i> Telecom, Media & Technology(TMT)</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="user-management-main">
+        <div class="page-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-content">
+                    <a href="admin-dashboard.html" class="back-link">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                    <h1 class="page-title">
+                        <i class="fa-solid fa-users-gear"></i>
+                        User Management
+                    </h1>
+                    <p class="page-subtitle" id="companySubtitle">Manage team members and access permissions</p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">0</h3>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="activeUsers">0</h3>
+                        <p>Active Users</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="availableRoles">0</h3>
+                        <p>Available Roles</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create User Section -->
+            <div class="section-card create-user-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Create New User
+                    </h2>
+                </div>
+
+                <form class="create-user-form" id="createUserForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="newFullName" class="form-label">
+                                <i class="fa-solid fa-id-card"></i> Full Name
+                            </label>
+                            <input 
+                                type="text" 
+                                id="newFullName" 
+                                class="form-input" 
+                                placeholder="John Doe"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newUsername" class="form-label">
+                                <i class="fa-solid fa-user"></i> Username
+                            </label>
+                            <input 
+                                type="text" 
+                                id="newUsername" 
+                                class="form-input" 
+                                placeholder="johndoe"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="newPassword" class="form-label">
+                                <i class="fa-solid fa-lock"></i> Password
+                            </label>
+                            <div class="password-input-wrapper">
+                                <input 
+                                    type="password" 
+                                    id="newPassword" 
+                                    class="form-input" 
+                                    placeholder="Create password"
+                                    required
+                                >
+                                <button type="button" class="password-toggle" data-target="newPassword">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newRole" class="form-label">
+                                <i class="fa-solid fa-user-tag"></i> Role
+                            </label>
+                            <select id="newRole" class="form-input" required>
+                                <option value="">Select role...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fa-solid fa-plus"></i> Create User
+                    </button>
+                </form>
+            </div>
+
+            <!-- Users List Section -->
+            <div class="section-card users-list-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-users"></i>
+                        Team Members
+                    </h2>
+                    <button class="refresh-btn" id="refreshBtn">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="loading-state" id="loadingUsers">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <p>Loading users...</p>
+                </div>
+
+                <div class="users-table-container" id="usersTableContainer" style="display: none;">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <i class="fa-solid fa-users-slash"></i>
+                    <h3>No Users Found</h3>
+                    <p>Create your first team member using the form above.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit User Modal -->
+    <div class="modal" id="editUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-pen"></i> Edit User</h3>
+                <button class="modal-close" id="closeEditModal">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            <form class="modal-form" id="editUserForm">
+                <input type="hidden" id="editUserId">
+                
+                <div class="form-group">
+                    <label for="editFullName" class="form-label">Full Name</label>
+                    <input type="text" id="editFullName" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editUsername" class="form-label">Username</label>
+                    <input type="text" id="editUsername" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editRole" class="form-label">Role</label>
+                    <select id="editRole" class="form-input" required>
+                        <option value="">Select role...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="editIsActive">
+                        <span>Active User</span>
+                    </label>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" id="cancelEditBtn">Cancel</button>
+                    <button type="submit" class="submit-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // SUPABASE CONFIGURATION
+        // ============================================
+        const SUPABASE_URL = 'https://aqasfpkazrebatjhdhig.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYXNmcGthenJlYmF0amhkaGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMxMDYsImV4cCI6MjA3ODUyOTEwNn0.F18jn7ug3VD1g05NMxxa9Dp9YnSZycge4ekyb94GyYc';
+
+        let supabase = null;
+        let currentUser = null;
+        let organizationId = null;
+        let companyName = null;
+        let availableRoles = [];
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize Supabase
+            if (typeof window.supabase !== 'undefined') {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase connected');
+            } else {
+                console.error('❌ Supabase library not loaded');
+                alert('Error: Could not connect to database.');
+                return;
+            }
+
+            // Check authentication and authorization
+            currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            organizationId = localStorage.getItem('organizationId');
+            companyName = localStorage.getItem('companyName') || 'Your Organization';
+
+            if (!currentUser.username || !organizationId) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (currentUser.role !== 'administrator') {
+                alert('Access denied. This page is for administrators only.');
+                window.location.href = 'admin-dashboard.html';
+                return;
+            }
+
+            // Update page subtitle
+            document.getElementById('companySubtitle').textContent = 
+                `Manage team members for ${companyName}`;
+
+            // Load available roles from org setup
+            await loadAvailableRoles();
+
+            // Load users
+            await loadUsers();
+
+            // Initialize event listeners
+            initializeEventListeners();
+        });
+
+        // ============================================
+        // LOAD AVAILABLE ROLES
+        // ============================================
+        async function loadAvailableRoles() {
+            try {
+                const { data: orgSetup, error } = await supabase
+                    .from('organization_setup')
+                    .select('roles_active')
+                    .eq('id', organizationId)
+                    .single();
+
+                if (error) throw error;
+
+                availableRoles = orgSetup?.roles_active || ['administrator', 'manager', 'analyst', 'user'];
+                
+                // Update stats
+                document.getElementById('availableRoles').textContent = availableRoles.length;
+
+                // Populate role dropdowns
+                populateRoleDropdowns();
+
+                console.log('✅ Available roles:', availableRoles);
+            } catch (error) {
+                console.error('❌ Error loading roles:', error);
+                availableRoles = ['administrator', 'manager', 'analyst', 'user'];
+                populateRoleDropdowns();
+            }
+        }
+
+        function populateRoleDropdowns() {
+            const roleLabels = {
+                'administrator': 'Administrator',
+                'product-owner': 'Product Owner',
+                'manager': 'Manager',
+                'analyst': 'Analyst',
+                'user': 'User',
+                'engineer': 'Engineer',
+                'quality': 'Quality Manager'
+            };
+
+            const newRoleSelect = document.getElementById('newRole');
+            const editRoleSelect = document.getElementById('editRole');
+
+            newRoleSelect.innerHTML = '<option value="">Select role...</option>';
+            editRoleSelect.innerHTML = '<option value="">Select role...</option>';
+
+            availableRoles.forEach(role => {
+                const option1 = document.createElement('option');
+                option1.value = role;
+                option1.textContent = roleLabels[role] || role;
+                newRoleSelect.appendChild(option1);
+
+                const option2 = document.createElement('option');
+                option2.value = role;
+                option2.textContent = roleLabels[role] || role;
+                editRoleSelect.appendChild(option2);
+            });
+        }
+
+        // ============================================
+        // LOAD USERS
+        // ============================================
+        async function loadUsers() {
+            const loadingState = document.getElementById('loadingUsers');
+            const tableContainer = document.getElementById('usersTableContainer');
+            const emptyState = document.getElementById('emptyState');
+            const tableBody = document.getElementById('usersTableBody');
+
+            try {
+                loadingState.style.display = 'flex';
+                tableContainer.style.display = 'none';
+                emptyState.style.display = 'none';
+
+                const { data: users, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('organization_id', organizationId)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                // Update stats
+                document.getElementById('totalUsers').textContent = users.length;
+                document.getElementById('activeUsers').textContent = 
+                    users.filter(u => u.is_active).length;
+
+                if (users.length === 0) {
+                    loadingState.style.display = 'none';
+                    emptyState.style.display = 'flex';
+                    return;
+                }
+
+                // Populate table
+                tableBody.innerHTML = '';
+                users.forEach(user => {
+                    const row = createUserRow(user);
+                    tableBody.appendChild(row);
+                });
+
+                loadingState.style.display = 'none';
+                tableContainer.style.display = 'block';
+
+                console.log(`✅ Loaded ${users.length} users`);
+            } catch (error) {
+                console.error('❌ Error loading users:', error);
+                loadingState.style.display = 'none';
+                emptyState.style.display = 'flex';
+                alert('Error loading users. Please refresh the page.');
+            }
+        }
+
+        function createUserRow(user) {
+            const row = document.createElement('tr');
+            row.className = user.is_active ? '' : 'inactive-row';
+
+            const roleLabels = {
+                'administrator': 'Administrator',
+                'product-owner': 'Product Owner',
+                'manager': 'Manager',
+                'analyst': 'Analyst',
+                'user': 'User',
+                'engineer': 'Engineer',
+                'quality': 'Quality Manager'
+            };
+
+            const createdDate = new Date(user.created_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            row.innerHTML = `
+                <td>
+                    <div class="user-name">
+                        <i class="fa-solid fa-user"></i>
+                        ${user.full_name}
+                    </div>
+                </td>
+                <td>${user.username}</td>
+                <td>
+                    <span class="role-badge ${user.role}">${roleLabels[user.role] || user.role}</span>
+                </td>
+                <td>
+                    <span class="status-badge ${user.is_active ? 'active' : 'inactive'}">
+                        ${user.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                </td>
+                <td>${createdDate}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="action-btn edit-btn" data-user-id="${user.id}" title="Edit User">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="action-btn ${user.is_active ? 'deactivate-btn' : 'activate-btn'}" 
+                                data-user-id="${user.id}" 
+                                data-active="${user.is_active}"
+                                title="${user.is_active ? 'Deactivate' : 'Activate'} User">
+                            <i class="fa-solid fa-${user.is_active ? 'user-slash' : 'user-check'}"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            // Add event listeners to action buttons
+            row.querySelector('.edit-btn').addEventListener('click', () => openEditModal(user));
+            row.querySelector(user.is_active ? '.deactivate-btn' : '.activate-btn')
+                .addEventListener('click', () => toggleUserStatus(user));
+
+            return row;
+        }
+
+        // ============================================
+        // CREATE USER
+        // ============================================
+        async function createUser(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('newFullName').value.trim();
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            const role = document.getElementById('newRole').value;
+
+            if (!fullName || !username || !password || !role) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating...';
+            submitBtn.disabled = true;
+
+            try {
+                // Check if username exists
+                const { data: existingUser } = await supabase
+                    .from('users')
+                    .select('username')
+                    .eq('username', username)
+                    .eq('organization_id', organizationId)
+                    .single();
+
+                if (existingUser) {
+                    alert('Username already exists. Please choose a different username.');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    return;
+                }
+
+                // Create user
+                const { data: newUser, error } = await supabase
+                    .from('users')
+                    .insert([{
+                        organization_id: organizationId,
+                        full_name: fullName,
+                        username: username,
+                        password: password,
+                        role: role,
+                        created_by: currentUser.id,
+                        is_active: true
+                    }])
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                console.log('✅ User created:', newUser);
+                alert(`User "${fullName}" created successfully!`);
+
+                // Reset form
+                document.getElementById('createUserForm').reset();
+
+                // Reload users
+                await loadUsers();
+
+            } catch (error) {
+                console.error('❌ Error creating user:', error);
+                alert(`Error creating user: ${error.message}`);
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // ============================================
+        // EDIT USER
+        // ============================================
+        function openEditModal(user) {
+            document.getElementById('editUserId').value = user.id;
+            document.getElementById('editFullName').value = user.full_name;
+            document.getElementById('editUsername').value = user.username;
+            document.getElementById('editRole').value = user.role;
+            document.getElementById('editIsActive').checked = user.is_active;
+
+            document.getElementById('editUserModal').classList.add('show');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editUserModal').classList.remove('show');
+        }
+
+        async function updateUser(e) {
+            e.preventDefault();
+
+            const userId = document.getElementById('editUserId').value;
+            const fullName = document.getElementById('editFullName').value.trim();
+            const username = document.getElementById('editUsername').value.trim();
+            const role = document.getElementById('editRole').value;
+            const isActive = document.getElementById('editIsActive').checked;
+
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            submitBtn.disabled = true;
+
+            try {
+                const { error } = await supabase
+                    .from('users')
+                    .update({
+                        full_name: fullName,
+                        username: username,
+                        role: role,
+                        is_active: isActive
+                    })
+                    .eq('id', userId);
+
+                if (error) throw error;
+
+                console.log('✅ User updated');
+                alert('User updated successfully!');
+
+                closeEditModal();
+                await loadUsers();
+
+            } catch (error) {
+                console.error('❌ Error updating user:', error);
+                alert(`Error updating user: ${error.message}`);
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // ============================================
+        // TOGGLE USER STATUS
+        // ============================================
+        async function toggleUserStatus(user) {
+            const action = user.is_active ? 'deactivate' : 'activate';
+            const confirmMsg = `Are you sure you want to ${action} user "${user.full_name}"?`;
+
+            if (!confirm(confirmMsg)) return;
+
+            try {
+                const { error } = await supabase
+                    .from('users')
+                    .update({ is_active: !user.is_active })
+                    .eq('id', user.id);
+
+                if (error) throw error;
+
+                console.log(`✅ User ${action}d`);
+                await loadUsers();
+
+            } catch (error) {
+                console.error(`❌ Error ${action}ing user:`, error);
+                alert(`Error ${action}ing user. Please try again.`);
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        function initializeEventListeners() {
+            // Create user form
+            document.getElementById('createUserForm').addEventListener('submit', createUser);
+
+            // Edit user form
+            document.getElementById('editUserForm').addEventListener('submit', updateUser);
+
+            // Modal controls
+            document.getElementById('closeEditModal').addEventListener('click', closeEditModal);
+            document.getElementById('cancelEditBtn').addEventListener('click', closeEditModal);
+
+            // Close modal on background click
+            document.getElementById('editUserModal').addEventListener('click', function(e) {
+                if (e.target === this) closeEditModal();
+            });
+
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', loadUsers);
+
+            // Password toggles
+            document.querySelectorAll('.password-toggle').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    const input = document.getElementById(targetId);
+                    const type = input.type === 'password' ? 'text' : 'password';
+                    input.type = type;
+                    this.querySelector('i').classList.toggle('fa-eye');
+                    this.querySelector('i').classList.toggle('fa-eye-slash');
+                });
+            });
+
+            // Dropdown menu
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+
+            if (dropdownToggle && dropdownMenu) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('show');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.dropdown')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

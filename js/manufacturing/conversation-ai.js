@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Backend Endpoint Configuration ---
     const backendUrl = "http://127.0.0.1:8000/chat/manufacturing";
+    const backendBaseUrl = "http://127.0.0.1:8000"; // ONLY NEW LINE - for fixing plot URLs
 
     // --- Chatbot Functions ---
     // Add a constant for the bot's icon source at the top of your script
@@ -54,9 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const textContent = document.createElement('div');
                 textContent.innerHTML = marked.parse(text);
                 
-                // Add error handling for plot images
+                // MODIFIED SECTION: Fix plot image URLs and add error handling
                 const plotImages = textContent.querySelectorAll('img[src*="/plots/"]');
                 plotImages.forEach(img => {
+                    // If the src starts with /plots/, prepend the backend base URL
+                    if (img.src.includes('/plots/') && !img.src.startsWith(backendBaseUrl)) {
+                        const plotPath = img.src.split('/plots/')[1];
+                        img.src = `${backendBaseUrl}/plots/${plotPath}`;
+                    }
+                    
+                    // Add error handling
                     img.onerror = function() {
                         console.error('Failed to load image:', this.src);
                         this.alt = 'Failed to load plot image';
@@ -79,10 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function sendQueryToBackend(query) {
         try {
-            console.log("=== SENDING TO BACKEND ===");
-            console.log("Query:", query);
-            console.log("Conversation History:", chatHistoryArray);
-            
             const response = await fetch(backendUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -92,10 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }),
             });
 
-            console.log("=== RESPONSE STATUS ===");
-            console.log("Status:", response.status);
-            console.log("Status Text:", response.statusText);
-
             if (!response.ok) {
                 const text = await response.text();
                 console.error("Backend error response:", text);
@@ -103,15 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            console.log("=== RECEIVED FROM BACKEND ===");
-            console.log("Full Response:", data);
-            console.log("Response Text:", data.response);
-            console.log("Conversation History:", data.conversation_history);
-            
             return data;
         } catch (error) {
-            console.error("=== ERROR IN FETCH ===");
-            console.error("Error:", error);
+            console.error("Error sending query:", error);
             return {
                 response: "Sorry, I'm having trouble connecting right now. Please try again later.",
                 conversation_history: []
@@ -136,16 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 typingIndicator.remove();
             }
 
-            console.log("=== EXTRACTING RESPONSE ===");
-            console.log("backendResponse:", backendResponse);
-            console.log("backendResponse.response:", backendResponse.response);
-            
             const aiResponseText = backendResponse.response;
             chatHistoryArray = backendResponse.conversation_history;
 
-            console.log("=== DISPLAYING MESSAGE ===");
-            console.log("AI Response Text to Display:", aiResponseText);
-            
             addMessage('ria', aiResponseText);
         } catch (error) {
             console.error("Error fetching AI response:", error);

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Xforia COAST</title>
+    <link rel="icon" type="image/png" href="../../images/Subject.png">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/manufacturing/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JavaScript Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <a href="../../index.html">
+                <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            </a>
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+    </header>
+
+    <main class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <h1 class="login-title">Welcome Back</h1>
+                <p class="login-subtitle">Sign in to your organization</p>
+            </div>
+
+            <div class="login-card">
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="companySelect" class="form-label">
+                            <i class="fa-solid fa-building"></i> Organization
+                        </label>
+                        <select id="companySelect" class="form-input" required>
+                            <option value="">Select your organization...</option>
+                        </select>
+                        <div class="loading-text" id="loadingOrgs" style="display: none;">
+                            <i class="fa-solid fa-spinner fa-spin"></i> Loading organizations...
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username" class="form-label">
+                            <i class="fa-solid fa-user"></i> Username
+                        </label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            class="form-input" 
+                            placeholder="Enter your username"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">
+                            <i class="fa-solid fa-lock"></i> Password
+                        </label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="form-input" 
+                                placeholder="Enter your password"
+                                required
+                            >
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        <i class="fa-solid fa-arrow-right"></i> Sign In
+                    </button>
+                </form>
+
+                <div class="login-footer">
+                    <p class="footer-text">Don't have an account?</p>
+                    <a href="xforia-manufacturing.html" class="back-link">
+                        <i class="fa-solid fa-arrow-left"></i> Set Up New Organization
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // SUPABASE CONFIGURATION
+        // ============================================
+        const SUPABASE_URL = 'https://aqasfpkazrebatjhdhig.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYXNmcGthenJlYmF0amhkaGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMxMDYsImV4cCI6MjA3ODUyOTEwNn0.F18jn7ug3VD1g05NMxxa9Dp9YnSZycge4ekyb94GyYc';
+
+        let supabase = null;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize Supabase
+            if (typeof window.supabase !== 'undefined') {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase connected');
+            } else {
+                console.error('❌ Supabase library not loaded');
+                alert('Error: Could not connect to database. Please refresh the page.');
+                return;
+            }
+
+            // Load organizations
+            await loadOrganizations();
+
+            // Password toggle
+            document.getElementById('togglePassword').addEventListener('click', function() {
+                const input = document.getElementById('password');
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+
+            // Login form submission
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        });
+
+        // ============================================
+        // LOAD ORGANIZATIONS FROM DATABASE
+        // ============================================
+        async function loadOrganizations() {
+            const companySelect = document.getElementById('companySelect');
+            const loadingText = document.getElementById('loadingOrgs');
+            
+            try {
+                loadingText.style.display = 'block';
+                companySelect.style.display = 'none';
+                
+                // Fetch all completed organizations
+                const { data: orgs, error } = await supabase
+                    .from('organization_setup')
+                    .select('id, company_name')
+                    .eq('setup_completed', true)
+                    .order('company_name');
+                
+                if (error) throw error;
+                
+                // Clear existing options (keep placeholder)
+                companySelect.innerHTML = '<option value="">Select your organization...</option>';
+                
+                // Add organizations to dropdown
+                if (orgs && orgs.length > 0) {
+                    orgs.forEach(org => {
+                        const option = document.createElement('option');
+                        option.value = org.id;
+                        option.textContent = org.company_name;
+                        option.dataset.companyName = org.company_name;
+                        companySelect.appendChild(option);
+                    });
+                    console.log(`✅ Loaded ${orgs.length} organizations`);
+                } else {
+                    companySelect.innerHTML = '<option value="">No organizations found</option>';
+                    console.log('ℹ️ No organizations in database');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error loading organizations:', error);
+                companySelect.innerHTML = '<option value="">Error loading organizations</option>';
+                alert('Error loading organizations. Please refresh the page.');
+            } finally {
+                loadingText.style.display = 'none';
+                companySelect.style.display = 'block';
+            }
+        }
+
+        // ============================================
+        // LOGIN VALIDATION
+        // ============================================
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const organizationId = document.getElementById('companySelect').value;
+            const companyName = document.getElementById('companySelect').selectedOptions[0]?.dataset.companyName;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            // Validation
+            if (!organizationId) {
+                alert('Please select your organization.');
+                return;
+            }
+            
+            if (!username || !password) {
+                alert('Please enter both username and password.');
+                return;
+            }
+            
+            // Show loading
+            const loginButton = document.querySelector('.login-button');
+            const originalText = loginButton.innerHTML;
+            loginButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...';
+            loginButton.disabled = true;
+            
+            try {
+                // CHECK 1: Try database first (PRIMARY)
+                const { data: dbUser, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('username', username)
+                    .eq('password', password)
+                    .eq('organization_id', organizationId)
+                    .eq('is_active', true)
+                    .single();
+                
+                if (dbUser && !error) {
+                    // ✅ Database login successful
+                    console.log('✅ Database login successful:', dbUser.full_name);
+                    
+                    // Store session data
+                    localStorage.setItem('currentUser', JSON.stringify(dbUser));
+                    localStorage.setItem('organizationId', organizationId);
+                    localStorage.setItem('companyName', companyName);
+                    
+                    // Redirect based on role
+                    setTimeout(() => {
+                        redirectToDashboard(dbUser.role, companyName);
+                    }, 800);
+                    return;
+                }
+                
+                // CHECK 2: Fallback to hardcoded (BACKUP)
+                if (username === 'Xforia' && password === 'Xforia') {
+                    console.log('🔑 Fallback login successful (Xforia/Xforia)');
+                    
+                    const fallbackUser = {
+                        id: 'fallback-admin-' + organizationId,
+                        username: 'Xforia',
+                        full_name: 'Demo Administrator',
+                        role: 'administrator',
+                        organization_id: organizationId,
+                        is_fallback: true
+                    };
+                    
+                    localStorage.setItem('currentUser', JSON.stringify(fallbackUser));
+                    localStorage.setItem('organizationId', organizationId);
+                    localStorage.setItem('companyName', companyName);
+                    
+                    setTimeout(() => {
+                        redirectToDashboard('administrator', companyName);
+                    }, 800);
+                    return;
+                }
+                
+                // NEITHER WORKED - Invalid credentials
+                loginButton.innerHTML = originalText;
+                loginButton.disabled = false;
+                alert('Invalid username or password.\n\nTip: Use Xforia/Xforia for demo access.');
+                
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                loginButton.innerHTML = originalText;
+                loginButton.disabled = false;
+                alert('Error during login. Please try again.');
+            }
+        }
+
+        // ============================================
+        // ROLE-BASED REDIRECT
+        // ============================================
+        function redirectToDashboard(role, companyName) {
+            const dashboards = {
+                'administrator': 'admin-dashboard.html',
+                'product-owner': 'product-owner-dashboard.html',
+                'manager': 'manager-dashboard.html',
+                'analyst': 'analyst-dashboard.html',
+                'user': 'user-dashboard.html',
+                'engineer': 'engineer-dashboard.html',
+                'quality': 'quality-dashboard.html'
+            };
+            
+            const dashboard = dashboards[role] || 'admin-dashboard.html';
+            window.location.href = `${dashboard}?company=${encodeURIComponent(companyName)}`;
+        }
+    </script>
+</body>
+</html>

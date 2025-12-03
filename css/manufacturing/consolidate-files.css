@@ -124,7 +124,7 @@
 }
 
 .tile-icon-badge.engineering {
-    background: #e3f2fd;
+    background: #fce4ec;
 }
 
 .tile-icon-badge i {
@@ -133,7 +133,7 @@
 }
 
 .tile-icon-badge.engineering i {
-    color: #3498db;
+    color: #e91e63;
 }
 
 .tile-header {
@@ -160,8 +160,8 @@
 }
 
 .tile-badge.engineering {
-    background: #e3f2fd;
-    color: #3498db;
+    background: #fce4ec;
+    color: #e91e63;
 }
 
 .tile-description {
@@ -400,12 +400,21 @@
     font-weight: 600;
     color: #2c3e50;
     margin: 10px 0 6px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.required-indicator {
+    color: #e74c3c;
+    font-size: 18px;
+    margin-left: 4px;
+    font-weight: 700;
 }
 
 .module-description {
     font-size: 12px;
     color: #95a5a6;
     margin-bottom: 12px;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Module Upload Section */

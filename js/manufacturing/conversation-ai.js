@@ -20,45 +20,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const backendUrl = "http://127.0.0.1:8000/chat/manufacturing";
 
     // --- Chatbot Functions ---
-    // Add a constant for the bot's icon source at the top of your script
+    const RIA_ICON_SRC = '../../images/Ria-icon.png';
+
     function addMessage(sender, text, isTyping = false) {
         const chatHistory = document.getElementById('chat-history');
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('chat-message');
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
-        
-        // Add a constant for the bot's icon source at the top of your script
-        const RIA_ICON_SRC = '../../images/Ria-icon.png'; 
     
         if (isTyping) {
             messageDiv.id = 'typing-indicator';
-            // Use a div to wrap the icon and the typing dots
             messageDiv.innerHTML = `<div class="ria-message-content">
                                         <img src="${RIA_ICON_SRC}" alt="Ria Icon" class="ria-message-icon">
                                         <p class="loading-dots"><span></span><span></span><span></span></p>
                                     </div>`;
         } else {
             if (sender === 'ria') {
-                // Create a wrapper for the icon and the message content
                 const messageWrapper = document.createElement('div');
                 messageWrapper.classList.add('ria-message-content');
                 
-                // Create and append the icon image
                 const iconImg = document.createElement('img');
                 iconImg.src = RIA_ICON_SRC;
                 iconImg.alt = 'Ria Icon';
                 iconImg.classList.add('ria-message-icon');
                 messageWrapper.appendChild(iconImg);
                 
-                // Create and append the text content
                 const textContent = document.createElement('div');
+                // Parse markdown (this will convert ![alt](url) to <img> tags)
                 textContent.innerHTML = marked.parse(text);
+                
+                // Add error handling for plot images
+                const plotImages = textContent.querySelectorAll('img[src*="/plots/"]');
+                plotImages.forEach(img => {
+                    img.onerror = function() {
+                        console.error('Failed to load image:', this.src);
+                        this.alt = 'Failed to load plot image';
+                        this.style.border = '2px dashed #ccc';
+                        this.style.padding = '20px';
+                        this.style.textAlign = 'center';
+                    };
+                });
+                
                 messageWrapper.appendChild(textContent);
-    
-                // Append the entire wrapper to the message div
                 messageDiv.appendChild(messageWrapper);
             } else {
-                // For user messages, just add the text
+                // For user messages
                 messageDiv.innerHTML = marked.parse(text);
             }
         }
@@ -144,3 +150,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial greeting ---
     addMessage('ria', "Hello! I'm Ria. I'm ready to answer questions about your manufacturing data. How can I help?");
 });
+```

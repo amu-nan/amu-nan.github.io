@@ -12,6 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Supabase JavaScript Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         /* Styles for the setup action buttons */
         .setup-actions {
@@ -61,6 +64,69 @@
             font-size: 14px;
             margin-top: 10px;
         }
+
+        /* Additional styles for new views */
+        .create-account-container,
+        .success-container {
+            width: 100%;
+            max-width: 520px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .password-strength.weak { color: #ef4444; }
+        .password-strength.medium { color: #f59e0b; }
+        .password-strength.strong { color: #10b981; }
+
+        .success-message-box {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .success-message-box i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-message-box h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-info-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .user-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-info-label {
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .user-info-value {
+            color: #1f2937;
+        }
     </style>
 </head>
 <body>
@@ -75,7 +141,7 @@
     </header>
 
     <main class="login-page">
-        <!-- Role Selection View -->
+        <!-- VIEW 1: Role Selection -->
         <div class="role-selection-container" id="roleSelectionView">
             <div class="login-header">
                 <div class="success-icon">
@@ -153,7 +219,118 @@
             <p class="setup-actions-hint">Need to make changes or start over?</p>
         </div>
 
-        <!-- Login Form View (shown after role selection) -->
+        <!-- VIEW 2: Create Account Form (NEW) -->
+        <div class="create-account-container" id="createAccountView" style="display: none;">
+            <div class="login-header">
+                <h1 class="login-title">Create Your Administrator Account</h1>
+                <p class="login-subtitle">Set up your credentials to access the system</p>
+            </div>
+
+            <div class="login-card">
+                <form class="login-form" id="createAccountForm">
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">
+                            <i class="fa-solid fa-id-card"></i> Full Name
+                        </label>
+                        <input 
+                            type="text" 
+                            id="fullName" 
+                            class="form-input" 
+                            placeholder="John Doe"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newUsername" class="form-label">
+                            <i class="fa-solid fa-user"></i> Username
+                        </label>
+                        <input 
+                            type="text" 
+                            id="newUsername" 
+                            class="form-input" 
+                            placeholder="johndoe"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newPassword" class="form-label">
+                            <i class="fa-solid fa-lock"></i> Password
+                        </label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="newPassword" 
+                                class="form-input" 
+                                placeholder="Create a strong password"
+                                required
+                            >
+                            <button type="button" class="password-toggle" id="toggleNewPassword">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">
+                            <i class="fa-solid fa-lock"></i> Confirm Password
+                        </label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                class="form-input" 
+                                placeholder="Re-enter your password"
+                                required
+                            >
+                            <button type="button" class="password-toggle" id="toggleConfirmPassword">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        Create Account <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <button class="back-to-roles-btn" id="backToRolesFromCreate">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Role Selection
+                </button>
+            </div>
+        </div>
+
+        <!-- VIEW 3: Success Message (NEW) -->
+        <div class="success-container" id="successView" style="display: none;">
+            <div class="success-message-box">
+                <i class="fa-solid fa-check-circle"></i>
+                <h2>Account Created Successfully!</h2>
+                <p>Your administrator account is ready to use.</p>
+            </div>
+
+            <div class="user-info-card">
+                <div class="user-info-item">
+                    <span class="user-info-label">Full Name:</span>
+                    <span class="user-info-value" id="displayFullName"></span>
+                </div>
+                <div class="user-info-item">
+                    <span class="user-info-label">Username:</span>
+                    <span class="user-info-value" id="displayUsername"></span>
+                </div>
+                <div class="user-info-item">
+                    <span class="user-info-label">Role:</span>
+                    <span class="user-info-value">Administrator</span>
+                </div>
+            </div>
+
+            <button class="login-button" id="continueToLoginBtn">
+                Continue to Login <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- VIEW 4: Login Form (Enhanced) -->
         <div class="login-container" id="loginFormView" style="display: none;">
             <div class="login-header">
                 <h1 class="login-title">Administrator Login</h1>
@@ -210,111 +387,330 @@
     </footer>
 
     <script>
+        // ============================================
+        // SUPABASE CONFIGURATION
+        // ============================================
+        const SUPABASE_URL = 'https://aqasfpkazrebatjhdhig.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYXNmcGthenJlYmF0amhkaGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMxMDYsImV4cCI6MjA3ODUyOTEwNn0.F18jn7ug3VD1g05NMxxa9Dp9YnSZycge4ekyb94GyYc';
+
+        let supabase = null;
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Get company name from localStorage (check both keys for compatibility)
+            // Initialize Supabase
+            if (typeof window.supabase !== 'undefined') {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase connected');
+            } else {
+                console.error('❌ Supabase library not loaded');
+                alert('Error: Could not connect to database. Please refresh the page.');
+                return;
+            }
+
+            // Get company info from localStorage
             const rbacConfig = JSON.parse(localStorage.getItem('rbac_setup_config') || '{}');
             const setupConfig = JSON.parse(localStorage.getItem('xforiaSetupConfig') || '{}');
             const companyName = rbacConfig.companyName || setupConfig.companyName || 
                               localStorage.getItem('companyName') || 'Your Organization';
+            const organizationId = localStorage.getItem('organizationId');
             
             document.getElementById('companyGreeting').textContent = 
                 `Welcome to ${companyName}! Select your role to continue`;
 
+            // View references
             const roleSelectionView = document.getElementById('roleSelectionView');
+            const createAccountView = document.getElementById('createAccountView');
+            const successView = document.getElementById('successView');
             const loginFormView = document.getElementById('loginFormView');
 
-            // Handle role selection
+            let selectedRole = 'administrator';
+            let createdUserData = null;
+
+            // ============================================
+            // VIEW 1: Role Selection
+            // ============================================
             document.querySelectorAll('.role-selection-card.active .select-role-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const roleCard = this.closest('.role-selection-card');
-                    const roleName = roleCard.getAttribute('data-role');
+                    selectedRole = roleCard.getAttribute('data-role');
                     
-                    // Hide role selection, show login form
+                    // Show create account view
                     roleSelectionView.style.display = 'none';
-                    loginFormView.style.display = 'block';
-                    
-                    // Update login header based on role
-                    const roleTitles = {
-                        'administrator': 'Administrator',
-                        'product-owner': 'Product Owner',
-                        'manager': 'Manager',
-                        'analyst': 'Analyst',
-                        'user': 'User'
-                    };
-                    
-                    document.querySelector('#loginFormView .login-title').textContent = 
-                        `${roleTitles[roleName]} Login`;
+                    createAccountView.style.display = 'block';
                 });
             });
 
-            // Back to role selection (from login form)
-            document.getElementById('backToRoles').addEventListener('click', function() {
-                // Simply show role selection again
-                loginFormView.style.display = 'none';
-                roleSelectionView.style.display = 'block';
-            });
-
-            // Edit Setup button - goes to RBAC setup page with cached data
+            // Edit Setup button
             document.getElementById('editSetupBtn').addEventListener('click', function() {
-                // Go to RBAC setup page - data will be restored from cache
                 window.location.href = `rbac-setup.html?company=${encodeURIComponent(companyName)}`;
             });
 
-            // Restart Setup button - clears everything and starts fresh
+            // Restart Setup button
             document.getElementById('restartSetupBtn').addEventListener('click', function() {
                 if (confirm('This will clear all your setup data and start fresh. Continue?')) {
-                    // Clear all caches
                     localStorage.removeItem('rbac_setup_config');
                     localStorage.removeItem('rbac_cached_company');
                     localStorage.removeItem('rbac_setup_completed');
                     localStorage.removeItem('xforiaSetupConfig');
                     localStorage.removeItem('organizationId');
                     localStorage.removeItem('companyName');
-                    
                     console.log('✓ All caches cleared');
-                    
-                    // Redirect to manufacturing page to enter company name again
                     window.location.href = 'xforia-manufacturing.html';
                 }
             });
 
-            // Password toggle
-            const togglePassword = document.getElementById('togglePassword');
-            const passwordInput = document.getElementById('password');
-
-            togglePassword.addEventListener('click', function() {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                
-                const icon = this.querySelector('i');
-                icon.classList.toggle('fa-eye');
-                icon.classList.toggle('fa-eye-slash');
+            // ============================================
+            // VIEW 2: Create Account Form
+            // ============================================
+            
+            // Password toggle for new password
+            document.getElementById('toggleNewPassword').addEventListener('click', function() {
+                const input = document.getElementById('newPassword');
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
             });
 
-            // Form submission with validation
-            const loginForm = document.getElementById('loginForm');
-            loginForm.addEventListener('submit', function(e) {
+            // Password toggle for confirm password
+            document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+                const input = document.getElementById('confirmPassword');
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+
+            // Password strength indicator
+            document.getElementById('newPassword').addEventListener('input', function() {
+                const password = this.value;
+                const strengthDiv = document.getElementById('passwordStrength');
+                
+                if (password.length === 0) {
+                    strengthDiv.textContent = '';
+                    return;
+                }
+                
+                let strength = 0;
+                if (password.length >= 8) strength++;
+                if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+                if (/\d/.test(password)) strength++;
+                if (/[^a-zA-Z\d]/.test(password)) strength++;
+                
+                if (strength <= 1) {
+                    strengthDiv.textContent = '⚠️ Weak password';
+                    strengthDiv.className = 'password-strength weak';
+                } else if (strength === 2 || strength === 3) {
+                    strengthDiv.textContent = '✓ Medium strength';
+                    strengthDiv.className = 'password-strength medium';
+                } else {
+                    strengthDiv.textContent = '✓ Strong password';
+                    strengthDiv.className = 'password-strength strong';
+                }
+            });
+
+            // Back to role selection from create account
+            document.getElementById('backToRolesFromCreate').addEventListener('click', function() {
+                createAccountView.style.display = 'none';
+                roleSelectionView.style.display = 'block';
+            });
+
+            // Create Account Form Submission
+            document.getElementById('createAccountForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const fullName = document.getElementById('fullName').value.trim();
+                const username = document.getElementById('newUsername').value.trim();
+                const password = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Validation
+                if (!fullName || !username || !password) {
+                    alert('Please fill in all fields.');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match. Please try again.');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    alert('Password must be at least 6 characters long.');
+                    return;
+                }
+                
+                if (!organizationId) {
+                    alert('Error: Organization ID not found. Please restart setup.');
+                    return;
+                }
+                
+                // Show loading
+                const submitBtn = this.querySelector('.login-button');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Check if username already exists
+                    const { data: existingUser } = await supabase
+                        .from('users')
+                        .select('username')
+                        .eq('username', username)
+                        .eq('organization_id', organizationId)
+                        .single();
+                    
+                    if (existingUser) {
+                        alert('Username already exists. Please choose a different username.');
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        return;
+                    }
+                    
+                    // Create user account
+                    const { data: newUser, error } = await supabase
+                        .from('users')
+                        .insert([{
+                            organization_id: organizationId,
+                            full_name: fullName,
+                            username: username,
+                            password: password,
+                            role: selectedRole,
+                            is_active: true
+                        }])
+                        .select()
+                        .single();
+                    
+                    if (error) {
+                        console.error('Database error:', error);
+                        throw new Error(error.message);
+                    }
+                    
+                    console.log('✅ User created:', newUser);
+                    
+                    // Store created user data
+                    createdUserData = newUser;
+                    
+                    // Show success view
+                    createAccountView.style.display = 'none';
+                    successView.style.display = 'block';
+                    
+                    // Populate success view
+                    document.getElementById('displayFullName').textContent = fullName;
+                    document.getElementById('displayUsername').textContent = username;
+                    
+                } catch (error) {
+                    console.error('❌ Error creating account:', error);
+                    alert(`Error creating account: ${error.message}\n\nPlease try again.`);
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+
+            // ============================================
+            // VIEW 3: Success -> Continue to Login
+            // ============================================
+            document.getElementById('continueToLoginBtn').addEventListener('click', function() {
+                successView.style.display = 'none';
+                loginFormView.style.display = 'block';
+                
+                // Pre-fill username if account was just created
+                if (createdUserData) {
+                    document.getElementById('username').value = createdUserData.username;
+                }
+            });
+
+            // ============================================
+            // VIEW 4: Login Form
+            // ============================================
+            
+            // Password toggle
+            document.getElementById('togglePassword').addEventListener('click', function() {
+                const input = document.getElementById('password');
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+
+            // Back to role selection from login
+            document.getElementById('backToRoles').addEventListener('click', function() {
+                loginFormView.style.display = 'none';
+                roleSelectionView.style.display = 'block';
+            });
+
+            // Login Form Submission with Supabase validation + fallback
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value.trim();
                 
-                // Simple authentication check
-                if (username === 'Xforia' && password === 'Xforia') {
-                    // Show loading state
-                    const loginButton = loginForm.querySelector('.login-button');
-                    const originalText = loginButton.innerHTML;
-                    loginButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...';
-                    loginButton.disabled = true;
-
-                    // Simulate authentication delay
-                    setTimeout(() => {
-                        // Redirect to consolidate-files page
-                        window.location.href = `consolidate-files.html?company=${encodeURIComponent(companyName)}`;
-                    }, 1000);
-                } else {
-                    // Show simple error message
-                    alert('Invalid credentials. Please use:\nUsername: Xforia\nPassword: Xforia');
+                if (!username || !password) {
+                    alert('Please enter both username and password.');
+                    return;
+                }
+                
+                // Show loading
+                const loginButton = this.querySelector('.login-button');
+                const originalText = loginButton.innerHTML;
+                loginButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...';
+                loginButton.disabled = true;
+                
+                try {
+                    // CHECK 1: Try database first (PRIMARY)
+                    const { data: dbUser, error } = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('username', username)
+                        .eq('password', password)
+                        .eq('organization_id', organizationId)
+                        .eq('is_active', true)
+                        .single();
+                    
+                    if (dbUser && !error) {
+                        // ✅ Database login successful
+                        console.log('✅ Database login successful:', dbUser.full_name);
+                        localStorage.setItem('currentUser', JSON.stringify(dbUser));
+                        
+                        // Redirect to admin dashboard (will create in Phase 2)
+                        setTimeout(() => {
+                            window.location.href = `admin-dashboard.html?company=${encodeURIComponent(companyName)}`;
+                        }, 1000);
+                        return;
+                    }
+                    
+                    // CHECK 2: Fallback to hardcoded (BACKUP)
+                    if (username === 'Xforia' && password === 'Xforia') {
+                        console.log('🔑 Fallback login successful (Xforia/Xforia)');
+                        
+                        const fallbackUser = {
+                            id: 'fallback-admin-' + organizationId,
+                            username: 'Xforia',
+                            full_name: 'Demo Administrator',
+                            role: 'administrator',
+                            organization_id: organizationId,
+                            is_fallback: true
+                        };
+                        
+                        localStorage.setItem('currentUser', JSON.stringify(fallbackUser));
+                        
+                        // Redirect to admin dashboard
+                        setTimeout(() => {
+                            window.location.href = `admin-dashboard.html?company=${encodeURIComponent(companyName)}`;
+                        }, 1000);
+                        return;
+                    }
+                    
+                    // NEITHER WORKED - Invalid credentials
+                    loginButton.innerHTML = originalText;
+                    loginButton.disabled = false;
+                    alert('Invalid username or password.\n\nTip: Use Xforia/Xforia for demo access.');
+                    
+                } catch (error) {
+                    console.error('❌ Login error:', error);
+                    loginButton.innerHTML = originalText;
+                    loginButton.disabled = false;
+                    alert('Error during login. Please try again.');
                 }
             });
         });

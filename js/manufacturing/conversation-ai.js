@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         addMessage('user', userQuery);
         userQueryInput.value = '';
+        sendButton.classList.remove('active'); // Remove pulse when sent
 
         addMessage('ria', null, true);
 
@@ -132,6 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Add pulse effect to send button when typing
+    userQueryInput.addEventListener('input', () => {
+        if (userQueryInput.value.trim()) {
+            sendButton.classList.add('active');
+        } else {
+            sendButton.classList.remove('active');
+        }
+    });
+
     // --- Event listeners ---
     sendButton.addEventListener('click', sendQuery);
 
@@ -150,4 +160,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial greeting ---
     addMessage('ria', "Hello! I'm Ria. I'm ready to answer questions about your manufacturing data. How can I help?");
 });
-```

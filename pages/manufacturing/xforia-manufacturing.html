@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
     <header>
         <div class="logo-container">
             <a href="../../index.html">
@@ -39,7 +38,6 @@
             </nav>
         </div>
     </header>
-
     <main class="xforia-manufacturing-page">
         <section class="intro-section">
             <h1 class="intro-headline">Unify Your Data & Power Your Manufacturing</h1>
@@ -47,7 +45,6 @@
                 Xforia's COAST module offers a single, unified source of truth by integrating with your core engineering systems—<strong>ERP</strong>, <strong>CRM</strong>, <strong>MES</strong>, <strong>PLM</strong>, and more. Seamlessly ingest enterprise applications to unlock powerful AI insights.
             </p>
         </section>
-
         <section class="features-section">
             <div class="feature-card outcomes-card">
                 <div class="feature-header">
@@ -69,7 +66,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="feature-card integration-card">
                 <div class="feature-header">
                     <i class="fa-solid fa-link"></i>
@@ -81,29 +77,51 @@
             </div>
         </section>
     
-        <section class="form-section">
-            <div class="company-input-group">
-                <input type="text" id="companyNameInput" placeholder="Enter your company name">
+        <!-- NEW: Two-Button Section -->
+        <section class="cta-section">
+            <!-- New Organization -->
+            <div class="cta-card new-org-card">
+                <div class="cta-icon">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <h3>New Organization</h3>
+                <p>Set up your manufacturing intelligence platform from scratch</p>
+                <div class="company-input-group">
+                    <input type="text" id="companyNameInput" placeholder="Enter your company name">
+                </div>
+                <a href="#" class="cta-button primary-button" id="powerMyManufacturingButton">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    Power My Manufacturing
+                </a>
             </div>
-            <a href="rbac-setup.html" class="demo-button setup-button" id="powerMyManufacturingButton">Power My Manufacturing</a>
+
+            <!-- Existing Organization -->
+            <div class="cta-card existing-org-card">
+                <div class="cta-icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <h3>Already Have an Account?</h3>
+                <p>Sign in to your existing organization</p>
+                <a href="login.html" class="cta-button secondary-button">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    Login to Existing Organization
+                </a>
+                <p class="hint-text">Access your dashboard and continue where you left off</p>
+            </div>
         </section>
     </main>
-
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Dropdown Menu Logic (retained)
+            // Dropdown Menu Logic
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
-
             dropdownToggle.addEventListener('click', function(event) {
                 event.preventDefault();
                 dropdownMenu.classList.toggle('show');
             });
-
             window.addEventListener('click', function(event) {
                 if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
                     if (dropdownMenu.classList.contains('show')) {
@@ -111,8 +129,8 @@
                     }
                 }
             });
-
-            // New logic for the Company Name and Button
+            
+            // Company Name and Setup Button
             const companyNameInput = document.getElementById('companyNameInput');
             const powerMyManufacturingButton = document.getElementById('powerMyManufacturingButton');
             
@@ -121,7 +139,6 @@
                 const companyName = companyNameInput.value.trim();
                 
                 if (companyName) {
-                    // CHANGED THIS LINE - now goes to rbac-setup.html instead
                     window.location.href = `rbac-setup.html?company=${encodeURIComponent(companyName)}`;
                 } else {
                     alert('Please enter your company name to proceed.');

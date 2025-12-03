@@ -1,153 +1,262 @@
-/* --- Chatbot Specific Styles --- */
+/* --- Chatbot Container with Modern Design --- */
 .chatbot-container {
-    max-width: 90%; /* Increased from 800px */
+    max-width: 90%;
     margin: 40px auto 0;
-    background-color: var(--secondary-bg-color);
-    border-radius: 12px;
-    box-shadow: var(--shadow-medium);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
-    height: 85vh; /* Increased from 70vh */
+    height: 85vh;
     overflow: hidden;
+    position: relative;
 }
 
+/* Modern Chat Header with Gradient */
 .chat-header {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #ddd;
-    background-color: var(--primary-color);
+    padding: 20px 30px;
+    border-bottom: none;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1a242f 100%);
     color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.chat-header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
 }
 
 .chat-header .chat-title {
-    font-size: 1.5em;
-    font-weight: 600;
+    font-size: 1.6em;
+    font-weight: 700;
     color: #fff;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .chat-header h2 {
-    font-size: 1.5em;
-    font-weight: 600;
+    font-size: 1.6em;
+    font-weight: 700;
 }
 
 .chat-header p {
     font-size: 0.9em;
-    opacity: 0.8;
+    opacity: 0.9;
+    margin-top: 5px;
 }
 
+/* Modern Chat History Area */
+.chat-history {
+    flex-grow: 1;
+    padding: 30px 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: transparent;
+}
+
+/* Custom Scrollbar */
+.chat-history::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-history::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-history::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.chat-history::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Modern Message Bubbles with Animations */
+.chat-message {
+    max-width: 75%;
+    margin-bottom: 0;
+    padding: 15px 20px;
+    border-radius: 18px;
+    line-height: 1.6;
+    animation: messageSlideIn 0.3s ease-out;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* User Message - Modern Style */
+.user-message {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #0056b3 100%);
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+/* Ria Message - Glass Morphism Style */
+.ria-message {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    color: #2c3e50;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Ria Message Content Layout */
+.ria-message-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ria-message-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.ria-message {
+    padding: 15px;
+}
+
+/* Modern Chat Input Area - Floating Style */
+.chat-input-area {
+    display: flex;
+    padding: 20px;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+}
+
+#userQueryInput {
+    flex-grow: 1;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    padding: 14px 20px;
+    border-radius: 25px;
+    font-size: 0.95em;
+    outline: none;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+#userQueryInput:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+#userQueryInput::placeholder {
+    color: #95a5a6;
+}
+
+/* Modern Send Button with Hover Effect */
+.send-button {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1a242f 100%);
+    color: #fff;
+    border: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.send-button:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.send-button:active {
+    transform: scale(0.95);
+}
+
+/* Modern Footer */
 .chat-footer {
     display: flex;
     justify-content: center;
     gap: 20px;
     padding: 15px 20px;
-    border-top: 1px solid #ddd;
-    background-color: var(--secondary-bg-color);
+    background: transparent;
     margin-top: 20px;
 }
 
 .footer-button {
     text-decoration: none;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
-    padding: 8px 15px;
-    border-radius: 50px;
+    padding: 10px 20px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 0.9em;
+    font-weight: 600;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .footer-button:hover {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1a242f 100%);
     color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
 }
 
-.chat-history {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-message {
-    max-width: 80%;
-    margin-bottom: 15px;
-    padding: 12px 20px;
-    border-radius: 20px;
-    line-height: 1.5;
-}
-
-.user-message {
-    background-color: var(--accent-color);
-    color: #fff;
-    align-self: flex-end;
-    border-bottom-right-radius: 2px;
-}
-
-.ria-message {
-    background-color: #eee;
-    color: #333;
-    align-self: flex-start;
-    border-bottom-left-radius: 2px;
-}
-
-.chat-input-area {
-    display: flex;
-    padding: 15px 20px;
-    border-top: 1px solid #ddd;
-}
-
-#userQueryInput {
-    flex-grow: 1;
-    border: 1px solid #ccc;
-    padding: 12px;
-    border-radius: 50px;
-    font-size: 1em;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-#userQueryInput:focus {
-    border-color: var(--accent-color);
-}
-
-.send-button {
-    background-color: var(--primary-color);
-    color: #fff;
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-left: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.send-button:hover {
-    background-color: #1a242f;
-}
-
-/* Typing Indicator Dots */
+/* Typing Indicator - Modern Animation */
 .loading-dots {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     margin: 0;
+    padding: 5px 0;
 }
 
 .loading-dots span {
-    width: 8px;
-    height: 8px;
-    background-color: #333;
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(135deg, var(--accent-color), #0056b3);
     border-radius: 50%;
     margin: 0 4px;
     animation: bounce 1.4s infinite ease-in-out both;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
 }
 
 .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
@@ -155,8 +264,14 @@
 .loading-dots span:nth-child(3) { animation-delay: 0s; }
 
 @keyframes bounce {
-    0%, 80%, 100% { transform: scale(0); }
-    40% { transform: scale(1); }
+    0%, 80%, 100% { 
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% { 
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* --- Markdown Rendering in Chat Bubbles --- */
@@ -167,66 +282,138 @@
 .ria-message h5,
 .ria-message h6 {
     text-align: left;
-    margin: 0.5em 0;
-    font-weight: bold;
+    margin: 0.8em 0 0.4em 0;
+    font-weight: 700;
+    color: #2c3e50;
 }
 
+.ria-message h1 { font-size: 1.4em; }
+.ria-message h2 { font-size: 1.3em; }
+.ria-message h3 { font-size: 1.2em; }
+
 .ria-message p {
-    margin: 0.3em 0;
-    line-height: 1.5;
+    margin: 0.5em 0;
+    line-height: 1.7;
+    color: #34495e;
 }
 
 .ria-message ul,
 .ria-message ol {
-    margin: 0.5em 0 0.5em 1.5em;
+    margin: 0.8em 0 0.8em 1.5em;
     padding-left: 1em;
 }
 
 .ria-message li {
-    margin-bottom: 0.3em;
+    margin-bottom: 0.5em;
+    line-height: 1.6;
 }
 
 .ria-message strong,
 .ria-message b {
-    font-weight: bold;
+    font-weight: 700;
+    color: #2c3e50;
 }
 
-/* Add to manufacturing/conversation-ai.css */
-
-.ria-message-content {
-    display: flex;
-    align-items: flex-start; /* Aligns icon and text at the top */
-    gap: 10px; /* Space between the icon and the message text */
+.ria-message code {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
 }
 
+.ria-message pre {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+/* Image styling for plots in chat messages */
+.chat-message img {
+    max-width: 100%;
+    height: auto;
+    margin: 15px 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-message img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* For Ria's messages with plot images (exclude the icon) */
+.ria-message img:not(.ria-message-icon) {
+    max-width: 650px;
+    margin: 15px 0;
+    cursor: pointer;
+}
+
+/* Ensure the Ria icon doesn't get plot image styles */
 .ria-message-icon {
-    width: 30px; /* Adjust icon size as needed */
-    height: 30px;
-    border-radius: 50%; /* If your icon is circular */
-    object-fit: cover; /* Ensures image covers the area */
-    flex-shrink: 0; /* Prevents icon from shrinking */
+    margin: 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 50% !important;
+    transition: transform 0.3s ease !important;
 }
 
-/* Optional: Adjust padding for RIA message if icon causes issues */
-.ria-message {
-    padding: 12px 15px 12px 12px; /* Adjusted padding if icon is inside */
+/* Loading state for plot images */
+.chat-message img[src*="/plots/"] {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    min-height: 250px;
+    border: 2px dashed rgba(0, 0, 0, 0.1);
 }
 
-/* Add to manufacturing/conversation-ai.css */
-/* Decrease the overall font size for chat messages */
+/* Adjust font sizes */
 .chat-message p,
 .chat-message ul,
 .chat-message ol,
 .chat-message li {
-    font-size: 0.9em; /* You can adjust this value as needed, 1em is the default */
+    font-size: 0.95em;
 }
-
-/* Optional: Adjust other elements to match the new font size */
 
 #userQueryInput {
-    font-size: 0.9em; /* Adjusts the font size of the input text */
+    font-size: 0.95em;
 }
 
-/* .chat-header p {
-    font-size: 0.8em; /* Reduces the subtitle font size for better hierarchy */
-} */
+/* Responsive Design */
+@media (max-width: 768px) {
+    .chatbot-container {
+        max-width: 95%;
+        height: 80vh;
+        border-radius: 15px;
+    }
+    
+    .chat-message {
+        max-width: 85%;
+    }
+    
+    .chat-header .chat-title {
+        font-size: 1.3em;
+    }
+    
+    .ria-message img:not(.ria-message-icon) {
+        max-width: 100%;
+    }
+}
+
+/* Add subtle pulse animation to send button when input has text */
+.send-button.active {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(0, 123, 255, 0.5);
+    }
+    100% {
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    }
+}

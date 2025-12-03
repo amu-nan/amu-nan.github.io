@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **Backend Endpoint URLs**
     const CAD_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
-    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_manual_pdf/';
+    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_manual_pdf/'; // Add this endpoint to your backend
     
     // Real backend endpoints for enterprise modules
     const ENTERPRISE_ENDPOINTS = {
@@ -305,14 +305,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const filesArray = Object.values(currentModules).filter(file => file !== null);
         const totalModules = Object.keys(currentModules).length;
         
-        // All modules must have files uploaded
-        const allModulesUploaded = filesArray.length === totalModules;
+        // Enable button if at least one module has a file (but show as if all are required)
+        const hasAnyFile = filesArray.length > 0;
         
         if (enterpriseProcessBtn) {
-            enterpriseProcessBtn.disabled = !allModulesUploaded;
+            enterpriseProcessBtn.disabled = !hasAnyFile;
         }
         
-        // Update module count
+        // Update module count to show progress
         if (moduleCountSpan) {
             moduleCountSpan.textContent = `${filesArray.length}/${totalModules}`;
         }
@@ -326,11 +326,10 @@ document.addEventListener('DOMContentLoaded', () => {
     enterpriseProcessBtn.addEventListener('click', async () => {
         const currentModules = enterpriseModuleFiles[currentEnterpriseSystem];
         const filesToUpload = Object.entries(currentModules).filter(([_, file]) => file !== null);
-        const totalModules = Object.keys(currentModules).length;
         
-        // Validate all modules have files
-        if (filesToUpload.length !== totalModules) {
-            alert(`Please upload files for all ${totalModules} modules before proceeding.`);
+        // Allow processing with at least one module (no longer require all)
+        if (filesToUpload.length === 0) {
+            alert('Please upload at least one module file.');
             return;
         }
 

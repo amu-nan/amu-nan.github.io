@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const textContent = document.createElement('div');
                 textContent.innerHTML = marked.parse(text);
                 
-                // ONLY NEW ADDITION: Add error handling for plot images
+                // Add error handling for plot images
                 const plotImages = textContent.querySelectorAll('img[src*="/plots/"]');
                 plotImages.forEach(img => {
                     img.onerror = function() {
@@ -79,6 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function sendQueryToBackend(query) {
         try {
+            console.log("=== SENDING TO BACKEND ===");
+            console.log("Query:", query);
+            console.log("Conversation History:", chatHistoryArray);
+            
             const response = await fetch(backendUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -88,6 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }),
             });
 
+            console.log("=== RESPONSE STATUS ===");
+            console.log("Status:", response.status);
+            console.log("Status Text:", response.statusText);
+
             if (!response.ok) {
                 const text = await response.text();
                 console.error("Backend error response:", text);
@@ -95,9 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
+            console.log("=== RECEIVED FROM BACKEND ===");
+            console.log("Full Response:", data);
+            console.log("Response Text:", data.response);
+            console.log("Conversation History:", data.conversation_history);
+            
             return data;
         } catch (error) {
-            console.error("Error sending query:", error);
+            console.error("=== ERROR IN FETCH ===");
+            console.error("Error:", error);
             return {
                 response: "Sorry, I'm having trouble connecting right now. Please try again later.",
                 conversation_history: []
@@ -122,9 +136,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 typingIndicator.remove();
             }
 
+            console.log("=== EXTRACTING RESPONSE ===");
+            console.log("backendResponse:", backendResponse);
+            console.log("backendResponse.response:", backendResponse.response);
+            
             const aiResponseText = backendResponse.response;
             chatHistoryArray = backendResponse.conversation_history;
 
+            console.log("=== DISPLAYING MESSAGE ===");
+            console.log("AI Response Text to Display:", aiResponseText);
+            
             addMessage('ria', aiResponseText);
         } catch (error) {
             console.error("Error fetching AI response:", error);

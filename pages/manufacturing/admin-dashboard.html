@@ -6,362 +6,11 @@
     <title>Administrator Dashboard - Xforia COAST</title>
     <link rel="icon" type="image/png" href="../../images/Subject.png">
     <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/manufacturing/admin-dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* Admin Dashboard Styles */
-        :root {
-            --primary-color: #0d1b2a;
-            --secondary-color: #1b263b;
-            --accent-color: #3498db;
-            --success-color: #38b000;
-            --text-color: #4a4a4a;
-            --light-text-color: #e0e1dd;
-            --bg-color: #f8f9fa;
-            --secondary-bg-color: #ffffff;
-            --shadow-light: 0 2px 5px rgba(0,0,0,0.08);
-            --shadow-medium: 0 5px 15px rgba(0,0,0,0.1);
-            --footer-bg-color: #203731;
-            --footer-text-color: #ffffff;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            color: var(--text-color);
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        main {
-            flex: 1;
-            padding: 2rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        /* Welcome Section */
-        .welcome-section {
-            background: linear-gradient(135deg, var(--accent-color), #2980b9);
-            color: white;
-            padding: 2.5rem;
-            border-radius: 16px;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-medium);
-        }
-
-        .welcome-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .welcome-text h1 {
-            font-size: 2rem;
-            margin: 0 0 0.5rem 0;
-            font-weight: 700;
-        }
-
-        .welcome-text p {
-            margin: 0;
-            font-size: 1.1rem;
-            opacity: 0.95;
-        }
-
-        .user-info-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .user-info-badge i {
-            font-size: 1.5rem;
-        }
-
-        .user-role {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        /* Demo Mode Banner */
-        .demo-banner {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            box-shadow: var(--shadow-medium);
-        }
-
-        .demo-banner i {
-            font-size: 1.5rem;
-        }
-
-        .demo-banner-text {
-            flex: 1;
-        }
-
-        .demo-banner-text strong {
-            display: block;
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        /* Quick Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: var(--secondary-bg-color);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-medium);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: white;
-        }
-
-        .stat-icon.blue { background: linear-gradient(135deg, #3498db, #2980b9); }
-        .stat-icon.green { background: linear-gradient(135deg, #38b000, #2c974b); }
-        .stat-icon.purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-        .stat-icon.orange { background: linear-gradient(135deg, #f39c12, #e67e22); }
-
-        .stat-content h3 {
-            font-size: 1.8rem;
-            margin: 0 0 0.25rem 0;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .stat-content p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--text-color);
-        }
-
-        /* Navigation Cards Section */
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .section-title i {
-            color: var(--accent-color);
-        }
-
-        .nav-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .nav-card {
-            background: var(--secondary-bg-color);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: var(--shadow-medium);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            border: 2px solid transparent;
-        }
-
-        .nav-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-            border-color: var(--accent-color);
-        }
-
-        .nav-card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .nav-card-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-        }
-
-        .nav-card-icon.blue { background: linear-gradient(135deg, #3498db, #2980b9); }
-        .nav-card-icon.green { background: linear-gradient(135deg, #38b000, #2c974b); }
-        .nav-card-icon.purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-        .nav-card-icon.orange { background: linear-gradient(135deg, #f39c12, #e67e22); }
-
-        .nav-card-title {
-            flex: 1;
-        }
-
-        .nav-card-title h3 {
-            font-size: 1.4rem;
-            margin: 0 0 0.25rem 0;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .nav-card-badge {
-            display: inline-block;
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .nav-card-description {
-            color: var(--text-color);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .nav-card-features {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .nav-card-feature {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-color);
-        }
-
-        .nav-card-feature i {
-            color: var(--success-color);
-            font-size: 0.8rem;
-        }
-
-        .nav-card-action {
-            margin-top: 1.5rem;
-            padding: 0.75rem 1.5rem;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .nav-card:hover .nav-card-action {
-            background: #2980b9;
-        }
-
-        /* Logout Button */
-        .logout-section {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid #e5e7eb;
-        }
-
-        .logout-btn {
-            padding: 0.75rem 2rem;
-            background: #6b7280;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logout-btn:hover {
-            background: #4b5563;
-            transform: translateY(-2px);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--footer-bg-color);
-            color: var(--footer-text-color);
-            text-align: center;
-            padding: 1rem 0;
-            width: 100%;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .welcome-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .welcome-text h1 {
-                font-size: 1.6rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-cards-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 <body>
 
@@ -391,224 +40,190 @@
         </div>
     </header>
 
-    <main>
-        <!-- Welcome Section -->
-        <div class="welcome-section">
-            <div class="welcome-header">
-                <div class="welcome-text">
-                    <h1 id="welcomeMessage">Welcome back!</h1>
-                    <p id="companyName">Your manufacturing intelligence platform</p>
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h1 id="welcomeMessage">Welcome back!</h1>
+                        <p id="companyName">Your manufacturing intelligence platform</p>
+                    </div>
+                    <div class="user-badge">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Administrator</span>
+                    </div>
                 </div>
-                <div class="user-info-badge">
-                    <i class="fa-solid fa-user-shield"></i>
-                    <span class="user-role">Administrator</span>
-                </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- Demo Mode Banner (only shown for fallback login) -->
-        <div class="demo-banner" id="demoBanner" style="display: none;">
-            <i class="fa-solid fa-circle-info"></i>
-            <div class="demo-banner-text">
-                <strong>Demo Mode Active</strong>
-                <span>You're logged in with demo credentials (Xforia/Xforia). Create a real admin account for full functionality.</span>
-            </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon blue">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-                <div class="stat-content">
-                    <h3 id="userCount">1</h3>
-                    <p>Active Users</p>
+            <!-- Demo Mode Banner (only shown for fallback login) -->
+            <div class="demo-banner" id="demoBanner" style="display: none;">
+                <i class="fa-solid fa-circle-info"></i>
+                <div class="demo-text">
+                    <strong>Demo Mode Active</strong>
+                    <p>You're logged in with demo credentials. Create a real admin account for full functionality.</p>
                 </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon green">
+            <!-- Quick Stats -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="userCount">1</h3>
+                        <p>Active Users</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
                     <div class="stat-icon green">
-                    <i class="fa-solid fa-shield-halved"></i>
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="roleCount">5</h3>
+                        <p>Roles Configured</p>
+                    </div>
                 </div>
-                <div class="stat-content">
-                    <h3 id="roleCount">5</h3>
-                    <p>Roles Configured</p>
-                </div>
-            </div>
 
-            <div class="stat-card">
-                <div class="stat-icon purple">
-                    <i class="fa-solid fa-database"></i>
-                </div>
-                <div class="stat-content">
-                    <h3 id="systemCount">2</h3>
-                    <p>Systems Integrated</p>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon orange">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-                <div class="stat-content">
-                    <h3>Ready</h3>
-                    <p>Platform Status</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Navigation Cards -->
-        <h2 class="section-title">
-            <i class="fa-solid fa-grip"></i>
-            Quick Actions
-        </h2>
-
-        <div class="nav-cards-grid">
-            <!-- Upload & Unify Data -->
-            <a href="consolidate-files.html" class="nav-card">
-                <div class="nav-card-header">
-                    <div class="nav-card-icon blue">
+                <div class="stat-card">
+                    <div class="stat-icon purple">
                         <i class="fa-solid fa-database"></i>
                     </div>
-                    <div class="nav-card-title">
-                        <h3>Upload & Unify Data</h3>
-                        <span class="nav-card-badge">Core Feature</span>
+                    <div class="stat-info">
+                        <h3 id="systemCount">2</h3>
+                        <p>Systems Integrated</p>
                     </div>
                 </div>
-                <p class="nav-card-description">
-                    Integrate data from your ERP, CRM, and engineering systems into a unified data source.
-                </p>
-                <div class="nav-card-features">
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>ERP & CRM modules</span>
-                    </div>
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Engineering documents</span>
-                    </div>
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Automated data unification</span>
-                    </div>
-                </div>
-                <div class="nav-card-action">
-                    <i class="fa-solid fa-arrow-right"></i>
-                    <span>Start Integration</span>
-                </div>
-            </a>
 
-            <!-- Chat with RIA -->
-            <a href="conversation-ai.html" class="nav-card">
-                <div class="nav-card-header">
-                    <div class="nav-card-icon green">
-                        <i class="fa-solid fa-comments"></i>
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fa-solid fa-chart-line"></i>
                     </div>
-                    <div class="nav-card-title">
-                        <h3>Chat with RIA</h3>
-                        <span class="nav-card-badge">AI Assistant</span>
+                    <div class="stat-info">
+                        <h3>Ready</h3>
+                        <p>Platform Status</p>
                     </div>
                 </div>
-                <p class="nav-card-description">
-                    Ask questions about your unified data and get AI-powered insights instantly.
-                </p>
-                <div class="nav-card-features">
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Natural language queries</span>
-                    </div>
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Real-time analysis</span>
-                    </div>
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Data-driven recommendations</span>
-                    </div>
-                </div>
-                <div class="nav-card-action">
-                    <i class="fa-solid fa-arrow-right"></i>
-                    <span>Open Chat</span>
-                </div>
-            </a>
+            </section>
 
-            <!-- View Insights -->
-            <a href="https://xforia-coast-dashboard.netlify.app/" target="_blank" class="nav-card">
-                <div class="nav-card-header">
-                    <div class="nav-card-icon purple">
-                        <i class="fa-solid fa-chart-pie"></i>
-                    </div>
-                    <div class="nav-card-title">
-                        <h3>View Insights</h3>
-                        <span class="nav-card-badge">Analytics</span>
-                    </div>
-                </div>
-                <p class="nav-card-description">
-                    Access comprehensive analytics dashboards and business intelligence reports.
-                </p>
-                <div class="nav-card-features">
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Interactive visualizations</span>
-                    </div>
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>KPI tracking</span>
-                    </div>
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Custom reports</span>
-                    </div>
-                </div>
-                <div class="nav-card-action">
-                    <i class="fa-solid fa-arrow-right"></i>
-                    <span>View Dashboard</span>
-                </div>
-            </a>
+            <!-- Quick Actions Title -->
+            <h2 class="section-title">
+                <i class="fa-solid fa-grip"></i>
+                Quick Actions
+            </h2>
 
-            <!-- Manage Users -->
-            <a href="#" class="nav-card" id="manageUsersCard">
-                <div class="nav-card-header">
-                    <div class="nav-card-icon orange">
-                        <i class="fa-solid fa-users-gear"></i>
+            <!-- Navigation Cards -->
+            <section class="actions-section">
+                <!-- Upload & Unify Data -->
+                <a href="consolidate-files.html" class="action-card">
+                    <div class="card-header">
+                        <div class="card-icon blue">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <div class="card-title-area">
+                            <h3>Upload & Unify Data</h3>
+                            <span class="badge blue-badge">Core Feature</span>
+                        </div>
                     </div>
-                    <div class="nav-card-title">
-                        <h3>Manage Users</h3>
-                        <span class="nav-card-badge">Admin Only</span>
+                    <p class="card-description">
+                        Integrate data from your ERP, CRM, and engineering systems into a unified data source.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fa-solid fa-check"></i> ERP & CRM modules</li>
+                        <li><i class="fa-solid fa-check"></i> Engineering documents</li>
+                        <li><i class="fa-solid fa-check"></i> Automated data unification</li>
+                    </ul>
+                    <div class="card-action">
+                        <span>Start Integration</span>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </div>
-                </div>
-                <p class="nav-card-description">
-                    Create and manage user accounts, assign roles, and control access permissions.
-                </p>
-                <div class="nav-card-features">
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Create team members</span>
-                    </div>
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Assign roles & permissions</span>
-                    </div>
-                    <div class="nav-card-feature">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>User activity tracking</span>
-                    </div>
-                </div>
-                <div class="nav-card-action">
-                    <i class="fa-solid fa-arrow-right"></i>
-                    <span>Manage Team</span>
-                </div>
-            </a>
-        </div>
+                </a>
 
-        <!-- Logout Section -->
-        <div class="logout-section">
-            <button class="logout-btn" id="logoutBtn">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
-            </button>
+                <!-- Chat with RIA -->
+                <a href="conversation-ai.html" class="action-card">
+                    <div class="card-header">
+                        <div class="card-icon green">
+                            <i class="fa-solid fa-comments"></i>
+                        </div>
+                        <div class="card-title-area">
+                            <h3>Chat with RIA</h3>
+                            <span class="badge green-badge">AI Assistant</span>
+                        </div>
+                    </div>
+                    <p class="card-description">
+                        Ask questions about your unified data and get AI-powered insights instantly.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fa-solid fa-check"></i> Natural language queries</li>
+                        <li><i class="fa-solid fa-check"></i> Real-time analysis</li>
+                        <li><i class="fa-solid fa-check"></i> Data-driven recommendations</li>
+                    </ul>
+                    <div class="card-action">
+                        <span>Open Chat</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+
+                <!-- View Insights -->
+                <a href="https://xforia-coast-dashboard.netlify.app/" target="_blank" class="action-card">
+                    <div class="card-header">
+                        <div class="card-icon purple">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                        <div class="card-title-area">
+                            <h3>View Insights</h3>
+                            <span class="badge purple-badge">Analytics</span>
+                        </div>
+                    </div>
+                    <p class="card-description">
+                        Access comprehensive analytics dashboards and business intelligence reports.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fa-solid fa-check"></i> Interactive visualizations</li>
+                        <li><i class="fa-solid fa-check"></i> KPI tracking</li>
+                        <li><i class="fa-solid fa-check"></i> Custom reports</li>
+                    </ul>
+                    <div class="card-action">
+                        <span>View Dashboard</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+
+                <!-- Manage Users -->
+                <a href="#" class="action-card" id="manageUsersCard">
+                    <div class="card-header">
+                        <div class="card-icon orange">
+                            <i class="fa-solid fa-users-gear"></i>
+                        </div>
+                        <div class="card-title-area">
+                            <h3>Manage Users</h3>
+                            <span class="badge orange-badge">Admin Only</span>
+                        </div>
+                    </div>
+                    <p class="card-description">
+                        Create and manage user accounts, assign roles, and control access permissions.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fa-solid fa-check"></i> Create team members</li>
+                        <li><i class="fa-solid fa-check"></i> Assign roles & permissions</li>
+                        <li><i class="fa-solid fa-check"></i> User activity tracking</li>
+                    </ul>
+                    <div class="card-action">
+                        <span>Manage Team</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+            </section>
+
+            <!-- Logout Section -->
+            <section class="logout-section">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </button>
+            </section>
         </div>
     </main>
 
@@ -650,7 +265,7 @@
             if (rbacConfig.crmVendor) systemCount++;
             document.getElementById('systemCount').textContent = systemCount;
 
-            // Manage Users card - will be coming soon
+            // Manage Users card - coming soon
             document.getElementById('manageUsersCard').addEventListener('click', function(e) {
                 e.preventDefault();
                 alert('User Management feature coming in Phase 3!\n\nYou\'ll be able to:\n• Create new users\n• Assign roles\n• Manage permissions\n• View user activity');

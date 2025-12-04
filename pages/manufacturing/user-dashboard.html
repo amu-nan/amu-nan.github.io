@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Xforia COAST</title>
+    <link rel="icon" type="image/png" href="../../images/Subject.png">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/manufacturing/admin-dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <a href="../../index.html">
+                <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
+            </a>
+            <span class="tagline">Ride the wave of efficiency.</span>
+        </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle hamburger-icon" aria-label="Services Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html"><i class="fa-solid fa-industry"></i> Manufacturing</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-hospital"></i> Healthcare</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-sack-dollar"></i> Banking & Finance</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-store"></i> Retail</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-graduation-cap"></i> Education</a>
+                        <a href="#" class="coming-soon"><i class="fa-solid fa-satellite-dish"></i> Telecom, Media & Technology(TMT)</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h1 id="welcomeMessage">Welcome back!</h1>
+                        <p id="companyName">Your manufacturing intelligence platform</p>
+                    </div>
+                    <div class="user-badge">
+                        <i class="fa-solid fa-user"></i>
+                        <span>User</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Demo Mode Banner (only shown for fallback login) -->
+            <div class="demo-banner" id="demoBanner" style="display: none;">
+                <i class="fa-solid fa-circle-info"></i>
+                <div class="demo-text">
+                    <strong>Demo Mode Active</strong>
+                    <p>You're logged in with demo credentials. Create a real account for full functionality.</p>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>User</h3>
+                        <p>Your Role</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-tasks"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>0</h3>
+                        <p>Pending Tasks</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active</h3>
+                        <p>Account Status</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Ready</h3>
+                        <p>Platform Status</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions Title -->
+            <h2 class="section-title">
+                <i class="fa-solid fa-grip"></i>
+                Quick Actions
+            </h2>
+
+            <!-- Navigation Cards -->
+            <section class="actions-section">
+                <!-- Chat with RIA -->
+                <a href="conversation-ai.html" class="action-card">
+                    <div class="card-header">
+                        <div class="card-icon green">
+                            <i class="fa-solid fa-comments"></i>
+                        </div>
+                        <div class="card-title-area">
+                            <h3>Chat with RIA</h3>
+                            <span class="badge green-badge">AI Assistant</span>
+                        </div>
+                    </div>
+                    <p class="card-description">
+                        Ask questions about your data and get AI-powered insights instantly.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fa-solid fa-check"></i> Natural language queries</li>
+                        <li><i class="fa-solid fa-check"></i> Real-time answers</li>
+                        <li><i class="fa-solid fa-check"></i> Personalized assistance</li>
+                    </ul>
+                    <div class="card-action">
+                        <span>Open Chat</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+
+                <!-- View Insights -->
+                <a href="https://xforia-coast-dashboard.netlify.app/" target="_blank" class="action-card">
+                    <div class="card-header">
+                        <div class="card-icon purple">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                        <div class="card-title-area">
+                            <h3>View Insights</h3>
+                            <span class="badge purple-badge">Analytics</span>
+                        </div>
+                    </div>
+                    <p class="card-description">
+                        Access your personalized dashboard with relevant insights and data.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fa-solid fa-check"></i> Personal dashboards</li>
+                        <li><i class="fa-solid fa-check"></i> Key metrics</li>
+                        <li><i class="fa-solid fa-check"></i> Visual reports</li>
+                    </ul>
+                    <div class="card-action">
+                        <span>View Dashboard</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+
+                <!-- My Tasks -->
+                <a href="#" class="action-card" id="myTasksCard">
+                    <div class="card-header">
+                        <div class="card-icon blue">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div class="card-title-area">
+                            <h3>My Tasks</h3>
+                            <span class="badge blue-badge">Coming Soon</span>
+                        </div>
+                    </div>
+                    <p class="card-description">
+                        View and manage your assigned tasks, deadlines, and priorities.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fa-solid fa-check"></i> Assigned tasks</li>
+                        <li><i class="fa-solid fa-check"></i> Task status tracking</li>
+                        <li><i class="fa-solid fa-check"></i> Deadline reminders</li>
+                    </ul>
+                    <div class="card-action">
+                        <span>View Tasks</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+
+                <!-- My Profile -->
+                <a href="#" class="action-card" id="myProfileCard">
+                    <div class="card-header">
+                        <div class="card-icon orange">
+                            <i class="fa-solid fa-user-circle"></i>
+                        </div>
+                        <div class="card-title-area">
+                            <h3>My Profile</h3>
+                            <span class="badge orange-badge">Coming Soon</span>
+                        </div>
+                    </div>
+                    <p class="card-description">
+                        View and update your profile information and preferences.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fa-solid fa-check"></i> Profile settings</li>
+                        <li><i class="fa-solid fa-check"></i> Change password</li>
+                        <li><i class="fa-solid fa-check"></i> Notification preferences</li>
+                    </ul>
+                    <div class="card-action">
+                        <span>View Profile</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+            </section>
+
+            <!-- Logout Section -->
+            <section class="logout-section">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </button>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get current user from localStorage
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const companyName = localStorage.getItem('companyName') || 'Your Organization';
+
+            // Check if user is logged in
+            if (!currentUser.username) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Check if user is a regular user (or admin/fallback for testing)
+            if (currentUser.role !== 'user' && currentUser.role !== 'administrator') {
+                alert('Access denied. This page is for Users only.');
+                window.location.href = `${currentUser.role}-dashboard.html`;
+                return;
+            }
+
+            // Update welcome message
+            document.getElementById('welcomeMessage').textContent = 
+                `Welcome back, ${currentUser.full_name || currentUser.username}!`;
+            document.getElementById('companyName').textContent = companyName;
+
+            // Show demo banner if using fallback login
+            if (currentUser.is_fallback) {
+                document.getElementById('demoBanner').style.display = 'flex';
+            }
+
+            // My Tasks card - coming soon
+            document.getElementById('myTasksCard').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('My Tasks feature coming soon!\n\nYou\'ll be able to:\n• View assigned tasks\n• Track task status\n• Get deadline reminders');
+            });
+
+            // My Profile card - coming soon
+            document.getElementById('myProfileCard').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('My Profile feature coming soon!\n\nYou\'ll be able to:\n• Update profile information\n• Change password\n• Set notification preferences');
+            });
+
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'xforia-manufacturing.html';
+                }
+            });
+
+            // Dropdown menu
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+
+            if (dropdownToggle && dropdownMenu) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('show');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.dropdown')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

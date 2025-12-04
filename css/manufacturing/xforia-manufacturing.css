@@ -1,441 +1,212 @@
-/* Custom styles for the Manufacturing splash page */
-html, body {
-    height: 100%;
-    margin: 0;
-    /* Removed: overflow: hidden; */
-    display: flex;
-    flex-direction: column;
+:root { --primary-color: #2c3e50; --accent-color: #3498db; --text-color: #34495e; --light-bg-color: #ffffff; --secondary-bg-color: #f8f9fa; --icon-color: #3498db; --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05); --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1); --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.2); }
+@keyframes fadeIn { 
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0px); }
 }
-
-main.xforia-manufacturing-page {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* This will center all direct children (sections) */
-    padding: 2rem 5%;
-    box-sizing: border-box;
-    /* Removed: overflow-y: auto; */
+@keyframes fadeInUp { 
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0px); }
 }
-
-/* Add this to create a container for content that is centered and has a max width */
+html, body { height: 100%; margin: 0px; display: flex; flex-direction: column; }
 body {
+    font-family: "Work Sans", sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
-    margin: 0;
-}
-
-header {
-    /* Assuming header has a fixed height or adjusts dynamically */
-    /* Add any necessary styling for your header here */
-    padding: 1rem 5%;
-    background-color: #fff; /* Example background */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Example shadow */
-    z-index: 1000;
-}
-
-
-.intro-section {
-    margin-bottom: 1rem; /* Reduced spacing */
-    text-align: center; /* Center the text within the intro section */
-    width: 100%; /* Ensure it takes full width to allow centering */
-}
-
-.intro-headline {
-    font-size: 2.8rem;
-    font-weight: 800;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-    text-align: center; /* Explicitly center the headline */
-}
-
-.intro-subheadline {
-    font-size: 1.2rem;
+    margin: 0px;
+    padding-top: 100px;
+    /* background: linear-gradient(rgb(248, 249, 250) 0%, rgb(232, 245, 233) 100%) fixed; */
+    position: relative;
     color: var(--text-color);
-    max-width: 800px;
-    margin-left: auto; /* Center block element */
-    margin-right: auto; /* Center block element */
-}
+    overflow-x: hidden;
 
-.features-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two columns for Business Outcomes and Integration Flow */
-    gap: 2rem;
-    width: 100%;
-    padding: 0px;
-    max-width: 1000px;
-    margin-bottom: 2rem;
-    align-items: start; /* Align items to the top of their grid cells */
 }
-
-.feature-card {
-    background-color: var(--secondary-bg-color);
-    border-radius: 12px;
-    box-shadow: var(--shadow-medium);
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    height: 100%; /* Ensure cards take full height of their grid cell */
-}
-
-.feature-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    color: var(--primary-color);
-}
-
-.feature-header h2 {
-    font-size: 1.8em;
-    font-weight: 700;
-}
-
-.feature-header i {
-    font-size: 2em;
-    color: var(--accent-color);
-}
-
-.pipeline-step {
-    margin-bottom: 1rem;
-}
-
-.pipeline-step h4 {
-    font-size: 1.2em;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 0.25rem;
-}
-
-.pipeline-step i {
-    color: var(--accent-color);
-    margin-right: 0.5rem;
-}
-
-.pipeline-step p {
-    font-size: 0.9em;
-    line-height: 1.5;
-    color: var(--text-color);
-}
-
-.outcomes-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start; /* Align content to the left inside the card */
-}
-
-.outcome-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Space between each outcome item */
-    width: 100%;
-    margin-top: 10px;
-}
-
+body::before { content: ""; position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; background-image: radial-gradient(circle at 20% 30%, rgba(56, 176, 0, 0.03) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(56, 176, 0, 0.03) 0%, transparent 50%), radial-gradient(circle, rgba(56, 176, 0, 0.02) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+header { background-color: var(--light-bg-color); padding: 10px 5%; border-bottom: 1px solid var(--secondary-bg-color); box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px; position: fixed; top: 0px; width: 100%; z-index: 1000; display: flex; justify-content: space-between; align-items: center; transition: box-shadow 0.3s; }
+header:hover { box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 20px; }
+.logo-container { display: flex; align-items: center; flex-direction: row; width: 200px; }
+.menu-container { display: flex; align-items: center; }
+.logo { width: 200px; height: auto; margin-right: 0px; transition: transform 0.5s; }
+.logo:hover { transform: scale(1.05); }
+.tagline { font-size: 0.8em; font-weight: 600; color: rgb(20, 150, 124); white-space: normal; letter-spacing: 0.5px; }
+main.xforia-manufacturing-page { flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 3rem 5%; box-sizing: border-box; position: relative; z-index: 1; max-width: 1400px; margin: 0px auto; width: 100%; }
+.intro-section { margin-bottom: 3rem; text-align: center; width: 100%; max-width: 1000px; animation: 0.8s ease-out fadeInUp; }
+.intro-headline { font-size: 2.5rem; font-weight: 700; color: rgb(14, 86, 59); margin-bottom: 1rem; line-height: 1.3; font-family: "Work Sans", sans-serif; text-shadow: rgba(0, 0, 0, 0.05) 1px 1px 3px; }
+.intro-subheadline { font-size: 1.2rem; color: var(--text-color); max-width: 800px; margin: 0px auto; line-height: 1.8; font-weight: 400; }
+.intro-subheadline strong { color: rgb(22, 152, 128); font-weight: 600; }
+.features-section { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; width: 100%; max-width: 1200px; margin-bottom: 3rem; align-items: stretch; animation: 1s ease-out 0.2s both fadeInUp; }
+.feature-card { background: rgb(255, 255, 255); border-radius: 12px; border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: var(--shadow-light); padding: 2.5rem; display: flex; flex-direction: column; text-align: left; transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; overflow: hidden; min-height: 500px; }
+.feature-card::before { content: ""; position: absolute; top: 0px; left: 0px; right: 0px; height: 3px; background: linear-gradient(90deg, rgb(22, 152, 128), rgb(20, 150, 124)); transform: scaleX(0); transform-origin: left center; transition: transform 0.4s; }
+.feature-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-heavy); }
+.feature-card:hover::before { transform: scaleX(1); }
+.feature-header { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+.feature-header h2 { font-size: 1.6em; font-weight: 600; color: rgb(14, 86, 59); margin: 0px; font-family: "Work Sans", sans-serif; text-align: center; }
+.feature-header i { font-size: 1.8em; color: rgb(22, 152, 128); }
+.outcome-list { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
 .outcome-item {
     display: flex;
-    flex-direction: column; /* Change to column to stack icon/title and text */
+    flex-direction: column;
     align-items: flex-start;
-    gap: 5px; /* Reduced gap between icon/title and paragraph */
-    padding: 15px;
-    font-size: 1.1em;
-    background-color: #f8f8f8;
-    border-radius: 8px;
-    box-shadow: var(--shadow-light);
-    transition: transform 0.3s ease;
-}
-
-.outcome-item:hover {
-    transform: translateY(-5px);
-}
-
-.outcome-item h4 {
-    margin: 0;
-    color: var(--primary-color);
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.outcome-item h4 i {
-    margin-right: 0; /* Remove right margin since it's now part of flex gap */
-}
-.outcome-item > i {
-    display: none; /* Hide the old icon to prevent duplicates */
-}
-
-.outcome-item h4 {
-    margin: 0;
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-.outcome-item h4 i {
-    color: var(--accent-color);
-    font-size: 1.5em;
-    margin-right: 0.5rem;
-}
-
-.outcome-item p {
-    margin: 0;
-    font-size: 0.9em;
-}
-
-.integration-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Align content to the top */
-    align-items: center;
-}
-
-.flowchart-container {
-    margin-top: 1rem;
-    width: 100%;
-    display: flex; /* Use flex to center the image if it's smaller than container */
-    justify-content: center;
-}
-
-.flowchart-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: var(--shadow-light);
-}
-
-.form-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-    max-width: 400px;
-    margin-top: 2rem;
-}
-
-.company-input-group {
-    width: 100%;
-}
-
-#companyNameInput {
-    width: 100%;
-    padding: 1rem;
-    border-radius: 50px;
-    border: 2px solid var(--text-color);
-    font-size: 1em;
-    text-align: center;
-    box-sizing: border-box; /* Ensures padding doesn't affect total width */
-    transition: border-color 0.3s;
-}
-
-#companyNameInput::placeholder {
-    color: #999;
-    font-style: italic;
-}
-
-#companyNameInput:focus {
-    outline: none;
-    border-color: var(--accent-color);
-}
-
-.demo-button {
-    background-color: var(--accent-color);
-    color: #fff;
-    padding: 1rem 2.5rem;
-    border-radius: 50px;
-    font-size: 1.1em;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 100%;
-}
-
-.demo-button:hover {
-    background-color: #2c974b;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-footer {
-    background-color: var(--footer-bg-color, #203731); /* Use your footer background color */
-    color: var(--footer-text-color, #ffffff); /* Use your footer text color */
-    text-align: center;
-    padding: 1rem 0;
-    width: 100%;
-    flex-shrink: 0; /* Prevents footer from shrinking */
-    box-sizing: border-box;
-}
-
-/* General styles (assuming this is in style.css or a base CSS) */
-:root {
-    --primary-color: #0d1b2a;
-    --secondary-color: #1b263b;
-    --accent-color: #38b000; /* A shade of green for buttons/icons */
-    --text-color: #4a4a4a;
-    --light-text-color: #e0e1dd;
-    --bg-color: #f8f9fa;
-    --secondary-bg-color: #ffffff;
-    --shadow-light: 0 2px 5px rgba(0,0,0,0.08);
-    --shadow-medium: 0 5px 15px rgba(0,0,0,0.1);
-    --footer-bg-color: #203731; /* Added for footer */
-    --footer-text-color: #ffffff; /* Added for footer */
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    color: var(--text-color);
-    background-color: var(--bg-color);
-}
-
-/* CTA Section - Two Card Layout */
-.cta-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
-    width: 100%;
-    max-width: 900px;
-    margin: 3rem auto 2rem;
-}
+    padding: 1.25rem;
+    background: rgb(248, 249, 250);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
 
+}
+.outcome-item::before { content: ""; position: absolute; top: 0px; left: 0px; width: 3px; height: 100%; background: linear-gradient(rgb(22, 152, 128), rgb(20, 150, 124)); transform: scaleY(0); transform-origin: center bottom; transition: transform 0.3s; }
+.outcome-item:hover { background: rgb(255, 255, 255); transform: translateX(10px); border-color: rgba(22, 152, 128, 0.2); box-shadow: var(--shadow-medium); }
+.outcome-item:hover::before { transform: scaleY(1); transform-origin: center top; }
+.outcome-item h4 { margin: 0px; color: rgb(14, 86, 59); font-weight: 600; font-size: 1.05em; display: flex; align-items: center; gap: 0.75rem; font-family: "Work Sans", sans-serif; }
+.outcome-item h4 i { color: rgb(22, 152, 128); font-size: 1.2em; }
+.outcome-item p { margin: 0px; font-size: 0.92em; color: var(--text-color); line-height: 1.6; }
+.integration-card { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; }
+.flowchart-container { margin-top: 1rem; width: 100%; display: flex; justify-content: center; align-items: center; padding: 1rem; background: rgb(248, 249, 250); border-radius: 12px; border: 1px solid rgba(0, 0, 0, 0.05); flex-grow: 1; }
+.flowchart-image { max-width: 100%; height: auto; border-radius: 8px; box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 16px; transition: transform 0.3s; }
+.flowchart-image:hover { transform: scale(1.02); }
+.outcomes-card { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; }
+.outcomes-card .feature-header { width: 100%; }
+.outcomes-card .outcome-list { width: 100%; }
+.cta-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; width: 100%; max-width: 1000px; margin: 2rem auto; animation: 1.2s ease-out 0.4s both fadeInUp; }
 .cta-card {
-    background-color: var(--secondary-bg-color);
-    border-radius: 16px;
+    background: rgb(255, 255, 255);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
     padding: 2.5rem 2rem;
-    box-shadow: var(--shadow-medium);
+    box-shadow: var(--shadow-light);
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    overflow: visible;
+    min-height: 360px;
+
+}
+.cta-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-heavy); }
+.cta-icon { width: auto; height: auto; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; font-size: 3rem; transition: transform 0.4s; background: none; border-radius: 0px; box-shadow: none; }
+.cta-card:hover .cta-icon { transform: scale(1.15); }
+.new-org-card .cta-icon { color: rgb(22, 160, 133); }
+.new-org-card:hover { border-color: rgba(22, 160, 133, 0.2); }
+.existing-org-card .cta-icon { color: rgb(52, 152, 219); }
+.existing-org-card:hover { border-color: rgba(52, 152, 219, 0.2); }
+.cta-card h3 { font-size: 1.5rem; font-weight: 600; color: rgb(14, 86, 59); margin: 0px 0px 0.75rem; font-family: "Work Sans", sans-serif; }
+.cta-card p { font-size: 0.95rem; color: var(--text-color); margin: 0px 0px 1.5rem; line-height: 1.6; flex-grow: 1; }
+.company-input-group { width: 100%; max-width: 100%; margin-bottom: 1.25rem; flex-grow: 0; flex-shrink: 0; }
+#companyNameInput { width: 100%; padding: 0.875rem 1.5rem; border-radius: 50px; border: 2px solid rgb(224, 224, 224); background: rgb(248, 249, 250); font-size: 0.95em; text-align: center; box-sizing: border-box; transition: 0.3s; color: var(--text-color); font-family: "Work Sans", sans-serif; font-weight: 400; }
+#companyNameInput::placeholder { color: rgb(153, 153, 153); font-style: italic; }
+#companyNameInput:focus { outline: currentcolor; border-color: rgb(22, 152, 128); background: rgb(255, 255, 255); box-shadow: rgba(22, 152, 128, 0.1) 0px 0px 0px 4px; }
+.cta-button { padding: 0.875rem 2rem; border-radius: 50px; font-size: 1rem; font-weight: 600; text-decoration: none; transition: 0.4s; display: inline-flex; align-items: center; justify-content: center; gap: 0.625rem; width: 100%; max-width: 100%; box-sizing: border-box; font-family: "Work Sans", sans-serif; position: relative; overflow: hidden; margin-top: auto; }
+.cta-button::after { content: ""; position: absolute; top: 50%; left: 50%; width: 0px; height: 0px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; transition: width 0.4s, height 0.4s; transform: translate(-50%, -50%); z-index: -1; }
+.cta-button:hover::after { width: 300%; height: 300%; }
+.cta-button i { transition: transform 0.3s; font-size: 0.9em; }
+.cta-button:hover i { transform: translateX(4px); }
+.primary-button { background: linear-gradient(135deg, rgb(22, 160, 133), rgb(26, 188, 156)); color: rgb(255, 255, 255); box-shadow: rgba(22, 160, 133, 0.3) 0px 5px 15px; border: medium; }
+.primary-button:hover { background: linear-gradient(135deg, rgb(19, 141, 117), rgb(22, 160, 133)); box-shadow: rgba(22, 160, 133, 0.4) 0px 10px 25px; transform: translateY(-5px) scale(1.02); }
+.secondary-button { background: linear-gradient(135deg, rgb(52, 152, 219), rgb(41, 128, 185)); color: rgb(255, 255, 255); box-shadow: rgba(52, 152, 219, 0.3) 0px 5px 15px; border: medium; }
+.secondary-button:hover { background: linear-gradient(135deg, rgb(41, 128, 185), rgb(28, 90, 133)); box-shadow: rgba(52, 152, 219, 0.4) 0px 10px 25px; transform: translateY(-5px) scale(1.02); }
+.hint-text { font-size: 0.85rem; color: rgb(107, 114, 128); margin-top: 1rem; font-style: italic; flex-grow: 0; flex-shrink: 0; }
+.existing-org-card .cta-card p:last-of-type { margin-bottom: auto; }
+.cta-card > .cta-button, .cta-card > a.cta-button { margin-top: auto; }
+footer { background-color: rgb(6, 56, 40); color: rgb(255, 255, 255); text-align: center; padding: 30px; width: 100%; flex-shrink: 0; box-sizing: border-box; position: relative; z-index: 1; font-size: 0.9em; margin-top: 50px; }
+footer p { margin: 0px; position: relative; z-index: 2; }
+@media (max-width: 968px) {
+  .features-section { grid-template-columns: 1fr; gap: 1.5rem; }
+  .intro-headline { font-size: 2.4rem; }
+  .intro-subheadline { font-size: 1.05rem; }
+}
+@media (max-width: 768px) {
+  main.xforia-manufacturing-page { padding: 2rem 4%; }
+  .cta-section { grid-template-columns: 1fr; gap: 1.5rem; }
+  .intro-headline { font-size: 2rem; }
+  .feature-card { padding: 2rem 1.5rem; }
+  .cta-card { padding: 2rem 1.5rem; }
+  .cta-icon { width: 60px; height: 60px; font-size: 1.75rem; }
+}
+@media (max-width: 480px) {
+  .intro-headline { font-size: 1.75rem; }
+  .intro-subheadline { font-size: 0.95rem; }
+  .feature-header h2 { font-size: 1.4em; }
+  .cta-card h3 { font-size: 1.35rem; }
+  .cta-section { grid-template-columns: 1fr; }
+}
+.dropdown { position: relative; display: inline-block; }
+.dropdown-toggle { background-color: transparent; border: 2px solid var(--accent-color); color: var(--text-color); padding: 10px 20px; border-radius: 50px; font-weight: 500; cursor: pointer; transition: background-color 0.3s, color 0.3s; font-size: 1em; }
+.dropdown-toggle:hover { background-color: var(--accent-color); color: var(--light-bg-color); }
+.dropdown-menu { display: none; position: absolute; background-color: var(--secondary-bg-color); min-width: 250px; box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px; z-index: 1; border-radius: 8px; overflow: hidden; right: 0px; top: 100%; margin-top: 10px; }
+.dropdown-menu.show { display: block; }
+.dropdown-menu a { color: var(--text-color); padding: 12px 16px; text-decoration: none; display: block; font-size: 0.9em; transition: background-color 0.3s; }
+.dropdown-menu a:hover { background-color: var(--accent-color); color: var(--light-bg-color); }
+.hamburger-icon { border: medium; background-color: transparent; padding: 10px; color: var(--text-color); font-size: 1.5em; cursor: pointer; transition: color 0.3s; }
+.hamburger-icon:hover { color: var(--accent-color); background-color: transparent; }
+.dropdown-toggle.hamburger-icon { border: medium; padding: 5px; background-color: transparent; }
+.coming-soon { color: grey; cursor: default; pointer-events: none; }
+.cta-button:focus, #companyNameInput:focus { outline: rgba(22, 152, 128, 0.4) solid 3px; outline-offset: 2px; }
+@media print {
+  body::before { display: none; }
+  body { background: white; }
+  .feature-card, .cta-card { background: white; color: black; border: 1px solid rgb(221, 221, 221); box-shadow: none; }
 }
 
-.cta-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.cta-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-    font-size: 2.5rem;
-}
-
-.new-org-card .cta-icon {
-    background: linear-gradient(135deg, #38b000, #2c974b);
-    color: white;
-}
-
-.existing-org-card .cta-icon {
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    color: white;
-}
-
-.cta-card h3 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin: 0 0 1rem 0;
-}
-
-.cta-card p {
-    font-size: 1rem;
-    color: var(--text-color);
-    margin: 0 0 1.5rem 0;
-    line-height: 1.5;
-}
-
-.cta-button {
-    background-color: var(--accent-color);
-    color: #fff;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    font-size: 1.1em;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    width: 100%;
-    max-width: 300px;
-    box-sizing: border-box;
-}
-
-.primary-button {
-    background: linear-gradient(135deg, #38b000, #2c974b);
-}
-
-.primary-button:hover {
-    background: linear-gradient(135deg, #2c974b, #236b38);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(56, 176, 0, 0.3);
-}
-
-.secondary-button {
-    background: linear-gradient(135deg, #3498db, #2980b9);
-}
-
-.secondary-button:hover {
-    background: linear-gradient(135deg, #2980b9, #1c5a85);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
-}
-
+/* Add spacing to hint text */
 .hint-text {
     font-size: 0.85rem;
     color: #6b7280;
-    margin-top: 1rem;
+    margin-top: 1.25rem; /* Increased from 1rem to add space */
     font-style: italic;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
-/* Keep existing company input styles but update context */
-.new-org-card .company-input-group {
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 1.5rem;
+/* Make content area flexible to push buttons to same level */
+.cta-card p {
+    font-size: 0.95rem;
+    color: var(--text-color);
+    margin: 0 0 1.5rem 0;
+    line-height: 1.6;
+    /* Remove flex-grow: 1 from here */
 }
 
-.new-org-card #companyNameInput {
-    width: 100%;
-    padding: 1rem;
+/* Add a spacer div styling for equal button positioning */
+.cta-card > * {
+    flex-shrink: 0; /* Prevent content from shrinking */
+}
+
+/* Adjust button to not use margin-top auto */
+.cta-button {
+    padding: 0.875rem 2rem;
     border-radius: 50px;
-    border: 2px solid var(--text-color);
-    font-size: 1em;
-    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
-    transition: border-color 0.3s;
+    font-family: 'Work Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+    /* Remove margin-top: auto */
 }
 
-.new-org-card #companyNameInput::placeholder {
-    color: #999;
-    font-style: italic;
+/* Specific spacing for the input group to match button positions */
+.company-input-group {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1.25rem;
+    min-height: 60px; /* Ensures consistent spacing */
 }
 
-.new-org-card #companyNameInput:focus {
-    outline: none;
-    border-color: var(--accent-color);
-}
-
-/* Remove old form-section styles if they exist */
-.form-section {
-    display: none; /* Hide old single-button layout */
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .cta-section {
-        grid-template-columns: 1fr;
-        max-width: 400px;
-    }
+/* Create equal spacing by adding invisible spacer in right card */
+.existing-org-card p:first-of-type {
+    margin-bottom: calc(1.5rem + 60px); /* Match input height + margin */
 }

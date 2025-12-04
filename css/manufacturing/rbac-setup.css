@@ -1,34 +1,72 @@
-/* RBAC Setup Page Styles - Consistent with Xforia Manufacturing */
-
-/* Inherit base styles from main stylesheet */
 :root {
-    --primary-color: #0d1b2a;
-    --secondary-color: #1b263b;
-    --accent-color: #3498db;  /* Changed from green to blue */
-    --text-color: #4a4a4a;
-    --light-text-color: #e0e1dd;
-    --bg-color: #f8f9fa;
-    --secondary-bg-color: #ffffff;
-    --shadow-light: 0 2px 5px rgba(0,0,0,0.08);
-    --shadow-medium: 0 5px 15px rgba(0,0,0,0.1);
-    --footer-bg-color: #203731;
-    --footer-text-color: #ffffff;
+    --primary-color: #2c3e50;
+    --accent-color: #3498db;
+    --teal-color: #16a085;
+    --green-primary: #169880;
+    --green-secondary: #14967c;
+    --green-dark: #0e563b;
+    --text-color: #34495e;
+    --light-bg-color: #ffffff;
+    --secondary-bg-color: #f8f9fa;
+    --icon-color: #169880;
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
+    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
+    --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.2);
     --success-color: #27ae60;
     --warning-color: #ff9500;
     --error-color: #dc3545;
+    --footer-bg-color: #063828;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
 }
 
 html, body {
     height: 100%;
-    margin: 0;
+    margin: 0px;
     display: flex;
     flex-direction: column;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Work Sans", sans-serif;
     color: var(--text-color);
-    background-color: var(--bg-color);
+    background-attachment: fixed;
+    padding-top: 100px;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 20% 30%, rgba(56, 176, 0, 0.03) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(56, 176, 0, 0.03) 0%, transparent 50%), radial-gradient(circle, rgba(56, 176, 0, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 main.rbac-setup-page {
@@ -36,22 +74,26 @@ main.rbac-setup-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem 3%;
+    padding: 2rem 5%;
     box-sizing: border-box;
     width: 100%;
+    max-width: 1400px;
+    margin: 0px auto;
+    position: relative;
+    z-index: 1;
 }
 
-/* Progress Indicator */
 .progress-container {
     width: 100%;
     max-width: 1400px;
     margin-bottom: 2rem;
+    animation: 0.8s ease-out fadeInUp;
 }
 
 .progress-bar {
     width: 100%;
     height: 8px;
-    background-color: #e0e0e0;
+    background-color: rgb(224, 224, 224);
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 1.5rem;
@@ -59,9 +101,9 @@ main.rbac-setup-page {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent-color), #2c974b);
+    background: linear-gradient(90deg, var(--teal-color), var(--green-primary));
     border-radius: 10px;
-    transition: width 0.4s ease;
+    transition: width 0.4s;
     width: 20%;
 }
 
@@ -76,7 +118,7 @@ main.rbac-setup-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
+    flex: 1 1 0%;
     position: relative;
 }
 
@@ -84,29 +126,28 @@ main.rbac-setup-page {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #e0e0e0;
-    color: #999;
+    background-color: rgb(224, 224, 224);
+    color: rgb(153, 153, 153);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: 0.3s;
     z-index: 2;
+    font-family: "Work Sans", sans-serif;
 }
 
 .progress-step.active .step-circle {
-    background-color: var(--accent-color);
+    background-color: var(--teal-color);
     color: white;
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);  /* Blue shadow */
+    box-shadow: rgba(22, 160, 133, 0.3) 0px 4px 12px;
 }
 
 .progress-step.completed .step-circle {
-    background-color: var(--success-color);  /* Green for completed */
+    background-color: var(--success-color);
     color: white;
 }
-
-/* Removed the ::before pseudo-element that showed checkmark */
 
 .step-label {
     margin-top: 0.5rem;
@@ -114,22 +155,23 @@ main.rbac-setup-page {
     color: var(--text-color);
     text-align: center;
     max-width: 100px;
+    font-family: "Work Sans", sans-serif;
 }
 
 .progress-step.active .step-label {
     font-weight: 600;
-    color: var(--accent-color);
+    color: var(--green-dark);
 }
 
-/* Setup Container */
 .setup-container {
     width: 100%;
     max-width: 1400px;
-    background-color: var(--secondary-bg-color);
+    background-color: var(--light-bg-color);
     border-radius: 12px;
     box-shadow: var(--shadow-medium);
     padding: 3rem;
     box-sizing: border-box;
+    animation: 1s ease-out 0.2s both fadeInUp;
 }
 
 .setup-header {
@@ -140,38 +182,29 @@ main.rbac-setup-page {
 .setup-title {
     font-size: 2.2rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--green-dark);
     margin-bottom: 0.5rem;
+    font-family: "Work Sans", sans-serif;
+    text-shadow: rgba(0, 0, 0, 0.05) 1px 1px 3px;
 }
 
 .setup-title span {
-    color: black;
+    color: var(--green-primary);
 }
 
 .setup-subtitle {
     font-size: 1.1rem;
     color: var(--text-color);
+    font-family: "Work Sans", sans-serif;
 }
 
-/* Setup Steps */
 .setup-step {
     display: none;
 }
 
 .setup-step.active {
     display: block;
-    animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    animation: 0.4s fadeIn;
 }
 
 .step-content {
@@ -181,9 +214,10 @@ main.rbac-setup-page {
 .step-heading {
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--green-dark);
     margin-bottom: 0.5rem;
     text-align: center;
+    font-family: "Work Sans", sans-serif;
 }
 
 .step-description {
@@ -191,9 +225,9 @@ main.rbac-setup-page {
     color: var(--text-color);
     text-align: center;
     margin-bottom: 2rem;
+    font-family: "Work Sans", sans-serif;
 }
 
-/* Systems Grid (Step 1) */
 .systems-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -202,16 +236,17 @@ main.rbac-setup-page {
 }
 
 .system-card {
-    background-color: var(--bg-color);
+    background-color: var(--secondary-bg-color);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: var(--shadow-light);
-    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
 }
 
 .system-card:hover {
     box-shadow: var(--shadow-medium);
-    transform: translateY(-3px);
+    transform: translateY(-5px);
 }
 
 .system-header {
@@ -223,32 +258,35 @@ main.rbac-setup-page {
 
 .system-header i {
     font-size: 1.8rem;
-    color: var(--accent-color);
+    color: var(--green-primary);
 }
 
 .system-header h3 {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--primary-color);
-    margin: 0;
+    color: var(--green-dark);
+    margin: 0px;
+    font-family: "Work Sans", sans-serif;
 }
 
 .system-select {
     width: 100%;
     padding: 0.75rem;
-    border: 2px solid #ddd;
+    border: 2px solid rgb(224, 224, 224);
     border-radius: 8px;
     font-size: 0.95rem;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Work Sans", sans-serif;
     background-color: white;
     cursor: pointer;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s;
     margin-bottom: 0.75rem;
+    color: var(--text-color);
 }
 
 .system-select:focus {
-    outline: none;
-    border-color: var(--accent-color);
+    outline: currentcolor;
+    border-color: var(--green-primary);
+    box-shadow: rgba(22, 152, 128, 0.1) 0px 0px 0px 4px;
 }
 
 .heavy-usage-label {
@@ -258,16 +296,16 @@ main.rbac-setup-page {
     font-size: 0.9rem;
     color: var(--text-color);
     cursor: pointer;
+    font-family: "Work Sans", sans-serif;
 }
 
 .heavy-checkbox {
     width: 18px;
     height: 18px;
     cursor: pointer;
-    accent-color: var(--accent-color);
+    accent-color: var(--teal-color);
 }
 
-/* Config Section (Step 2 & 3) */
 .config-section {
     display: flex;
     flex-direction: column;
@@ -276,10 +314,16 @@ main.rbac-setup-page {
 }
 
 .config-card {
-    background-color: var(--bg-color);
+    background-color: var(--secondary-bg-color);
     border-radius: 12px;
     padding: 2rem;
     box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
+}
+
+.config-card:hover {
+    box-shadow: var(--shadow-medium);
 }
 
 .config-header {
@@ -288,19 +332,22 @@ main.rbac-setup-page {
     gap: 1rem;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 2px solid #e0e0e0;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(224, 224, 224);
 }
 
 .config-header i {
     font-size: 1.8rem;
-    color: var(--accent-color);
+    color: var(--green-primary);
 }
 
 .config-header h3 {
     font-size: 1.3rem;
     font-weight: 600;
-    color: var(--primary-color);
-    margin: 0;
+    color: var(--green-dark);
+    margin: 0px;
+    font-family: "Work Sans", sans-serif;
 }
 
 .config-body {
@@ -324,42 +371,45 @@ main.rbac-setup-page {
 .form-label {
     font-size: 0.95rem;
     font-weight: 500;
-    color: var(--primary-color);
+    color: var(--green-dark);
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-family: "Work Sans", sans-serif;
 }
 
 .info-tooltip {
     cursor: help;
-    color: var(--accent-color);
+    color: var(--teal-color);
     font-size: 0.9rem;
 }
 
 .form-input {
     padding: 0.75rem;
-    border: 2px solid #ddd;
+    border: 2px solid rgb(224, 224, 224);
     border-radius: 8px;
     font-size: 0.95rem;
-    font-family: 'Poppins', sans-serif;
-    transition: border-color 0.3s ease;
+    font-family: "Work Sans", sans-serif;
+    transition: border-color 0.3s;
+    color: var(--text-color);
 }
 
 .form-input:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);  /* Blue focus shadow */
+    outline: currentcolor;
+    border-color: var(--green-primary);
+    box-shadow: rgba(22, 152, 128, 0.1) 0px 0px 0px 4px;
 }
 
 .form-input:disabled {
-    background-color: #f5f5f5;
+    background-color: rgb(245, 245, 245);
     cursor: not-allowed;
 }
 
 .form-hint {
     font-size: 0.8rem;
-    color: #888;
+    color: rgb(136, 136, 136);
     font-style: italic;
+    font-family: "Work Sans", sans-serif;
 }
 
 .checkbox-label {
@@ -369,13 +419,14 @@ main.rbac-setup-page {
     font-size: 0.95rem;
     color: var(--text-color);
     cursor: pointer;
+    font-family: "Work Sans", sans-serif;
 }
 
 .checkbox-label input[type="checkbox"] {
     width: 18px;
     height: 18px;
     cursor: pointer;
-    accent-color: var(--accent-color);
+    accent-color: var(--teal-color);
 }
 
 .checkbox-group {
@@ -387,7 +438,6 @@ main.rbac-setup-page {
     border-radius: 8px;
 }
 
-/* Roles Grid (Step 4) */
 .roles-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -396,21 +446,21 @@ main.rbac-setup-page {
 }
 
 .role-card {
-    background-color: var(--bg-color);
+    background-color: var(--secondary-bg-color);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: var(--shadow-light);
-    transition: all 0.3s ease;
+    transition: 0.3s;
     border: 2px solid transparent;
 }
 
 .role-card.active {
-    border-color: var(--accent-color);
-    box-shadow: 0 5px 20px rgba(52, 152, 219, 0.15);  /* Blue shadow */
+    border-color: var(--teal-color);
+    box-shadow: rgba(22, 160, 133, 0.15) 0px 5px 20px;
 }
 
 .role-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-medium);
 }
 
@@ -420,22 +470,24 @@ main.rbac-setup-page {
     gap: 1rem;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
-    border-bottom: 2px solid #e0e0e0;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(224, 224, 224);
 }
 
 .role-icon {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, var(--accent-color), #2980b9);  /* Blue gradient */
-    border-radius: 12px;
+    background: none;
+    border-radius: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .role-icon i {
-    font-size: 1.5rem;
-    color: white;
+    font-size: 2.5rem;
+    color: var(--green-primary);
 }
 
 .role-info {
@@ -445,8 +497,9 @@ main.rbac-setup-page {
 .role-info h3 {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--primary-color);
-    margin: 0 0 0.25rem 0;
+    color: var(--green-dark);
+    margin: 0px 0px 0.25rem;
+    font-family: "Work Sans", sans-serif;
 }
 
 .role-badge {
@@ -455,13 +508,14 @@ main.rbac-setup-page {
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 500;
-    background-color: #e0e0e0;
-    color: #666;
+    background-color: rgb(224, 224, 224);
+    color: rgb(102, 102, 102);
+    font-family: "Work Sans", sans-serif;
 }
 
 .role-badge.active-badge {
-    background-color: rgba(52, 152, 219, 0.1);  /* Blue background */
-    color: var(--accent-color);
+    background-color: rgba(22, 160, 133, 0.1);
+    color: var(--teal-color);
 }
 
 .role-toggle {
@@ -473,23 +527,20 @@ main.rbac-setup-page {
 
 .role-toggle input {
     opacity: 0;
-    width: 0;
-    height: 0;
+    width: 0px;
+    height: 0px;
 }
 
 .toggle-slider {
     position: absolute;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
+    inset: 0px;
+    background-color: rgb(204, 204, 204);
     transition: 0.4s;
     border-radius: 26px;
 }
 
-.toggle-slider:before {
+.toggle-slider::before {
     position: absolute;
     content: "";
     height: 20px;
@@ -502,10 +553,10 @@ main.rbac-setup-page {
 }
 
 input:checked + .toggle-slider {
-    background-color: var(--accent-color);
+    background-color: var(--teal-color);
 }
 
-input:checked + .toggle-slider:before {
+input:checked + .toggle-slider::before {
     transform: translateX(24px);
 }
 
@@ -524,6 +575,7 @@ input:disabled + .toggle-slider {
     font-size: 0.9rem;
     color: var(--text-color);
     line-height: 1.5;
+    font-family: "Work Sans", sans-serif;
 }
 
 .permissions-list {
@@ -538,14 +590,14 @@ input:disabled + .toggle-slider {
     gap: 0.5rem;
     font-size: 0.85rem;
     color: var(--text-color);
+    font-family: "Work Sans", sans-serif;
 }
 
 .permission-item i {
-    color: var(--accent-color);
+    color: var(--green-primary);
     font-size: 0.9rem;
 }
 
-/* Review Section (Step 5) */
 .review-container {
     display: flex;
     flex-direction: column;
@@ -554,24 +606,26 @@ input:disabled + .toggle-slider {
 }
 
 .review-section {
-    background-color: var(--bg-color);
+    background-color: var(--secondary-bg-color);
     border-radius: 12px;
     padding: 2rem;
     box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .review-title {
     font-size: 1.3rem;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--green-dark);
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    font-family: "Work Sans", sans-serif;
 }
 
 .review-title i {
-    color: var(--accent-color);
+    color: var(--green-primary);
     font-size: 1.4rem;
 }
 
@@ -587,17 +641,19 @@ input:disabled + .toggle-slider {
     padding: 0.75rem;
     background-color: white;
     border-radius: 8px;
-    border-left: 4px solid var(--accent-color);
+    border-left: 4px solid var(--teal-color);
 }
 
 .review-item-label {
     font-weight: 500;
-    color: var(--primary-color);
+    color: var(--green-dark);
+    font-family: "Work Sans", sans-serif;
 }
 
 .review-item-value {
     color: var(--text-color);
     text-align: right;
+    font-family: "Work Sans", sans-serif;
 }
 
 .review-badge {
@@ -606,19 +662,21 @@ input:disabled + .toggle-slider {
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 500;
-    background-color: rgba(52, 152, 219, 0.1);  /* Blue background */
-    color: var(--accent-color);
+    background-color: rgba(22, 160, 133, 0.1);
+    color: var(--teal-color);
     margin-right: 0.5rem;
+    font-family: "Work Sans", sans-serif;
 }
 
-/* Navigation Buttons */
 .navigation-buttons {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 2px solid #e0e0e0;
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-top-color: rgb(224, 224, 224);
 }
 
 .nav-btn {
@@ -626,51 +684,101 @@ input:disabled + .toggle-slider {
     border-radius: 50px;
     font-size: 1rem;
     font-weight: 600;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Work Sans", sans-serif;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
+    transition: 0.4s;
+    border: medium;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-btn::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0px;
+    height: 0px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: width 0.4s, height 0.4s;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+.nav-btn:hover::after {
+    width: 300%;
+    height: 300%;
 }
 
 .primary-btn {
-    background-color: var(--accent-color);
+    background: linear-gradient(135deg, var(--teal-color), #1abc9c);
     color: white;
+    box-shadow: rgba(22, 160, 133, 0.3) 0px 5px 15px;
 }
 
 .primary-btn:hover {
-    background-color: #2980b9;  /* Darker blue on hover */
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #138d75, var(--teal-color));
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: rgba(22, 160, 133, 0.4) 0px 10px 25px;
 }
 
 .secondary-btn {
     background-color: white;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
+    color: var(--green-dark);
+    border: 2px solid var(--green-dark);
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 }
 
 .secondary-btn:hover {
-    background-color: var(--primary-color);
+    background-color: var(--green-dark);
     color: white;
-    transform: translateY(-2px);
+    transform: translateY(-5px);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 20px;
 }
 
-/* Footer */
 footer {
     background-color: var(--footer-bg-color);
-    color: var(--footer-text-color);
+    color: rgb(255, 255, 255);
     text-align: center;
-    padding: 1rem 0;
+    padding: 30px;
     width: 100%;
     flex-shrink: 0;
     box-sizing: border-box;
+    font-size: 0.9em;
+    margin-top: 50px;
+    position: relative;
+    z-index: 1;
 }
 
-/* Responsive Design */
+footer p {
+    margin: 0px;
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 968px) {
+    .systems-grid, .roles-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .setup-title {
+        font-size: 2rem;
+    }
+
+    .step-heading {
+        font-size: 1.6rem;
+    }
+}
+
 @media (max-width: 768px) {
     .setup-container {
         padding: 2rem 1.5rem;
@@ -682,15 +790,6 @@ footer {
 
     .step-heading {
         font-size: 1.5rem;
-    }
-
-    .systems-grid,
-    .roles-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .form-row {
-        grid-template-columns: 1fr;
     }
 
     .navigation-buttons {
@@ -714,7 +813,7 @@ footer {
 
 @media (max-width: 480px) {
     main.rbac-setup-page {
-        padding: 1rem 3%;
+        padding: 1rem 4%;
     }
 
     .setup-title {
@@ -733,5 +832,27 @@ footer {
         width: 35px;
         height: 35px;
         font-size: 0.9rem;
+    }
+}
+
+.nav-btn:focus, .form-input:focus, .system-select:focus {
+    outline: rgba(22, 152, 128, 0.4) solid 3px;
+    outline-offset: 2px;
+}
+
+@media print {
+    body::before {
+        display: none;
+    }
+
+    body {
+        background: white;
+    }
+
+    .system-card, .config-card, .role-card, .review-section {
+        background: white;
+        color: black;
+        border: 1px solid rgb(221, 221, 221);
+        box-shadow: none;
     }
 }

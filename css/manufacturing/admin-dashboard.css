@@ -445,3 +445,21 @@ footer {
         font-size: 1.5rem;
     }
 }
+
+.nav-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none !important; /* ADD !important to force it */
+    color: inherit;
+    display: block;
+    border: 2px solid transparent;
+}
+
+/* Also add this to ensure all text inside has no underline */
+.nav-card * {
+    text-decoration: none !important;
+}

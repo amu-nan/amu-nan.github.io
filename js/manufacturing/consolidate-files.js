@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **Backend Endpoint URLs**
     const CAD_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
-    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_user_manuals/'; // Add this endpoint to your backend
+    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_manual_pdf/'; // Add this endpoint to your backend
     
     // Real backend endpoints for enterprise modules
     const ENTERPRISE_ENDPOINTS = {
@@ -97,7 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Check for URL parameter to determine UI state on page load ---
     const isUnified = urlParams.get('unified');
     if (isUnified === 'true') {
-        showUnifiedState();
+        // If returning to this page after unification, redirect to admin dashboard
+        window.location.href = `admin-dashboard.html?company=${encodeURIComponent(companyName)}`;
     } else {
         showInitialState();
     }
@@ -260,13 +261,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const uploadLabel = moduleCard.querySelector('.upload-label');
         const statusEl = moduleCard.querySelector('.upload-status');
+        const previewContainer = document.getElementById(`${system}-${module}-preview`);
         
         if (!uploadLabel || !statusEl) {
             console.error(`Missing elements for ${system}-${module}`);
             return;
         }
         
-        fileInput.addEventListener('change', (e) => {
+        fileInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (file) {
                 enterpriseModuleFiles[system][module] = file;
@@ -275,6 +277,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
                 statusEl.style.color = '#3498db';
                 statusEl.style.display = 'block';
+                
+                // Parse and preview the file
+                try {
+                    await parseAndPreviewFile(file, previewContainer, system, module);
+                } catch (error) {
+                    console.error(`Error previewing file for ${system}-${module}:`, error);
+                }
                 
                 // Simulate processing (2 seconds)
                 setTimeout(() => {
@@ -287,6 +296,122 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
             }
         });
+        
+        // Setup toggle preview button if preview container exists
+        if (previewContainer) {
+            const toggleBtn = previewContainer.querySelector('.toggle-preview-btn');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const tableContainer = previewContainer.querySelector('.preview-table-container');
+                    if (tableContainer.style.display === 'none') {
+                        tableContainer.style.display = 'block';
+                        toggleBtn.textContent = 'Hide Preview';
+                    } else {
+                        tableContainer.style.display = 'none';
+                        toggleBtn.textContent = 'Show Preview';
+                    }
+                });
+            }
+        }
+    }
+
+    // --- Function to Parse and Preview CSV/Excel Files ---
+    async function parseAndPreviewFile(file, previewContainer, system, module) {
+        if (!previewContainer) {
+            console.log('No preview container for', system, module);
+            return;
+        }
+
+        const fileName = file.name.toLowerCase();
+        
+        if (fileName.endsWith('.csv')) {
+            // Parse CSV using PapaParse
+            Papa.parse(file, {
+                preview: 5, // Only read first 5 rows
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    const totalRows = results.data.length;
+                    displayDataPreview(results.data, results.meta.fields, totalRows, previewContainer, file.name);
+                },
+                error: function(error) {
+                    console.error('CSV parsing error:', error);
+                }
+            });
+            
+            // Get total row count separately
+            Papa.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    const recordCount = previewContainer.querySelector('.record-count');
+                    if (recordCount) {
+                        recordCount.textContent = `${results.data.length.toLocaleString()} records`;
+                    }
+                }
+            });
+            
+        } else if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+            // Parse Excel using SheetJS
+            const data = await file.arrayBuffer();
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+            
+            if (jsonData.length > 0) {
+                const headers = Object.keys(jsonData[0]);
+                const previewData = jsonData.slice(0, 5);
+                displayDataPreview(previewData, headers, jsonData.length, previewContainer, file.name);
+            }
+        }
+    }
+
+    // --- Function to Display Data Preview ---
+    function displayDataPreview(data, headers, totalRows, container, fileName) {
+        if (!container || !data || data.length === 0) return;
+        
+        // Show the preview container
+        container.style.display = 'block';
+        
+        // Update record count
+        const recordCount = container.querySelector('.record-count');
+        if (recordCount) {
+            recordCount.textContent = `${totalRows.toLocaleString()} records`;
+        }
+        
+        // Create table
+        const tableContainer = container.querySelector('.preview-table-container');
+        if (!tableContainer) return;
+        
+        let tableHTML = '<table class="preview-table"><thead><tr>';
+        
+        // Add headers (limit to first 5 columns for space)
+        const displayHeaders = headers.slice(0, 5);
+        displayHeaders.forEach(header => {
+            tableHTML += `<th>${header}</th>`;
+        });
+        if (headers.length > 5) {
+            tableHTML += `<th>... (+${headers.length - 5} more)</th>`;
+        }
+        tableHTML += '</tr></thead><tbody>';
+        
+        // Add data rows
+        data.forEach(row => {
+            tableHTML += '<tr>';
+            displayHeaders.forEach(header => {
+                const value = row[header] !== undefined && row[header] !== null ? row[header] : '';
+                const displayValue = String(value).length > 30 ? String(value).substring(0, 27) + '...' : value;
+                tableHTML += `<td>${displayValue}</td>`;
+            });
+            if (headers.length > 5) {
+                tableHTML += `<td>...</td>`;
+            }
+            tableHTML += '</tr>';
+        });
+        
+        tableHTML += '</tbody></table>';
+        tableContainer.innerHTML = tableHTML;
     }
 
     // Setup all module uploads - must happen after DOM is ready
@@ -830,12 +955,15 @@ document.addEventListener('DOMContentLoaded', () => {
             processingInfo.style.display = 'none';
             unifyMessage.style.display = 'none';
 
-            // Show unified state on success
-            showUnifiedState();
+            // Show success message briefly, then redirect to admin dashboard
+            successMessage.textContent = `Data unified successfully! Redirecting to dashboard...`;
+            successMessage.style.color = '#27ae60';
+            successMessage.style.display = 'block';
 
-            // Append a URL parameter to the current page to preserve the state
-            const newUrl = `${window.location.pathname}?company=${encodeURIComponent(companyName)}&unified=true`;
-            history.pushState({}, '', newUrl);
+            // Redirect to admin dashboard after 2 seconds
+            setTimeout(() => {
+                window.location.href = `admin-dashboard.html?company=${encodeURIComponent(companyName)}`;
+            }, 2000);
 
         } catch (error) {
             console.error('Upload error:', error);

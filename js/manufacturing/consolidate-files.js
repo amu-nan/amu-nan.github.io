@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **Backend Endpoint URLs**
     const CAD_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
-    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_manual_pdf/'; // Add this endpoint to your backend
+    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_user_manuals/'; // Add this endpoint to your backend
     
     // Real backend endpoints for enterprise modules
     const ENTERPRISE_ENDPOINTS = {

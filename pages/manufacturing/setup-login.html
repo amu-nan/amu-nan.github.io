@@ -127,6 +127,19 @@
         .user-info-value {
             color: #1f2937;
         }
+
+        /* Single role card centered styling */
+        .roles-selection-grid.single-role {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px auto;
+        }
+
+        .roles-selection-grid.single-role .role-selection-card {
+            max-width: 450px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -148,10 +161,10 @@
                     <i class="fa-solid fa-check-circle"></i>
                 </div>
                 <h1 class="login-title">Setup Complete!</h1>
-                <p class="login-subtitle" id="companyGreeting">Select your role to continue</p>
+                <p class="login-subtitle" id="companyGreeting">Continue as Administrator to access your dashboard</p>
             </div>
 
-            <div class="roles-selection-grid">
+            <div class="roles-selection-grid single-role">
                 <!-- Administrator Role - ACTIVE -->
                 <div class="role-selection-card active" data-role="administrator">
                     <div class="role-card-icon">
@@ -160,48 +173,8 @@
                     <h3 class="role-card-title">Administrator</h3>
                     <p class="role-card-description">Full system access and configuration</p>
                     <button class="select-role-btn">
-                        <i class="fa-solid fa-arrow-right"></i> Select Role
+                        <i class="fa-solid fa-arrow-right"></i> Continue as Administrator
                     </button>
-                </div>
-
-                <!-- Product Owner Role - INACTIVE -->
-                <div class="role-selection-card inactive" data-role="product-owner">
-                    <div class="role-card-icon">
-                        <i class="fa-solid fa-user-tie"></i>
-                    </div>
-                    <h3 class="role-card-title">Product Owner</h3>
-                    <p class="role-card-description">Strategic oversight and analytics</p>
-                    <span class="inactive-badge">Coming Soon</span>
-                </div>
-
-                <!-- Manager Role - INACTIVE -->
-                <div class="role-selection-card inactive" data-role="manager">
-                    <div class="role-card-icon">
-                        <i class="fa-solid fa-user-gear"></i>
-                    </div>
-                    <h3 class="role-card-title">Manager</h3>
-                    <p class="role-card-description">Team management and workflows</p>
-                    <span class="inactive-badge">Coming Soon</span>
-                </div>
-
-                <!-- Analyst Role - INACTIVE -->
-                <div class="role-selection-card inactive" data-role="analyst">
-                    <div class="role-card-icon">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
-                    <h3 class="role-card-title">Analyst</h3>
-                    <p class="role-card-description">Data analysis and reporting</p>
-                    <span class="inactive-badge">Coming Soon</span>
-                </div>
-
-                <!-- User Role - INACTIVE -->
-                <div class="role-selection-card inactive" data-role="user">
-                    <div class="role-card-icon">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <h3 class="role-card-title">User</h3>
-                    <p class="role-card-description">Basic access and tasks</p>
-                    <span class="inactive-badge">Coming Soon</span>
                 </div>
             </div>
 
@@ -236,7 +209,7 @@
                             type="text" 
                             id="fullName" 
                             class="form-input" 
-                            placeholder="John Doe"
+                            placeholder=""
                             required
                         >
                     </div>
@@ -249,7 +222,7 @@
                             type="text" 
                             id="newUsername" 
                             class="form-input" 
-                            placeholder="johndoe"
+                            placeholder=""
                             required
                         >
                     </div>
@@ -297,7 +270,7 @@
                 </form>
 
                 <button class="back-to-roles-btn" id="backToRolesFromCreate">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Role Selection
+                    <i class="fa-solid fa-arrow-left"></i> Back
                 </button>
             </div>
         </div>
@@ -376,7 +349,7 @@
                 </form>
 
                 <button class="back-to-roles-btn" id="backToRoles">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Role Selection
+                    <i class="fa-solid fa-arrow-left"></i> Back
                 </button>
             </div>
         </div>
@@ -399,9 +372,9 @@
             // Initialize Supabase
             if (typeof window.supabase !== 'undefined') {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('✅ Supabase connected');
+                console.log('Supabase connected');
             } else {
-                console.error('❌ Supabase library not loaded');
+                console.error('Supabase library not loaded');
                 alert('Error: Could not connect to database. Please refresh the page.');
                 return;
             }
@@ -414,7 +387,7 @@
             const organizationId = localStorage.getItem('organizationId');
             
             document.getElementById('companyGreeting').textContent = 
-                `Welcome to ${companyName}! Select your role to continue`;
+                `Welcome to ${companyName}! Continue as Administrator to access your dashboard`;
 
             // View references
             const roleSelectionView = document.getElementById('roleSelectionView');
@@ -497,7 +470,7 @@
                 if (/[^a-zA-Z\d]/.test(password)) strength++;
                 
                 if (strength <= 1) {
-                    strengthDiv.textContent = '⚠️ Weak password';
+                    strengthDiv.textContent = 'Weak password';
                     strengthDiv.className = 'password-strength weak';
                 } else if (strength === 2 || strength === 3) {
                     strengthDiv.textContent = '✓ Medium strength';
@@ -585,7 +558,7 @@
                         throw new Error(error.message);
                     }
                     
-                    console.log('✅ User created:', newUser);
+                    console.log('User created:', newUser);
                     
                     // Store created user data
                     createdUserData = newUser;
@@ -599,7 +572,7 @@
                     document.getElementById('displayUsername').textContent = username;
                     
                 } catch (error) {
-                    console.error('❌ Error creating account:', error);
+                    console.error('Error creating account:', error);
                     alert(`Error creating account: ${error.message}\n\nPlease try again.`);
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
@@ -668,8 +641,8 @@
                         .single();
                     
                     if (dbUser && !error) {
-                        // ✅ Database login successful
-                        console.log('✅ Database login successful:', dbUser.full_name);
+                        // Database login successful
+                        console.log('Database login successful:', dbUser.full_name);
                         localStorage.setItem('currentUser', JSON.stringify(dbUser));
                         
                         // Redirect to admin dashboard (will create in Phase 2)
@@ -681,7 +654,7 @@
                     
                     // CHECK 2: Fallback to hardcoded (BACKUP)
                     if (username === 'Xforia' && password === 'Xforia') {
-                        console.log('🔑 Fallback login successful (Xforia/Xforia)');
+                        console.log('Fallback login successful (Xforia/Xforia)');
                         
                         const fallbackUser = {
                             id: 'fallback-admin-' + organizationId,
@@ -707,7 +680,7 @@
                     alert('Invalid username or password.\n\nTip: Use Xforia/Xforia for demo access.');
                     
                 } catch (error) {
-                    console.error('❌ Login error:', error);
+                    console.error('Login error:', error);
                     loginButton.innerHTML = originalText;
                     loginButton.disabled = false;
                     alert('Error during login. Please try again.');

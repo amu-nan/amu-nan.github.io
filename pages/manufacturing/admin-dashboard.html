@@ -46,7 +46,7 @@
             <section class="welcome-section">
                 <div class="welcome-content">
                     <div class="welcome-text">
-                        <h1 id="welcomeMessage">Welcome back!</h1>
+                        <h1 id="welcomeMessage">Welcome!</h1>
                         <p id="companyName">Your manufacturing intelligence platform</p>
                     </div>
                     <div class="user-badge">
@@ -247,7 +247,7 @@
 
             // Update welcome message
             document.getElementById('welcomeMessage').textContent = 
-                `Welcome back, ${currentUser.full_name || currentUser.username}!`;
+                `Welcome, ${currentUser.full_name || currentUser.username}!`;
             document.getElementById('companyName').textContent = companyName;
 
             // Show demo banner if using fallback login

@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **Backend Endpoint URLs**
     const CAD_ENDPOINT = 'http://127.0.0.1:8000/upload_cad_pdf/';
-    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_user_manuals/'; // Add this endpoint to your backend
+    const MANUAL_ENDPOINT = 'http://127.0.0.1:8000/upload_user_manuals/';
     
     // Real backend endpoints for enterprise modules
     const ENTERPRISE_ENDPOINTS = {
@@ -289,15 +289,75 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Drag and Drop for Module Cards ---
+    function setupModuleDragDrop(system, module) {
+        const fileInput = document.getElementById(`${system}-${module}-file`);
+        if (!fileInput) {
+            console.error(`File input not found for ${system}-${module}`);
+            return;
+        }
+        
+        const moduleCard = fileInput.closest('.module-card');
+        if (!moduleCard) {
+            console.error(`Module card not found for ${system}-${module}`);
+            return;
+        }
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            moduleCard.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            moduleCard.addEventListener(eventName, () => {
+                moduleCard.classList.add('drag-over');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            moduleCard.addEventListener(eventName, () => {
+                moduleCard.classList.remove('drag-over');
+            }, false);
+        });
+
+        // Handle dropped files
+        moduleCard.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                
+                // Check file type
+                const validTypes = ['.csv', '.xlsx', '.xls'];
+                const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+                
+                if (validTypes.includes(fileExtension)) {
+                    // Create a new FileList-like object and assign to input
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
+                    
+                    // Trigger change event
+                    const event = new Event('change', { bubbles: true });
+                    fileInput.dispatchEvent(event);
+                } else {
+                    alert('Please upload a valid file type (CSV, XLSX, or XLS)');
+                }
+            }
+        }, false);
+    }
+
     // Setup all module uploads - must happen after DOM is ready
     console.log('Setting up module uploads...');
     ['inventory', 'procurement', 'production'].forEach(module => {
         console.log(`Setting up ERP ${module}`);
         setupModuleUpload('erp', module);
+        setupModuleDragDrop('erp', module);
     });
     ['customers', 'leads', 'marketing', 'opportunities'].forEach(module => {
         console.log(`Setting up CRM ${module}`);
         setupModuleUpload('crm', module);
+        setupModuleDragDrop('crm', module);
     });
 
     function updateEnterpriseProcessBtn() {

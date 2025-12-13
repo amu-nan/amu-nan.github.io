@@ -739,5 +739,57 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Custom JavaScript -->
     <script src="../../js/manufacturing/rbac-setup-direct.js"></script>
+    
+    <!-- Scroll to Top Fix - DO NOT MODIFY JS FILES -->
+    <script>
+    (function() {
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function initScrollFix() {
+            // Add scroll to navigation buttons
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const completeBtn = document.getElementById('completeBtn');
+            
+            [nextBtn, prevBtn, completeBtn].forEach(function(btn) {
+                if (btn) {
+                    btn.addEventListener('click', function() {
+                        setTimeout(scrollToTop, 100);
+                    });
+                }
+            });
+            
+            // Watch for step changes
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === 'class') {
+                        const target = mutation.target;
+                        if (target.classList.contains('setup-step') && 
+                            target.classList.contains('active')) {
+                            scrollToTop();
+                        }
+                    }
+                });
+            });
+            
+            // Observe all setup steps
+            document.querySelectorAll('.setup-step').forEach(function(step) {
+                observer.observe(step, {
+                    attributes: true,
+                    attributeFilter: ['class']
+                });
+            });
+        }
+        
+        // Run when ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initScrollFix);
+        } else {
+            initScrollFix();
+        }
+    })();
+    </script>
 </body>
 </html>

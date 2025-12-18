@@ -11,9 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase JavaScript Client - Load only ONCE -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -704,19 +701,20 @@
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
 
-    <!-- Custom JavaScript -->
+    <!-- Load Supabase FIRST -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Then load your custom script -->
     <script src="../../js/manufacturing/rbac-setup-direct.js"></script>
     
-    <!-- Passive Scroll to Top Fix -->
+    <!-- Passive Scroll to Top Fix - Loads LAST -->
     <script>
     (function() {
-        // Only watches for step visibility changes, doesn't interfere with clicks
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.attributeName === 'class') {
                     const target = mutation.target;
                     if (target.classList.contains('setup-step') && target.classList.contains('active')) {
-                        // Delay to let original JS complete first
                         setTimeout(function() {
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                         }, 200);
@@ -725,7 +723,6 @@
             });
         });
         
-        // Wait for DOM to be fully loaded
         window.addEventListener('load', function() {
             document.querySelectorAll('.setup-step').forEach(function(step) {
                 observer.observe(step, { attributes: true, attributeFilter: ['class'] });

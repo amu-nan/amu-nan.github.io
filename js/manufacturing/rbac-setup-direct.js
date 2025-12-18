@@ -32,13 +32,13 @@
 const SUPABASE_URL = 'https://aqasfpkazrebatjhdhig.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYXNmcGthenJlYmF0amhkaGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMxMDYsImV4cCI6MjA3ODUyOTEwNn0.F18jn7ug3VD1g05NMxxa9Dp9YnSZycge4ekyb94GyYc';
 
-// Supabase client will be initialized after library loads
-let supabaseclient = null;
+// Supabase client - RENAMED to avoid conflict
+let supabaseClient = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Supabase client
     if (typeof window.supabase !== 'undefined') {
-        supabaseclient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         console.log('✅ Supabase connected');
     } else {
         console.error('❌ Supabase library not loaded. Make sure you have the script tag in your HTML.');
@@ -636,8 +636,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             console.log('📊 Data prepared for database:', dbData);
 
-            // Insert into Supabase
-            const { data, error } = await supabase
+            // Insert into Supabase - CHANGED: use supabaseClient instead of supabase
+            const { data, error } = await supabaseClient
                 .from('organization_setup')
                 .insert([dbData])
                 .select();
@@ -667,9 +667,9 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'setup-login.html';
 
         } catch (error) {
-            console.error(' Error:', error);
+            console.error('❌ Error:', error);
             
-            alert(` Error saving setup:
+            alert(`❌ Error saving setup:
 
 ${error.message}
 

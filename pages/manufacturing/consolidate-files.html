@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organization Setup - Xforia for Manufacturing</title>
+    <title>Consolidate Your Data Sources</title>
     <link rel="icon" type="image/png" href="../../images/Subject.png">
     <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/manufacturing/rbac-setup.css">
+    <link rel="stylesheet" href="../../css/manufacturing/consolidate-files.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase JavaScript Client - Load only ONCE -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -43,683 +40,462 @@
         </div>
     </header>
 
-    <main class="rbac-setup-page">
-        <!-- Progress Indicator -->
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="progress-steps">
-                <div class="progress-step active" data-step="1">
-                    <div class="step-circle">1</div>
-                    <span class="step-label">Enterprise Apps</span>
-                </div>
-                <div class="progress-step" data-step="2">
-                    <div class="step-circle">2</div>
-                    <span class="step-label">Network & Integration</span>
-                </div>
-                <div class="progress-step" data-step="3">
-                    <div class="step-circle">3</div>
-                    <span class="step-label">Security & Compliance</span>
-                </div>
-                <div class="progress-step" data-step="4">
-                    <div class="step-circle">4</div>
-                    <span class="step-label">Role Setup</span>
-                </div>
-                <div class="progress-step" data-step="5">
-                    <div class="step-circle">5</div>
-                    <span class="step-label">Review</span>
-                </div>
-            </div>
-        </div>
+    <main class="page-container">
+        <section class="consolidate-section">
+            <div id="initial-state-container">
+                <h1 class="page-title" id="pageTitle">Unify Your Data Sources</h1>
+                <p class="page-intro">
+                    Seamlessly ingest from various enterprise applications to create a single, unified source of truth.
+                </p>
 
-        <!-- Setup Form Container -->
-        <div class="setup-container">
-            <!-- Step 1: Enterprise Apps -->
-            <div class="setup-step active" id="step1">
-                <div class="setup-header">
-                    <h1 class="setup-title">Welcome, <span id="companyNameDisplay"></span>!</h1>
-                    <p class="setup-subtitle">Let's configure your manufacturing intelligence platform. Choose the enterprise apps you currently use.</p>
+                <!-- Progress Indicator -->
+                <div class="progress-tracker">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Select Systems</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Upload Data</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Unify & Analyze</div>
+                    </div>
                 </div>
-                <div class="step-content">
-                    <div class="systems-grid">
-                        <!-- ERP System -->
-                        <div class="system-card">
-                            <div class="system-header">
+
+                <div class="integration-tiles">
+                    <!-- Enterprise Systems Tile -->
+                    <div class="integration-tile" data-type="enterprise">
+                        <div class="tile-icon-badge">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <div class="tile-header">
+                            <h2>Enterprise Systems</h2>
+                            <span class="tile-badge">ERP & CRM</span>
+                        </div>
+                        <p class="tile-description">Connect your business operations data from ERP and CRM platforms</p>
+                        <div class="tile-stats">
+                            <div class="stat-item">
                                 <i class="fa-solid fa-database"></i>
-                                <h3>ERP System</h3>
+                                <span>Multiple Modules</span>
                             </div>
-                            <select class="system-select" id="erpSystem" data-system="erp">
-                                <option value="">Select ERP</option>
-                                <option value="sap">SAP ERP</option>
-                                <option value="oracle">Oracle ERP Cloud</option>
-                                <option value="microsoft">Microsoft Dynamics 365</option>
-                                <option value="infor">Infor CloudSuite</option>
-                                <option value="epicor">Epicor ERP</option>
-                                <option value="other">Other</option>
-                            </select>
+                            <div class="stat-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Real-time Sync</span>
+                            </div>
                         </div>
+                        <button class="begin-integration-btn" data-type="enterprise">
+                            <i class="fa-solid fa-plug"></i> Begin Integration
+                        </button>
+                    </div>
 
-                        <!-- CRM System -->
-                        <div class="system-card">
-                            <div class="system-header">
+                    <!-- Engineering Systems Tile -->
+                    <div class="integration-tile" data-type="engineering">
+                        <div class="tile-icon-badge engineering">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <div class="tile-header">
+                            <h2>Engineering Systems</h2>
+                            <span class="tile-badge engineering">CAD & Diagrams</span>
+                        </div>
+                        <p class="tile-description">Upload technical drawings and engineering documentation</p>
+                        <div class="tile-stats">
+                            <div class="stat-item">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                <span>PDF Support</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span>Auto-Analysis</span>
+                            </div>
+                        </div>
+                        <button class="begin-integration-btn" data-type="engineering">
+                            <i class="fa-solid fa-plug"></i> Begin Integration
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Enterprise Systems Integration Panel -->
+                <div id="enterprise-panel" class="integration-panel" style="display:none;">
+                    <button class="panel-back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Selection
+                    </button>
+                    
+                    <h2 class="panel-title">Configure Enterprise Integration</h2>
+                    <p class="panel-subtitle">Select your system and upload module data files</p>
+                    
+                    <div class="system-selector">
+                        <button class="system-btn active" data-system="erp">
+                            <i class="fa-solid fa-industry"></i> ERP
+                        </button>
+                        <button class="system-btn" data-system="crm">
+                            <i class="fa-solid fa-handshake"></i> CRM
+                        </button>
+                        <button class="system-btn disabled" data-system="plm" disabled>
+                            <i class="fa-solid fa-cubes"></i> PLM
+                        </button>
+                        <button class="system-btn disabled" data-system="mes" disabled>
+                            <i class="fa-solid fa-cogs"></i> MES
+                        </button>
+                        <button class="system-btn disabled" data-system="scm" disabled>
+                            <i class="fa-solid fa-truck"></i> SCM
+                        </button>
+                    </div>
+
+                    <!-- ERP Modules -->
+                    <div id="erp-modules" class="modules-container">
+                        <h3 class="modules-title">
+                            <i class="fa-solid fa-industry"></i> ERP App Modules
+                        </h3>
+                        <p class="modules-description">Upload data files for each module to integrate with your ERP app</p>
+                        <div class="modules-grid">
+                            <div class="module-card" data-module="inventory">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                                <h4>Inventory Management <span class="required-indicator">*</span></h4>
+                                <p class="module-description">Stock levels, warehouse data</p>
+                                <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="erp-inventory-url">Connect to API:</label>
+                                        <input type="url" id="erp-inventory-url" placeholder="e.g., https://api.erp.com/inventory">
+                                        <button class="integration-btn erp-inventory-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
+                                    <input type="file" id="erp-inventory-file" accept=".csv,.xlsx,.xls" class="file-input">
+                                    <label for="erp-inventory-file" class="upload-label">
+                                        <i class="fa-solid fa-upload"></i> Upload File
+                                    </label>
+                                    <p class="upload-status"></p>
+                                </div>
+                            </div>
+
+                            <div class="module-card" data-module="procurement">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <h4>Procurement <span class="required-indicator">*</span></h4>
+                                <p class="module-description">Purchase orders, suppliers</p>
+                                <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="erp-procurement-url">Connect to API:</label>
+                                        <input type="url" id="erp-procurement-url" placeholder="e.g., https://api.erp.com/procurement">
+                                        <button class="integration-btn erp-procurement-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
+                                    <input type="file" id="erp-procurement-file" accept=".csv,.xlsx,.xls" class="file-input">
+                                    <label for="erp-procurement-file" class="upload-label">
+                                        <i class="fa-solid fa-upload"></i> Upload File
+                                    </label>
+                                    <p class="upload-status"></p>
+                                </div>
+                            </div>
+
+                            <div class="module-card" data-module="production">
+                                <i class="fa-solid fa-gears"></i>
+                                <h4>Production <span class="required-indicator">*</span></h4>
+                                <p class="module-description">Manufacturing schedules, output</p>
+                                <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="erp-production-url">Connect to API:</label>
+                                        <input type="url" id="erp-production-url" placeholder="e.g., https://api.erp.com/production">
+                                        <button class="integration-btn erp-production-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
+                                    <input type="file" id="erp-production-file" accept=".csv,.xlsx,.xls" class="file-input">
+                                    <label for="erp-production-file" class="upload-label">
+                                        <i class="fa-solid fa-upload"></i> Upload File
+                                    </label>
+                                    <p class="upload-status"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CRM Modules -->
+                    <div id="crm-modules" class="modules-container" style="display:none;">
+                        <h3 class="modules-title">
+                            <i class="fa-solid fa-handshake"></i> CRM App Modules
+                        </h3>
+                        <p class="modules-description">Upload data files for each module to integrate with your CRM app</p>
+                        <div class="modules-grid">
+                            <div class="module-card" data-module="customers">
                                 <i class="fa-solid fa-users"></i>
-                                <h3>CRM System</h3>
+                                <h4>Customers <span class="required-indicator">*</span></h4>
+                                <p class="module-description">Customer profiles, history</p>
+                                <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="crm-customers-url">Connect to API:</label>
+                                        <input type="url" id="crm-customers-url" placeholder="e.g., https://api.crm.com/customers">
+                                        <button class="integration-btn crm-customers-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
+                                    <input type="file" id="crm-customers-file" accept=".csv,.xlsx,.xls" class="file-input">
+                                    <label for="crm-customers-file" class="upload-label">
+                                        <i class="fa-solid fa-upload"></i> Upload File
+                                    </label>
+                                    <p class="upload-status"></p>
+                                </div>
                             </div>
-                            <select class="system-select" id="crmSystem" data-system="crm">
-                                <option value="">Select CRM</option>
-                                <option value="salesforce">Salesforce</option>
-                                <option value="microsoft">Microsoft Dynamics CRM</option>
-                                <option value="oracle">Oracle CRM</option>
-                                <option value="sap">SAP CRM</option>
-                                <option value="hubspot">HubSpot</option>
-                                <option value="other">Other</option>
-                            </select>
+
+                            <div class="module-card" data-module="leads">
+                                <i class="fa-solid fa-user-plus"></i>
+                                <h4>Leads <span class="required-indicator">*</span></h4>
+                                <p class="module-description">Prospects, pipeline data</p>
+                                <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="crm-leads-url">Connect to API:</label>
+                                        <input type="url" id="crm-leads-url" placeholder="e.g., https://api.crm.com/leads">
+                                        <button class="integration-btn crm-leads-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
+                                    <input type="file" id="crm-leads-file" accept=".csv,.xlsx,.xls" class="file-input">
+                                    <label for="crm-leads-file" class="upload-label">
+                                        <i class="fa-solid fa-upload"></i> Upload File
+                                    </label>
+                                    <p class="upload-status"></p>
+                                </div>
+                            </div>
+
+                            <div class="module-card" data-module="marketing">
+                                <i class="fa-solid fa-bullhorn"></i>
+                                <h4>Marketing <span class="required-indicator">*</span></h4>
+                                <p class="module-description">Campaigns, analytics</p>
+                                <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="crm-marketing-url">Connect to API:</label>
+                                        <input type="url" id="crm-marketing-url" placeholder="e.g., https://api.crm.com/marketing">
+                                        <button class="integration-btn crm-marketing-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
+                                    <input type="file" id="crm-marketing-file" accept=".csv,.xlsx,.xls" class="file-input">
+                                    <label for="crm-marketing-file" class="upload-label">
+                                        <i class="fa-solid fa-upload"></i> Upload File
+                                    </label>
+                                    <p class="upload-status"></p>
+                                </div>
+                            </div>
+
+                            <div class="module-card" data-module="opportunities">
+                                <i class="fa-solid fa-handshake-angle"></i>
+                                <h4>Opportunities <span class="required-indicator">*</span></h4>
+                                <p class="module-description">Deals, forecasts</p>
+                                <div class="module-upload">
+                                    <div class="system-input">
+                                        <label for="crm-opportunities-url">Connect to API:</label>
+                                        <input type="url" id="crm-opportunities-url" placeholder="e.g., https://api.crm.com/opportunities">
+                                        <button class="integration-btn crm-opportunities-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                    </div>
+                                    <div class="or-divider">OR</div>
+                                    <input type="file" id="crm-opportunities-file" accept=".csv,.xlsx,.xls" class="file-input">
+                                    <label for="crm-opportunities-file" class="upload-label">
+                                        <i class="fa-solid fa-upload"></i> Upload File
+                                    </label>
+                                    <p class="upload-status"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-actions">
+                        <button class="cancel-btn">
+                            <i class="fa-solid fa-times"></i> Cancel
+                        </button>
+                        <button id="enterprise-process-btn" class="process-btn" disabled>
+                            <i class="fa-solid fa-check"></i> Process Data (<span id="module-count">0/3</span> modules)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Engineering Systems Integration Panel -->
+                <div id="engineering-panel" class="integration-panel" style="display:none;">
+                    <button class="panel-back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Selection
+                    </button>
+                    
+                    <h2 class="panel-title">Upload Engineering Documents</h2>
+                    <p class="panel-subtitle">Upload your CAD diagrams and technical documentation</p>
+                    
+                    <div class="engineering-uploads-grid">
+                        <!-- CAD Diagrams Section -->
+                        <div class="engineering-upload-section">
+                            <h3 class="upload-section-title">
+                                <i class="fa-solid fa-drafting-compass"></i> CAD Diagrams
+                            </h3>
+                            <p class="upload-section-description">Upload engineering drawings and CAD files</p>
+                            
+                            <div class="system-input-group">
+                                <div class="system-input">
+                                    <label for="cad-url">Connect to API:</label>
+                                    <input type="url" id="cad-url" placeholder="e.g., https://api.autodesk.com/design">
+                                    <button class="integration-btn cad-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                </div>
+                                <div class="or-divider">OR</div>
+                                <div class="file-upload-box" id="cad-drop-area">
+                                    <i class="fa-solid fa-upload"></i>
+                                    <p>Upload CAD Diagram</p>
+                                    <p class="file-upload-info">Click or drag and drop PDF files here</p>
+                                    <input type="file" id="cadFileElem" accept=".pdf" class="file-input">
+                                </div>
+                                <div id="cad-file-list"></div>
+                            </div>
                         </div>
 
-                        <!-- SCM System -->
-                        <div class="system-card" style="opacity: 0.5; pointer-events: none;">
-                            <div class="system-header">
-                                <i class="fa-solid fa-truck"></i>
-                                <h3>SCM System <span style="font-size: 0.8em; color: #888;">(Coming Soon)</span></h3>
+                        <!-- User Manuals/Documentation Section -->
+                        <div class="engineering-upload-section">
+                            <h3 class="upload-section-title">
+                                <i class="fa-solid fa-book"></i> User Manuals & Documentation
+                            </h3>
+                            <p class="upload-section-description">Upload user manuals, technical docs, and guides</p>
+                            
+                            <div class="system-input-group">
+                                <div class="system-input">
+                                    <label for="manual-url">Connect to API:</label>
+                                    <input type="url" id="manual-url" placeholder="e.g., https://api.docs.com/manuals">
+                                    <button class="integration-btn manual-connect-btn"><i class="fa-solid fa-plug"></i> Connect</button>
+                                </div>
+                                <div class="or-divider">OR</div>
+                                <div class="file-upload-box" id="manual-drop-area">
+                                    <i class="fa-solid fa-upload"></i>
+                                    <p>Upload Documentation</p>
+                                    <p class="file-upload-info">Click or drag and drop PDF files here</p>
+                                    <input type="file" id="manualFileElem" accept=".pdf" class="file-input">
+                                </div>
+                                <div id="manual-file-list"></div>
                             </div>
-                            <select class="system-select" id="scmSystem" data-system="scm" disabled>
-                                <option value="">Select SCM</option>
-                                <option value="sap">SAP SCM</option>
-                                <option value="oracle">Oracle SCM Cloud</option>
-                                <option value="blueyonder">Blue Yonder</option>
-                                <option value="kinaxis">Kinaxis RapidResponse</option>
-                                <option value="infor">Infor SCM</option>
-                                <option value="other">Other</option>
-                            </select>
                         </div>
+                    </div>
 
-                        <!-- MES System -->
-                        <div class="system-card" style="opacity: 0.5; pointer-events: none;">
-                            <div class="system-header">
+                    <div class="panel-actions">
+                        <button class="cancel-btn">
+                            <i class="fa-solid fa-times"></i> Cancel
+                        </button>
+                        <button id="engineering-process-btn" class="process-btn" disabled>
+                            <i class="fa-solid fa-check"></i> Process Documents
+                        </button>
+                    </div>
+                </div>
+
+                <div id="processing-info" class="processing-info">
+                    <div class="loading-spinner"></div>
+                </div>
+                <p id="unify-message" class="unify-message"></p>
+                <p id="success-message" class="success-message"></p>
+
+                <!-- Integration Summary Panel -->
+                <div id="integration-summary" class="integration-summary" style="display:none;">
+                    <h2 class="summary-title">Integration Summary</h2>
+                    <p class="summary-subtitle">Review your integrated systems before unifying the data</p>
+                    
+                    <div class="summary-cards">
+                        <div class="summary-card" id="erp-summary" style="display:none;">
+                            <div class="summary-header">
                                 <i class="fa-solid fa-industry"></i>
-                                <h3>MES System <span style="font-size: 0.8em; color: #888;">(Coming Soon)</span></h3>
+                                <h3>ERP App</h3>
+                                <span class="summary-badge">Integrated</span>
                             </div>
-                            <select class="system-select" id="mesSystem" data-system="mes" disabled>
-                                <option value="">Select MES</option>
-                                <option value="siemens">Siemens Opcenter</option>
-                                <option value="rockwell">Rockwell FactoryTalk</option>
-                                <option value="ge">GE Digital Proficy</option>
-                                <option value="dassault">Dassault DELMIA</option>
-                                <option value="apriso">DELMIA Apriso</option>
-                                <option value="other">Other</option>
-                            </select>
+                            <div class="summary-details" id="erp-details"></div>
+                            <button class="modify-btn" data-type="erp">
+                                <i class="fa-solid fa-edit"></i> Modify
+                            </button>
                         </div>
 
-                        <!-- PLM System -->
-                        <div class="system-card" style="opacity: 0.5; pointer-events: none;">
-                            <div class="system-header">
-                                <i class="fa-solid fa-cubes"></i>
-                                <h3>PLM System <span style="font-size: 0.8em; color: #888;">(Coming Soon)</span></h3>
+                        <div class="summary-card" id="crm-summary" style="display:none;">
+                            <div class="summary-header">
+                                <i class="fa-solid fa-handshake"></i>
+                                <h3>CRM App</h3>
+                                <span class="summary-badge">Integrated</span>
                             </div>
-                            <select class="system-select" id="plmSystem" data-system="plm" disabled>
-                                <option value="">Select PLM</option>
-                                <option value="siemens">Siemens Teamcenter</option>
-                                <option value="ptc">PTC Windchill</option>
-                                <option value="dassault">Dassault ENOVIA</option>
-                                <option value="oracle">Oracle Agile PLM</option>
-                                <option value="arena">Arena PLM</option>
-                                <option value="other">Other</option>
-                            </select>
+                            <div class="summary-details" id="crm-details"></div>
+                            <button class="modify-btn" data-type="crm">
+                                <i class="fa-solid fa-edit"></i> Modify
+                            </button>
                         </div>
+
+                        <div class="summary-card" id="engineering-summary" style="display:none;">
+                            <div class="summary-header">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <h3>Engineering Systems</h3>
+                                <span class="summary-badge">Integrated</span>
+                            </div>
+                            <div class="summary-details" id="engineering-details"></div>
+                            <button class="modify-btn" data-type="engineering">
+                                <i class="fa-solid fa-edit"></i> Modify
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="add-more-section">
+                        <p class="add-more-text">Want to integrate more apps before unifying?</p>
+                        <div class="add-more-buttons">
+                            <button class="add-more-btn" data-type="erp" id="add-erp-btn">
+                                <i class="fa-solid fa-plus"></i> Add/Modify ERP App
+                            </button>
+                            <button class="add-more-btn" data-type="crm" id="add-crm-btn">
+                                <i class="fa-solid fa-plus"></i> Add/Modify CRM App
+                            </button>
+                            <button class="add-more-btn" data-type="engineering" id="add-engineering-btn">
+                                <i class="fa-solid fa-plus"></i> Add/Modify Engineering Diagram
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="summary-actions">
+                        <button class="cancel-summary-btn">
+                            <i class="fa-solid fa-arrow-left"></i> Start Over
+                        </button>
+                        <button id="unify-all-btn" class="unify-all-btn">
+                            <i class="fa-solid fa-database"></i> Unify All Data
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 2: Network & Integration -->
-            <div class="setup-step" id="step2">
-                <div class="setup-header">
-                    <h1 class="setup-title">Network & Integration</h1>
-                    <p class="setup-subtitle">Configure network integration and email notification settings</p>
-                </div>
-                <div class="step-content">
-                    <div class="config-section">
-                        <div class="config-card">
-                            <div class="config-header">
-                                <i class="fa-solid fa-network-wired"></i>
-                                <h3>Windows Network Integration</h3>
-                            </div>
-                            <div class="config-body">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        NetBIOS Domain Name
-                                        <span class="info-tooltip" title="Your Windows network domain name for Single Sign-On integration">
-                                            <i class="fa-solid fa-circle-info"></i>
-                                        </span>
-                                    </label>
-                                    <input type="text" id="netbiosDomain" class="form-input" placeholder="e.g., MANUFACTURING-CORP">
-                                    <small class="form-hint">Leave blank if not using Windows Active Directory</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">Deployment Type</label>
-                                    <select id="deploymentType" class="form-input">
-                                        <option value="cloud">Cloud Hosted</option>
-                                        <option value="onpremise">On-Premise</option>
-                                        <option value="hybrid">Hybrid</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="config-card">
-                            <div class="config-header">
-                                <i class="fa-solid fa-envelope"></i>
-                                <h3>SMTP Email Configuration</h3>
-                            </div>
-                            <div class="config-body">
-                                <div class="form-group">
-                                    <label class="form-label">SMTP Server Address</label>
-                                    <input type="text" id="smtpServer" class="form-input" placeholder="smtp.company.com">
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label class="form-label">Port</label>
-                                        <input type="number" id="smtpPort" class="form-input" placeholder="587" value="587">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">Encryption</label>
-                                        <select id="smtpEncryption" class="form-input">
-                                            <option value="tls">TLS (Port 587)</option>
-                                            <option value="ssl">SSL (Port 465)</option>
-                                            <option value="none">None</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">Sender Email Address</label>
-                                    <input type="email" id="senderEmail" class="form-input" placeholder="noreply@company.com">
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" id="smtpAuth">
-                                        <span>Requires Authentication</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="config-card">
-                            <div class="config-header">
-                                <i class="fa-solid fa-code-branch"></i>
-                                <h3>Product Version & Updates</h3>
-                            </div>
-                            <div class="config-body">
-                                <div class="form-group">
-                                    <label class="form-label">Current Version</label>
-                                    <input type="text" class="form-input" value="Xforia COAST v2.1.0" disabled>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">Update Preference</label>
-                                    <select id="updatePreference" class="form-input">
-                                        <option value="automatic">Automatic Updates</option>
-                                        <option value="manual">Manual Updates</option>
-                                        <option value="notify">Notify Only</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" id="betaFeatures">
-                                        <span>Opt-in to Beta Features</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div id="unified-state-container" class="unified-state-container" style="display:none;">
+                <h1 class="page-title" id="unifiedTitle">Your Data is Unified Now.</h1>
+                <p class="page-intro">
+                    Insights unlocked. Answers delivered.
+                </p>
+                <div class="completion-container" id="completion-buttons-wrapper">
+                    <a href="conversation-ai.html" class="continue-button demo-button" id="chatButton">
+                        <i class="fa-solid fa-comment-dots"></i> Explore with RIA
+                    </a>
+                    <a href="http://127.0.0.1:8000/xforia-coast/dashboard/" target="_self" class="continue-button demo-button view-dashboard">
+                        <i class="fa-solid fa-chart-line"></i> Insights
+                    </a>
                 </div>
             </div>
-
-            <!-- Step 3: Security & Compliance -->
-            <div class="setup-step" id="step3">
-                <div class="setup-header">
-                    <h1 class="setup-title">Security & Compliance</h1>
-                    <p class="setup-subtitle">Configure audit trails and data retention policies for regulatory compliance</p>
-                </div>
-                <div class="step-content">
-                    <div class="config-section">
-                        <div class="config-card">
-                            <div class="config-header">
-                                <i class="fa-solid fa-shield-halved"></i>
-                                <h3>Audit Trail Configuration</h3>
-                            </div>
-                            <div class="config-body">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        Audit Log Retention Period
-                                        <span class="info-tooltip" title="How long to keep audit logs for compliance">
-                                            <i class="fa-solid fa-circle-info"></i>
-                                        </span>
-                                    </label>
-                                    <select id="auditRetention" class="form-input">
-                                        <option value="30">30 Days</option>
-                                        <option value="90" selected>90 Days</option>
-                                        <option value="180">180 Days</option>
-                                        <option value="365">1 Year</option>
-                                        <option value="730">2 Years</option>
-                                        <option value="1825">5 Years</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">Events to Log</label>
-                                    <div class="checkbox-group">
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="audit-event" value="login" checked>
-                                            <span>User Login/Logout</span>
-                                        </label>
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="audit-event" value="data-access" checked>
-                                            <span>Data Access</span>
-                                        </label>
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="audit-event" value="module-dataset-modification" checked>
-                                            <span>Module/Dataset Modification</span>
-                                        </label>
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="audit-event" value="data-export" checked>
-                                            <span>Data Exports</span>
-                                        </label>
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="audit-event" value="system-configurations" checked>
-                                            <span>System Configurations</span>
-                                        </label>
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="audit-event" value="role-changes">
-                                            <span>Role & Permission Changes</span>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" id="alertOnSuspicious">
-                                        <span>Alert on Suspicious Activity</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="config-card">
-                            <div class="config-header">
-                                <i class="fa-solid fa-certificate"></i>
-                                <h3>Compliance & Certifications</h3>
-                            </div>
-                            <div class="config-body">
-                                <div class="form-group">
-                                    <label class="form-label">Required Compliance Standards</label>
-                                    <div class="checkbox-group">
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="compliance-standard" value="iso9001">
-                                            <span>ISO 9001 (Quality Management)</span>
-                                        </label>
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="compliance-standard" value="iso27001">
-                                            <span>ISO 27001 (Information Security)</span>
-                                        </label>
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="compliance-standard" value="fda">
-                                            <span>FDA 21 CFR Part 11</span>
-                                        </label>
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="compliance-standard" value="gdpr">
-                                            <span>GDPR Compliance</span>
-                                        </label>
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" class="compliance-standard" value="soc2">
-                                            <span>SOC 2 Type II</span>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">Data Residency Requirement</label>
-                                    <select id="dataResidency" class="form-input">
-                                        <option value="none">No Restriction</option>
-                                        <option value="us">United States</option>
-                                        <option value="eu">European Union</option>
-                                        <option value="uk">United Kingdom</option>
-                                        <option value="apac">Asia Pacific</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            
+            <div class="bottom-nav">
+                <a href="#" class="demo-button back-button" onclick="history.back(); return false;">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
             </div>
-
-            <!-- Step 4: Role Setup -->
-            <div class="setup-step" id="step4">
-                <div class="setup-header">
-                    <h1 class="setup-title">Role-Based Access Control</h1>
-                    <p class="setup-subtitle">Select which roles your organization will use and review their access levels</p>
-                </div>
-                <div class="step-content">
-                    <div class="roles-grid">
-                        <!-- Administrator Role -->
-                        <div class="role-card active" data-role="administrator">
-                            <div class="role-header">
-                                <div class="role-icon">
-                                    <i class="fa-solid fa-user-shield"></i>
-                                </div>
-                                <div class="role-info">
-                                    <h3>Administrator</h3>
-                                    <span class="role-badge active-badge">Active</span>
-                                </div>
-                                <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="role-body">
-                                <p class="role-description">Full system access with user management and configuration capabilities</p>
-                                <div class="permissions-list">
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>All system configuration</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>User & role management</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Full data access</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Security & audit controls</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product Owner Role -->
-                        <div class="role-card active" data-role="product-owner">
-                            <div class="role-header">
-                                <div class="role-icon">
-                                    <i class="fa-solid fa-user-tie"></i>
-                                </div>
-                                <div class="role-info">
-                                    <h3>Product Owner</h3>
-                                    <span class="role-badge active-badge">Active</span>
-                                </div>
-                                <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="role-body">
-                                <p class="role-description">Strategic oversight with cross-functional data visibility and product roadmap access</p>
-                                <div class="permissions-list">
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Cross-functional dashboards</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Strategic analytics</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Product roadmap visibility</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Budget & resource data</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Manager Role -->
-                        <div class="role-card active" data-role="manager">
-                            <div class="role-header">
-                                <div class="role-icon">
-                                    <i class="fa-solid fa-user-gear"></i>
-                                </div>
-                                <div class="role-info">
-                                    <h3>Manager</h3>
-                                    <span class="role-badge active-badge">Active</span>
-                                </div>
-                                <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="role-body">
-                                <p class="role-description">Team management with operational dashboards and approval workflow capabilities</p>
-                                <div class="permissions-list">
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Team dashboards</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Approval workflows</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Team performance metrics</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Resource allocation</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Analyst Role -->
-                        <div class="role-card active" data-role="analyst">
-                            <div class="role-header">
-                                <div class="role-icon">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                </div>
-                                <div class="role-info">
-                                    <h3>Analyst</h3>
-                                    <span class="role-badge active-badge">Active</span>
-                                </div>
-                                <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="role-body">
-                                <p class="role-description">Advanced data analysis tools with reporting capabilities and read-access to modules</p>
-                                <div class="permissions-list">
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Data analysis tools</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Report generation</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Read-access to all modules</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Data export capabilities</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- User Role -->
-                        <div class="role-card active" data-role="user">
-                            <div class="role-header">
-                                <div class="role-icon">
-                                    <i class="fa-solid fa-user"></i>
-                                </div>
-                                <div class="role-info">
-                                    <h3>User</h3>
-                                    <span class="role-badge active-badge">Active</span>
-                                </div>
-                                <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="role-body">
-                                <p class="role-description">Basic access with assigned tasks and limited data views for day-to-day operations</p>
-                                <div class="permissions-list">
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Assigned tasks</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Personal dashboards</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Limited data entry</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Basic reporting</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Additional Roles (Inactive by default) -->
-                        <div class="role-card" data-role="engineer">
-                            <div class="role-header">
-                                <div class="role-icon">
-                                    <i class="fa-solid fa-helmet-safety"></i>
-                                </div>
-                                <div class="role-info">
-                                    <h3>Engineer</h3>
-                                    <span class="role-badge">Inactive</span>
-                                </div>
-                                <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="role-body">
-                                <p class="role-description">Engineering-focused access with CAD integration and technical documentation</p>
-                                <div class="permissions-list">
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>CAD file access</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Technical documentation</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Design change management</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>BOM access</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="role-card" data-role="quality">
-                            <div class="role-header">
-                                <div class="role-icon">
-                                    <i class="fa-solid fa-clipboard-check"></i>
-                                </div>
-                                <div class="role-info">
-                                    <h3>Quality Manager</h3>
-                                    <span class="role-badge">Inactive</span>
-                                </div>
-                                <label class="role-toggle">
-                                    <input type="checkbox" class="role-checkbox">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="role-body">
-                                <p class="role-description">Quality control and compliance management with audit capabilities</p>
-                                <div class="permissions-list">
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Quality metrics</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Compliance tracking</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Inspection workflows</span>
-                                    </div>
-                                    <div class="permission-item">
-                                        <i class="fa-solid fa-check"></i>
-                                        <span>Non-conformance reports</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 5: Review & Confirm -->
-            <div class="setup-step" id="step5">
-                <div class="setup-header">
-                    <h1 class="setup-title">Review Your Setup</h1>
-                    <p class="setup-subtitle">Please review your configuration before completing</p>
-                </div>
-                <div class="step-content">
-                    <div id="reviewContent"></div>
-                </div>
-            </div>
-
-            <!-- Navigation Buttons -->
-            <div class="navigation-buttons">
-                <button class="nav-btn secondary-btn" id="prevBtn" style="display: none;">
-                    <i class="fa-solid fa-arrow-left"></i> Previous
-                </button>
-                <button class="nav-btn primary-btn" id="nextBtn">
-                    Next <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <button class="nav-btn primary-btn" id="completeBtn" style="display: none;">
-                    Complete Setup <i class="fa-solid fa-check"></i>
-                </button>
-            </div>
-        </div>
+        </section>
     </main>
 
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
 
-    <!-- Custom JavaScript -->
-    <script src="../../js/manufacturing/rbac-setup-direct.js"></script>
+    <script src="../../js/manufacturing/consolidate-files.js"></script>
     
     <!-- Passive Scroll to Top Fix -->
     <script>
     (function() {
-        // Only watches for step visibility changes, doesn't interfere with clicks
+        // Only watches for panel visibility changes, doesn't interfere with clicks
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
-                if (mutation.attributeName === 'class') {
+                if (mutation.attributeName === 'style') {
                     const target = mutation.target;
-                    if (target.classList.contains('setup-step') && target.classList.contains('active')) {
-                        // Delay to let original JS complete first
-                        setTimeout(function() {
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }, 200);
+                    const panelIds = ['enterprise-panel', 'engineering-panel', 'integration-summary', 'unified-state-container', 'initial-state-container'];
+                    if (panelIds.includes(target.id)) {
+                        const isVisible = window.getComputedStyle(target).display !== 'none';
+                        if (isVisible) {
+                            // Delay to let original JS complete first
+                            setTimeout(function() {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }, 200);
+                        }
                     }
                 }
             });
@@ -727,8 +503,12 @@
         
         // Wait for DOM to be fully loaded
         window.addEventListener('load', function() {
-            document.querySelectorAll('.setup-step').forEach(function(step) {
-                observer.observe(step, { attributes: true, attributeFilter: ['class'] });
+            const panelsToWatch = ['enterprise-panel', 'engineering-panel', 'integration-summary', 'unified-state-container', 'initial-state-container'];
+            panelsToWatch.forEach(function(panelId) {
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    observer.observe(panel, { attributes: true, attributeFilter: ['style'] });
+                }
             });
         });
     })();

@@ -33,12 +33,12 @@ const SUPABASE_URL = 'https://aqasfpkazrebatjhdhig.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYXNmcGthenJlYmF0amhkaGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMxMDYsImV4cCI6MjA3ODUyOTEwNn0.F18jn7ug3VD1g05NMxxa9Dp9YnSZycge4ekyb94GyYc';
 
 // Supabase client will be initialized after library loads
-let supabase = null;
+let supabaseclient = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Supabase client
     if (typeof window.supabase !== 'undefined') {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        supabaseclient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         console.log('✅ Supabase connected');
     } else {
         console.error('❌ Supabase library not loaded. Make sure you have the script tag in your HTML.');

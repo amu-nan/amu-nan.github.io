@@ -479,92 +479,38 @@
 
     <script src="../../js/manufacturing/consolidate-files.js"></script>
     
-    <!-- Scroll to Top Fix - DO NOT MODIFY JS FILES -->
+    <!-- Passive Scroll to Top Fix -->
     <script>
     (function() {
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function initScrollFix() {
-            // Monitor all integration panels
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.attributeName === 'style') {
-                        const target = mutation.target;
-                        // Check if any major panel becomes visible
-                        if (target.id === 'enterprise-panel' || 
-                            target.id === 'engineering-panel' || 
-                            target.id === 'integration-summary' || 
-                            target.id === 'unified-state-container' ||
-                            target.id === 'initial-state-container') {
-                            const isVisible = window.getComputedStyle(target).display !== 'none';
-                            if (isVisible) {
-                                scrollToTop();
-                            }
+        // Only watches for panel visibility changes, doesn't interfere with clicks
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'style') {
+                    const target = mutation.target;
+                    const panelIds = ['enterprise-panel', 'engineering-panel', 'integration-summary', 'unified-state-container', 'initial-state-container'];
+                    if (panelIds.includes(target.id)) {
+                        const isVisible = window.getComputedStyle(target).display !== 'none';
+                        if (isVisible) {
+                            // Delay to let original JS complete first
+                            setTimeout(function() {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }, 200);
                         }
                     }
-                });
-            });
-            
-            // Observe all major containers
-            const containersToWatch = [
-                'enterprise-panel',
-                'engineering-panel',
-                'integration-summary',
-                'unified-state-container',
-                'initial-state-container'
-            ];
-            
-            containersToWatch.forEach(function(containerId) {
-                const container = document.getElementById(containerId);
-                if (container) {
-                    observer.observe(container, {
-                        attributes: true,
-                        attributeFilter: ['style']
-                    });
                 }
             });
-            
-            // Add click handlers to back buttons as backup
-            document.querySelectorAll('.panel-back-btn, .cancel-btn, .cancel-summary-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    setTimeout(scrollToTop, 100);
-                });
-            });
-            
-            // Add click handlers to integration buttons
-            document.querySelectorAll('.begin-integration-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    setTimeout(scrollToTop, 100);
-                });
-            });
-            
-            // Add click handlers to process buttons
-            const processButtons = ['enterprise-process-btn', 'engineering-process-btn', 'unify-all-btn'];
-            processButtons.forEach(function(btnId) {
-                const btn = document.getElementById(btnId);
-                if (btn) {
-                    btn.addEventListener('click', function() {
-                        setTimeout(scrollToTop, 100);
-                    });
-                }
-            });
-            
-            // Add click handlers to modify and add-more buttons
-            document.querySelectorAll('.modify-btn, .add-more-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    setTimeout(scrollToTop, 100);
-                });
-            });
-        }
+        });
         
-        // Run when ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initScrollFix);
-        } else {
-            initScrollFix();
-        }
+        // Wait for DOM to be fully loaded
+        window.addEventListener('load', function() {
+            const panelsToWatch = ['enterprise-panel', 'engineering-panel', 'integration-summary', 'unified-state-container', 'initial-state-container'];
+            panelsToWatch.forEach(function(panelId) {
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    observer.observe(panel, { attributes: true, attributeFilter: ['style'] });
+                }
+            });
+        });
     })();
     </script>
 </body>

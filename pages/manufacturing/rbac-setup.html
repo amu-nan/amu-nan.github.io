@@ -704,27 +704,6 @@
     <!-- Load Supabase FIRST -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Compatibility fix: Prevent variable shadowing conflict -->
-    <script>
-    (function() {
-        // Store the Supabase library
-        window.__SUPABASE_CLIENT__ = window.supabase;
-        
-        // Make the property configurable so the JS file can declare its own variable
-        try {
-            delete window.supabase;
-            Object.defineProperty(window, 'supabase', {
-                get: function() { return window.__SUPABASE_CLIENT__; },
-                set: function(val) { window.__SUPABASE_CLIENT__ = val; },
-                configurable: true,
-                enumerable: true
-            });
-        } catch(e) {
-            console.warn('Supabase property configuration:', e);
-        }
-    })();
-    </script>
-    
     <!-- Then load your custom script -->
     <script src="../../js/manufacturing/rbac-setup-direct.js"></script>
     

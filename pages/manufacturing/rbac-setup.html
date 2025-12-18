@@ -75,8 +75,6 @@
 
         <!-- Setup Form Container -->
         <div class="setup-container">
-            <!-- Header is now shown dynamically per step, not here -->
-
             <!-- Step 1: Enterprise Apps -->
             <div class="setup-step active" id="step1">
                 <div class="setup-header">
@@ -686,35 +684,6 @@
                     <div id="reviewContent"></div>
                 </div>
             </div>
-                        <!-- <div class="setup-step" id="step5">
-                <div class="setup-header">
-                    <h1 class="setup-title">Ready to Launch!</h1>
-                    <p class="setup-subtitle">Please review your settings before completing the setup</p>
-                </div>
-                <div class="step-content">
-                    <div class="review-container">
-                        <div class="review-section">
-                            <h3 class="review-title"><i class="fa-solid fa-database"></i> Enterprise Apps</h3>
-                            <div id="reviewSystems" class="review-content"></div>
-                        </div>
-
-                        <div class="review-section">
-                            <h3 class="review-title"><i class="fa-solid fa-network-wired"></i> Network & Integration</h3>
-                            <div id="reviewNetwork" class="review-content"></div>
-                        </div>
-
-                        <div class="review-section">
-                            <h3 class="review-title"><i class="fa-solid fa-shield-halved"></i> Security & Compliance</h3>
-                            <div id="reviewSecurity" class="review-content"></div>
-                        </div>
-
-                        <div class="review-section">
-                            <h3 class="review-title"><i class="fa-solid fa-users-gear"></i> Active Roles</h3>
-                            <div id="reviewRoles" class="review-content"></div>
-                        </div>
-                    </div>
-                </div> -->
-            </div>
 
             <!-- Navigation Buttons -->
             <div class="navigation-buttons">
@@ -740,55 +709,30 @@
     <!-- Custom JavaScript -->
     <script src="../../js/manufacturing/rbac-setup-direct.js"></script>
     
-    <!-- Scroll to Top Fix - DO NOT MODIFY JS FILES -->
+    <!-- Passive Scroll to Top Fix -->
     <script>
     (function() {
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function initScrollFix() {
-            // Add scroll to navigation buttons
-            const nextBtn = document.getElementById('nextBtn');
-            const prevBtn = document.getElementById('prevBtn');
-            const completeBtn = document.getElementById('completeBtn');
-            
-            [nextBtn, prevBtn, completeBtn].forEach(function(btn) {
-                if (btn) {
-                    btn.addEventListener('click', function() {
-                        setTimeout(scrollToTop, 100);
-                    });
+        // Only watches for step visibility changes, doesn't interfere with clicks
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'class') {
+                    const target = mutation.target;
+                    if (target.classList.contains('setup-step') && target.classList.contains('active')) {
+                        // Delay to let original JS complete first
+                        setTimeout(function() {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }, 200);
+                    }
                 }
             });
-            
-            // Watch for step changes
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.attributeName === 'class') {
-                        const target = mutation.target;
-                        if (target.classList.contains('setup-step') && 
-                            target.classList.contains('active')) {
-                            scrollToTop();
-                        }
-                    }
-                });
-            });
-            
-            // Observe all setup steps
-            document.querySelectorAll('.setup-step').forEach(function(step) {
-                observer.observe(step, {
-                    attributes: true,
-                    attributeFilter: ['class']
-                });
-            });
-        }
+        });
         
-        // Run when ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initScrollFix);
-        } else {
-            initScrollFix();
-        }
+        // Wait for DOM to be fully loaded
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.setup-step').forEach(function(step) {
+                observer.observe(step, { attributes: true, attributeFilter: ['class'] });
+            });
+        });
     })();
     </script>
 </body>

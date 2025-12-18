@@ -15,24 +15,6 @@
     <!-- Supabase JavaScript Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Compatibility fix: Prevent variable shadowing conflict -->
-    <script>
-    (function() {
-        window.__SUPABASE_CLIENT__ = window.supabase;
-        try {
-            delete window.supabase;
-            Object.defineProperty(window, 'supabase', {
-                get: function() { return window.__SUPABASE_CLIENT__; },
-                set: function(val) { window.__SUPABASE_CLIENT__ = val; },
-                configurable: true,
-                enumerable: true
-            });
-        } catch(e) {
-            console.warn('Supabase property configuration:', e);
-        }
-    })();
-    </script>
-    
     <style>
         /* Styles for the setup action buttons */
         .setup-actions {
@@ -384,12 +366,12 @@
         const SUPABASE_URL = 'https://aqasfpkazrebatjhdhig.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYXNmcGthenJlYmF0amhkaGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMxMDYsImV4cCI6MjA3ODUyOTEwNn0.F18jn7ug3VD1g05NMxxa9Dp9YnSZycge4ekyb94GyYc';
 
-        let supabase = null;
+        let supabaseClient = null;
 
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize Supabase
             if (typeof window.supabase !== 'undefined') {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 console.log('✅ Supabase connected');
             } else {
                 console.error('❌ Supabase library not loaded');
@@ -549,7 +531,7 @@
                 
                 try {
                     // Check if username already exists
-                    const { data: existingUser } = await supabase
+                    const { data: existingUser } = await supabaseClient
                         .from('users')
                         .select('username')
                         .eq('username', username)
@@ -564,7 +546,7 @@
                     }
                     
                     // Create user account
-                    const { data: newUser, error } = await supabase
+                    const { data: newUser, error } = await supabaseClient
                         .from('users')
                         .insert([{
                             organization_id: organizationId,
@@ -655,7 +637,7 @@
                 
                 try {
                     // CHECK 1: Try database first (PRIMARY)
-                    const { data: dbUser, error } = await supabase
+                    const { data: dbUser, error } = await supabaseClient
                         .from('users')
                         .select('*')
                         .eq('username', username)

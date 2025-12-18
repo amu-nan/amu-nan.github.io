@@ -15,6 +15,24 @@
     <!-- Supabase JavaScript Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
+    <!-- Compatibility fix: Prevent variable shadowing conflict -->
+    <script>
+    (function() {
+        window.__SUPABASE_CLIENT__ = window.supabase;
+        try {
+            delete window.supabase;
+            Object.defineProperty(window, 'supabase', {
+                get: function() { return window.__SUPABASE_CLIENT__; },
+                set: function(val) { window.__SUPABASE_CLIENT__ = val; },
+                configurable: true,
+                enumerable: true
+            });
+        } catch(e) {
+            console.warn('Supabase property configuration:', e);
+        }
+    })();
+    </script>
+    
     <style>
         /* Styles for the setup action buttons */
         .setup-actions {
@@ -372,9 +390,9 @@
             // Initialize Supabase
             if (typeof window.supabase !== 'undefined') {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('Supabase connected');
+                console.log('✅ Supabase connected');
             } else {
-                console.error('Supabase library not loaded');
+                console.error('❌ Supabase library not loaded');
                 alert('Error: Could not connect to database. Please refresh the page.');
                 return;
             }
@@ -385,6 +403,9 @@
             const companyName = rbacConfig.companyName || setupConfig.companyName || 
                               localStorage.getItem('companyName') || 'Your Organization';
             const organizationId = localStorage.getItem('organizationId');
+            
+            console.log('📋 Company:', companyName);
+            console.log('🏢 Organization ID:', organizationId);
             
             document.getElementById('companyGreeting').textContent = 
                 `Welcome to ${companyName}! Continue as Administrator to access your dashboard`;
@@ -403,12 +424,15 @@
             // ============================================
             document.querySelectorAll('.role-selection-card.active .select-role-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
+                    console.log('🔘 Continue as Administrator clicked');
                     const roleCard = this.closest('.role-selection-card');
                     selectedRole = roleCard.getAttribute('data-role');
+                    console.log('👤 Selected role:', selectedRole);
                     
                     // Show create account view
                     roleSelectionView.style.display = 'none';
                     createAccountView.style.display = 'block';
+                    console.log('✅ Switched to create account view');
                 });
             });
 

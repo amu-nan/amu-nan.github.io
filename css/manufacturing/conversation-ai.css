@@ -914,3 +914,104 @@
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
 }
+
+/* ========================================
+        PLOT STYLES 
+   ======================================== */
+
+/* Interactive Plot Container - Inline within message bubble */
+.ria-message .plot-container {
+    margin: 1rem 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(22, 160, 133, 0.2);
+    transition: all 0.3s ease;
+}
+
+.ria-message .plot-container:hover {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(22, 160, 133, 0.4);
+}
+
+.plot-hint {
+    font-size: 0.85rem;
+    color: var(--teal-color);
+    margin: 0 0 0.75rem 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.plot-container iframe {
+    width: 100%;
+    height: 450px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #f8f9fa;
+    display: block;
+    margin: 0;
+}
+
+.fullscreen-link {
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    color: var(--teal-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-family: 'Work Sans', sans-serif;
+    transition: all 0.3s ease;
+    float: right;
+}
+
+.fullscreen-link:hover {
+    color: var(--green-light);
+    text-decoration: underline;
+}
+
+/* Allow Ria messages with plots to be wider for better visualization */
+.ria-message:has(.plot-container) {
+    max-width: 85%;
+}
+
+/* Ensure text content within the same message flows naturally */
+.ria-message-content > div {
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ria-message .plot-container {
+        padding: 0.85rem;
+    }
+    
+    .plot-container iframe {
+        height: 380px;
+    }
+    
+    .ria-message:has(.plot-container) {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    .ria-message .plot-container {
+        padding: 0.65rem;
+        border-radius: 8px;
+    }
+    
+    .plot-container iframe {
+        height: 320px;
+    }
+    
+    .plot-hint {
+        font-size: 0.75rem;
+    }
+    
+    .fullscreen-link {
+        font-size: 0.7rem;
+    }
+}

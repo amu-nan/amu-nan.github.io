@@ -29,8 +29,8 @@
 // ============================================
 
 // Your Supabase credentials
-const SUPABASE_URL = 'https://aqasfpkazrebatjhdhig.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYXNmcGthenJlYmF0amhkaGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMxMDYsImV4cCI6MjA3ODUyOTEwNn0.F18jn7ug3VD1g05NMxxa9Dp9YnSZycge4ekyb94GyYc';
+const SUPABASE_URL = 'https://qtjmfkyrshnqbduizoah.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0am1ma3lyc2hucWJkdWl6b2FoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM0OTk4NDcsImV4cCI6MjA3OTA3NTg0N30.r8FNlrwRGcWMoBDKsegrW5676UQhpVnLEQFd1UhDAjc';
 
 // Supabase client - RENAMED to avoid conflict
 let supabaseClient = null;

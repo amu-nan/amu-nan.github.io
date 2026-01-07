@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
     <header>
         <div class="logo-container">
             <a href="../../index.html">
@@ -22,7 +21,6 @@
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
     </header>
-
     <main class="chatbot-container">
         <div class="chat-header">
             <div class="chat-info">
@@ -39,31 +37,34 @@
             <button id="sendButton" class="send-button"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </main>
-
     <div class="chat-footer">
         <a href="#" id="backButton" class="footer-button back-button">
             <i class="fa-solid fa-arrow-left"></i> Go Back
         </a>
     </div>
-
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
-
+    
+    <!-- IMPORTANT: Plotly.js library for rendering interactive charts -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    
+    <!-- Marked.js for markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Your conversation AI script -->
     <script src="../../js/manufacturing/conversation-ai.js"></script>
+    
     <script>
         // Dropdown Menu Logic (retained)
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
-
-            if (dropdownToggle && dropdownMenu) { // Check if elements exist
+            if (dropdownToggle && dropdownMenu) {
                 dropdownToggle.addEventListener('click', function(event) {
                     event.preventDefault();
                     dropdownMenu.classList.toggle('show');
                 });
-
                 window.addEventListener('click', function(event) {
                     if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
                         if (dropdownMenu.classList.contains('show')) {

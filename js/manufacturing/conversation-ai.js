@@ -20,19 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const backendUrl = "http://127.0.0.1:8000/chat/manufacturing";
     const backendBaseUrl = "http://127.0.0.1:8000";
 
-    // --- GitHub Pages Configuration for Interactive Plots ---
-    function getGitHubPagesBase() {
-        // If in production (GitHub Pages), construct the base URL from current location
-        if (window.location.hostname.includes('github.io')) {
-            const pathParts = window.location.pathname.split('/').filter(p => p);
-            const basePath = pathParts.slice(0, -2).join('/');
-            return window.location.origin + (basePath ? '/' + basePath : '');
-        }
-        return '';
-    }
-
-    const githubPagesBase = getGitHubPagesBase();
-
     // --- Chatbot Functions ---
     const RIA_ICON_SRC = '../../images/Ria-icon.png'; 
     
@@ -63,12 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Create the text content container
                 const textContent = document.createElement('div');
-                textContent.style.width = '100%'; // Ensure full width for plots
+                textContent.style.width = '100%';
                 
-                // Check if the message contains a PLOT_PATH
-                if (text.includes('PLOT_PATH:')) {
-                    // Process the message with inline plots
-                    processMessageWithPlots(text, textContent);
+                // Check if the message contains PLOT_JSON_DATA
+                if (text.includes('PLOT_JSON_DATA:')) {
+                    processMessageWithJsonPlots(text, textContent);
                 } else {
                     // Standard markdown parsing (no plots)
                     textContent.innerHTML = marked.parse(text);
@@ -100,68 +86,76 @@ document.addEventListener('DOMContentLoaded', () => {
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
-    // Function to process messages with inline plots
-    function processMessageWithPlots(text, container) {
-        // Split the text by PLOT_PATH markers
-        const parts = text.split(/(PLOT_PATH:\/plots\/[^\s]+\.html)/g);
+    // Function to process messages with JSON plot data
+    function processMessageWithJsonPlots(text, container) {
+        // Split the text by PLOT_JSON_DATA markers
+        const parts = text.split(/(PLOT_JSON_DATA:\s*\{[\s\S]*?\n\n)/g);
         
         parts.forEach((part, index) => {
-            if (part.startsWith('PLOT_PATH:')) {
-                // This is a plot path - create iframe
-                const plotPath = part.replace('PLOT_PATH:', '').trim();
-                const plotUrl = githubPagesBase ? `${githubPagesBase}${plotPath}` : plotPath;
-                
-                console.log('Loading plot from:', plotUrl);
-                
-                // Create plot container (inline with text)
-                const plotContainer = document.createElement('div');
-                plotContainer.classList.add('plot-container');
-                
-                // Add hint text
-                const plotHint = document.createElement('p');
-                plotHint.classList.add('plot-hint');
-                plotHint.textContent = '📊 Interactive Business Intelligence View:';
-                plotContainer.appendChild(plotHint);
-                
-                // Create iframe
-                const iframe = document.createElement('iframe');
-                iframe.src = plotUrl;
-                iframe.width = '100%';
-                iframe.height = '500px';
-                iframe.frameBorder = '0';
-                iframe.title = 'Business Plot';
-                iframe.style.borderRadius = '8px';
-                iframe.style.border = '1px solid #ddd';
-                
-                iframe.onload = function() {
-                    console.log('Plot loaded successfully:', plotUrl);
-                };
-                
-                iframe.onerror = function() {
-                    console.error('Failed to load plot:', plotUrl);
-                    plotContainer.innerHTML = `
+            if (part.startsWith('PLOT_JSON_DATA:')) {
+                // Extract the JSON data
+                try {
+                    const jsonStr = part.replace('PLOT_JSON_DATA:', '').trim();
+                    const plotData = JSON.parse(jsonStr);
+                    
+                    console.log('Parsed plot data:', plotData);
+                    
+                    // Create plot container
+                    const plotContainer = document.createElement('div');
+                    plotContainer.classList.add('plot-container');
+                    
+                    // Add hint text
+                    const plotHint = document.createElement('p');
+                    plotHint.classList.add('plot-hint');
+                    plotHint.textContent = '📊 Interactive Business Intelligence View:';
+                    plotContainer.appendChild(plotHint);
+                    
+                    // Create a unique ID for this plot
+                    const plotId = 'plot-' + Math.random().toString(36).substr(2, 9);
+                    
+                    // Create div for Plotly chart
+                    const plotDiv = document.createElement('div');
+                    plotDiv.id = plotId;
+                    plotDiv.classList.add('plotly-chart');
+                    plotContainer.appendChild(plotDiv);
+                    
+                    // Append plot container to the message
+                    container.appendChild(plotContainer);
+                    
+                    // Render the plot using Plotly
+                    // Wait for the element to be in the DOM
+                    setTimeout(() => {
+                        try {
+                            Plotly.newPlot(plotId, plotData.data, plotData.layout, {
+                                responsive: true,
+                                displayModeBar: true,
+                                displaylogo: false,
+                                modeBarButtonsToRemove: ['lasso2d', 'select2d']
+                            });
+                            console.log('Plot rendered successfully');
+                        } catch (error) {
+                            console.error('Error rendering plot:', error);
+                            plotDiv.innerHTML = `
+                                <p style="color: #e74c3c; padding: 1rem; background: #fee; border-radius: 8px;">
+                                    ⚠️ Failed to render plot. Error: ${error.message}
+                                </p>
+                            `;
+                        }
+                    }, 100);
+                    
+                } catch (error) {
+                    console.error('Error parsing plot JSON:', error);
+                    const errorDiv = document.createElement('div');
+                    errorDiv.innerHTML = `
                         <p style="color: #e74c3c; padding: 1rem; background: #fee; border-radius: 8px;">
-                            ⚠️ Failed to load interactive plot. The plot may not be deployed yet.
+                            ⚠️ Failed to parse plot data. Please check the format.
                         </p>
                     `;
-                };
+                    container.appendChild(errorDiv);
+                }
                 
-                plotContainer.appendChild(iframe);
-                
-                // Add fullscreen link
-                const fullscreenLink = document.createElement('a');
-                fullscreenLink.href = plotUrl;
-                fullscreenLink.target = '_blank';
-                fullscreenLink.rel = 'noreferrer';
-                fullscreenLink.classList.add('fullscreen-link');
-                fullscreenLink.innerHTML = 'Open in New Tab ↗';
-                plotContainer.appendChild(fullscreenLink);
-                
-                // Append plot to container
-                container.appendChild(plotContainer);
-                
-            } else if (part.trim()) {
-                // This is regular text - parse as markdown
+            } else if (part.trim() && !part.includes('[DEBUG]')) {
+                // This is regular text - parse as markdown (skip debug messages)
                 const textDiv = document.createElement('div');
                 textDiv.innerHTML = marked.parse(part);
                 container.appendChild(textDiv);

@@ -919,7 +919,7 @@
         PLOT STYLES 
    ======================================== */
 
-/* Interactive Plot Container - Inline within message bubble */
+/* Plot Container for JSON-based Plotly charts */
 .ria-message .plot-container {
     margin: 1rem 0;
     width: 100%;
@@ -945,39 +945,35 @@
     font-family: 'Work Sans', sans-serif;
 }
 
-.plot-container iframe {
+/* Plotly chart container */
+.plotly-chart {
     width: 100%;
-    height: 450px;
+    min-height: 400px;
+    background: #ffffff;
     border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background: #f8f9fa;
-    display: block;
-    margin: 0;
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.fullscreen-link {
-    display: inline-block;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-    color: var(--teal-color);
-    text-decoration: none;
-    font-weight: 600;
-    font-family: 'Work Sans', sans-serif;
-    transition: all 0.3s ease;
-    float: right;
+/* Ensure Plotly's built-in controls are styled nicely */
+.plotly-chart .modebar {
+    background: transparent !important;
 }
 
-.fullscreen-link:hover {
-    color: var(--green-light);
-    text-decoration: underline;
+.plotly-chart .modebar-btn {
+    color: var(--teal-color) !important;
 }
 
-/* Allow Ria messages with plots to be wider for better visualization */
+.plotly-chart .modebar-btn:hover {
+    background: rgba(22, 160, 133, 0.1) !important;
+}
+
+/* Allow Ria messages with plots to be wider */
 .ria-message:has(.plot-container) {
     max-width: 85%;
 }
 
-/* Ensure text content within the same message flows naturally */
+/* Ensure text content flows naturally */
 .ria-message-content > div {
     width: 100%;
 }
@@ -988,8 +984,8 @@
         padding: 0.85rem;
     }
     
-    .plot-container iframe {
-        height: 380px;
+    .plotly-chart {
+        min-height: 350px;
     }
     
     .ria-message:has(.plot-container) {
@@ -1003,15 +999,22 @@
         border-radius: 8px;
     }
     
-    .plot-container iframe {
-        height: 320px;
+    .plotly-chart {
+        min-height: 300px;
     }
     
     .plot-hint {
         font-size: 0.75rem;
     }
-    
-    .fullscreen-link {
-        font-size: 0.7rem;
-    }
+}
+
+/* Loading state for plots */
+.plotly-chart:empty::before {
+    content: 'Loading visualization...';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    color: var(--text-muted);
+    font-family: 'Work Sans', sans-serif;
 }

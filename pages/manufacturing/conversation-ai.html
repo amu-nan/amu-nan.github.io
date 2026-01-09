@@ -3,72 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xforia COAST Chatbot (Ria)</title>
+    <title>Chat with RIA - Xforia COAST</title>
     <link rel="icon" type="image/png" href="../../images/Subject.png">
+    
     <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/manufacturing/conversation-ai.css">
+    <link rel="stylesheet" href="../../css/manufacturing/admin-dashboard.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. GLOBAL RESET TO PREVENT SCROLL --- */
+        html, body {
+            height: 100%; /* Force browser height */
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* DISABLE PAGE SCROLL */
+            font-family: 'Work Sans', sans-serif;
+            background-color: #f8f9fa; /* Dashboard Gray */
+            display: flex;
+            flex-direction: column; /* Stack Header -> Main -> Footer */
+        }
+
+        /* --- 2. HEADER (Fixed at top) --- */
+        header {
+            flex: 0 0 auto; /* Don't shrink */
+            height: 80px;   /* Fixed height to calculate layout */
+            background-color: #ffffff;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 100;
+        }
+
+        /* --- 3. MAIN AREA (Fills remaining space) --- */
+        .dashboard-main {
+            flex: 1; /* Grow to fill space between header and footer */
+            display: flex;
+            flex-direction: column;
+            padding: 20px; /* "LEAVE SOME SPACE" around the edges */
+            overflow: hidden; /* Stop spillover */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            height: 100%;
+            max-width: 1100px; /* "RESHAPE": Limit width so it doesn't look stretched */
+            margin: 0 auto;    /* Center horizontally */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 4. TITLE BAR --- */
+        .page-header {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        .back-link:hover {
+            color: #1e4642;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- 5. CHAT CARD (The App Window) --- */
+        .chat-interface-card {
+            flex: 1; /* Fill all remaining height inside container */
+            background-color: #ffffff;
+            border-radius: 16px; /* Rounded corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Nice floaty shadow */
+            border: 1px solid rgba(0,0,0,0.03);
+            overflow: hidden; /* Keep React scrollbar inside */
+            position: relative;
+        }
+
+        /* --- 6. FOOTER (Fixed at bottom) --- */
+        footer {
+            flex: 0 0 auto;
+            background-color: #063828;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        /* React Root */
+        #chatbot-widget-root {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
+
     <header>
         <div class="logo-container">
             <a href="../../index.html">
                 <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
             </a>
-            <span class="tagline">Ride the wave of efficiency.</span>
+            <span class="tagline" style="margin-left: 15px; color: #1e4642; font-weight: 600;">Ride the wave of efficiency.</span>
+        </div>
+        <div class="menu-container">
+            <nav class="main-nav">
+                <div class="dropdown">
+                    <button class="nav-button dropdown-toggle hamburger-icon">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="xforia-manufacturing.html"><i class="fa-solid fa-industry"></i> Manufacturing</a>
+                        <a href="#"><i class="fa-solid fa-hospital"></i> Healthcare</a>
+                        <a href="#"><i class="fa-solid fa-sack-dollar"></i> Finance</a>
+                    </div>
+                </div>
+            </nav>
         </div>
     </header>
-    <main class="chatbot-container">
-        <div class="chat-header">
-            <div class="chat-info">
-                <h2 class="chat-title">
-                    <span id="companyNameDisplay"></span> RIA
-                </h2>
-                <p>Your manufacturing data, ready to be explored.</p>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            
+            <div class="page-header">
+                <h1 class="page-title">RIA Assistant</h1>
+                <a href="user-dashboard.html" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </a>
             </div>
-        </div>
-        <div id="chat-history" class="chat-history">
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="userQueryInput" placeholder="Ask a question about your data...">
-            <button id="sendButton" class="send-button"><i class="fa-solid fa-paper-plane"></i></button>
+
+            <div class="chat-interface-card">
+                <div id="chatbot-widget-root"></div>
+            </div>
+
         </div>
     </main>
-    <div class="chat-footer">
-        <a href="#" id="backButton" class="footer-button back-button">
-            <i class="fa-solid fa-arrow-left"></i> Go Back
-        </a>
-    </div>
+
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
-    
-    <!-- IMPORTANT: Plotly.js library for rendering interactive charts -->
-    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-    
-    <!-- Marked.js for markdown rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
-    <!-- Your conversation AI script -->
-    <script src="../../js/manufacturing/conversation-ai.js"></script>
-    
+
+    <script src="../../js/chatbot.js"></script>
+
     <script>
-        // Dropdown Menu Logic (retained)
         document.addEventListener('DOMContentLoaded', function() {
+            // Dropdown Logic
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
             if (dropdownToggle && dropdownMenu) {
-                dropdownToggle.addEventListener('click', function(event) {
-                    event.preventDefault();
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     dropdownMenu.classList.toggle('show');
                 });
-                window.addEventListener('click', function(event) {
-                    if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
-                        if (dropdownMenu.classList.contains('show')) {
-                            dropdownMenu.classList.remove('show');
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.dropdown')) dropdownMenu.classList.remove('show');
+                });
+            }
+
+            // Init React Chatbot
+            if (window.initChatbot) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                window.initChatbot({
+                    agentName: "Manufacturing Assistant",
+                    apiUrl: "http://localhost:8000/api/v1/text", 
+                    context: "full-page-chat",
+                    userName: currentUser.full_name || "User",
+                    logoUrl: "../../images/logo.png",
+                    
+                    // PASSING "TRANSPARENT" STYLES
+                    // This lets the .chat-interface-card CSS handle the border/shadow
+                    customStyles: {
+                        container: {
+                            bgcolor: 'transparent',
+                            height: '100%',
+                            width: '100%'
+                        },
+                        paper: {
+                            bgcolor: 'transparent',
+                            borderRadius: '0', 
+                            boxShadow: 'none',
+                            border: 'none',
+                            height: '100%'
                         }
                     }
                 });

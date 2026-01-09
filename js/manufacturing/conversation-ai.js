@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const textContent = document.createElement('div');
                 textContent.style.width = '100%';
                 
-                // Check if the message contains PLOT_JSON_DATA
-                if (text.includes('PLOT_JSON_DATA:')) {
+                // Check if the message contains plot data (JSON or PATH format)
+                if (text.includes('PLOT_JSON_DATA:') || text.includes('PLOT_PATH:')) {
                     processMessageWithJsonPlots(text, textContent);
                 } else {
                     // Standard markdown parsing (no plots)
@@ -86,10 +86,19 @@ document.addEventListener('DOMContentLoaded', () => {
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
-    // Function to process messages with JSON plot data
+    // Function to process messages with plot data (both JSON and PATH formats)
     function processMessageWithJsonPlots(text, container) {
-        // Split the text by PLOT_JSON_DATA markers
-        const parts = text.split(/(PLOT_JSON_DATA:\s*\{[\s\S]*?\n\n)/g);
+        // First, handle PLOT_PATH markers (hide local paths, they're not accessible)
+        // Replace local file paths with nothing (they can't be displayed in browser)
+        let processedText = text.replace(/PLOT_PATH:\/Users\/[^\n]+/g, '');
+        processedText = processedText.replace(/PLOT_PATH:\/home\/[^\n]+/g, '');
+        processedText = processedText.replace(/PLOT_PATH:[A-Z]:\\[^\n]+/g, ''); // Windows paths
+        
+        // Also remove DEBUG messages
+        processedText = processedText.replace(/\[DEBUG\][^\n]+/g, '');
+        
+        // Now split by PLOT_JSON_DATA markers
+        const parts = processedText.split(/(PLOT_JSON_DATA:\s*\{[\s\S]*?\n\n)/g);
         
         parts.forEach((part, index) => {
             if (part.startsWith('PLOT_JSON_DATA:')) {
@@ -154,8 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     container.appendChild(errorDiv);
                 }
                 
-            } else if (part.trim() && !part.includes('[DEBUG]')) {
-                // This is regular text - parse as markdown (skip debug messages)
+            } else if (part.trim()) {
+                // This is regular text - parse as markdown
                 const textDiv = document.createElement('div');
                 textDiv.innerHTML = marked.parse(part);
                 container.appendChild(textDiv);

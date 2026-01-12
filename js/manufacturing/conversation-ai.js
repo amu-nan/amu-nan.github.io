@@ -262,3 +262,4 @@ document.addEventListener('DOMContentLoaded', () => {
     addMessage('ria', "Hello! I'm Ria. I'm ready to answer questions about your manufacturing data. How can I help?");
 });
 
+

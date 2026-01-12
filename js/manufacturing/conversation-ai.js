@@ -23,6 +23,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Chatbot Functions ---
     const RIA_ICON_SRC = '../../images/Ria-icon.png'; 
     
+    // Function to check if a string contains valid Plotly JSON
+    function isPlotlyJson(str) {
+        try {
+            const json = JSON.parse(str);
+            return json.data && json.layout;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // Function to extract Plotly JSON from text
+    function extractPlotlyJson(text) {
+        // Try to find JSON object in the text
+        // Look for patterns like: {"data":[...],"layout":{...}}
+        const jsonMatch = text.match(/\{[\s\S]*"data"[\s\S]*"layout"[\s\S]*\}/);
+        if (jsonMatch) {
+            try {
+                const json = JSON.parse(jsonMatch[0]);
+                if (json.data && json.layout) {
+                    return {
+                        json: json,
+                        textBefore: text.substring(0, jsonMatch.index).trim(),
+                        textAfter: text.substring(jsonMatch.index + jsonMatch[0].length).trim()
+                    };
+                }
+            } catch (e) {
+                console.error('Failed to parse extracted JSON:', e);
+            }
+        }
+        return null;
+    }
+    
     function addMessage(sender, text, isTyping = false) {
         const chatHistory = document.getElementById('chat-history');
         const messageDiv = document.createElement('div');
@@ -52,12 +84,78 @@ document.addEventListener('DOMContentLoaded', () => {
                 const textContent = document.createElement('div');
                 textContent.style.width = '100%';
                 
-                // Check if the message contains plot data (JSON or PATH format)
-                if (text.includes('PLOT_JSON_DATA:') || text.includes('PLOT_PATH:')) {
-                    processMessageWithJsonPlots(text, textContent);
+                // Clean up the text - remove debug messages and local paths
+                let cleanedText = text;
+                cleanedText = cleanedText.replace(/\[DEBUG\][^\n]*/g, '');
+                cleanedText = cleanedText.replace(/PLOT_PATH:\/Users\/[^\n]*/g, '');
+                cleanedText = cleanedText.replace(/PLOT_PATH:\/home\/[^\n]*/g, '');
+                cleanedText = cleanedText.replace(/PLOT_PATH:[A-Z]:\\[^\n]*/g, '');
+                
+                // Try to extract Plotly JSON from the message
+                const plotData = extractPlotlyJson(cleanedText);
+                
+                if (plotData) {
+                    // We found Plotly JSON in the message
+                    console.log('Found Plotly JSON in message');
+                    
+                    // Add text before the plot (if any)
+                    if (plotData.textBefore) {
+                        const beforeDiv = document.createElement('div');
+                        beforeDiv.innerHTML = marked.parse(plotData.textBefore);
+                        textContent.appendChild(beforeDiv);
+                    }
+                    
+                    // Create plot container
+                    const plotContainer = document.createElement('div');
+                    plotContainer.classList.add('plot-container');
+                    
+                    // Add hint text
+                    const plotHint = document.createElement('p');
+                    plotHint.classList.add('plot-hint');
+                    plotHint.textContent = '📊 Interactive Business Intelligence View:';
+                    plotContainer.appendChild(plotHint);
+                    
+                    // Create a unique ID for this plot
+                    const plotId = 'plot-' + Math.random().toString(36).substr(2, 9);
+                    
+                    // Create div for Plotly chart
+                    const plotDiv = document.createElement('div');
+                    plotDiv.id = plotId;
+                    plotDiv.classList.add('plotly-chart');
+                    plotContainer.appendChild(plotDiv);
+                    
+                    textContent.appendChild(plotContainer);
+                    
+                    // Add text after the plot (if any)
+                    if (plotData.textAfter) {
+                        const afterDiv = document.createElement('div');
+                        afterDiv.innerHTML = marked.parse(plotData.textAfter);
+                        textContent.appendChild(afterDiv);
+                    }
+                    
+                    // Render the plot using Plotly
+                    setTimeout(() => {
+                        try {
+                            Plotly.newPlot(plotId, plotData.json.data, plotData.json.layout, {
+                                responsive: true,
+                                displayModeBar: true,
+                                displaylogo: false,
+                                modeBarButtonsToRemove: ['lasso2d', 'select2d']
+                            });
+                            console.log('Plot rendered successfully');
+                        } catch (error) {
+                            console.error('Error rendering plot:', error);
+                            plotDiv.innerHTML = `
+                                <p style="color: #e74c3c; padding: 1rem; background: #fee; border-radius: 8px;">
+                                    ⚠️ Failed to render plot. Error: ${error.message}
+                                </p>
+                            `;
+                        }
+                    }, 100);
+                    
                 } else {
-                    // Standard markdown parsing (no plots)
-                    textContent.innerHTML = marked.parse(text);
+                    // No Plotly JSON found - render as standard markdown
+                    textContent.innerHTML = marked.parse(cleanedText);
                 }
                 
                 // Handle existing plot images (keep your existing logic)
@@ -84,92 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         chatHistory.appendChild(messageDiv);
         chatHistory.scrollTop = chatHistory.scrollHeight;
-    }
-
-    // Function to process messages with plot data (both JSON and PATH formats)
-    function processMessageWithJsonPlots(text, container) {
-        // First, handle PLOT_PATH markers (hide local paths, they're not accessible)
-        // Replace local file paths with nothing (they can't be displayed in browser)
-        let processedText = text.replace(/PLOT_PATH:\/Users\/[^\n]+/g, '');
-        processedText = processedText.replace(/PLOT_PATH:\/home\/[^\n]+/g, '');
-        processedText = processedText.replace(/PLOT_PATH:[A-Z]:\\[^\n]+/g, ''); // Windows paths
-        
-        // Also remove DEBUG messages
-        processedText = processedText.replace(/\[DEBUG\][^\n]+/g, '');
-        
-        // Now split by PLOT_JSON_DATA markers
-        const parts = processedText.split(/(PLOT_JSON_DATA:\s*\{[\s\S]*?\n\n)/g);
-        
-        parts.forEach((part, index) => {
-            if (part.startsWith('PLOT_JSON_DATA:')) {
-                // Extract the JSON data
-                try {
-                    const jsonStr = part.replace('PLOT_JSON_DATA:', '').trim();
-                    const plotData = JSON.parse(jsonStr);
-                    
-                    console.log('Parsed plot data:', plotData);
-                    
-                    // Create plot container
-                    const plotContainer = document.createElement('div');
-                    plotContainer.classList.add('plot-container');
-                    
-                    // Add hint text
-                    const plotHint = document.createElement('p');
-                    plotHint.classList.add('plot-hint');
-                    plotHint.textContent = '📊 Interactive Business Intelligence View:';
-                    plotContainer.appendChild(plotHint);
-                    
-                    // Create a unique ID for this plot
-                    const plotId = 'plot-' + Math.random().toString(36).substr(2, 9);
-                    
-                    // Create div for Plotly chart
-                    const plotDiv = document.createElement('div');
-                    plotDiv.id = plotId;
-                    plotDiv.classList.add('plotly-chart');
-                    plotContainer.appendChild(plotDiv);
-                    
-                    // Append plot container to the message
-                    container.appendChild(plotContainer);
-                    
-                    // Render the plot using Plotly
-                    // Wait for the element to be in the DOM
-                    setTimeout(() => {
-                        try {
-                            Plotly.newPlot(plotId, plotData.data, plotData.layout, {
-                                responsive: true,
-                                displayModeBar: true,
-                                displaylogo: false,
-                                modeBarButtonsToRemove: ['lasso2d', 'select2d']
-                            });
-                            console.log('Plot rendered successfully');
-                        } catch (error) {
-                            console.error('Error rendering plot:', error);
-                            plotDiv.innerHTML = `
-                                <p style="color: #e74c3c; padding: 1rem; background: #fee; border-radius: 8px;">
-                                    ⚠️ Failed to render plot. Error: ${error.message}
-                                </p>
-                            `;
-                        }
-                    }, 100);
-                    
-                } catch (error) {
-                    console.error('Error parsing plot JSON:', error);
-                    const errorDiv = document.createElement('div');
-                    errorDiv.innerHTML = `
-                        <p style="color: #e74c3c; padding: 1rem; background: #fee; border-radius: 8px;">
-                            ⚠️ Failed to parse plot data. Please check the format.
-                        </p>
-                    `;
-                    container.appendChild(errorDiv);
-                }
-                
-            } else if (part.trim()) {
-                // This is regular text - parse as markdown
-                const textDiv = document.createElement('div');
-                textDiv.innerHTML = marked.parse(part);
-                container.appendChild(textDiv);
-            }
-        });
     }
 
     async function sendQueryToBackend(query) {

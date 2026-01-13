@@ -35,8 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to extract Plotly JSON from text
     function extractPlotlyJson(text) {
-        // Try to find JSON object in the text
-        // Look for patterns like: {"data":[...],"layout":{...}}
         const jsonMatch = text.match(/\{[\s\S]*"data"[\s\S]*"layout"[\s\S]*\}/);
         if (jsonMatch) {
             try {
@@ -53,6 +51,114 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         return null;
+    }
+
+    // Function to wrap tables in scroll containers
+    function wrapTablesInScrollContainers(container) {
+        const tables = container.querySelectorAll('table');
+        tables.forEach(table => {
+            // Skip if already wrapped
+            if (table.parentElement.classList.contains('table-wrapper')) {
+                return;
+            }
+            
+            // Create wrapper
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('table-wrapper');
+            
+            // Wrap the table
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+            
+            // Add scroll event listener to hide the scroll hint
+            wrapper.addEventListener('scroll', function() {
+                if (this.scrollLeft > 10) {
+                    this.classList.add('scrolled');
+                }
+            });
+        });
+    }
+
+    // Function to add fullscreen capability to plots
+    function makePlotExpandable(plotContainer, plotId) {
+        // Create expand button
+        const expandBtn = document.createElement('button');
+        expandBtn.classList.add('plot-expand-btn');
+        expandBtn.innerHTML = '⛶ Fullscreen';
+        expandBtn.title = 'View plot in fullscreen';
+        
+        // Add button to plot container
+        const plotDiv = plotContainer.querySelector('.plotly-chart');
+        plotDiv.style.position = 'relative';
+        plotDiv.appendChild(expandBtn);
+        
+        // Handle expand
+        expandBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            openPlotFullscreen(plotId);
+        });
+    }
+
+    // Function to open plot in fullscreen
+    function openPlotFullscreen(plotId) {
+        // Create fullscreen overlay
+        const overlay = document.createElement('div');
+        overlay.classList.add('plot-fullscreen-overlay', 'active');
+        
+        const content = document.createElement('div');
+        content.classList.add('plot-fullscreen-content');
+        
+        // Close button
+        const closeBtn = document.createElement('button');
+        closeBtn.classList.add('plot-fullscreen-close');
+        closeBtn.innerHTML = '×';
+        closeBtn.title = 'Close fullscreen';
+        
+        // Create fullscreen plot container
+        const fullscreenPlotId = 'fullscreen-' + plotId;
+        const fullscreenPlot = document.createElement('div');
+        fullscreenPlot.id = fullscreenPlotId;
+        fullscreenPlot.style.width = '100%';
+        fullscreenPlot.style.height = '100%';
+        
+        content.appendChild(closeBtn);
+        content.appendChild(fullscreenPlot);
+        overlay.appendChild(content);
+        document.body.appendChild(overlay);
+        
+        // Get original plot data
+        const originalPlot = document.getElementById(plotId);
+        if (originalPlot && originalPlot.data && originalPlot.layout) {
+            // Clone the plot to fullscreen
+            Plotly.newPlot(fullscreenPlotId, originalPlot.data, originalPlot.layout, {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false
+            });
+        }
+        
+        // Close handlers
+        closeBtn.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            setTimeout(() => overlay.remove(), 300);
+        });
+        
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove('active');
+                setTimeout(() => overlay.remove(), 300);
+            }
+        });
+        
+        // ESC key to close
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                overlay.classList.remove('active');
+                setTimeout(() => overlay.remove(), 300);
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
     }
     
     function addMessage(sender, text, isTyping = false) {
@@ -84,21 +190,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const textContent = document.createElement('div');
                 textContent.style.width = '100%';
                 
-                // Clean up the text - remove debug messages and local paths
+                // Clean up the text
                 let cleanedText = text;
                 cleanedText = cleanedText.replace(/\[DEBUG\][^\n]*/g, '');
                 cleanedText = cleanedText.replace(/PLOT_PATH:\/Users\/[^\n]*/g, '');
                 cleanedText = cleanedText.replace(/PLOT_PATH:\/home\/[^\n]*/g, '');
                 cleanedText = cleanedText.replace(/PLOT_PATH:[A-Z]:\\[^\n]*/g, '');
                 
-                // Try to extract Plotly JSON from the message
+                // Try to extract Plotly JSON
                 const plotData = extractPlotlyJson(cleanedText);
                 
                 if (plotData) {
-                    // We found Plotly JSON in the message
                     console.log('Found Plotly JSON in message');
                     
-                    // Add text before the plot (if any)
+                    // Text before plot
                     if (plotData.textBefore) {
                         const beforeDiv = document.createElement('div');
                         beforeDiv.innerHTML = marked.parse(plotData.textBefore);
@@ -115,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     plotHint.textContent = '📊 Interactive Business Intelligence View:';
                     plotContainer.appendChild(plotHint);
                     
-                    // Create a unique ID for this plot
+                    // Create unique ID
                     const plotId = 'plot-' + Math.random().toString(36).substr(2, 9);
                     
                     // Create div for Plotly chart
@@ -126,23 +231,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     textContent.appendChild(plotContainer);
                     
-                    // Add text after the plot (if any)
+                    // Text after plot
                     if (plotData.textAfter) {
                         const afterDiv = document.createElement('div');
                         afterDiv.innerHTML = marked.parse(plotData.textAfter);
                         textContent.appendChild(afterDiv);
                     }
                     
-                    // Render the plot using Plotly
+                    // Render the plot
                     setTimeout(() => {
                         try {
-                            Plotly.newPlot(plotId, plotData.json.data, plotData.json.layout, {
+                            // Ensure layout is responsive
+                            const layout = {
+                                ...plotData.json.layout,
+                                autosize: true,
+                                height: 450 // Default height
+                            };
+                            
+                            Plotly.newPlot(plotId, plotData.json.data, layout, {
                                 responsive: true,
                                 displayModeBar: true,
                                 displaylogo: false,
                                 modeBarButtonsToRemove: ['lasso2d', 'select2d']
                             });
+                            
                             console.log('Plot rendered successfully');
+                            
+                            // Add fullscreen capability
+                            makePlotExpandable(plotContainer, plotId);
+                            
                         } catch (error) {
                             console.error('Error rendering plot:', error);
                             plotDiv.innerHTML = `
@@ -154,11 +271,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 100);
                     
                 } else {
-                    // No Plotly JSON found - render as standard markdown
+                    // No plot - render as standard markdown
                     textContent.innerHTML = marked.parse(cleanedText);
                 }
                 
-                // Handle existing plot images (keep your existing logic)
+                // Wrap any tables in scroll containers
+                setTimeout(() => {
+                    wrapTablesInScrollContainers(textContent);
+                }, 50);
+                
+                // Handle existing plot images
                 const plotImages = textContent.querySelectorAll('img[src*="/plots/"]');
                 plotImages.forEach(img => {
                     if (img.src.includes('/plots/') && !img.src.startsWith(backendBaseUrl)) {
@@ -175,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageWrapper.appendChild(textContent);
                 messageDiv.appendChild(messageWrapper);
             } else {
-                // For user messages, just add the text
+                // For user messages
                 messageDiv.innerHTML = marked.parse(text);
             }
         }
@@ -261,5 +383,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial greeting ---
     addMessage('ria', "Hello! I'm Ria. I'm ready to answer questions about your manufacturing data. How can I help?");
 });
-
-

@@ -919,7 +919,19 @@
         PLOT STYLES 
    ======================================== */
 
-/* Plot Container for JSON-based Plotly charts */
+/* Dynamic message bubbles - expand for large content */
+.ria-message {
+    max-width: 70%; /* Default for text-only messages */
+    transition: max-width 0.3s ease;
+}
+
+/* Wider bubbles for messages with plots or large tables */
+.ria-message:has(.plot-container),
+.ria-message:has(.large-table-container) {
+    max-width: 90% !important; /* Much wider for plots/tables */
+}
+
+/* Plot Container - Dynamic sizing */
 .ria-message .plot-container {
     margin: 1rem 0;
     width: 100%;
@@ -928,6 +940,7 @@
     border-radius: 10px;
     border: 1px solid rgba(22, 160, 133, 0.2);
     transition: all 0.3s ease;
+    overflow: hidden; /* Prevent overflow */
 }
 
 .ria-message .plot-container:hover {
@@ -945,17 +958,26 @@
     font-family: 'Work Sans', sans-serif;
 }
 
-/* Plotly chart container */
+/* Plotly chart container - Full size with scroll if needed */
 .plotly-chart {
     width: 100%;
-    min-height: 400px;
+    min-height: 450px;
+    max-height: 600px; /* Maximum height before scrolling */
     background: #ffffff;
     border-radius: 8px;
     padding: 0.5rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: auto; /* Add scroll if content is too large */
+    position: relative;
 }
 
-/* Ensure Plotly's built-in controls are styled nicely */
+/* Full-size plot option - User can expand if needed */
+.plot-expanded .plotly-chart {
+    max-height: none;
+    min-height: 500px;
+}
+
+/* Plotly's built-in controls styling */
 .plotly-chart .modebar {
     background: transparent !important;
 }
@@ -968,44 +990,80 @@
     background: rgba(22, 160, 133, 0.1) !important;
 }
 
-/* Allow Ria messages with plots to be wider */
-.ria-message:has(.plot-container) {
-    max-width: 85%;
-}
-
-/* Ensure text content flows naturally */
-.ria-message-content > div {
+/* Table Styling with Horizontal Scroll */
+.ria-message table {
     width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    display: block; /* Allow scrolling */
+    overflow-x: auto; /* Horizontal scroll for wide tables */
+    max-width: 100%;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .ria-message .plot-container {
-        padding: 0.85rem;
-    }
-    
-    .plotly-chart {
-        min-height: 350px;
-    }
-    
-    .ria-message:has(.plot-container) {
-        max-width: 95%;
-    }
+/* Table wrapper for better scroll control */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 1rem 0;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    background: var(--bg-secondary);
 }
 
-@media (max-width: 480px) {
-    .ria-message .plot-container {
-        padding: 0.65rem;
-        border-radius: 8px;
-    }
-    
-    .plotly-chart {
-        min-height: 300px;
-    }
-    
-    .plot-hint {
-        font-size: 0.75rem;
-    }
+.table-wrapper table {
+    width: 100%;
+    min-width: 600px; /* Minimum width to prevent over-compression */
+    margin: 0;
+    display: table; /* Reset display for proper table rendering */
+}
+
+.ria-message table th {
+    background: linear-gradient(135deg, var(--teal-color), var(--green-light));
+    color: white;
+    padding: 0.85rem;
+    text-align: left;
+    font-weight: 600;
+    font-family: 'Work Sans', sans-serif;
+    white-space: nowrap; /* Prevent header text wrapping */
+}
+
+.ria-message table td {
+    padding: 0.75rem 0.85rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-family: 'Work Sans', sans-serif;
+    white-space: nowrap; /* Prevent cell content wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Show ... for very long content */
+    max-width: 250px; /* Maximum cell width */
+}
+
+.ria-message table tr:last-child td {
+    border-bottom: none;
+}
+
+.ria-message table tr:hover {
+    background: rgba(22, 160, 133, 0.05);
+}
+
+/* Scroll indicator for tables */
+.table-wrapper::after {
+    content: '← Scroll for more →';
+    display: block;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 0.5rem;
+    font-family: 'Work Sans', sans-serif;
+    background: rgba(22, 160, 133, 0.05);
+    border-top: 1px solid rgba(22, 160, 133, 0.1);
+}
+
+.table-wrapper.scrolled::after {
+    content: ''; /* Hide hint after user scrolls */
 }
 
 /* Loading state for plots */
@@ -1017,4 +1075,203 @@
     height: 400px;
     color: var(--text-muted);
     font-family: 'Work Sans', sans-serif;
+}
+
+/* Ensure message content doesn't overflow */
+.ria-message-content > div {
+    width: 100%;
+    overflow-x: auto; /* Allow horizontal scroll if needed */
+}
+
+/* Custom scrollbar for tables and plots */
+.table-wrapper::-webkit-scrollbar,
+.plotly-chart::-webkit-scrollbar,
+.ria-message-content > div::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track,
+.plotly-chart::-webkit-scrollbar-track,
+.ria-message-content > div::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb,
+.plotly-chart::-webkit-scrollbar-thumb,
+.ria-message-content > div::-webkit-scrollbar-thumb {
+    background: rgba(22, 160, 133, 0.3);
+    border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover,
+.plotly-chart::-webkit-scrollbar-thumb:hover,
+.ria-message-content > div::-webkit-scrollbar-thumb:hover {
+    background: rgba(22, 160, 133, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ria-message {
+        max-width: 85%;
+    }
+    
+    .ria-message:has(.plot-container),
+    .ria-message:has(.table-wrapper) {
+        max-width: 95% !important;
+    }
+    
+    .ria-message .plot-container {
+        padding: 0.85rem;
+    }
+    
+    .plotly-chart {
+        min-height: 380px;
+        max-height: 500px;
+    }
+    
+    .ria-message table td {
+        max-width: 150px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ria-message {
+        max-width: 90%;
+    }
+    
+    .ria-message:has(.plot-container),
+    .ria-message:has(.table-wrapper) {
+        max-width: 98% !important;
+    }
+    
+    .ria-message .plot-container {
+        padding: 0.65rem;
+        border-radius: 8px;
+    }
+    
+    .plotly-chart {
+        min-height: 320px;
+        max-height: 400px;
+    }
+    
+    .plot-hint {
+        font-size: 0.75rem;
+    }
+    
+    .ria-message table td {
+        max-width: 120px;
+        font-size: 0.85rem;
+        padding: 0.6rem 0.7rem;
+    }
+    
+    .ria-message table th {
+        font-size: 0.85rem;
+        padding: 0.7rem;
+    }
+}
+
+/* Expand/Collapse button for plots (optional enhancement) */
+.plot-expand-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--teal-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+}
+
+.plot-expand-btn:hover {
+    background: var(--green-light);
+    transform: scale(1.05);
+}
+
+/* Full-screen overlay for expanded plots */
+.plot-fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.plot-fullscreen-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.plot-fullscreen-content {
+    width: 95%;
+    height: 95%;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    position: relative;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+}
+
+.plot-fullscreen-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.plot-fullscreen-close:hover {
+    background: #c0392b;
+    transform: rotate(90deg);
+}
+
+/* Print styles - ensure plots and tables display properly */
+@media print {
+    .ria-message:has(.plot-container),
+    .ria-message:has(.table-wrapper) {
+        max-width: 100% !important;
+    }
+    
+    .plot-container,
+    .table-wrapper {
+        page-break-inside: avoid;
+        overflow: visible !important;
+    }
+    
+    .plotly-chart {
+        max-height: none !important;
+        overflow: visible !important;
+    }
+    
+    .table-wrapper::after {
+        display: none; /* Hide scroll hint in print */
+    }
 }

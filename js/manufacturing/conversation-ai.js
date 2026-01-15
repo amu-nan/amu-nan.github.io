@@ -23,6 +23,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Chatbot Functions ---
     const RIA_ICON_SRC = '../../images/Ria-icon.png'; 
     
+    // Track all plot IDs for resize handling
+    const activePlotIds = new Set();
+    
+    // Handle window resize - redraw all plots
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            activePlotIds.forEach(plotId => {
+                const plotElement = document.getElementById(plotId);
+                if (plotElement && plotElement.data && plotElement.layout) {
+                    try {
+                        Plotly.Plots.resize(plotId);
+                    } catch (error) {
+                        console.error('Error resizing plot:', plotId, error);
+                    }
+                }
+            });
+        }, 250); // Debounce resize events
+    });
+    
     // Function to check if a string contains valid Plotly JSON
     function isPlotlyJson(str) {
         try {
@@ -245,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const layout = {
                                 ...plotData.json.layout,
                                 autosize: true,
-                                height: 500 // Increased default height for better visibility
+                                height: 550 // Increased for better visibility and less cutoff
                             };
                             
                             Plotly.newPlot(plotId, plotData.json.data, layout, {
@@ -255,7 +276,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 modeBarButtonsToRemove: ['lasso2d', 'select2d']
                             });
                             
-                            console.log('Plot rendered successfully');
+                            // Track this plot for resize handling
+                            activePlotIds.add(plotId);
+                            
+                            console.log('Plot rendered successfully:', plotId);
                             
                             // Add fullscreen capability
                             makePlotExpandable(plotContainer, plotId);

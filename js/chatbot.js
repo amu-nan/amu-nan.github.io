@@ -3,10 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('send-btn');
     const chatHistory = document.getElementById('chat-history');
 
-    // Retrieve patient name from the previous page (if needed)
-    // You could use localStorage or URL parameters for this
-    // For now, we'll use a placeholder
-    const patientName = "John Doe"; // In a real app, this would be dynamic
+    // Retrieve patient name (Placeholder for now)
+    const patientName = "John Doe"; 
 
     let conversationHistory = [];
 
@@ -26,45 +24,47 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Add user message to history and UI
+        // 1. Add user message to screen immediately
         appendMessage('user', query);
-        conversationHistory.push({ role: 'user', content: query });
+        // conversationHistory.push({ role: 'user', content: query }); // Optional: Frontend history tracking
         userQueryInput.value = '';
 
-        // Prepare payload for backend (simulated)
+        // 2. Prepare payload for the COAST backend
+        // Note: We are sending 'message' because most simple FastAPIs expect that key.
+        // If your app.py expects 'query', change 'message' to 'query' below.
         const payload = {
-            patientName: patientName,
-            query: query,
-            conversationHistory: conversationHistory
+            message: query, 
+            history: conversationHistory // Sending history allows the bot to remember context
         };
 
-        // You would typically use fetch() here to send the payload to your backend.
-        // Example:
-        // fetch('your-backend-api/chatbot', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(payload)
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     // Handle the AI response and add it to the chat history
-        //     const aiResponse = data.response;
-        //     appendMessage('ria', aiResponse);
-        //     conversationHistory.push({ role: 'ria', content: aiResponse });
-        // })
-        // .catch((error) => {
-        //     console.error('Error:', error);
-        //     appendMessage('ria', 'Sorry, I am unable to connect right now. Please try again later.');
-        // });
-
-        // For now, let's simulate a response
-        setTimeout(() => {
-            const simulatedResponse = `I received your query about ${patientName} related to "${query}". I'm processing this information for you.`;
-            appendMessage('ria', simulatedResponse);
-            conversationHistory.push({ role: 'ria', content: simulatedResponse });
-        }, 1000);
+        // 3. Send to your Local Backend (Port 8000)
+        fetch('http://127.0.0.1:8000/api/chat', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server Error: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // 4. Handle the Real AI response
+            // We assume the backend returns { "response": "..." } or { "message": "..." }
+            // Adjust 'data.response' if your backend keys are different
+            const aiResponse = data.response || data.message || JSON.stringify(data);
+            
+            appendMessage('ria', aiResponse);
+            conversationHistory.push({ role: 'user', content: query });
+            conversationHistory.push({ role: 'assistant', content: aiResponse });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            appendMessage('ria', 'Error: Could not connect to the backend. Make sure uvicorn is running on port 8000.');
+        });
     };
 
     sendBtn.addEventListener('click', handleQuery);

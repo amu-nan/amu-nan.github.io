@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const layout = {
                                 ...plotData.json.layout,
                                 autosize: true,
-                                height: 450 // Default height
+                                height: 500 // Increased default height for better visibility
                             };
                             
                             Plotly.newPlot(plotId, plotData.json.data, layout, {

@@ -939,11 +939,11 @@
     margin: 1rem 0;
     width: 100%;
     background: rgba(255, 255, 255, 0.5);
-    padding: 1rem;
+    padding: 1.5rem; /* Increased from 1rem for more breathing room */
     border-radius: 10px;
     border: 1px solid rgba(22, 160, 133, 0.2);
     transition: all 0.3s ease;
-    overflow: hidden; /* Prevent overflow */
+    overflow: visible; /* Changed from hidden to prevent title cutoff */
 }
 
 .ria-message .plot-container:hover {
@@ -964,13 +964,13 @@
 /* Plotly chart container - Full size with scroll if needed */
 .plotly-chart {
     width: 100%;
-    min-height: 550px; /* Increased from 500px for better visibility */
-    max-height: 800px; /* Increased from 700px - Maximum height before scrolling */
+    min-height: 600px; /* Increased from 550px for more space */
+    max-height: none; /* Removed max-height to allow full content display */
     background: #ffffff;
     border-radius: 8px;
-    padding: 0.5rem;
+    padding: 1.5rem; /* Increased padding to prevent title cutoff */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    overflow: auto; /* Add scroll if content is too large */
+    overflow: visible; /* Changed to visible to show full titles */
     position: relative;
 }
 
@@ -1126,12 +1126,13 @@
     }
     
     .ria-message .plot-container {
-        padding: 0.85rem;
+        padding: 1.25rem; /* Increased padding */
     }
     
     .plotly-chart {
-        min-height: 420px; /* Increased from 400px */
-        max-height: 600px; /* Increased from 550px */
+        min-height: 500px; /* Increased from 420px */
+        max-height: none; /* No max height restriction */
+        padding: 1rem; /* More padding on tablets */
     }
     
     .ria-message table td {
@@ -1151,13 +1152,14 @@
     }
     
     .ria-message .plot-container {
-        padding: 0.65rem;
+        padding: 1rem; /* Adequate padding on mobile */
         border-radius: 8px;
     }
     
     .plotly-chart {
-        min-height: 350px; /* Increased from 320px */
-        max-height: 450px; /* Increased from 400px */
+        min-height: 450px; /* Increased from 350px for better visibility */
+        max-height: none; /* No max height restriction */
+        padding: 0.75rem;
     }
     
     .plot-hint {

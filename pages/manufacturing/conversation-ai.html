@@ -6,11 +6,35 @@
     <title>Xforia COAST Chatbot (Ria)</title>
     <link rel="icon" type="image/png" href="../../images/Subject.png">
     <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/manufacturing/conversation-ai.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Container to hold the embedded chatbot */
+        .chatbot-wrapper {
+            width: 100%;
+            height: calc(100vh - 160px); /* Adjust height to fit between header/footer */
+            max-width: 1000px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- REQUIRED FIX: Force React Widget to fill the container --- */
+        #chatbot-widget-root, #chatbot-widget-root > div {
+            height: 100% !important;
+            width: 100% !important;
+            min-height: 0 !important;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -21,8 +45,9 @@
             <span class="tagline">Ride the wave of efficiency.</span>
         </div>
     </header>
-    <main class="chatbot-container">
-        <div class="chat-header">
+
+    <main>
+        <div class="chat-header" style="text-align: center; margin-top: 20px;">
             <div class="chat-info">
                 <h2 class="chat-title">
                     <span id="companyNameDisplay"></span> RIA
@@ -30,48 +55,42 @@
                 <p>Your manufacturing data, ready to be explored.</p>
             </div>
         </div>
-        <div id="chat-history" class="chat-history">
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="userQueryInput" placeholder="Ask a question about your data...">
-            <button id="sendButton" class="send-button"><i class="fa-solid fa-paper-plane"></i></button>
+
+        <div class="chatbot-wrapper">
+            <div id="chatbot-widget-root" style="height: 100%; width: 100%;"></div>
         </div>
     </main>
-    <div class="chat-footer">
-        <a href="#" id="backButton" class="footer-button back-button">
+
+    <div class="navigation-buttons" style="max-width: 1000px; margin: 20px auto; padding: 0 20px;">
+        <a href="../../index.html" class="back-button" style="text-decoration: none; color: #555; background: #f0f2f5; padding: 10px 20px; border-radius: 20px;">
             <i class="fa-solid fa-arrow-left"></i> Go Back
         </a>
     </div>
+
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
-    
-    <!-- IMPORTANT: Plotly.js library for rendering interactive charts -->
-    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-    
-    <!-- Marked.js for markdown rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
-    <!-- Your conversation AI script -->
-    <script src="../../js/manufacturing/conversation-ai.js"></script>
-    
+
+    <script src="../../js/chatbot.js"></script>
+
     <script>
-        // Dropdown Menu Logic (retained)
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdownToggle = document.querySelector('.dropdown-toggle');
-            const dropdownMenu = document.querySelector('.dropdown-menu');
-            if (dropdownToggle && dropdownMenu) {
-                dropdownToggle.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    dropdownMenu.classList.toggle('show');
+        document.addEventListener('DOMContentLoaded', () => {
+            const companyDisplay = document.getElementById('companyNameDisplay');
+            const savedName = localStorage.getItem('companyName') || sessionStorage.getItem('orgName');
+            if (companyDisplay && savedName) {
+                companyDisplay.textContent = savedName;
+            }
+
+            if (window.initChatbot) {
+                window.initChatbot({
+                    embedded: true, 
+                    theme: 'light',
+                    // CHANGE THIS LINE BELOW:
+                    greeting: "Hi! What can I do for you?",
+                    position: { bottom: 20, right: 20 }
                 });
-                window.addEventListener('click', function(event) {
-                    if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown')) {
-                        if (dropdownMenu.classList.contains('show')) {
-                            dropdownMenu.classList.remove('show');
-                        }
-                    }
-                });
+            } else {
+                console.error("Chatbot widget failed to load.");
             }
         });
     </script>

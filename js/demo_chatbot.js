@@ -54,14 +54,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function sendQueryToBackend(query) {
-        const backendUrl = "http://127.0.0.1:8000/chat/demo";
+        // 1. POINT TO CORRECT PORT (8001) AND ENDPOINT (/api/v1/text)
+        const backendUrl = "http://127.0.0.1:8001/api/v1/text";
 
         try {
             const response = await fetch(backendUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    query: query,
+                    // 2. SEND 'text' INSTEAD OF 'query' (Matches TextIn model in api.py)
+                    text: query, 
+                    need_action_items: true,
                     conversation_history: chatHistoryArray
                 }),
             });
@@ -73,10 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            return data.response;
+            
+            // 3. EXTRACT THE REPLY (The backend returns a 'reply_preview')
+            return data.reply_preview || "I received your message.";
+            
         } catch (error) {
             console.error("Error sending query:", error);
-            return "Sorry, I'm having trouble connecting right now. Please try again later.";
+            return "Sorry, I'm having trouble connecting to Port 8001. Is the RIA backend running?";
         }
     }
 

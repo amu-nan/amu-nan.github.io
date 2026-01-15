@@ -47,15 +47,13 @@
         <section class="chatbot-content">
             <h2 class="page-title">Chatbot for <span id="patient-name-display"></span></h2>
             <div class="chat-container">
-                <div class="chat-window" id="chat-window">
-                    <div class="message bot-message">
+                <div class="chat-window" id="chat-history"> <div class="message bot-message">
                         <div class="avatar"><i class="fa-solid fa-robot"></i></div>
                         <div class="message-bubble">Hello! How can I help you today?</div>
                     </div>
                 </div>
                 <div class="chat-input-container">
-                    <input type="text" id="chat-input" placeholder="Type your message...">
-                    <button id="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                    <input type="text" id="user-query" placeholder="Type your message..."> <button id="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>
         </section>
@@ -66,77 +64,23 @@
         </div>
     </main>
 
-    <script src="../js/scripts.js"></script>
+    <script src="../js/chatbot.js"></script>
+
     <script>
+        // Only keep UI logic here, NO chat logic
         const patientNameDisplay = document.getElementById('patient-name-display');
         const continueToReportBtn = document.getElementById('continue-to-report-btn');
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatWindow = document.getElementById('chat-window');
-
+        
         const patientName = sessionStorage.getItem('selectedPatientName');
-        const patientId = sessionStorage.getItem('selectedPatientId');
-        const selectedEntity = sessionStorage.getItem('selectedFinalEntity');
-
-        if (patientName) {
+        if (patientName && patientNameDisplay) {
             patientNameDisplay.textContent = patientName;
         }
 
-        const sendMessage = async () => {
-            const userText = chatInput.value.trim();
-            if (userText === '') return;
-
-            // Add user message to the chat window
-            const userMessageDiv = document.createElement('div');
-            userMessageDiv.classList.add('message', 'user-message');
-            userMessageDiv.innerHTML = `<div class="message-bubble">${userText}</div>`;
-            chatWindow.appendChild(userMessageDiv);
-            chatInput.value = '';
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-
-            // Simulate the bot typing
-            const typingIndicator = document.createElement('div');
-            typingIndicator.classList.add('message', 'bot-message', 'typing-indicator');
-            typingIndicator.innerHTML = `<div class="avatar"><i class="fa-solid fa-robot"></i></div><div class="message-bubble">...</div>`;
-            chatWindow.appendChild(typingIndicator);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-
-            // Simulate sending a request to the backend with a delay
-            const payload = {
-                conversation_id: "your-session-id",
-                query: userText,
-                user_type: selectedEntity,
-                patient_name: patientName,
-                patient_id: patientId
-            };
-            console.log("Chatbot Payload:", payload);
-
-            setTimeout(() => {
-                // Remove the typing indicator
-                chatWindow.removeChild(typingIndicator);
-                
-                // Add the bot's response
-                const botResponseDiv = document.createElement('div');
-                botResponseDiv.classList.add('message', 'bot-message');
-                botResponseDiv.innerHTML = `
-                    <div class="avatar"><i class="fa-solid fa-robot"></i></div>
-                    <div class="message-bubble">Thank you for your question. A response to "${userText}" would be generated here by the backend.</div>
-                `;
-                chatWindow.appendChild(botResponseDiv);
-                chatWindow.scrollTop = chatWindow.scrollHeight;
-            }, 1500); // Wait for 1.5 seconds to simulate a response
-        };
-
-        sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        continueToReportBtn.addEventListener('click', () => {
-            window.location.href = 'track.html';
-        });
+        if (continueToReportBtn) {
+            continueToReportBtn.addEventListener('click', () => {
+                window.location.href = 'track.html';
+            });
+        }
     </script>
 </body>
 </html>

@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             try {
                 // IMPORTANT: Replace 'YOUR_CHATBOT_ENDPOINT_URL' with your actual endpoint
-                const response = await fetch('YOUR_CHATBOT_ENDPOINT_URL', {
+                const response = await fetch('http://127.0.0.1:8000/api/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

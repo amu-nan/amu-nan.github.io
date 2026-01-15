@@ -262,11 +262,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Render the plot
                     setTimeout(() => {
                         try {
-                            // Ensure layout is responsive
+                            // Calculate dynamic height based on plot type and data
+                            let plotHeight = 600; // Default height
+                            
+                            // Get plot type from data
+                            if (plotData.json.data && plotData.json.data.length > 0) {
+                                const plotType = plotData.json.data[0].type;
+                                
+                                // Adjust height based on plot type
+                                if (plotType === 'bar' || plotType === 'scatter') {
+                                    plotHeight = 550;
+                                } else if (plotType === 'pie' || plotType === 'donut') {
+                                    plotHeight = 650; // More space for pie charts with legends
+                                } else if (plotType === 'line') {
+                                    plotHeight = 550;
+                                } else {
+                                    plotHeight = 600;
+                                }
+                            }
+                            
+                            // Ensure layout is responsive with proper margins
                             const layout = {
                                 ...plotData.json.layout,
                                 autosize: true,
-                                height: 550 // Increased for better visibility and less cutoff
+                                height: plotHeight,
+                                margin: {
+                                    l: 60,  // left margin
+                                    r: 60,  // right margin
+                                    t: 100, // top margin - increased for title
+                                    b: 60,  // bottom margin
+                                    ...(plotData.json.layout.margin || {}) // Preserve any existing margins
+                                }
                             };
                             
                             Plotly.newPlot(plotId, plotData.json.data, layout, {

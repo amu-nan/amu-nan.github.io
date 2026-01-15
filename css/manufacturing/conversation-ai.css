@@ -917,6 +917,12 @@
         PLOT STYLES 
    ======================================== */
 
+/* ========================================
+   ENHANCED DYNAMIC SIZING FOR PLOTS & TABLES
+   Add these to the END of conversation-ai.css
+   (Replace previous plot styles if already added)
+   ======================================== */
+
 /* Dynamic message bubbles - expand for large content */
 .ria-message {
     max-width: 70%; /* Default for text-only messages */
@@ -926,7 +932,7 @@
 /* Wider bubbles for messages with plots or large tables */
 .ria-message:has(.plot-container),
 .ria-message:has(.large-table-container) {
-    max-width: 90% !important; /* Much wider for plots/tables */
+    max-width: 95% !important; /* Even wider for plots/tables */
 }
 
 /* Plot Container - Dynamic sizing */
@@ -959,8 +965,8 @@
 /* Plotly chart container - Full size with scroll if needed */
 .plotly-chart {
     width: 100%;
-    min-height: 450px;
-    max-height: 600px; /* Maximum height before scrolling */
+    min-height: 500px; /* Increased from 450px */
+    max-height: 700px; /* Increased from 600px - Maximum height before scrolling */
     background: #ffffff;
     border-radius: 8px;
     padding: 0.5rem;
@@ -1117,7 +1123,7 @@
     
     .ria-message:has(.plot-container),
     .ria-message:has(.table-wrapper) {
-        max-width: 95% !important;
+        max-width: 98% !important; /* Nearly full width on tablets */
     }
     
     .ria-message .plot-container {
@@ -1125,8 +1131,8 @@
     }
     
     .plotly-chart {
-        min-height: 380px;
-        max-height: 500px;
+        min-height: 400px; /* Increased from 380px */
+        max-height: 550px; /* Increased from 500px */
     }
     
     .ria-message table td {
@@ -1142,7 +1148,7 @@
     
     .ria-message:has(.plot-container),
     .ria-message:has(.table-wrapper) {
-        max-width: 98% !important;
+        max-width: 100% !important; /* Full width on small phones */
     }
     
     .ria-message .plot-container {
@@ -1151,8 +1157,8 @@
     }
     
     .plotly-chart {
-        min-height: 320px;
-        max-height: 400px;
+        min-height: 350px; /* Increased from 320px */
+        max-height: 450px; /* Increased from 400px */
     }
     
     .plot-hint {
@@ -1273,4 +1279,3 @@
         display: none; /* Hide scroll hint in print */
     }
 }
-

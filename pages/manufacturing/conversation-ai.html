@@ -3,94 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xforia COAST Chatbot (Ria)</title>
+    <title>Xforia COAST - RIA Assistant</title>
     <link rel="icon" type="image/png" href="../../images/Subject.png">
-    <link rel="stylesheet" href="../../css/style.css">
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <style>
-        /* Container to hold the embedded chatbot */
-        .chatbot-wrapper {
-            width: 100%;
-            height: calc(100vh - 160px); /* Adjust height to fit between header/footer */
-            max-width: 1000px;
-            margin: 20px auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* --- REQUIRED FIX: Force React Widget to fill the container --- */
-        #chatbot-widget-root, #chatbot-widget-root > div {
-            height: 100% !important;
-            width: 100% !important;
-            min-height: 0 !important;
-            display: flex;
-            flex-direction: column;
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/manufacturing/conversation-ai.css">
 </head>
 <body>
-    <header>
-        <div class="logo-container">
-            <a href="../../index.html">
-                <img src="../../images/logo.png" alt="Xforia COAST Logo" class="logo">
-            </a>
-            <span class="tagline">Ride the wave of efficiency.</span>
-        </div>
-    </header>
 
-    <main>
-        <div class="chat-header" style="text-align: center; margin-top: 20px;">
-            <div class="chat-info">
-                <h2 class="chat-title">
-                    <span id="companyNameDisplay"></span> RIA
-                </h2>
-                <p>Your manufacturing data, ready to be explored.</p>
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            
+            <div class="welcome-section">
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h1><span id="companyNameDisplay">Xforia</span> RIA</h1>
+                        <p>Your AI-Powered Manufacturing Assistant.</p>
+                    </div>
+                    <div class="logo-badge">
+                        <img src="../../images/logo.png" alt="Xforia Logo" style="height:45px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="chatbot-wrapper">
+                <div id="chatbot-widget-root"></div>
+            </div>
+
+            <div class="logout-section">
+                <a href="admin-dashboard.html" class="logout-btn">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </a>
             </div>
         </div>
-
-        <div class="chatbot-wrapper">
-            <div id="chatbot-widget-root" style="height: 100%; width: 100%;"></div>
-        </div>
     </main>
-
-    <div class="navigation-buttons" style="max-width: 1000px; margin: 20px auto; padding: 0 20px;">
-        <a href="admin-dashboard.html" class="back-button" style="text-decoration: none; color: #555; background: #f0f2f5; padding: 10px 20px; border-radius: 20px;">
-            <i class="fa-solid fa-arrow-left"></i> Go Back
-        </a>
-    </div>
 
     <footer>
         <p>&copy; 2025 Xforia COAST - All Rights Reserved.</p>
     </footer>
 
-    <script src="../../js/chatbot.js"></script>
-
+    <script src="../../js/chatbot.js"></script> 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Fix Dynamic Company Name
             const companyDisplay = document.getElementById('companyNameDisplay');
             const savedName = localStorage.getItem('companyName') || sessionStorage.getItem('orgName');
-            if (companyDisplay && savedName) {
-                companyDisplay.textContent = savedName;
-            }
+            if (companyDisplay && savedName) companyDisplay.textContent = savedName;
 
+            // Initialize the React Widget
             if (window.initChatbot) {
                 window.initChatbot({
-                    embedded: true, 
+                    embedded: true,
                     theme: 'light',
-                    // CHANGE THIS LINE BELOW:
                     greeting: "Hi! What can I do for you?",
-                    position: { bottom: 20, right: 20 }
+                    apiUrl: "http://127.0.0.1:8001/api/v1",
+                    responseField: "response", // Correct field for your backend
+                    preferResponseField: true,  // Force it to ignore "I heard" type headers
+                    mode: "text"
                 });
-            } else {
-                console.error("Chatbot widget failed to load.");
             }
         });
     </script>

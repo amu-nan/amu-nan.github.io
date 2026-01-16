@@ -4,21 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const companyName = urlParams.get('company');
 
     if (companyName) {
-        document.getElementById('companyNameDisplay').textContent = `${companyName}'s`;
+        const displayElement = document.getElementById('companyNameDisplay');
+        if (displayElement) displayElement.textContent = `${companyName}'s`;
     }
 
     // --- Element references ---
     const userQueryInput = document.getElementById('userQueryInput');
     const sendButton = document.getElementById('sendButton');
     const chatHistory = document.getElementById('chat-history');
-    const backButton = document.getElementById('backButton');
+    
+    // --- UPDATED: Select the specific logout button class ---
+    const backButton = document.querySelector('.logout-btn');
 
     // Conversation array in backend format
     let chatHistoryArray = [];
 
-    // --- Backend Endpoint Configuration ---
-    const backendUrl = "http://127.0.0.1:8000/chat/manufacturing";
-    const backendBaseUrl = "http://127.0.0.1:8000";
+    // --- UPDATED: Backend Endpoint Configuration (Port 8001) ---
+    const backendUrl = "http://127.0.0.1:8001/api/v1/text"; // Fixed Path & Port
+    const backendBaseUrl = "http://127.0.0.1:8001";
 
     // --- Chatbot Functions ---
     const RIA_ICON_SRC = '../../images/Ria-icon.png'; 
@@ -57,20 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function wrapTablesInScrollContainers(container) {
         const tables = container.querySelectorAll('table');
         tables.forEach(table => {
-            // Skip if already wrapped
             if (table.parentElement.classList.contains('table-wrapper')) {
                 return;
             }
-            
-            // Create wrapper
             const wrapper = document.createElement('div');
             wrapper.classList.add('table-wrapper');
-            
-            // Wrap the table
             table.parentNode.insertBefore(wrapper, table);
             wrapper.appendChild(table);
             
-            // Add scroll event listener to hide the scroll hint
             wrapper.addEventListener('scroll', function() {
                 if (this.scrollLeft > 10) {
                     this.classList.add('scrolled');
@@ -81,18 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to add fullscreen capability to plots
     function makePlotExpandable(plotContainer, plotId) {
-        // Create expand button
         const expandBtn = document.createElement('button');
         expandBtn.classList.add('plot-expand-btn');
-        expandBtn.innerHTML = '⛶ Fullscreen';
+        expandBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
         expandBtn.title = 'View plot in fullscreen';
         
-        // Add button to plot container
         const plotDiv = plotContainer.querySelector('.plotly-chart');
         plotDiv.style.position = 'relative';
         plotDiv.appendChild(expandBtn);
         
-        // Handle expand
         expandBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             openPlotFullscreen(plotId);
@@ -101,20 +95,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to open plot in fullscreen
     function openPlotFullscreen(plotId) {
-        // Create fullscreen overlay
         const overlay = document.createElement('div');
         overlay.classList.add('plot-fullscreen-overlay', 'active');
         
         const content = document.createElement('div');
         content.classList.add('plot-fullscreen-content');
         
-        // Close button
         const closeBtn = document.createElement('button');
         closeBtn.classList.add('plot-fullscreen-close');
-        closeBtn.innerHTML = '×';
+        closeBtn.innerHTML = '<i class="fa-solid fa-times"></i>';
         closeBtn.title = 'Close fullscreen';
         
-        // Create fullscreen plot container
         const fullscreenPlotId = 'fullscreen-' + plotId;
         const fullscreenPlot = document.createElement('div');
         fullscreenPlot.id = fullscreenPlotId;
@@ -126,10 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.appendChild(content);
         document.body.appendChild(overlay);
         
-        // Get original plot data
         const originalPlot = document.getElementById(plotId);
         if (originalPlot && originalPlot.data && originalPlot.layout) {
-            // Clone the plot to fullscreen
             Plotly.newPlot(fullscreenPlotId, originalPlot.data, originalPlot.layout, {
                 responsive: true,
                 displayModeBar: true,
@@ -137,24 +126,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Close handlers
-        closeBtn.addEventListener('click', () => {
+        const closeFullscreen = () => {
             overlay.classList.remove('active');
             setTimeout(() => overlay.remove(), 300);
-        });
-        
+        };
+
+        closeBtn.addEventListener('click', closeFullscreen);
         overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                overlay.classList.remove('active');
-                setTimeout(() => overlay.remove(), 300);
-            }
+            if (e.target === overlay) closeFullscreen();
         });
         
-        // ESC key to close
         const escHandler = (e) => {
             if (e.key === 'Escape') {
-                overlay.classList.remove('active');
-                setTimeout(() => overlay.remove(), 300);
+                closeFullscreen();
                 document.removeEventListener('keydown', escHandler);
             }
         };
@@ -162,7 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function addMessage(sender, text, isTyping = false) {
-        const chatHistory = document.getElementById('chat-history');
+        if (!chatHistory) return; // Guard clause
+
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('chat-message');
         messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ria-message');
@@ -171,59 +156,45 @@ document.addEventListener('DOMContentLoaded', () => {
             messageDiv.id = 'typing-indicator';
             messageDiv.innerHTML = `<div class="ria-message-content">
                                         <img src="${RIA_ICON_SRC}" alt="Ria Icon" class="ria-message-icon">
-                                        <p class="loading-dots"><span></span><span></span><span></span></p>
+                                        <div class="loading-dots"><span></span><span></span><span></span></div>
                                     </div>`;
         } else {
-            if (sender === 'ria') {
-                // Create a wrapper for the icon and the message content
+            if (sender === 'ria' || sender === 'bot') {
                 const messageWrapper = document.createElement('div');
                 messageWrapper.classList.add('ria-message-content');
                 
-                // Create and append the icon image
                 const iconImg = document.createElement('img');
                 iconImg.src = RIA_ICON_SRC;
                 iconImg.alt = 'Ria Icon';
                 iconImg.classList.add('ria-message-icon');
                 messageWrapper.appendChild(iconImg);
                 
-                // Create the text content container
                 const textContent = document.createElement('div');
                 textContent.style.width = '100%';
                 
-                // Clean up the text
-                let cleanedText = text;
+                let cleanedText = text || "";
+                // Clean up debug info
                 cleanedText = cleanedText.replace(/\[DEBUG\][^\n]*/g, '');
-                cleanedText = cleanedText.replace(/PLOT_PATH:\/Users\/[^\n]*/g, '');
-                cleanedText = cleanedText.replace(/PLOT_PATH:\/home\/[^\n]*/g, '');
-                cleanedText = cleanedText.replace(/PLOT_PATH:[A-Z]:\\[^\n]*/g, '');
+                cleanedText = cleanedText.replace(/PLOT_PATH:[^\n]*/g, '');
                 
-                // Try to extract Plotly JSON
                 const plotData = extractPlotlyJson(cleanedText);
                 
                 if (plotData) {
-                    console.log('Found Plotly JSON in message');
-                    
-                    // Text before plot
                     if (plotData.textBefore) {
                         const beforeDiv = document.createElement('div');
                         beforeDiv.innerHTML = marked.parse(plotData.textBefore);
                         textContent.appendChild(beforeDiv);
                     }
                     
-                    // Create plot container
                     const plotContainer = document.createElement('div');
                     plotContainer.classList.add('plot-container');
                     
-                    // Add hint text
                     const plotHint = document.createElement('p');
                     plotHint.classList.add('plot-hint');
                     plotHint.textContent = '📊 Interactive Business Intelligence View:';
                     plotContainer.appendChild(plotHint);
                     
-                    // Create unique ID
                     const plotId = 'plot-' + Math.random().toString(36).substr(2, 9);
-                    
-                    // Create div for Plotly chart
                     const plotDiv = document.createElement('div');
                     plotDiv.id = plotId;
                     plotDiv.classList.add('plotly-chart');
@@ -231,21 +202,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     textContent.appendChild(plotContainer);
                     
-                    // Text after plot
                     if (plotData.textAfter) {
                         const afterDiv = document.createElement('div');
                         afterDiv.innerHTML = marked.parse(plotData.textAfter);
                         textContent.appendChild(afterDiv);
                     }
                     
-                    // Render the plot
                     setTimeout(() => {
                         try {
-                            // Ensure layout is responsive
                             const layout = {
                                 ...plotData.json.layout,
                                 autosize: true,
-                                height: 450 // Default height
+                                height: 450,
+                                paper_bgcolor: 'rgba(0,0,0,0)',
+                                plot_bgcolor: 'rgba(0,0,0,0)',
+                                font: { family: 'Work Sans, sans-serif' }
                             };
                             
                             Plotly.newPlot(plotId, plotData.json.data, layout, {
@@ -254,51 +225,24 @@ document.addEventListener('DOMContentLoaded', () => {
                                 displaylogo: false,
                                 modeBarButtonsToRemove: ['lasso2d', 'select2d']
                             });
-                            
-                            console.log('Plot rendered successfully');
-                            
-                            // Add fullscreen capability
                             makePlotExpandable(plotContainer, plotId);
-                            
                         } catch (error) {
                             console.error('Error rendering plot:', error);
-                            plotDiv.innerHTML = `
-                                <p style="color: #e74c3c; padding: 1rem; background: #fee; border-radius: 8px;">
-                                    ⚠️ Failed to render plot. Error: ${error.message}
-                                </p>
-                            `;
+                            plotDiv.innerHTML = `<p style="color: #e74c3c;">⚠️ Failed to render plot.</p>`;
                         }
                     }, 100);
                     
                 } else {
-                    // No plot - render as standard markdown
                     textContent.innerHTML = marked.parse(cleanedText);
                 }
                 
-                // Wrap any tables in scroll containers
-                setTimeout(() => {
-                    wrapTablesInScrollContainers(textContent);
-                }, 50);
-                
-                // Handle existing plot images
-                const plotImages = textContent.querySelectorAll('img[src*="/plots/"]');
-                plotImages.forEach(img => {
-                    if (img.src.includes('/plots/') && !img.src.startsWith(backendBaseUrl)) {
-                        const plotPath = img.src.split('/plots/')[1];
-                        img.src = `${backendBaseUrl}/plots/${plotPath}`;
-                    }
-                    
-                    img.onerror = function() {
-                        console.error('Failed to load image:', this.src);
-                        this.alt = 'Failed to load plot image';
-                    };
-                });
+                setTimeout(() => wrapTablesInScrollContainers(textContent), 50);
                 
                 messageWrapper.appendChild(textContent);
                 messageDiv.appendChild(messageWrapper);
             } else {
-                // For user messages
-                messageDiv.innerHTML = marked.parse(text);
+                // User message
+                messageDiv.innerHTML = marked.parse(text || "");
             }
         }
         
@@ -312,23 +256,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    query: query,
+                    text: query, // Changed from 'query' to 'text' to match standard RIA payload
+                    need_action_items: true,
+                    include_tts: false,
                     conversation_history: chatHistoryArray
                 }),
             });
 
-            if (!response.ok) {
-                const text = await response.text();
-                console.error("Backend error response:", text);
-                throw new Error(`HTTP ${response.status}`);
-            }
-
-            const data = await response.json();
-            return data;
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.json();
         } catch (error) {
             console.error("Error sending query:", error);
             return {
-                response: "Sorry, I'm having trouble connecting right now. Please try again later.",
+                reply_preview: "Sorry, I'm having trouble connecting right now. Please ensure the RIA backend (Port 8001) is running.",
                 conversation_history: []
             };
         }
@@ -341,44 +281,55 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage('user', userQuery);
         userQueryInput.value = '';
 
-        addMessage('ria', null, true);
+        addMessage('ria', null, true); // Show typing
 
         try {
             const backendResponse = await sendQueryToBackend(userQuery);
 
             const typingIndicator = document.getElementById('typing-indicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
+            if (typingIndicator) typingIndicator.remove();
+
+            // Handle standard RIA response format
+            const aiResponseText = backendResponse.reply_preview || backendResponse.response || "No response received.";
+            
+            // Append Action Items if available
+            let finalResponse = aiResponseText;
+            if(backendResponse.micro_agent && backendResponse.micro_agent.action_items) {
+                finalResponse += "\n\n**Action Items:**\n";
+                backendResponse.micro_agent.action_items.forEach(item => {
+                    finalResponse += `- ${item.description}\n`;
+                });
             }
 
-            const aiResponseText = backendResponse.response;
-            chatHistoryArray = backendResponse.conversation_history;
-
-            addMessage('ria', aiResponseText);
+            addMessage('ria', finalResponse);
         } catch (error) {
-            console.error("Error fetching AI response:", error);
             const typingIndicator = document.getElementById('typing-indicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
-            }
-            addMessage('ria', "Sorry, I'm having trouble getting a response. Please try again.");
+            if (typingIndicator) typingIndicator.remove();
+            addMessage('ria', "Sorry, I encountered a system error.");
         }
     }
 
     // --- Event listeners ---
-    sendButton.addEventListener('click', sendQuery);
+    if(sendButton) {
+        sendButton.addEventListener('click', sendQuery);
+    }
 
-    userQueryInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
+    if(userQueryInput) {
+        userQueryInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendQuery();
+            }
+        });
+    }
+
+    // --- UPDATED: Back Button Navigation ---
+    if(backButton) {
+        backButton.addEventListener('click', (event) => {
             event.preventDefault();
-            sendQuery();
-        }
-    });
-
-    backButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        history.back();
-    });
+            window.location.href = 'admin-dashboard.html';
+        });
+    }
 
     // --- Initial greeting ---
     addMessage('ria', "Hello! I'm Ria. I'm ready to answer questions about your manufacturing data. How can I help?");
